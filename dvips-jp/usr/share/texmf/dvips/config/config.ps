@@ -1,0 +1,141 @@
+* Configuration file for dvips.
+*
+*  Default resolution.  This needs to be correct.
+D 600
+*
+*  Metafont mode to use to generate bitmap fonts.  This needs to be a
+*  mode with the specified resolution.  Various hardwired defaults are
+*  used for a few resolutions, but it is best to specify it explicitly.
+*  http://www.ctan.org/tex-archive/fonts/modes/modes.mf has a list of modes.
+*M modename
+*
+*  Amount of memory.  Not crucial to be exact, if you have a lot.
+m 3500000
+*
+*  If unspecified, output goes to a file.
+*  To send output via a pipe to a printing program, use something like:
+*o |lpr
+*o |lpr -Pmyprinter
+*  To send output to standard output by default, use:
+*o -
+*
+*  z1 is "secure", i.e., inhibits execution of `shell commands` in \specials.
+*  Dvips allows this by default.
+*z1
+*
+*  Additional default .map files.
+* p +cmfonts.map
+* p +lafonts.map
+* p +cyrfonts.map
+* p +eufonts.map
+p +psfonts_jp.map
+*
+*   Last resort bitmap sizes.
+R  240 270 300 329 360 432 518 622 746 896
+*
+*
+*   Paper size information.  First definition is the default.
+*
+*   If your default is a4 uncomment the following definition
+*   and comment out the letterSize definition.
+@ a4size 210mm 297mm
+@+ ! %%DocumentPaperSizes: a4
+@+ %%PaperSize: a4
+
+@ letterSize 8.5in 11in
+@+ ! %%DocumentPaperSizes: Letter
+
+@ letter 8.5in 11in
+@+ ! %%DocumentPaperSizes: Letter
+@+ %%BeginPaperSize: Letter
+@+ %letter
+@+ %%EndPaperSize
+
+@ legal 8.5in 14in
+@+ ! %%DocumentPaperSizes: Legal
+@+ %%BeginPaperSize: Legal
+@+ %legal
+@+ %%EndPaperSize
+
+@ ledger 17in 11in
+@+ ! %%DocumentPaperSizes: Ledger
+@+ %%BeginPaperSize: Ledger
+@+ %ledger
+@+ %%EndPaperSize
+
+@ tabloid 11in 17in
+@+ ! %%DocumentPaperSizes: Tabloid
+@+ %%BeginPaperSize: Tabloid
+@+ %11x17
+@+ %%EndPaperSize
+
+@ a6 105mm 148mm
+@+ ! %%DocumentPaperSizes: a6
+@+ %%BeginPaperSize: a6
+@+ a6
+@+ %%EndPaperSize
+
+@ a5 148mm 210mm
+@+ ! %%DocumentPaperSizes: a5
+@+ %%BeginPaperSize: a5
+@+ a5
+@+ %%EndPaperSize
+
+@ a4 210mm 297mm
+@+ ! %%DocumentPaperSizes: a4
+@+ %%BeginPaperSize: a4
+@+ %a4
+@+ %%EndPaperSize
+
+@ a3 297mm 420mm
+@+ ! %%DocumentPaperSizes: a3
+@+ %%BeginPaperSize: a3
+@+ %a3
+@+ %%EndPaperSize
+
+@ a2 420mm 595mm
+@+ ! %%DocumentPaperSizes: a2
+@+ %%BeginPaperSize: a2
+@+ a2
+@+ %%EndPaperSize
+
+@ a1 595mm 841mm
+@+ ! %%DocumentPaperSizes: a1
+@+ %%BeginPaperSize: a1
+@+ a1
+@+ %%EndPaperSize
+
+@ a0 841mm 1189mm
+@+ ! %%DocumentPaperSizes: a0
+@+ %%BeginPaperSize: a0
+@+ a0
+@+ %%EndPaperSize
+
+@ b6 125mm 176mm
+@+ ! %%DocumentPaperSizes: b6
+@+ %%BeginPaperSize: b6
+@+ b6
+@+ %%EndPaperSize
+
+@ b5 176mm 250mm
+@+ ! %%DocumentPaperSizes: b5
+@+ %%BeginPaperSize: b5
+@+ b5
+@+ %%EndPaperSize
+
+@ b4 250mm 353mm
+@+ ! %%DocumentPaperSizes: b4
+@+ %%BeginPaperSize: b4
+@+ b4
+@+ %%EndPaperSize
+
+@ b3 353mm 500mm
+@+ ! %%DocumentPaperSizes: b3
+@+ %%BeginPaperSize: b3
+@+ b3
+@+ %%EndPaperSize
+
+@ unknown 0in 0in
+@+ statusdict /setpageparams known { hsize vsize 0 1 statusdict begin {
+@+ setpageparams } stopped end } { true } ifelse { statusdict /setpage known
+@+ { hsize vsize 1 statusdict begin { setpage } stopped pop end } if } if

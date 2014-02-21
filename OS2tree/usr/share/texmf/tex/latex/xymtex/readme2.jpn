@@ -1,0 +1,66 @@
+readme2.jpn 
+Notes for XyMTeX (in Japanese)
+Copyright (C) 1993, 1996, 1998 by Shinsaku Fujita. All rights reserved. 
+===========================================================================
+(旧)readme1.jpn 
+Notes for XyMTeX (in Japanese)
+Copyright (C) 1993, 1996 by Shinsaku Fujita. All rights reserved. 
+===========================================================================
+名  称: XyMTeX
+登録名: xymtex2.lzh for drawing chem. structures
+概  要: 化学構造式を描くためのマクロパッケージ
+　　　   (LaTeX用のオプションファイル類を含む)
+鍵  語: LaTeX, 化学, 構造式
+作  者: Shinsaku Fujita (藤田 眞作)
+登録者: 藤田 眞作
+最新版: 2.00
+本  籍: http://www.chem.kit.ac.jp/fujita/fujitas/fujita.html
+覚  書: ドキュメントは、xymtx200.tex (xymtx200.dvi)
+===========================================================================
+Name: XyMTeX
+Description: Macro Package including LaTeX document-style options for 
+             typesetting chemical structural formulas
+Keywords: LaTeX, chemistry, structural formula
+Author: Shinsaku Fujita
+Supported: http://www.chem.kit.ac.jp/fujita/fujitas/fujita.html
+Latest Version: 2.00
+Archives: http://www.chem.kit.ac.jp/fujita/fujitas/fujita.html
+Note: Documentation in xymtx200.tex (xymtx200.dvi) 
+===========================================================================
+
+＜説明＞
+　XyMTeXは、化学構造式を描くためののマクロパッケージです。 これは、
+LaTeX2e用のパッケージファイル群から成り立っています。各ファイルには
+化学構造式を描くためのコマンドのマクロコードが含まれています。各コマンドは、
+広範囲の化合物の構造が描けるように、新しい構想のもとに作成したものです。
+LaTeXのpicture環境を前提にして、その範囲内 (図形組版)で構造式が描けるように
+なっています。したがって、構造式出力のプリンターは (プリンタードライバーさえ
+あれば) 種類を選ばず、たとえば写植機でも出力が可能です。
+
+　約100ページのマニュアル (xymtx200.dvi) が付属しています。この中に、Version 
+2.00で追加した機能とコマンドの書式 (仕様) と描画例を多数記載しましたので、
+解凍後、まずどのようなことができるのかをご覧ください。
+
+　chemist.styやmathchem.sty (下記拙著に付録として付いているフロッピーディスク
+に収録)に含まれるコマンドを併用すれば、さらにいろいろな反応スキームなどを
+描くことができるようになります。XyMTeX(version1.01)から、chemist.styも同梱
+してあります。
+
+　　「化学者・生化学者のためのLaTeX---パソコンによる論文作成の手引」
+　　　藤田 眞作 著、東京化学同人 (1993) FD付
+
+基本的な使用法は、XyMTeX verion 2.00でも以前のバージョンでも同じです。
+このため、付属のマニュアル (xymtx200.dvi)では、基本的な使用法を記載
+してありません。これらは、次のレファレンスマニュアルを参照してください。
+
+     「XyMTeX--Typesetting Chemical Structural Formulas」
+      藤田眞作著、アジソン・ウェスレイ・ジャパン (1997) CD-DOM付
+
+＜ダウンロード・解凍＞
+(1) ファイル名xymtex2.lzhでダウンロードしてください
+(2) TeXのメインディレクトリー内でlhaで解凍してください。
+　　　a:\tex>lha x b:\xymtex2
+
+詳しいインストールの方法は、xymtex2.docをご覧下さい。
+
+

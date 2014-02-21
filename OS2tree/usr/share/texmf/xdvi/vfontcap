@@ -1,0 +1,299 @@
+####
+####   vfontcap  - Vector Font Capability Database File for VFlib Version 2 
+####
+####                 by   HIROTSUGU KAKUGAWA, 
+####
+####        Faculty of Engineering, Hiroshima Univ., JAPAN
+####         E-mail:  kakugawa@se.hiroshima-u.ac.jp
+####
+####  IF YOU ADDED OTHER FONTS NOT APPEAR IN THIS FILE, PLEASE SEND ME 
+####  THE ENTRY AND CORRECTION FACTORS.  I ADD THE ENTRY IN THE NEXT RELEASE
+####  OF VFLIB.
+####
+#### This is a part of VFlib
+####
+#### Copyright (C) 1993,1994,1995 Hirotsugu KAKUGAWA.   All rights reserved.
+#### VFlib is distributed in the hope that it will be useful, but
+#### WITHOUT ANY WARRANTY.  No author or distributor accepts responsibility
+#### to anyone for the consequences of using it or for whether it serves any
+#### particular purpose or works at all, unless he says so in writing.  Refer
+#### to the GNU General Public License for full details.
+####
+#### Everyone is granted permission to copy, modify and redistribute
+#### VFlib, but only under the conditions described in the GNU
+#### General Public License.  A copy of this license is supposed to have been
+#### given to you along with VFlib so you can know your rights and
+#### responsibilities.  It should be in a file named COPYING.  Among other
+#### things, the copyright notice and this notice must be preserved on all
+#### copies. 
+####
+####
+GS-Ryumin-Light:\
+        :fc=min:\
+GS-GothicBBB-Medium:\
+        :fc=goth:
+
+###--------------------------
+#### PRIMITIVE  FONTS
+####
+## @@IBM Heisei TT FONTA
+r-IBM-mincho|IBM mincho:\
+	:ft=freetype:\
+	:ff=c\072/psfonts/dfhsm-w3.ttf:
+r-IBM-gothic|IBM gothic:\
+	:ft=freetype:\
+	:ff=c\072/psfonts/dfhsg-w5.ttf:
+	
+Ricoh-HG-Gyosyo|RICOH GYOSHO:\
+	:ft=freetype:\
+	:ff=c\072/fonts/tt/fgclcgym.ttc:
+
+
+### SONY VECTOR FONTS
+r-sony-mincho|Sony Vector Font (Mincho):\
+	:ft=sony:\
+	:ff=/usr/local/font/devnwp533/Mincho.vfont:
+r-sony-gothic|Sony Vector Font (Gothic):\
+	:ft=sony:\
+	:ff=/usr/local/font/devnwp533/Gothic.vfont:
+
+### @@TRUETYPE FONT (RICOH TrueTypeWorld)
+r-ricoh-ttw-heisei-mincho-w3|Ricoh TrueTypeWorld Heisei Mincho W3:\
+	:ft=freetype:\
+	:ff=c\072/fonts/tt/hgrhm3sj.ttc:
+r-ricoh-ttw-heisei-mincho-w9|Ricoh TrueTypeWorld Heisei Mincho W9:\
+	:ft=freetype:\
+	:ff=c\072/fonts/tt/hgrhm9sj:
+r-ricoh-ttw-heisei-kaku-gothic-w3|Ricoh TrueTypeWorld Heisei Kaku Gothic W3:\
+	:ft=freetype:\
+	:ff=c\072/fonts/tt/hgrhg3sj.ttc:
+r-ricoh-ttw-heisei-kaku-gothic-w5|Ricoh TrueTypeWorld Heisei Kaku Gothic W5:\
+	:ft=freetype:\
+	:ff=/usr/local/font/truetype/hgrhg5sj:
+r-ricoh-ttw-hg-sei-kaisyo|Ricoh TrueTypeWorld HG Sei Kaisyo:\
+	:ft=freetype:\
+	:ff=/usr/local/font/truetype/hgrsksj:
+r-ricoh-ttw-hg-souei-kaku-pop|Ricoh TrueTypeWorld HG Souei Kaku Pop:\
+	:ft=freetype:\
+	:ff=/usr/local/font/truetype/hgrpp1sj:
+
+### TRUETYPE FONT (Windows fonts)
+r-microsoft-mincho|MicroSoft mincho:\
+	:ft=freetype:\
+	:ff=f\072/win/system/msmincho.ttf:
+r-microsoft-gothic|Microsoft gothic:\
+	:ft=freetype:\
+	:ff=f\072/win/system/msgothic.ttf:
+
+
+###--------------------------
+### CORRECTED 
+###
+
+sony-mincho:\
+	:fc=r-sony-mincho:
+sony-gothic:\
+	:fc=r-sony-gothic:
+microsoft-mincho:\
+	:fc=r-microsoft-mincho:
+microsoft-gothic:\
+	:fc=r-microsoft-gothic:
+ricoh-heisei-mincho-w3:\
+	:fc=r-ricoh-ttw-heisei-mincho-w3:
+ricoh-heisei-mincho-w9:\
+	:fc=r-ricoh-ttw-heisei-mincho-w9:
+ricoh-heisei-gothic-w3:\
+	:fc=r-ricoh-ttw-heisei-kaku-gothic-w3:
+ricoh-heisei-gothic-w5:\
+	:fc=r-ricoh-ttw-heisei-kaku-gothic-w5:
+ricoh-ttw-hg-sei-kaisyo:\
+	:fc=r-ricoh-ttw-hg-sei-kaisyo:
+ricoh-ttw-hg-souei-kaku-pop:\
+	:fc=r-ricoh-ttw-hg-souei-kaku-pop:
+
+###-------------------------- 
+### BDF fonts (X Window font)
+### 
+bdf14:\
+	:ft=bdf:\
+	:ff=/usr/local/font/bdf/k14:\
+	:ox#0:oy#0:fx#95:fy#95:
+bdf16:\
+	:ft=bdf:\
+	:ff=/usr/local/font/bdf/jiskan16:\
+	:ox#0:oy#0:fx#95:fy#95:
+bdf24:\
+	:ft=bdf:\
+	:ff=/usr/local/font/bdf/jiskan24:\
+	:ox#0:oy#0:fx#95:fy#95:
+bdf14sl:sl#20:fc=bdf14:
+bdf16sl:sl#20:fc=bdf16:
+bdf24sl:sl#20:fc=bdf24:
+LED:ds=square:dz#60:fc=bdf14:
+kscrn:ds=diamond:fc=bdf14:
+
+
+####--------------------------
+#### COMPOUND FONTS
+####
+comic|Kanji is Gothic, kana is mincho; Used in comics:\
+	:ft=compound:\
+	:kj=goth:kn=min:sy=min:
+
+###--------------------------
+### BITOP fonts
+###
+minstar:\
+	:ft=bitop:\
+	:op=LDS BS217a XDDS:fo=min:sf=goth:
+
+
+###--------------------------
+### NULL fonts
+###  ty=black or white or frame.
+null:\
+	:ft=null:ty=frame:
+nullblk:\
+	:ft=null:ty=black:
+nullwht:\
+	:ft=null:ty=white:
+
+
+
+###--------------------------
+### for ASCII jTeX
+###
+min|min5|min6|min7|min8|min9|min10|min12|min17|Mincho Font:\
+	:fc=mincho:
+goth|goth5||goth6|goth7|goth8|goth9|goth10|goth12|goth17|Gothic Font:\
+	:fc=gothic:
+tmin|tmin5|tmin6|tmin7|tmin8|tmin9|tmin10|tmin12|tmin17|Mincho Font:\
+	:fc=mincho:
+tgoth|tgoth5||tgoth6|tgoth7|tgoth8|tgoth9|tgoth10|tgoth12|tgoth17|Gothic Font:\
+	:fc=gothic:
+bmin:\
+	:fc=ricoh-heisei-bold-mincho:
+bgoth:\
+	:fc=ricoh-heisei-bold-goth:
+gyo|gyo5|gyo6|gyo7|gyo8|gyo9|gyo10|gyo12|gyo17:\
+	:fc=gyosho:
+tgyo|tgyo5|tgyo6|tgyo7|tgyo8|tgyo9|tgyo10|tgyo12|tgyo17:\
+	:fc=gyosho:
+
+
+# Use these for less cost.
+#min|min5|min6|min7|min8|min9|min10|min12|min17|Mincho Font:\
+#	:fc=scrn:
+#goth|goth5||goth6|goth7|goth8|goth9|goth10|goth12|goth17|Gothic Font:\
+#	:fc=bdf14:
+
+#Ricoh Heisei-Minco W3 Font
+rchmnmaa:\
+	:fc=ricoh-heisei-mincho-w3:
+rchmnmab|sl10min:\
+	:sl#15:fc=ricoh-heisei-mincho-w3:
+rchmnmac|sl20min:\
+	:sl#25:fc=ricoh-heisei-mincho-w3:
+rchmnmad|sl30min:\
+	:sl#33:fc=ricoh-heisei-mincho-w3:
+rchmnmae|sl_15min:\
+	:sl#-15:fc=ricoh-heisei-mincho-w3:
+rchmnmaf|sl_20min:\
+	:sl#-25:fc=ricoh-heisei-mincho-w3:
+rchmnmag|sl_30min:\
+	:sl#-33:fc=ricoh-heisei-mincho-w3:
+
+#Ricoh Heisei-Gothic W3 Font
+rchgomaa:\
+	:fc=ricoh-heisei-gothic-w3:
+rchgomaa:\
+	:fc=ricoh-heisei-gothic-w3:
+funny:\
+	:ro#45:ox#80:oy#150:fc=ricoh-heisei-gothic-w3:
+rchgomab|sl10goth:\
+	:sl#15:fc=ricoh-heisei-gothic-w3:
+rchgomac|sl20goth:\
+	:sl#25:fc=ricoh-heisei-gothic-w3:
+rchgomad|sl30goth:\
+	:sl#33:fc=ricoh-heisei-gothic-w3:
+rchgomae|sl-10goth:\
+	:sl#_15:fc=ricoh-heisei-gothic-w3:
+rchgomaf|sl_20goth:\
+	:sl#-25:fc=ricoh-heisei-gothic-w3:
+rchgomag|sl_30goth:\
+	:sl#-33:fc=ricoh-heisei-gothic-w3:
+## Ricoh-HG-Gyosyo|RICOH GYOSHO:\
+sl15gyo:\
+	:sl#15:fc=Ricoh-HG-Gyosyo:
+sl20gyo:\
+	:sl#20:fc=Ricoh-HG-Gyosyo:
+sl30gyo:\
+	:sl#33:fc=Ricoh-HG-Gyosyo:
+
+###--------------------------
+### ALIASES
+###
+## mincho and gothic are always pointed by kconfig.*
+##                     jsawa    98/1/19
+gyosho:\
+	:fc=Ricoh-HG-Gyosyo
+tgyosho:\
+	:fc=Ricoh-HG-Gyosyo
+
+mincho:\
+	:fc=ricoh-heisei-mincho-w3
+#	:fc=r-IBM-mincho:
+#	:fc=heiseimin:
+#	:fc=ms-mincho:
+gothic:\
+	:fc=ricoh-heisei-gothic-w3:
+#	:fc=r-IBM-gothic:
+#	:fc=heiseigoth:
+#	:fc=ms-gothic:
+sony-min:\
+	:fc=sony-mincho:
+sony-goth:\
+	:fc=ricoh-heisei-gothic:
+ms-mincho:\
+	:fc=microsoft-mincho:
+msmin:\
+	:fc=microsoft-mincho:
+ms-gothic:\
+	:fc=microsoft-gothic:
+msgoth:\
+	:fc=microsoft-gothic:
+heiseimin:\
+	:fc=ricoh-heisei-mincho:
+heiseigoth:\
+	:fc=ricoh-heisei-gothic:
+
+###--------------------------
+### FLAVORED FONTS
+minsl:\
+	:sl#10:fc=min:
+minsl:\
+	:sl#10:fc=min:
+minfr:\
+	:th:fr:fc=min:
+gothsl:\
+	:sl#10:fc=goth:
+gothfr:\
+	:th:fr:fc=goth:
+heiseiminsl:\
+	:sl#15:fc=heiseimin:
+heiseigothsl:\
+	:sl#15:fc=heiseigoth:
+ztmgosl:\
+	:sl#10:fc=ztmgo:
+ztmgofr:\
+	:fr:fc=ztmgo:
+ztmgofrth:\
+	:th:fr:fc=ztmgo:
+zttxtth:\
+	:th:fc=zttxt:
+zttxtsl:\
+	:sl#10:fc=zttxt:
+jgtxtsl:\
+	:sl#10:fc=jgtxt:
+# EOF
+

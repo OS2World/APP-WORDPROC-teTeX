@@ -1,0 +1,3144 @@
+% \iffalse meta-comment
+%% File: ccycle.dtx
+%
+%  Copyright 1993,1996,1998 by Shinsaku Fujita
+%
+%  This file is part of XyMTeX system.
+%  -------------------------------------
+%
+% This file is a successor to:
+%
+% ccycle.sty
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \typeout{XyMTeX for Drawing Chemical Structural Formulas. Version 1.00}
+% \typeout{       -- Released December 1, 1993 by Shinsaku Fujita}
+% Copyright (C) 1993 by Shinsaku Fujita, all rights reserved.
+%
+% This file is a part of the macro package ``XyMTeX'' which has been 
+% designed for typesetting chemical structural formulas.
+%
+% This file is to be contained in the ``xymtex'' directory which is 
+% an input directory for TeX. It is a LaTeX optional style file and 
+% should be used only within LaTeX, because several macros of the file 
+% are based on LaTeX commands. 
+%
+% For the review of XyMTeX, see
+%  (1)  Shinsaku Fujita, ``Typesetting structural formulas with the text
+%    formatter TeX/LaTeX'', Computers and Chemistry, in press.    
+% The following book deals with an application of TeX/LaTeX to 
+% preparation of manuscripts of chemical fields:
+%  (2)  Shinsaku Fujita, ``LaTeX for Chemists and Biochemists'' 
+%    Tokyo Kagaku Dozin, Tokyo (1993) [in Japanese].  
+%
+% Copying of this file is authorized only if either
+%  (1) you make absolutely no changes to your copy, including name and 
+%     directory name; or
+%  (2) if you do make changes, 
+%     (a) you name it something other than the names included in the 
+%         ``xymtex'' directory and 
+%     (b) you are requested to leave this notice intact.
+% This restriction ensures that all standard styles are identical.
+%
+% Please report any bugs, comments, suggestions, etc. to:
+%   Shinsaku Fujita, 
+%   Ashigara Research Laboratories, Fuji Photo Film Co., Ltd., 
+%   Minami-Ashigara, Kanagawa-ken, 250-01, Japan.
+%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \def\j@urnalname{ccycle}
+% \def\versi@ndate{December 01, 1993}
+% \def\versi@nno{ver1.00}
+% \def\copyrighth@lder{SF} % Shinsaku Fujita
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \def\j@urnalname{ccycle}
+% \def\versi@ndate{March 05, 1994}
+% \def\versi@nno{ver1.01}
+% \def\copyrighth@lder{SF} % Shinsaku Fujita
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \def\j@urnalname{ccycle}
+% \def\versi@ndate{August 16, 1996}
+% \def\versi@nno{ver1.01a}
+% \def\copyrighth@lder{SF} % Shinsaku Fujita
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \def\j@urnalname{ccycle}
+% \def\versi@ndate{October 31, 1998}
+% \def\versi@nno{ver1.02}
+% \def\copyrighth@lder{SF} % Shinsaku Fujita
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \fi
+%
+% \CheckSum{3793}
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%
+% \setcounter{StandardModuleDepth}{1}
+%
+% \StopEventually{}
+% \MakeShortVerb{\|}
+%
+% \iffalse
+% \changes{v1.01a}{1996/06/17}{first edition for LaTeX2e}
+% \changes{v1.02}{1998/10/31}{revised edition for LaTeX2e}
+% \changes{v2.00}{1998/12/25}{enhanced edition for LaTeX2e}
+% \fi
+%
+% \iffalse
+%<*driver>
+\NeedsTeXFormat{pLaTeX2e}
+% \fi
+\ProvidesFile{ccycle.dtx}[1998/12/25 v2.00 XyMTeX{} package file]
+% \iffalse
+\documentclass{ltxdoc}
+\GetFileInfo{ccycle.dtx}
+%
+% %%XyMTeX Logo: Definition 2%%%
+\def\UPSILON{\char'7}
+\def\XyM{X\kern-.30em\smash{%
+\raise.50ex\hbox{\UPSILON}}\kern-.30em{M}}
+\def\XyMTeX{\XyM\kern-.1em\TeX}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Further Cyclic Compounds by {\sffamily ccycle.sty} 
+(\fileversion) of \XyMTeX{}}
+\author{Shinsaku Fujita \\ 
+Department of Chemistry and Materials Technology, \\
+Kyoto Institute of Technology, \\
+Matsugasaki, Sakyoku, Kyoto, 606 Japan
+% % (old address)
+% % Ashigara Research Laboratories, 
+% % Fuji Photo Film Co., Ltd., \\ 
+% % Minami-Ashigara, Kanagawa, 250-01 Japan
+}
+\date{\filedate}
+%
+\begin{document}
+   \maketitle
+   \DocInput{ccycle.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \section{Introduction}\label{ccycle:intro}
+%
+% \subsection{Options for {\sffamily docstrip}}
+%
+% \DeleteShortVerb{\|}
+% \begin{center}
+% \begin{tabular}{|l|l|}
+% \hline
+% \emph{option} & \emph{function}\\ \hline
+% ccycle & ccycle.sty \\
+% driver & driver for this dtx file \\
+% \hline
+% \end{tabular}
+% \end{center}
+% \MakeShortVerb{\|}
+%
+% \subsection{Version Information}
+%
+%    \begin{macrocode}
+%<*ccycle>
+\typeout{XyMTeX for Drawing Chemical Structural Formulas. Version 2.00}
+\typeout{       -- Released December 25, 1998 by Shinsaku Fujita}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\j@urnalname{ccycle}
+\def\versi@ndate{December 25, 1998}
+\def\versi@nno{ver2.00}
+\def\copyrighth@lder{SF} % Shinsaku Fujita
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\typeout{XyMTeX Macro File `\j@urnalname' (\versi@nno) <\versi@ndate>%
+\space[\copyrighth@lder]}
+%    \end{macrocode}
+%
+% \section{List of commands for ccycle.sty}
+%
+% \begin{verbatim}
+% ********************************
+% * ccycle.sty: list of commands *
+% ********************************
+%
+%  Setting of Bonds
+%
+%     \@chaira (for cyclohexane chair)
+%     \@chairb
+%     \@chairc
+%     \@chaird
+%     \@chaire
+%     \@chairf
+%
+%     \@borna (for bornanes)
+%     \@bornb
+%     \@bornc
+%     \@bornd
+%     \@borne
+%     \@bornf
+%     \@borng
+%
+%  Basic Macros
+%
+%     \chair                     \@chair
+%     \bicychepv                 \@bicychepv
+%     \bicycheph                 \@bicycheph
+%     \bornane                   \@bornane
+%     \adamantane                \@damantane
+%
+%  (Added March 05, 1994 by Shinsaku Fujita)
+%  Setting of Bonds
+%
+%     \@chairia (for cyclohexane chair inversed)
+%     \@chairib  \@chairic  \@chairid
+%     \@chairie  \@chairif
+%
+%  Basic Macros
+%
+%     \chairi                     \@chairi
+% 
+%  (Added June 16, 1996 by Shinsaku Fujita)
+%  Setting of Bonds
+%
+%     \@chairiI (for horizontal-type adamantane)
+%     \@chairiII    \@chairiIII    \@chairiIV
+%     \@chairiV     \@chairiVI     \@chairiVII
+%     \@chairiVIII  \@chairiIX     \@chairiX
+%     
+%  Basic Macros
+%
+%     \hadamantane                \@hadamantane
+%
+%  Macros for adjusting substitution sites (for Version 1.02)
+%
+%     \ylchairposition
+%     \ylchairiposition
+%     \ylbornaneposition
+%     \yladamanposition
+%     \ylhadamanposition
+%
+% \end{verbatim}
+%
+% \section{Input of basic macros}
+%
+% To assure the compatibility to \LaTeX{}2.09 (the native mode), 
+% the commands added by \LaTeXe{} have not been used in the resulting sty 
+% files ({\sf ccycle.sty} for the present case).  Hence, the combination 
+% of |\input| and |\@ifundefined| is used to crossload sty 
+% files ({\sf chemstr.sty} for the present case) in place of the 
+% |\RequirePackage| command of \LaTeXe{}. 
+%
+%    \begin{macrocode}
+% *************************
+% * input of basic macros *
+% *************************
+\@ifundefined{setsixringv}{\input chemstr.sty\relax}{}
+\unitlength=0.1pt
+%    \end{macrocode}
+%
+% \section{Chair-form cyclohexanes}
+% \subsection{Macros for setting substituents}
+% 
+% Macros |\@chaira| to |\@chairf| are used to set substituents 
+% on each position of cyclohexane. Note that comments (conerning locant 
+% numbers) on the end of each row have lost the exact meaning, 
+% since such a command moiety is used in many macros after copying. 
+%
+% \begin{macro}{\@chaira}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% **********************************************
+% * treatment of the chair form of cyclohexane *
+% **********************************************
+% %%%%%%%%%%%%%%%
+% % subst. on 1 %
+% %%%%%%%%%%%%%%%
+\def\@chaira{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=10
+     \yl@ydiff=10
+           \put(0,0){\line(-1,1){120}}% single bond at 1
+           \putlatom{-130}{110}{\@memberb}% left type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=42
+     \yl@ydiff=-12
+           \put(0,0){\line(0,1){168}}% single bond at 1 axial
+           \putlratom{-42}{180}{\@memberb}% left & right type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=16
+     \yl@ydiff=44
+           \put(0,0){\line(-5,-3){144}}% single bond at 1 equatorial
+           \putlatom{-160}{-130}{\@memberb}% left type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=10
+     \yl@ydiff=10
+           \put(-10,-10){\line(-1,1){120}}% double bond at 1
+           \put(10,10){\line(-1,1){120}}% double bond at 1
+           \putlatom{-130}{110}{\@memberb}% left type
+          \else%
+     \yl@xdiff=10
+     \yl@ydiff=10
+           \put(0,0){\line(-1,1){120}}% single bond at 1
+           \putlatom{-130}{110}{\@memberb}% left type
+   \fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chairb}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 2 %
+% %%%%%%%%%%%%%%%
+\def\@chairb{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=10
+     \yl@ydiff=70
+           \put(170,-226){\line(-1,-1){120}}% single bond at 2
+           \putlatom{40}{-416}{\@memberb}% left type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=32
+     \yl@ydiff=92
+           \put(170,-226){\line(0,-1){168}}% single bond at 2 axial
+           \putlratom{138}{-486}{\@memberb}% left & right type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=16
+     \yl@ydiff=34
+           \put(170,-226){\line(-5,3){144}}% single bond at 2 equatorial
+           \putlatom{10}{-174}{\@memberb}% left type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=10
+     \yl@ydiff=70
+           \put(160,-216){\line(-1,-1){120}}% double bond at 2
+           \put(180,-236){\line(-1,-1){120}}% double bond at 2
+           \putlatom{40}{-416}{\@memberb}% left type
+          \else%
+     \yl@xdiff=10
+     \yl@ydiff=70
+           \put(170,-226){\line(-1,-1){120}}% single bond at 2
+           \putlatom{40}{-416}{\@memberb}% left type
+   \fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chairc}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 3 %
+% %%%%%%%%%%%%%%%
+\def\@chairc{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=-10
+     \yl@ydiff=24
+           \put(573,-91){\line(5,4){170}}% single bond at 3
+           \putratom{753}{21}{\@memberb}% right type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=40
+     \yl@ydiff=-24
+           \put(573,-91){\line(0,1){168}}% single bond at 3 axial
+           \putlratom{533}{101}{\@memberb}% left type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=-36
+     \yl@ydiff=83
+           \put(573,-91){\line(5,-3){144}}% single bond at 3 equatorial
+           \putlatom{753}{-260}{\@memberb}% left type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=0
+     \yl@ydiff=0
+           \put(563,-83){\line(5,4){170}}% double bond at 3
+           \put(583,-99){\line(5,4){170}}% double bond at 3
+           \putratom{733}{41}{\@memberb}% right type
+          \else%
+     \yl@xdiff=-10
+     \yl@ydiff=24
+           \put(573,-91){\line(5,4){170}}% single bond at 3
+           \putratom{753}{21}{\@memberb}% right type
+   \fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chaird}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 4 %
+% %%%%%%%%%%%%%%%
+\def\@chaird{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=10
+     \yl@ydiff=70
+           \put(843,-181){\line(1,-1){120}}% single bond at 4
+           \putratom{953}{-371}{\@memberb}% right type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=42
+     \yl@ydiff=91
+           \put(843,-181){\line(0,-1){168}}% single bond at 4 axial
+           \putlratom{801}{-440}{\@memberb}% left & right type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=-16
+     \yl@ydiff=16
+           \put(843,-181){\line(5,3){144}}% single bond at 4 equatorial
+           \putratom{1003}{-111}{\@memberb}% right type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=10
+     \yl@ydiff=70
+           \put(833,-191){\line(1,-1){120}}% double bond at 4
+           \put(853,-171){\line(1,-1){120}}% double bond at 4
+           \putratom{953}{-371}{\@memberb}% right type
+          \else%
+     \yl@xdiff=10
+     \yl@ydiff=70
+           \put(843,-181){\line(1,-1){120}}% single bond at 4
+           \putratom{953}{-371}{\@memberb}% right type
+   \fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chaire}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 5 %
+% %%%%%%%%%%%%%%%
+\def\@chaire{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=-10
+     \yl@ydiff=10
+           \put(673,46){\line(1,1){120}}% single bond at 5
+           \putratom{803}{158}{\@memberb}% right type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=40
+     \yl@ydiff=-24
+           \put(673,46){\line(0,1){168}}% single bond at 5 axial
+           \putlratom{633}{238}{\@memberb}% left & right type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=-6
+     \yl@ydiff=63
+           \put(673,46){\line(5,-3){144}}% single bond at 5 equatorial
+           \putratom{823}{-103}{\@memberb}% right type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=-10
+     \yl@ydiff=10
+           \put(663,53){\line(1,1){120}}% double bond at 5
+           \put(683,38){\line(1,1){120}}% double bond at 5
+           \putratom{803}{158}{\@memberb}%  right type
+          \else%
+     \yl@xdiff=-10
+     \yl@ydiff=24
+           \put(673,46){\line(5,4){170}}% single bond at 5
+           \putratom{853}{158}{\@memberb}% right type
+   \fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chairf}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 6 %
+% %%%%%%%%%%%%%%%
+\def\@chairf{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=0
+     \yl@ydiff=54
+           \put(270,-90){\line(-5,-4){170}}% single bond at 2
+           \putlatom{100}{-280}{\@memberb}% left type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=32
+     \yl@ydiff=92
+           \put(270,-90){\line(0,-1){168}}% single bond at 2 axial
+           \putlratom{238}{-350}{\@memberb}% left type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=26
+     \yl@ydiff=-14
+           \put(270,-90){\line(-5,3){144}}% single bond at 2 equatorial
+           \putratom{100}{18}{\@memberb}% left type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=0
+     \yl@ydiff=54
+           \put(260,-80){\line(-5,-4){170}}% double bond at 2
+           \put(280,-100){\line(-5,-4){170}}% double bond at 2
+           \putlatom{100}{-280}{\@memberb}% left or right type
+          \else%
+     \yl@xdiff=0
+     \yl@ydiff=54
+           \put(270,-90){\line(-5,-4){170}}% single bond at 2
+           \putlatom{100}{-280}{\@memberb}% left type
+   \fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Drawing of Chair-form cyclohexanes}
+% 
+% The standard skeleton of a chair form of cyclohexane is selected 
+% to have the following locant numbers. 
+%
+% \begin{verbatim}
+% ***************************
+% * cyclohexane derivatives *
+% *  (chair type)           *
+% ***************************
+% The following numbering is adopted in this macro. 
+%
+%                 5 
+%              /  3  *
+%     1  *  6  /    *  4
+%        *  2 
+%
+% \end{verbatim}
+%
+% The macro |\chair| has an argument |SUBSLIST| as well as an optional 
+% argument |BONDLIST|.  
+%
+% \begin{verbatim}
+%   \chair[BONDLIST]{SUBSLIST}
+% \end{verbatim}
+%
+% The |BONDLIST| argument contains one or more 
+% characters selected from a to f, each of which indicates the presence of 
+% an inner (endcyclic) double bond on the corresponding position. 
+% \begin{verbatim}
+%
+%     BONDLIST = 
+%
+%           none       :  cyclohexane
+%           a          :  1,2-double bond
+%           b          :  2,3-double bond
+%           c          :  4,3-double bond
+%           d          :  4,5-double bond
+%           e          :  5,6-double bond
+%           f          :  6,1-double bond
+% \end{verbatim}
+%
+% The |SUBSLIST| argument contains one or more substitution descriptors 
+% which are separated from each other by a semicolon.  Each substitution 
+% descriptor has a locant number with a bond modifier and a substituent, 
+% where these are separated with a double equality symbol. 
+% \begin{verbatim}
+%
+%     SUBSLIST: list of substituents (max 12 substitution positions)
+%
+%       for n = 1 to 6 
+%
+%           nD         :  exocyclic double bond at n-atom
+%           nSa        :  axial single bond at n-atom
+%           nSe        :  equatorial single bond at n-atom
+%
+% \end{verbatim}
+%
+% Several examples are shown as follows.
+%
+% \begin{verbatim}
+%        \chair{1==Cl;2==F}
+%        \chair[a]{1==Cl;4==F;2==CH$_{3}$}
+%        \chair[eb]{1D==O;4Se==MeO;4Sa==OMe;5==Cl;6==Cl}
+% \end{verbatim}
+%
+% The definition of |\@chair| uses a picture environment, in which 
+% bonds are put directly, while subsituents are typset by using 
+% the macros |\@chaira| to |\@chairf| described above.  
+% \changes{v1.02}{1998/10/31}{Adding \cs{ylchairposition}, \cs{if@ylsw},
+% \cs{yl@shifti}, \cs{@ylii}, \cs{yl@shiftii}, \cs{@ylii}, 
+% \cs{yl@xdiff} and \cs{yl@ydiff}}
+%
+% \begin{macro}{\@chair}
+% \begin{macro}{\chair}
+%    \begin{macrocode}
+\def\chair{\@ifnextchar[{\@chair}{\@chair[r]}}
+\def\@chair[#1]#2{%
+\@reset@ylsw%
+\ylchairposition{#2}%
+\def\@@ylii{0}\def\@@yli{0}%
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+\else
+ \begin{picture}(1600,800)(-400,-500)
+  \iforigpt \put(-400,-500){\circle*{50}}%
+           \put(0,0){\circle{50}}% 
+   \typeout{command `chair' origin: (0,0) ---> (400,500)}
+  \fi%
+\fi
+%skeletal bonds
+   \thicklines%
+      \put(0,0){\line(3,-4){170}}%          % bond 1 to 2
+      \put(170,-226){\line(3,1){403}}%      %      2 to 3
+      \put(573,-91){\line(3,-1){270}}%      %      3 to 4
+   \thinlines%
+      \put(843,-181){\line(-3,4){170}}%     %      4 to 5
+      \put(673,46){\line(-3,-1){403}}%      %      5 to 6
+      \put(0,0){\line(3,-1){270}}%          %      1 to 6
+% inner double bonds
+\@tfor\member:=#1\do{%
+\if\member r%no endcyclic bonds
+\else \if\member a%
+      \put(76,-42){\line(3,-4){110}}%       % double bond 1 to 2
+\else \if\member b%
+      \put(200,-186){\line(3,1){343}}%      %             2 to 3
+\else \if\member c%
+      \put(603,-70){\line(3,-1){190}}%      %             3 to 4
+\else \if\member d%
+      \put(780,-141){\line(-3,4){110}}%     %             4 to 5
+\else \if\member e%
+      \put(661,6){\line(-3,-1){343}}%       %             5 to 6
+\else \if\member f%
+      \put(75,-50){\line(3,-1){170}}%       %             1 to 6
+\fi\fi\fi\fi\fi\fi\fi}%
+% setting substituents
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa%0 omit
+ \or\@chaira% subst. on 1
+ \or\@chairb% subst. on 2
+ \or\@chairc% subst. on 3
+ \or\@chaird% subst. on 4
+ \or\@chaire% subst. on 5
+ \or\@chairf% subst. on 6
+\fi%end of ifcase
+\fi\fi%
+}\end{picture}}%               %end of \chair macro
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% The command |\ylchairposition| is to obtain the shift values 
+% |\@ylii| and |\@yli| which are used for shifting the standard 
+% point of a substituent. 
+% \changes{v1.02}{1998/10/23}{New ommands for setting substituents}
+%
+% \begin{macro}{\ylchairposition}
+%    \begin{macrocode}
+\def\ylchairposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa%0 omit
+ \or\gdef\@ylii{0}\gdef\@yli{0}\global\@ylswtrue% subst. on 1
+ \or\gdef\@ylii{-170}\gdef\@yli{226}\global\@ylswtrue% subst. on 2
+ \or\gdef\@ylii{-573}\gdef\@yli{91}\global\@ylswtrue% subst. on 3
+ \or\gdef\@ylii{-843}\gdef\@yli{181}\global\@ylswtrue% subst. on 4
+ \or\gdef\@ylii{-673}\gdef\@yli{-46}\global\@ylswtrue% subst. on 5
+ \or\gdef\@ylii{-270}\gdef\@yli{90}\global\@ylswtrue% subst. on 6
+\fi%end of ifcase
+\fi\fi\fi}}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \section{Inverse chair-form cyclohexanes}
+% \subsection{Macros for setting substituents}
+% 
+% Macros |\@chairia| to |\@chairif| are used to set substituents 
+% on each position of cyclohexane.  Note that they corresopond to 
+% the counterparts of chair-form cyclohexanes described above. 
+%
+% \begin{macro}{\@chairia}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% ********************************************************
+% * treatment of the chair form (inverse) of cyclohexane *
+% *  added March 05, 1994 by Shinsaku Fujita             *
+% ********************************************************
+% %%%%%%%%%%%%%%%
+% % subst. on 1 %
+% %%%%%%%%%%%%%%%
+\def\@chairia{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=10
+     \yl@ydiff=90
+           \put(0,0){\line(-1,-1){120}}% single bond at 1
+           \putlatom{-130}{-210}{\@memberb}% left type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=42
+     \yl@ydiff=92
+           \put(0,0){\line(0,-1){168}}% single bond at 1 axial
+           \putlratom{-42}{-260}{\@memberb}% left & right type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=16
+     \yl@ydiff=36
+           \put(0,0){\line(-5,3){144}}% single bond at 1 equatorial
+           \putlatom{-160}{50}{\@memberb}% left type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=10
+     \yl@ydiff=90
+           \put(-10,10){\line(-1,-1){120}}% double bond at 1
+           \put(10,-10){\line(-1,-1){120}}% double bond at 1
+           \putlatom{-130}{-210}{\@memberb}% left type
+          \else%
+     \yl@xdiff=10
+     \yl@ydiff=90
+           \put(0,0){\line(-1,-1){120}}% single bond at 1
+           \putlatom{-130}{-210}{\@memberb}% left type
+   \fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chairif}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 6 %
+% %%%%%%%%%%%%%%%
+\def\@chairif{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(170,226){\line(-1,1){120}}% single bond at 6
+           \putratom{40}{316}{\@memberb}% left type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=32
+     \yl@ydiff=-12
+           \put(170,226){\line(0,1){168}}% single bond at 6 axial
+           \putlratom{138}{406}{\@memberb}% left & right type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=16
+     \yl@ydiff=46
+           \put(170,226){\line(-5,-3){144}}% single bond at 6 equatorial
+           \putlatom{10}{94}{\@memberb}% left type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(160,216){\line(-1,1){120}}% double bond at 6
+           \put(180,236){\line(-1,1){120}}% double bond at 6
+           \putlatom{40}{316}{\@memberb}% left type
+          \else%
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(170,226){\line(-1,1){120}}% single bond at 6
+           \putlatom{40}{316}{\@memberb}% left type
+   \fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chairie}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 5 %
+% %%%%%%%%%%%%%%%
+\def\@chairie{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=-10
+     \yl@ydiff=76
+           \put(573,91){\line(5,-4){170}}% single bond at 5
+           \putratom{753}{-101}{\@memberb}% right type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=40
+     \yl@ydiff=104
+           \put(573,91){\line(0,-1){168}}% single bond at 5 axial
+           \putlratom{533}{-181}{\@memberb}% left type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=-36
+     \yl@ydiff=3
+           \put(573,91){\line(5,3){144}}% single bond at 5 equatorial
+           \putlatom{753}{180}{\@memberb}% left type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=-10
+     \yl@ydiff=96
+           \put(563,83){\line(5,-4){170}}% double bond at 5
+           \put(583,99){\line(5,-4){170}}% double bond at 5
+           \putratom{733}{-141}{\@memberb}% right type
+          \else%
+     \yl@xdiff=-10
+     \yl@ydiff=76
+           \put(573,91){\line(5,-4){170}}% single bond at 5
+           \putratom{753}{-121}{\@memberb}% right type
+   \fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chairid}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 4 %
+% %%%%%%%%%%%%%%%
+\def\@chairid{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(843,181){\line(1,1){120}}% single bond at 4
+           \putratom{953}{271}{\@memberb}% right type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=42
+     \yl@ydiff=-11
+           \put(843,181){\line(0,1){168}}% single bond at 4 axial
+           \putlratom{801}{360}{\@memberb}% left & right type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=-16
+     \yl@ydiff=64
+           \put(843,181){\line(5,-3){144}}% single bond at 4 equatorial
+           \putratom{1003}{31}{\@memberb}% right type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(833,191){\line(1,1){120}}% double bond at 4
+           \put(853,171){\line(1,1){120}}% double bond at 4
+           \putratom{953}{271}{\@memberb}% right type
+          \else%
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(843,181){\line(1,1){120}}% single bond at 4
+           \putratom{953}{271}{\@memberb}% right type
+   \fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chairic}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 3 %
+% %%%%%%%%%%%%%%%
+\def\@chairic{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=-10
+     \yl@ydiff=92
+           \put(673,-46){\line(1,-1){120}}% single bond at 3
+           \putratom{803}{-258}{\@memberb}% right type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=40
+     \yl@ydiff=110
+           \put(673,-46){\line(0,-1){168}}% single bond at 3 axial
+           \putlratom{633}{-318}{\@memberb}% left & right type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=-6
+     \yl@ydiff=17
+           \put(673,-46){\line(5,3){144}}% single bond at 3 equatorial
+           \putratom{823}{23}{\@memberb}% right type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=-5
+     \yl@ydiff=96
+           \put(663,-53){\line(1,-1){120}}% double bond at 3
+           \put(683,-38){\line(1,-1){120}}% double bond at 3
+           \putratom{803}{-258}{\@memberb}%  right type
+          \else%
+     \yl@xdiff=-10
+     \yl@ydiff=76
+           \put(673,-46){\line(5,-4){170}}% single bond at 3
+           \putratom{853}{-258}{\@memberb}% right type
+   \fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chairib}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 2 %
+% %%%%%%%%%%%%%%%
+\def\@chairib{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=0
+     \yl@ydiff=46
+           \put(270,90){\line(-5,4){170}}% single bond at 2
+           \putlatom{100}{180}{\@memberb}% left type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=32
+     \yl@ydiff=-12
+           \put(270,90){\line(0,1){168}}% single bond at 2 axial
+           \putlratom{238}{270}{\@memberb}% left type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=26
+     \yl@ydiff=94
+           \put(270,90){\line(-5,-3){144}}% single bond at 2 equatorial
+           \putratom{100}{-98}{\@memberb}% left type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=0
+     \yl@ydiff=26
+           \put(260,80){\line(-5,4){170}}% double bond at 2
+           \put(280,100){\line(-5,4){170}}% double bond at 2
+           \putlatom{100}{200}{\@memberb}% left or right type
+          \else%
+     \yl@xdiff=0
+     \yl@ydiff=26
+           \put(270,90){\line(-5,4){170}}% single bond at 2
+           \putlatom{100}{200}{\@memberb}% left type
+   \fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Drawing of inverse chair-form cyclohexanes}
+% 
+% The standard skeleton of an inverse chair form of cyclohexane is selected 
+% to have the following locant numbers. 
+%
+% \begin{verbatim}
+% ***************************
+% * cyclohexane derivatives *
+% *  (inverse chair type)   *
+% ***************************
+% The following numbering is adopted in this macro. 
+%
+%          6            4
+%       *      `  5  *
+%     1  *  2        *
+%              `  3
+%
+% \end{verbatim}
+%
+% The macro |\chairi| has an argument |SUBSLIST| as well as an optional 
+% argument |BONDLIST|.  
+%
+% \begin{verbatim}
+%   \chairi[BONDLIST]{SUBSLIST}          
+% \end{verbatim}
+%
+% The |BONDLIST| argument contains one or more 
+% characters selected from a to f, each of which indicates the presence of 
+% an inner (endcyclic) double bond on the corresponding position. 
+% \begin{verbatim}
+%     BONDLIST = 
+%
+%           none       :  cyclohexane
+%           a          :  1,2-double bond
+%           b          :  2,3-double bond
+%           c          :  4,3-double bond
+%           d          :  4,5-double bond
+%           e          :  5,6-double bond
+%           f          :  6,1-double bond
+% \end{verbatim}
+%
+% The |SUBSLIST| argument contains one or more substitution descriptors 
+% which are separated from each other by a semicolon.  Each substitution 
+% descriptor has a locant number with a bond modifier and a substituent, 
+% where these are separated with a double equality symbol. 
+% \begin{verbatim}
+%
+%     SUBSLIST: list of substituents (max 8 substitution positions)
+%
+%       for n = 1 to 6 
+%
+%           nD         :  exocyclic double bond at n-atom
+%           nSa        :  axial single bond at n-atom
+%           nSe        :  equatorial single bond at n-atom
+%
+% \end{verbatim}
+%
+% Several examples are shown as follows.
+%
+% \begin{verbatim}
+%       e.g. 
+%        
+%        \chairi[eb]{1D==O;4Se==MeO;4Sa==OMe;5==Cl;6==Cl}
+% \end{verbatim}
+%
+% The definition of |\@chairi| uses a picture environment, in which 
+% bonds are put directly, while subsituents are typset by using 
+% the macros |\@chairia| to |\@chairif| described above.  
+% \changes{v1.02}{1998/10/31}{Adding \cs{ylchairiposition}, \cs{if@ylsw},
+% \cs{yl@shifti}, \cs{@ylii}, \cs{yl@shiftii}, \cs{@ylii}, 
+% \cs{yl@xdiff} and \cs{yl@ydiff}}
+%
+% \begin{macro}{\@chairi}
+% \begin{macro}{\chairi}
+%    \begin{macrocode}
+\def\chairi{\@ifnextchar[{\@chairi}{\@chairi[r]}}
+\def\@chairi[#1]#2{%
+\@reset@ylsw%
+\ylchairiposition{#2}%
+\def\@@ylii{0}\def\@@yli{0}%
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+\else
+ \begin{picture}(1600,800)(-400,-319)
+  \iforigpt \put(-400,-319){\circle*{50}}%
+           \put(0,0){\circle{50}}% 
+   \typeout{command `chairi' origin: (0,0) ---> (400,319)}
+  \fi%
+\fi
+% skeletal bonds
+   \thinlines%
+      \put(0,0){\line(3,4){170}}%         % bond 1 to 6
+      \put(170,226){\line(3,-1){403}}%    %      6 to 5
+      \put(573,91){\line(3,1){270}}%      %      5 to 4
+   \thicklines%
+      \put(843,181){\line(-3,-4){170}}%    %      4 to 3
+      \put(673,-46){\line(-3,1){403}}%     %      3 to 2
+      \put(0,0){\line(3,1){270}}%          %      1 to 2
+   \thinlines%
+% inner double bonds
+\@tfor\member:=#1\do{%
+\if\member r%no endcyclic bonds
+\else \if\member c%%%a%
+       \put(767,139){\line(-3,-4){110}}%   % double bond 3 to 4
+\else \if\member b%%%d%%%b%
+      \put(640,-5){\line(-3,1){343}}%      %             4 to 5
+\else \if\member a%%%e%%%%c%
+       \put(240,111){\line(-3,-1){190}}%   %             5 to 6
+\else \if\member f%%%d%
+      \put(63,40){\line(3,4){110}}%        %             6 to 7
+\else \if\member e%%%l%
+      \put(182,187){\line(3,-1){343}}%     %             7 to 10
+\else \if\member d%%%k%%%f%
+      \put(768,131){\line(-3,-1){170}}%    %             10 to 3
+\fi\fi\fi\fi\fi\fi\fi}%
+% %
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa%0 omit
+ \or \@chairia% subst. on 1
+ \or \@chairib% subst. on 2
+ \or \@chairic% subst. on 3
+ \or \@chairid% subst. on 4
+ \or \@chairie% subst. on 5
+ \or \@chairif% subst. on 6
+\fi %end of ifcase
+\fi\fi%
+}\end{picture}}%               %end of \chairi macro
+% End of addition 1994/03/05 SF
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% The command |\ylchairiposition| is to obtain the shift values 
+% |\@ylii| and |\@yli| which are used for shifting the standard 
+% point of a substituent. 
+% \changes{v1.02}{1998/10/23}{New ommands for setting substituents}
+%
+% \begin{macro}{\ylchairiposition}
+%    \begin{macrocode}
+\def\ylchairiposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa%0 omit
+ \or\gdef\@ylii{0}\gdef\@yli{0}\global\@ylswtrue% subst. on 1
+ \or\gdef\@ylii{-270}\gdef\@yli{-90}\global\@ylswtrue% subst. on 2
+ \or\gdef\@ylii{-673}\gdef\@yli{46}\global\@ylswtrue% subst. on 3
+ \or\gdef\@ylii{-843}\gdef\@yli{-181}\global\@ylswtrue% subst. on 4
+ \or\gdef\@ylii{-573}\gdef\@yli{-91}\global\@ylswtrue% subst. on 5
+ \or\gdef\@ylii{-170}\gdef\@yli{-226}\global\@ylswtrue% subst. on 6
+\fi%end of ifcase
+\fi\fi\fi}}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \section{Bicycloheptanes}
+% \subsection{Drawing of a flat and vertical type}
+%
+% The flat-and-vertical-type skeleton of bicycloheptanes is selected 
+% to have the following locant numbers. 
+%
+% \begin{verbatim}
+% *************************************
+% * bicyclo[2.2.1]heptane derivatives *
+% *  (flat, vertical type)            *
+% *************************************
+% The following numbering is adopted in this macro. 
+%
+%          1
+%          * 
+%     6  *   *  2
+%       |  7  |
+%       |     |
+%     5  *   *  3
+%          *
+%          4 <===== the original point
+% \end{verbatim}
+%
+% The macro |\bicyclohepv| has an argument |SUBSLIST| as well as an optional 
+% argument |BONDLIST|.  
+%
+% \begin{verbatim}
+%   \bicychepv[BONDLIST]{SUBSLIST} 
+% \end{verbatim}
+%
+% The |BONDLIST| argument contains one or more 
+% characters selected from a to f, each of which indicates the presence of 
+% an inner (endcyclic) double bond on the corresponding position. 
+% In order to put dimethyl subsitutents on the top position (7), 
+% the character `7' is used in the |BONDLIST|.  The delocalization 
+% of $\pi$-electron can be described with the character `A' written in 
+% the |BONDLIST|. 
+% \begin{verbatim}
+%
+%     BONDLIST = 
+%
+%           none       :  bicyclo[2.2.1]heptane
+%           a          :  1,2-double bond
+%           b          :  2,3-double bond
+%           c          :  4,3-double bond
+%           d          :  4,5-double bond
+%           e          :  5,6-double bond
+%           f          :  6,1-double bond
+%           A          :  aromatic circle 
+%           7          :  7,7-dimethyl
+% \end{verbatim}
+%
+% The |SUBSLIST| argument takes the standard format of \XyMTeX{}, in which 
+% more substitution descriptors are separated from each other 
+% by a semicolon.  
+% \begin{verbatim}
+%
+%     SUBSLIST: list of substituents (max 12 substitution positions)
+%
+%       for n = 1 to 7 
+%
+%           nD         :  exocyclic double bond at n-atom
+%           n or nS    :  exocyclic single bond at n-atom
+%           nA         :  alpha single bond at n-atom
+%           nB         :  beta single bond at n-atom
+%           nSA        :  alpha single bond at n-atom (boldface)
+%           nSB        :  beta single bond at n-atom (dotted line)
+%           nSa        :  alpha (not specified) single bond at n-atom
+%           nSb        :  beta (not specifed) single bond at n-atom
+% \end{verbatim}
+%
+% Several examples are shown as follows.
+%
+% \begin{verbatim}
+%       e.g. 
+%        
+%     \bicychepv{1==Cl;2==F}
+%     \bicychepv[c]{1==Cl;4==F;2==CH$_{3}$}
+%     \bicychepv[eb]{1D==O;4==Me;5==Cl;6==Cl}
+% \end{verbatim}
+%
+% The definition of |\@bicyclohepv| uses a picture environment, in which 
+% bonds are put directly, while subsituents are typset by using 
+% the macro |\setsixringv| defined in chemstr.sty of \XyMTeX{} system.
+% \changes{v1.02}{1998/10/31}{Adding \cs{ylposition}, \cs{if@ylsw},
+% \cs{yl@shifti}, \cs{@ylii}, \cs{yl@shiftii}, \cs{@ylii}, 
+% \cs{yl@xdiff} and \cs{yl@ydiff}}
+%
+% \begin{macro}{\@bicyclohepv}
+% \begin{macro}{\bicyclohepv}
+%    \begin{macrocode}
+\def\bicychepv{\@ifnextchar[{\@bicychepv}{\@bicychepv[r]}}
+\def\@bicychepv[#1]#2{%
+\@reset@ylsw%
+\ylposition{#2}{0}{0}{7}{0}%
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+\else
+ \begin{picture}(800,880)(-400,-240)
+  \iforigpt \put(-400,-240){\circle*{50}}%
+           \put(0,0){\circle{50}}% 
+   \typeout{command `bicychepv' origin: (0,0) ---> (400,240)}
+\fi
+  \fi%
+  \put(0,406){\line(-5,-3){171}}%       %bond 1-6
+  \put(0,406){\line(5,-3){171}}%        %bond 1-2
+  \put(0,0){\line(-5,3){171}}%          %bond 4-5
+  \put(0,0){\line(5,3){171}}%           %bond 4-3
+  \put(171,103){\line(0,1){200}}%       %bond 3-2
+  \put(-171,103){\line(0,1){200}}%      %bond 5-6
+{\thicklines%
+  \put(0,0){\line(1,4){51}}%            %bond 4-7
+  \put(0,406){\line(1,-4){51}}}%         %bond 1-7
+\@tfor\member:=#1\do{%
+\if\member r%no endcyclic double bonds
+\else \if\member a%
+  \put(6,364){\line(5,-3){126}}%        %double bond 1-2
+\else \if\member b%
+  \put(138,129){\line(0,1){148}}%       %double bond 3-2
+\else \if\member c%
+  \put(6,42){\line(5,3){126}}%          %double bond 4-3
+\else \if\member d%
+  \put(-6,42){\line(-5,3){126}}%        %double bond 4-5
+\else \if\member e%
+  \put(-138,129){\line(0,1){148}}%      %double bond 5-6
+\else \if\member f%
+  \put(-6,364){\line(-5,-3){126}}%      %double bond 1-6
+\else \if\member 7%
+ {\thicklines%
+  \put(51,204){\line(-1,0){70}}%        %7,7-dimethyl
+  \put(51,204){\line(1,0){70}}}%      
+\else \if\member A%aromatic circle 
+  \put(0,203){\circle{240}}%            %circle
+\fi\fi\fi\fi\fi\fi\fi\fi\fi}%
+% %
+\setsixringv{#2}{0}{0}{7}{0}
+\end{picture}}               %end of \bicychepv macro
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \subsection{Drawing of a flat and horizontal type}
+%
+% The flat-and-horizontal-type skeleton of bicycloheptanes is selected 
+% to have the following locant numbers. 
+%
+% \begin{verbatim}
+% *************************************
+% * bicyclo[2.2.1]heptane derivatives *
+% *  (flat, horizontal type)          *
+% *************************************
+% The following numbering is adopted in this macro. 
+%
+%                                2      3
+%                                 -----
+%                               *       *
+%   the original point ===> 1 *     7     * 4
+%          (0,0)                *       *
+%                                 -----
+%                                6      5
+% \end{verbatim}
+%
+% The macro |\bicycloheph| has an argument |SUBSLIST| as well as an optional 
+% argument |BONDLIST|.  
+%
+% \begin{verbatim}
+%   \bicycheph[BONDLIST]{SUBSLIST}
+% \end{verbatim}
+%
+% The |BONDLIST| argument contains one or more 
+% characters selected from a to f, each of which indicates the presence of 
+% an inner (endcyclic) double bond on the corresponding position. 
+% In order to put dimethyl subsitutents on the top position (7), 
+% the character `7' is used in the |BONDLIST|.  The delocalization 
+% of $\pi$-electron can be described with the character `A' written in 
+% the |BONDLIST|. 
+% \begin{verbatim}
+%     BONDLIST = 
+%
+%           none       :  bicyclo[2.2.1]heptane
+%           a          :  1,2-double bond
+%           b          :  2,3-double bond
+%           c          :  4,3-double bond
+%           d          :  4,5-double bond
+%           e          :  5,6-double bond
+%           f          :  6,1-double bond
+%           A          :  aromatic circle 
+%           7          :  7,7-dimethyl
+% \end{verbatim}
+%
+% The |SUBSLIST| argument takes the standard format of \XyMTeX{}, in which 
+% more substitution descriptors are separated from each other 
+% by a semicolon.  
+% \begin{verbatim}
+%
+%     SUBSLIST: list of substituents (max 8 substitution positions)
+%
+%       for n = 1 to 6 
+%
+%           nD         :  exocyclic double bond at n-atom
+%           n or nS    :  exocyclic single bond at n-atom
+%           nA         :  alpha single bond at n-atom
+%           nB         :  beta single bond at n-atom
+%           nSA        :  alpha single bond at n-atom (boldface)
+%           nSB        :  beta single bond at n-atom (dotted line)
+%           nSa        :  alpha (not specified) single bond at n-atom
+%           nSb        :  beta (not specifed) single bond at n-atom
+% \end{verbatim}
+%
+% Several examples are shown as follows.
+%
+% \begin{verbatim}
+%       e.g. 
+%        
+%        \bicycheph{1==Cl;2==F}
+%        \bicycheph[c]{1==Cl;4==F;2==CH$_{3}$}
+%        \bicycheph[eb]{1D==O;4==Me;5==Cl;6==Cl}
+% \end{verbatim}
+%
+% The definition of |\@bicycloheph| uses a picture environment, in which 
+% bonds are put directly, while subsituents are typset by using 
+% the macro |\setsixringh| defined in chemstr.sty of \XyMTeX{} system.
+% \changes{v1.02}{1998/10/31}{Adding \cs{ylpositionh}, \cs{if@ylsw},
+% \cs{yl@shifti}, \cs{@ylii}, \cs{yl@shiftii}, \cs{@ylii}, 
+% \cs{yl@xdiff} and \cs{yl@ydiff}}
+%
+% \begin{macro}{\@bicycloheph}
+% \begin{macro}{\bicycloheph}
+%    \begin{macrocode}
+\def\bicycheph{\@ifnextchar[{\@bicycheph}{\@bicycheph[r]}}
+\def\@bicycheph[#1]#2{%
+\@reset@ylsw%
+\ylpositionh{#2}{0}{0}{7}{0}%
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+\else
+ \begin{picture}(880,800)(-240,-400)
+  \iforigpt \put(-240,-400){\circle*{50}}%
+           \put(0,0){\circle{50}}% 
+   \typeout{command `bicycheph' origin: (0,0) ---> (240,400)}
+  \fi%
+\fi
+  \put(0,0){\line(3,5){103}}           %bond 1-2
+  \put(0,0){\line(3,-5){103}}          %bond 1-6
+  \put(406,0){\line(-3,5){103}}        %bond 4-3
+  \put(406,0){\line(-3,-5){103}}       %bond 4-3
+  \put(103,171){\line(1,0){200}}       %bond 2-3
+  \put(103,-171){\line(1,0){200}}      %bond 6-5
+{\thicklines%
+  \put(0,0){\line(4,1){203}}%            %bond 4-7
+  \put(406,0){\line(-4,1){203}}}%         %bond 1-7
+\@tfor\member:=#1\do{%
+\if\member r%no endcyclic double bonds
+\else \if\member a%
+  \put(42,6){\line(3,5){78}}           %double bond 1-2
+\else \if\member b%
+  \put(129,138){\line(1,0){148}}       %double bond 2-3
+\else \if\member c%
+  \put(364,6){\line(-3,5){78}}         %double bond 4-3
+\else \if\member d%
+  \put(364,-6){\line(-3,-5){78}}       %double bond 4-5
+\else \if\member e%
+  \put(129,-138){\line(1,0){148}}      %double bond 6-5
+\else \if\member f%
+  \put(42,-6){\line(3,-5){78}}         %double bond 1-6
+\else \if\member 7%
+ {\thicklines%
+  \put(204,51){\line(0,-1){70}}%        %7,7-dimethyl
+  \put(204,51){\line(0,1){70}}}%      
+\else \if\member A%aromatic circle 
+  \put(203,0){\circle{240}}            %circle
+\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+% %
+\setsixringh{#2}{0}{0}{7}{0}
+\end{picture}}               %end of \bicycheph macro
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \subsection{Drawing of a stereo type}
+%
+% \subsubsection{Macros for setting substituents}
+% 
+% Macros |\@borna| to |\@borng| are used to set substituents 
+% on each position of bornane.  
+%
+% \begin{macro}{\@borna}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% ***********************************************
+% * setting bonds and substituents for bornanes *
+% * (bicycloe[2.2.1]heptane derivatives)        *
+% ***********************************************
+% %%%%%%%%%%%%%%%
+% % subst. on 1 %
+% %%%%%%%%%%%%%%%
+\def\@borna{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=8
+     \yl@ydiff=3
+          \put(318,247){\line(2,5){40}}%      % single bond 1
+           \putratom{350}{350}{\@memberb}%    % right type
+    \else\if\@tmpc a%(a) alpha
+     \yl@xdiff=8
+     \yl@ydiff=3
+          \put(318,247){\line(2,5){40}}%      % single bond 1
+           \putratom{350}{350}{\@memberb}%    % right type
+    \else\if\@tmpc b%(b) beta
+     \yl@xdiff=8
+     \yl@ydiff=3
+          \put(318,247){\line(2,5){40}}%      % single bond 1
+          \putratom{350}{350}{\@memberb}%     % right type
+    \fi\fi\fi%
+   \else%
+     \yl@xdiff=8
+     \yl@ydiff=3
+          \put(318,247){\line(2,5){40}}%      % single bond 1
+           \putratom{350}{350}{\@memberb}     % right type
+   \fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@bornb}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 2 %
+% %%%%%%%%%%%%%%%
+\def\@bornb{%
+ \begin{picture}(200,200)(0,0)
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=-10
+     \yl@ydiff=20
+           \put(0,0){\line(5,2){160}}% 
+           \putratom{170}{44}{\@memberb}%      % left type
+    \else\if\@tmpc A%(A) alpha
+     \yl@xdiff=0
+     \yl@ydiff=-5
+           \putratom{140}{115}{\@memberb}%     % right type
+           {%
+           \thicklines%
+           \put(0,0){\line(4,3){140}}%         % endo (a)
+           }%
+    \else\if\@tmpc B%(B) beta
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \putratom{150}{-86}{\@memberb}%     % right type
+       \@ifundefined{dottedline}{%
+           \put(0,0){\line(5,-2){140}}%        % exo (b)
+           }{{\thicklines%
+              \dottedline{20}(0,0)(140,-56)}}%
+    \else\if\@tmpc a%(a) alpha
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(0,0){\line(5,-2){140}}%        % endo (a)
+           \putratom{150}{-86}{\@memberb}%     % right type
+    \else\if\@tmpc b%(b) beta
+     \yl@xdiff=0
+     \yl@ydiff=-10
+           \put(0,0){\line(4,3){140}}%         % exo (b)
+           \putratom{140}{115}{\@memberb}%     % right type
+    \fi\fi\fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=-10
+     \yl@ydiff=20
+           \put(-10,-15){\line(5,2){160}}% 
+           \put(-5,15){\line(5,2){160}}% 
+           \putratom{170}{44}{\@memberb}%      % right type
+   \else \if\@tmpb A%alpha single bond
+     \yl@xdiff=-10
+     \yl@ydiff=20
+           \putratom{170}{44}{\@memberb}%      % right type
+           {%
+           \thicklines%
+           \put(0,0){\line(5,2){160}}% 
+           }%
+   \else \if\@tmpb B%beta single bond
+     \yl@xdiff=-10
+     \yl@ydiff=20
+           \putratom{170}{44}{\@memberb}%      % right type
+       \@ifundefined{dottedline}{%
+           \put(0,0){\line(5,2){160}}% 
+           }{{\thicklines%
+              \dottedline{20}(0,0)(160,64)}}%
+   \else%
+     \yl@xdiff=-10
+     \yl@ydiff=20
+           \put(0,0){\line(5,2){160}}% 
+           \putratom{170}{44}{\@memberb}%      % right type
+   \fi\fi\fi\fi\end{picture}}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@bornc}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 3 %
+% %%%%%%%%%%%%%%%
+\def\@bornc{%
+ \begin{picture}(200,200)(0,0)
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=-10
+     \yl@ydiff=30
+           \put(0,0){\line(5,-2){140}}%
+           \putratom{150}{-86}{\@memberb}%    % right type
+    \else\if\@tmpc A%(A) alpha
+     \yl@xdiff=-10
+     \yl@ydiff=30
+           \putratom{150}{26}{\@memberb}%     % right type
+           {%
+           \thicklines%
+           \put(0,0){\line(5,2){140}}%        % endo (a)
+           }%
+    \else\if\@tmpc B%(B) beta
+     \yl@xdiff=0
+     \yl@ydiff=40
+           \putratom{140}{-145}{\@memberb}%   % right type
+       \@ifundefined{dottedline}{%
+           \put(0,0){\line(4,-3){140}}%       % exo (b)
+           }{{\thicklines%
+              \dottedline{20}(0,0)(140,-105)}}%
+    \else\if\@tmpc a%(a) alpha
+     \yl@xdiff=0
+     \yl@ydiff=40
+           \put(0,0){\line(4,-3){140}}%       % endo (a)
+           \putratom{140}{-145}{\@memberb}%   % right type
+    \else\if\@tmpc b%(b) beta
+     \yl@xdiff=-10
+     \yl@ydiff=30
+           \put(0,0){\line(5,2){140}}%        % exo (b)
+           \putratom{150}{26}{\@memberb}%     % right type
+    \fi\fi\fi\fi\fi
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=10
+     \yl@ydiff=50
+           \put(10,15){\line(5,-2){160}}% 
+           \put(5,-15){\line(5,-2){160}}% 
+           \putratom{170}{-124}{\@memberb}%   % right type
+   \else \if\@tmpb A%alpha single bond
+     \yl@xdiff=-10
+     \yl@ydiff=30
+           \putratom{150}{-86}{\@memberb}%    % right type
+           {%
+           \thicklines%
+           \put(0,0){\line(5,-2){140}}%       % endo (a)
+           }%
+   \else \if\@tmpb B%beta single bond
+     \yl@xdiff=-10
+     \yl@ydiff=30
+           \putratom{150}{-86}{\@memberb}%    % right type
+       \@ifundefined{dottedline}{%
+           \put(0,0){\line(5,-2){140}}%       % exo (b)
+           }{{\thicklines%
+              \dottedline{20}(0,0)(140,-56)}}%
+   \else%
+     \yl@xdiff=-10
+     \yl@ydiff=20
+           \put(0,0){\line(5,2){160}}% 
+           \putratom{170}{44}{\@memberb}%     % right type
+   \fi\fi\fi\fi%
+\end{picture}}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@bornd}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 4 %
+% %%%%%%%%%%%%%%%
+\def\@bornd{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=30
+     \yl@ydiff=87
+          \put(237,47){\line(-2,-5){40}}%      % single bond 4
+          \putlratom{167}{-140}{\@memberb}%    % left & right type
+    \else\if\@tmpc a%(a) alpha
+     \yl@xdiff=30
+     \yl@ydiff=87
+          \put(237,47){\line(-2,-5){40}}%      % single bond 4
+          \putlratom{167}{-140}{\@memberb}%    % left & right type
+    \else\if\@tmpc b%(b) beta
+     \yl@xdiff=30
+     \yl@ydiff=87
+          \put(237,47){\line(-2,-5){40}}%      % single bond 4
+          \putlratom{167}{-140}{\@memberb}%    % left & right type
+    \fi\fi\fi%
+   \else%
+     \yl@xdiff=30
+     \yl@ydiff=87
+          \put(237,47){\line(-2,-5){40}}%      % single bond 4
+          \putlratom{167}{-140}{\@memberb}%    % left & right type
+   \fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@borne}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 5 %
+% %%%%%%%%%%%%%%%
+\def\@borne{%
+ \begin{picture}(200,200)(0,0)
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(0,0){\line(-5,-2){140}}%
+           \putlatom{-150}{-86}{\@memberb}%    % left type
+    \else\if\@tmpc A%(A) alpha
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \putlatom{-150}{26}{\@memberb}%     % left type
+           {%
+           \thicklines%
+           \put(0,0){\line(-5,2){140}}%        % endo (a)
+           }%
+    \else\if\@tmpc B%(B) beta
+     \yl@xdiff=0
+     \yl@ydiff=40
+           \putlatom{-140}{-145}{\@memberb}%   % left type
+       \@ifundefined{dottedline}{%
+           \put(0,0){\line(-4,-3){140}}%       % exo (b)
+           }{{\thicklines%
+              \dottedline{20}(0,0)(-140,-105)}}%
+    \else\if\@tmpc a%(a) alpha
+     \yl@xdiff=0
+     \yl@ydiff=30
+           \put(0,0){\line(-4,-3){140}}%       % endo (a)
+           \putlatom{-140}{-145}{\@memberb}%   % left type
+    \else\if\@tmpc b%(b) beta
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(0,0){\line(-5,2){140}}%        % exo (b)
+           \putlatom{-150}{26}{\@memberb}%     % left type
+    \fi\fi\fi\fi\fi
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=0
+     \yl@ydiff=64
+           \put(-10,15){\line(-5,-2){160}}% 
+           \put(-5,-15){\line(-5,-2){160}}% 
+           \putlatom{-170}{-124}{\@memberb}%   % left type
+   \else \if\@tmpb A%alpha single bond
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \putlatom{-150}{-86}{\@memberb}%    % left type
+           {%
+           \thicklines%
+           \put(0,0){\line(-5,-2){140}}%       % endo (a)
+           }%
+   \else \if\@tmpb B%beta single bond
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \putlatom{-150}{-86}{\@memberb}%    % left type
+       \@ifundefined{dottedline}{%
+           \put(0,0){\line(-5,-2){140}}%       % exo (b)
+           }{{\thicklines%
+              \dottedline{20}(0,0)(-140,-56)}}%
+   \else%
+     \yl@xdiff=10
+     \yl@ydiff=20
+           \put(0,0){\line(-5,2){160}}% 
+           \putlatom{-170}{44}{\@memberb}%     % left type
+   \fi\fi\fi\fi%
+\end{picture}}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@bornf}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 6 %
+% %%%%%%%%%%%%%%%
+\def\@bornf{%
+ \begin{picture}(200,200)(0,0)
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(0,0){\line(-5,2){160}}% 
+           \putlatom{-170}{44}{\@memberb}%      % left type
+    \else\if\@tmpc A%(A) alpha
+     \yl@xdiff=10
+     \yl@ydiff=-10
+           \putlatom{-140}{115}{\@memberb}%     % left type
+           {%
+           \thicklines%
+           \put(0,0){\line(-4,3){140}}%         % endo (a)
+           }%
+    \else\if\@tmpc B%(B) beta
+     \yl@xdiff=0
+     \yl@ydiff=30
+           \putlatom{-150}{-86}{\@memberb}%     % left type
+       \@ifundefined{dottedline}{%
+           \put(0,0){\line(-5,-2){140}}%        % exo (b)
+           }{{\thicklines%
+              \dottedline{20}(0,0)(-140,-56)}}%
+    \else\if\@tmpc a%(a) alpha
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(0,0){\line(-5,-2){140}}%        % endo (a)
+           \putlatom{-150}{-86}{\@memberb}%     % left type
+    \else\if\@tmpc b%(b) beta
+     \yl@xdiff=0
+     \yl@ydiff=-10
+           \put(0,0){\line(-4,3){140}}%         % exo (b)
+           \putlatom{-140}{115}{\@memberb}%     % left type
+    \fi\fi\fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=0
+     \yl@ydiff=20
+           \put(10,-15){\line(-5,2){160}}% 
+           \put(5,15){\line(-5,2){160}}% 
+           \putlatom{-170}{44}{\@memberb}%      % left type
+   \else \if\@tmpb A%alpha single bond
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \putlatom{-170}{44}{\@memberb}%      % left type
+           {%
+           \thicklines%
+           \put(0,0){\line(-5,2){160}}% 
+           }%
+   \else \if\@tmpb B%beta single bond
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \putlatom{-170}{44}{\@memberb}%      % left type
+       \@ifundefined{dottedline}{%
+           \put(0,0){\line(-5,2){160}}% 
+           }{{\thicklines%
+              \dottedline{20}(0,0)(-160,64)}}%
+   \else%
+     \yl@xdiff=10
+     \yl@ydiff=20
+           \put(0,0){\line(-5,2){160}}% 
+           \putlatom{-170}{44}{\@memberb}%      % left type
+   \fi\fi\fi\fi\end{picture}}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@borng}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 7 %
+% %%%%%%%%%%%%%%%
+\def\@borng{%
+ \begin{picture}(200,200)(0,0)
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=40
+     \yl@ydiff=-20
+           \put(0,0){\line(0,1){160}}% 
+           \putlratom{-40}{180}{\@memberb}%      % left & right type
+    \else\if\@tmpc a%(a) left
+     \yl@xdiff=0
+     \yl@ydiff=-10
+           \put(0,0){\line(-4,3){140}}%          % left (a)
+           \putlatom{-140}{115}{\@memberb}%      % left type
+    \else\if\@tmpc b%(b) right
+     \yl@xdiff=0
+     \yl@ydiff=-10
+           \put(0,0){\line(4,3){140}}%           % right (b)
+           \putratom{140}{115}{\@memberb}%       % right type
+    \fi\fi\fi%\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=40
+     \yl@ydiff=-20
+           \put(-10,0){\line(0,1){160}}% 
+           \put(10,0){\line(0,1){160}}% 
+           \putlratom{-40}{180}{\@memberb}%      % left & right type
+   \else%
+     \yl@xdiff=40
+     \yl@ydiff=-20
+           \put(0,0){\line(0,1){160}}% 
+           \putlratom{-40}{180}{\@memberb}%      % left & right type
+   \fi\fi\end{picture}}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{Drawing of borane derivatives}
+% 
+% The stereo-type skeleton of bicycloheptanes is selected 
+% to have the following locant numbers. 
+%
+% \begin{verbatim}
+% ***********************************************
+% * bornane derivatives                         *
+% * (bicycloe[2.2.1]heptane derivatives)        *
+% ***********************************************
+% The following numbering is adopted in this macro. 
+%
+%                7   g
+%           f    / `
+%            _  / - 1_ a
+%     e    6  / h     - 2
+%       *    /        *
+%     5  -  4       * b
+%        d     c` 3
+%
+% \end{verbatim}
+%
+% The macro |\bornane| has an argument |SUBSLIST| as well as an optional 
+% argument |BONDLIST|.  
+%
+% \begin{verbatim}
+%   \bornane[BONDLIST]{SUBSLIST}          
+% \end{verbatim}
+%
+% The |BONDLIST| argument contains one or more 
+% characters selected from a to h, each of which indicates the presence of 
+% an inner (endcyclic) double bond on the corresponding position. 
+% \begin{verbatim}
+%
+%     BONDLIST = 
+%
+%           none       :  bicyclo[2.2.1]heptane
+%           a          :  1,2-double bond
+%           b          :  2,3-double bond
+%           c          :  4,3-double bond
+%           d          :  4,5-double bond
+%           e          :  5,6-double bond
+%           f          :  6,1-double bond
+%           g          :  1,7-double bond
+%           h          :  4,7-double bond
+% \end{verbatim}
+%
+% The |SUBSLIST| argument takes the standard format of \XyMTeX{}, in which 
+% more substitution descriptors are separated from each other 
+% by a semicolon.  
+% \begin{verbatim}
+%
+%     SUBSLIST: list of substituents (max 7 substitution positions)
+%
+%       for n = 1 to 6
+%
+%           nD         :  exocyclic double bond at n-atom
+%           n or nS    :  exocyclic single bond at n-atom
+%           nA         :  alpha single bond at n-atom
+%           nB         :  beta single bond at n-atom
+%           nSA        :  alpha single bond at n-atom (boldface)
+%           nSB        :  beta single bond at n-atom (dotted line)
+%           nSa        :  alpha single bond at n-atom
+%           nSb        :  beta single bond at n-atom
+% \end{verbatim}
+% 
+% The 7-position of a bornane skeleton cannot be specified by 
+% capital characters `A' and `B'.  
+% \begin{verbatim}
+%       for n = 7 (bridge position)
+%
+%           nD         :  exocyclic double bond at 7-atom
+%           n or nS    :  exocyclic single bond at 7-atom
+%           nSa        :  left single bond at 7-atom
+%           nSb        :  right single bond at 7-atom
+%
+% \end{verbatim}
+%
+% Several examples are shown as follows.
+%
+% \begin{verbatim}
+%       e.g. 
+%        
+%        \bornane{1==N}{1==Cl;2==F}
+%        \bornane[c]{1==N}{1==Cl;4==F;2==CH$_{3}$}
+%        \bornane[eb]{1==N}{1D==O;4==MeO;5==Cl;6==Cl}
+% \end{verbatim}
+%
+% The definition of |\@bicycloheph| uses a picture environment, in which 
+% bonds are put directly, while subsituents are typset by using 
+% the macro |\@borna| to |\@borng| defined in chemstr.sty of \XyMTeX{} 
+% system.
+%
+% \changes{v1.01b}{1998/10/08}{The drawing are of \cs{bornane} 
+% has been changed by SF.}
+% \changes{v1.02}{1998/10/31}{Adding \cs{ylbornaneposition}, \cs{if@ylsw},
+% \cs{yl@shifti}, \cs{@ylii}, \cs{yl@shiftii}, \cs{@ylii}, 
+% \cs{yl@xdiff} and \cs{yl@ydiff}}
+%
+% \begin{macro}{\@bornane}
+% \begin{macro}{\bornane}
+%    \begin{macrocode}
+
+\def\bornane{\@ifnextchar[{\@bornane}{\@bornane[r]}}
+\def\@bornane[#1]#2{%
+\@reset@ylsw%
+\ylbornaneposition{#2}%
+\def\@@ylii{0}\def\@@yli{0}%
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+\else
+% \begin{picture}(1400,1000)(-200,-240)
+ \begin{picture}(1000,1000)(-200,-240)%changed by SF 1998/09/26
+  \iforigpt \put(-200,-240){\circle*{50}}%
+           \put(0,0){\circle{50}}% 
+   \typeout{command `bornane' origin: (0,0) ---> (200,240)}
+  \fi%
+\fi
+% skeletal bonds
+ \thicklines%
+  \put(0,0){\line(5,1){237}}%            % bond 5 to 4 (d)
+  \put(237,47){\line(5,-2){225}}%        % bond 4 to 3 (c)
+  \put(237,47){\line(0,1){400}}%         % front part of bridge (h)
+ \thinlines%
+  \put(462,-43){\line(2,5){80}}%         % bond 3 to 2 (b)
+  \put(543,157){\line(-5,2){225}}%       % bond 2 to 1 (a)
+  \put(318,247){\line(-5,-1){237}}%      % bond 1 to 6 (f)
+  \put(80,200){\line(-2,-5){80}}%        % bond 6 to 5 (e)
+  \put(318,247){\line(-2,5){80}}%        % back part of bridge (g)
+% inner double bond
+\@tfor\member:=#1\do{%
+\if\member r%no endcyclic bonds
+\else \if\member a%%%%
+   \put(513,127){\line(-5,2){180}}%       % bond 2 to 1
+\else \if\member b%%%%
+   \put(446,-3){\line(2,5){60}}%          % bond 3 to 2
+\else \if\member c%%%%
+   \put(267,77){\line(5,-2){180}}%        % bond 4 to 3
+\else \if\member d%%%%
+   \put(40,42){\line(5,1){180}}%          % double bond 5 to 4
+\else \if\member e%%%
+   \put(100,180){\line(-2,-5){60}}%       % bond 6 to 5
+\else \if\member f%
+   \put(288,207){\line(-5,-1){180}}%      % bond 1 to 6
+\else \if\member g%
+  \put(288,260){\line(-2,5){40}}%         % back part of bridge (g)
+\else \if\member h%
+  \put(257,77){\line(0,1){290}}%          % front part of bridge (h)
+\fi\fi\fi\fi\fi\fi\fi\fi\fi}%
+%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa%0 omit
+ \or \@borna% subst. on 1
+ \or \put(543,157){\@bornb}% subst. on 2
+ \or \put(462,-43){\@bornc}% subst. on 3
+ \or \@bornd% subst. on 4
+ \or \put(0,0){\@borne}% subst. on 5
+ \or \put(80,200){\@bornf}% subst. on 6
+ \or \put(237,440){\@borng}% subst. on 7
+\fi%end of ifcase
+\fi\fi%
+}\end{picture}\iniatom\iniflag}     %end of \bornane macro
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% The command |\ylbornaneposition| is to obtain the shift values 
+% |\@ylii| and |\@yli| which are used for shifting the standard 
+% point of a substituent. 
+% \changes{v1.02}{1998/10/23}{New ommands for setting substituents}
+%
+% \begin{macro}{\ylbornaneposition}
+%    \begin{macrocode}
+\def\ylbornaneposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa%0 omit
+ \or\gdef\@ylii{-318}\gdef\@yli{-247}\global\@ylswtrue% subst. on 1
+ \or\gdef\@ylii{-543}\gdef\@yli{-157}\global\@ylswtrue% subst. on 2
+ \or\gdef\@ylii{-462}\gdef\@yli{43}\global\@ylswtrue% subst. on 3
+ \or\gdef\@ylii{-237}\gdef\@yli{-47}\global\@ylswtrue% subst. on 4
+ \or\gdef\@ylii{0}\gdef\@yli{0}\global\@ylswtrue% subst. on 5
+ \or\gdef\@ylii{-80}\gdef\@yli{-200}\global\@ylswtrue% subst. on 6
+ \or\gdef\@ylii{-237}\gdef\@yli{-440}\global\@ylswtrue% subst. on 7
+\fi%end of ifcase
+\fi\fi\fi}}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \section{Adamantanes}
+%
+% \subsection{Vertical drawing}
+% 
+% The macros |\@adamanea| to |\@adamanej| are used to 
+% set substituents on each edge of an adamantane skeleton 
+% drawn by the |\adamantane| commands. 
+% \changes{v1.02}{1998/10/24}{The macros \cs{@adamanea} to \cs{@adamanej} 
+% are separated from the original definition of \cs{adamantane}.}
+%
+% \begin{macro}{\@adamanea}
+% \begin{macro}{\@adamaneb}
+% \begin{macro}{\@adamanec}
+% \begin{macro}{\@adamaned}
+% \begin{macro}{\@adamanee}
+% \begin{macro}{\@adamanef}
+% \begin{macro}{\@adamaneg}
+% \begin{macro}{\@adamaneh}
+% \begin{macro}{\@adamanei}
+% \begin{macro}{\@adamanej}
+% \changes{v1.02}{1998/10/24}{A new command for setting substituents}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 1 %
+% %%%%%%%%%%%%%%%
+\def\@adamanea{%
+     \yl@xdiff=12
+     \yl@ydiff=21
+   \put(-360,720){\hbox to0pt{\hss \@memberb}}%     %atom 1
+ \if\@tmpb a%
+   \put(-240,660){\line(-4,3){108}}%                %bond 1
+  \else \ifx\@tmpb\empty%
+   \put(-240,660){\line(-4,3){108}}%                %bond 1
+ \fi\fi}% 
+%    \end{macrocode}
+%
+% \changes{v1.02}{1998/10/24}{A new command for setting substituents}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 2 %
+% %%%%%%%%%%%%%%%
+\def\@adamaneb{%
+  \if\@tmpb a%
+     \yl@xdiff=6
+     \yl@ydiff=-16
+   \put(0,780){\line(1,4){26}}%                     %bond 2-ax
+   \put(20,900){\hbox to0pt{\@memberb \hss}}%       %atom 2-ax
+  \else \if\@tmpb b%
+     \yl@xdiff=-6
+     \yl@ydiff=-16
+   \put(0,780){\line(-1,4){26}}%                    %bond 2-eq
+   \put(-20,900){\hbox to0pt{\hss \@memberb}}%      %atom 2-eq
+  \else \ifx\@tmpb\empty%
+     \yl@xdiff=42
+     \yl@ydiff=-22
+   \put(-42,910){\hbox to0pt{\hss \@memberb}}%      %atom 2
+   \put(0,780){\line(0,1){108}}%                    %bond 2
+  \else \if\@tmpb D%
+     \yl@xdiff=42
+     \yl@ydiff=-22
+   \putlratom{-42}{910}{\@memberb}%                 %atom 2
+   \put(-12,780){\line(0,1){108}}%                  %double bond 2
+   \put(12,780){\line(0,1){108}}%                   %double bond 2
+ \fi\fi\fi\fi}
+%    \end{macrocode}
+%
+% \changes{v1.02}{1998/10/24}{A new command for setting substituents}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 3 %
+% %%%%%%%%%%%%%%%
+\def\@adamanec{%
+     \yl@xdiff=-12
+     \yl@ydiff=21
+   \put(360,720){\hbox to0pt{\@memberb \hss}}%      %atom 3
+%  \if\@tmpb S%
+  \if\@tmpb a%1998/10/24 by SF
+   \put(240,660){\line(4,3){108}}%                  %bond 3
+  \else \ifx\@tmpb\empty%
+   \put(240,660){\line(4,3){108}}%                  %bond 3
+ \fi\fi}
+%    \end{macrocode}
+%
+% \changes{v1.02}{1998/10/24}{A new command for setting substituents}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 4 %
+% %%%%%%%%%%%%%%%
+\def\@adamaned{%
+  \if\@tmpb a%
+     \yl@xdiff=-17
+     \yl@ydiff=33
+   \put(300,420){\line(4,-3){103}}%                 %bond 4-ax
+   \put(420,310){\hbox to0pt{\@memberb \hss}}%      %atom 4-ax
+  \else \if\@tmpb b%
+     \yl@xdiff=26
+     \yl@ydiff=-26
+   \put(300,420){\line(1,4){26}}%                   %bond 4-eq
+   \put(300,540){\hbox to0pt{\@memberb \hss}}%      %atom 4-eq
+  \else \ifx\@tmpb\empty%
+     \yl@xdiff=-17
+     \yl@ydiff=33
+   \put(300,420){\line(4,-3){103}}%                 %bond 4
+   \put(420,310){\hbox to0pt{\@memberb \hss}}%      %atom 4
+  \else \if\@tmpb D%
+     \yl@xdiff=-17
+     \yl@ydiff=33
+   \put(296,432){\line(5,-3){103}}%                 %double bond 4
+   \put(292,408){\line(5,-3){103}}%                 %double bond 4
+   \put(420,310){\hbox to0pt{\@memberb \hss}}%      %atom 4
+  \fi\fi\fi\fi}
+%    \end{macrocode}
+%
+% \changes{v1.02}{1998/10/24}{A new command for setting substituents}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 5 %
+% %%%%%%%%%%%%%%%
+\def\@adamanee{%
+     \yl@xdiff=20
+     \yl@ydiff=110
+%  \if\@tmpb S%
+  \if\@tmpb a%1998/10/24 by SF
+   \put(60,240){\line(1,-5){30}}%                   %bond 5
+   \put(70,-20){\hbox to0pt{\@memberb  \hss}}%      %atom 5
+  \else \ifx\@tmpb\empty%
+   \put(60,240){\line(1,-5){30}}%                   %bond 5
+   \put(70,-20){\hbox to0pt{\@memberb  \hss}}%      %atom 5
+  \fi\fi}
+%    \end{macrocode}
+%
+% \changes{v1.02}{1998/10/24}{A new command for setting substituents}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 6 %
+% %%%%%%%%%%%%%%%
+\def\@adamanef{%
+  \if\@tmpb a%
+     \yl@xdiff=33
+     \yl@ydiff=103
+   \put(0,0){\line(4,-3){103}}%                     %bond 6-ax
+   \put(70,-180){\hbox to0pt{\@memberb \hss}}%      %atom 6-ax
+  \else \if\@tmpb b%
+     \yl@xdiff=-33
+     \yl@ydiff=103
+   \put(0,0){\line(-4,-3){103}}%                    %bond 6-eq
+   \put(-70,-180){\hbox to0pt{\hss \@memberb}}%     %atom 6-eq
+  \else \ifx\@tmpb\empty%
+     \yl@xdiff=22
+     \yl@ydiff=94
+   \put(0,0){\line(0,-1){108}}%                     %bond 6
+   \put(-22,-202){\hbox to0pt{\hss \@memberb}}%     %atom 6
+  \else \if\@tmpb D%
+     \yl@xdiff=42
+     \yl@ydiff=94
+   \put(-12,0){\line(0,-1){108}}%                   %double bond 6
+   \put(12,0){\line(0,-1){108}}%                    %double bond 6
+   \putlratom{-42}{-202}{\@memberb}%                %atom 6
+ \fi\fi\fi\fi}
+%    \end{macrocode}
+%
+% \changes{v1.02}{1998/10/24}{A new command for setting substituents}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 7 %
+% %%%%%%%%%%%%%%%
+\def\@adamaneg{%
+     \yl@xdiff=-20
+     \yl@ydiff=110
+%  \if\@tmpb S%
+  \if\@tmpb a%1998/10/24 by SF
+   \put(-60,240){\line(-1,-5){30}}%                 %bond 7
+   \put(-70,-20){\hbox to0pt{\hss \@memberb}}%      %atom 7
+  \else \ifx\@tmpb\empty%
+   \put(-60,240){\line(-1,-5){30}}%                 %bond 7
+   \put(-70,-20){\hbox to0pt{\hss \@memberb}}%      %atom 7-eq
+  \fi\fi}
+%    \end{macrocode}
+%
+% \changes{v1.02}{1998/10/24}{A new command for setting substituents}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 8 %
+% %%%%%%%%%%%%%%%
+\def\@adamaneh{%
+  \if\@tmpb a%
+     \yl@xdiff=17
+     \yl@ydiff=33
+   \put(-300,420){\line(-4,-3){103}}%               %bond 8-ax
+   \put(-420,310){\hbox to0pt{\hss \@memberb}}%     %atom 8-ax
+  \else \if\@tmpb b%
+     \yl@xdiff=-26
+     \yl@ydiff=-16
+   \put(-300,420){\line(-1,4){26}}%                 %bond 8-eq
+   \put(-300,540){\hbox to0pt{\hss \@memberb}}%     %atom 8-eq
+  \else \ifx\@tmpb\empty%
+     \yl@xdiff=17
+     \yl@ydiff=33
+   \put(-300,420){\line(-4,-3){103}}%               %bond 8
+   \put(-420,310){\hbox to0pt{\hss \@memberb}}%     %atom 8
+  \else \if\@tmpb D%
+     \yl@xdiff=17
+     \yl@ydiff=50
+   \put(-300,432){\line(-5,-3){103}}%               %double bond 8
+   \put(-303,408){\line(-5,-3){103}}%               %double bond 8
+   \put(-420,310){\hbox to0pt{\hss \@memberb}}%     %atom 8
+  \fi\fi\fi\fi}
+%    \end{macrocode}
+%
+% \changes{v1.02}{1998/10/24}{A new command for setting substituents}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 9 %
+% %%%%%%%%%%%%%%%
+\def\@adamanei{%
+  \if\@tmpb a%
+     \yl@xdiff=-43
+     \yl@ydiff=93
+   \put(-180,420){\line(-4,-3){103}}%               %bond 9-ax
+   \put(-240,250){\hbox to0pt{\hss \@memberb}}%     %atom 9-ax
+  \else \if\@tmpb b%
+     \yl@xdiff=26
+     \yl@ydiff=-16
+   \put(-180,420){\line(1,4){26}}%                  %bond 9-eq
+   \put(-180,540){\hbox to0pt{\@memberb \hss}}%     %atom 9-eq
+  \else \ifx\@tmpb\empty%
+     \yl@xdiff=17
+     \yl@ydiff=93
+   \put(-180,420){\line(-4,-3){103}}%               %bond 9
+   \put(-300,250){\hbox to0pt{\hss \@memberb}}%     %atom 9
+  \else \if\@tmpb D%
+     \yl@xdiff=17
+     \yl@ydiff=113
+   \put(-183,432){\line(-5,-3){103}}%               %double bond 9
+   \put(-180,408){\line(-5,-3){103}}%               %double bond 9
+   \put(-300,250){\hbox to0pt{\hss \@memberb}}%     %atom 9
+  \fi\fi\fi\fi}
+%    \end{macrocode}
+%
+% \changes{v1.02}{1998/10/24}{A new command for setting substituents}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%%
+% % subst. on 10 %
+% %%%%%%%%%%%%%%%%
+\def\@adamanej{%
+  \if\@tmpb a%
+     \yl@xdiff=43
+     \yl@ydiff=92
+  \put(180,420){\line(4,-3){103}}%                 %bond 10-ax
+  \put(240,250){\hbox to0pt{\@memberb  \hss}}%     %atom 10-ax
+  \else \if\@tmpb b%
+     \yl@xdiff=-26
+     \yl@ydiff=-16
+  \put(180,420){\line(-1,4){26}}%                  %bond 10-eq
+  \put(180,540){\hbox to0pt{\hss \@memberb}}%      %atom 10-eq
+  \else \ifx\@tmpb\empty%
+     \yl@xdiff=43
+     \yl@ydiff=92
+   \put(180,420){\line(4,-3){103}}%                %bond 10
+   \put(240,250){\hbox to0pt{\@memberb \hss}}%     %atom 10
+  \else \if\@tmpb D%
+     \yl@xdiff=3
+     \yl@ydiff=112
+   \put(176,432){\line(5,-3){103}}%                %double bond 10
+   \put(172,408){\line(5,-3){103}}%                %double bond 10
+   \put(280,250){\hbox to0pt{\@memberb \hss}}%     %atom 10
+  \fi\fi\fi\fi}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% The stereo-type skeleton of adamantane is selected 
+% to have the following specification.  The |\adamantane| 
+% command prints a vertical-type  formula in which two bridge carbons 
+% are placed at the top and the bottom. 
+%
+% \begin{verbatim}
+% *************************************************
+% * For preparing adamantane derivatives          *
+% *   with 4 substituents on bridgehead positions *
+% *         (1, 3, 5 and 7)                       *
+% *   with 12 substituents on bridge positions    *
+% *         (2, 4, 6, 8, 9, 10)                   *
+% *************************************************
+% \end{verbatim}
+%
+% The macro |\adamantane| has an argument |SUBSLIST| as well as an optional 
+% argument |BONDLIST|.  
+%
+% \begin{verbatim}
+%   \adamantane[BONDLIST]{SUBSLIST}          
+% \end{verbatim}
+%
+% The adamantane skeleton scarcely takes an inner (endcyclic) double bond.
+% Hence we have 
+% \begin{verbatim}
+%     BONDLIST: not effective
+% \end{verbatim}
+%
+% The |SUBSLIST| argument takes the standard format of \XyMTeX{}, in which 
+% more substitution descriptors are separated from each other 
+% by a semicolon.  
+% \begin{verbatim}
+%
+%     SUBSLIST: list of substituents (max 10 substitution positions)
+%
+%       for n = 1, 3, 5, and 7 (bridgeheads)
+%
+%           n or na    :  exocyclic single bond at n-atom
+%
+%       for n = 2, 4, 6, 8, 9, and 10 (bridges)
+%
+%           na         :  exocyclic single bond at n-atom (axial)
+%           nb         :  exocyclic single bond at n-atom (equatorial)
+%           nD         :  exocyclic double bond at n-atom (2 and 6)
+%
+% \end{verbatim}
+% 
+% For numbers larger than 9 (two digits), you should designate
+% the |SUBSLIST| as, e.g., 
+% \begin{verbatim}
+%             {{10}a}==Cl; ...
+% \end{verbatim}
+%
+% The definition of |\@adamantane| uses a picture environment, in which 
+% both bonds are substituents are put directly. 
+% \changes{v1.02}{1998/10/31}{Adding \cs{yladamanposition}, \cs{if@ylsw},
+% \cs{yl@shifti}, \cs{@ylii}, \cs{yl@shiftii}, \cs{@ylii}, 
+% \cs{yl@xdiff} and \cs{yl@ydiff}}
+%
+% \begin{macro}{\@adamantane}
+% \begin{macro}{\adamantane}
+%    \begin{macrocode}
+% \changes{v1.02}{1998/10/24}{The macros \cs{@adamanea} to \cs{@adamanej} 
+% are separated from the original definition of \cs{adamantane}.}
+\def\adamantane{\@ifnextchar[{\@mantane}{\@damantane[Z]}}
+\def\@damantane[#1]#2{%
+\@reset@ylsw%
+\yladamanposition{#2}%
+\def\@@ylii{0}\def\@@yli{0}%
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+\else
+ \begin{picture}(1100,1300)(-550,-300)
+  \iforigpt \put(-550,-300){\circle*{50}}%
+           \put(0,0){\circle{50}}% 
+   \typeout{command `adamantane' origin: (0,0) ---> (550,300)}
+  \fi%
+\fi
+%bonds for an adamantane skeleton
+  \put(0,0){\line(-1,4){60}}%                      %bond 6-7
+  \put(0,780){\line(2,-1){240}}%                   %bond 2-3
+  \put(0,780){\line(-2,-1){240}}%                  %bond 2-1
+  \put(-60,240){\line(-4,3){240}}%                 %bond 7-8
+  \put(-300,420){\line(1,4){60}}%                  %bond 8-1
+  \put(240,660){\line(-1,-4){60}}%                 %bond 3-10
+  \put(-60,240){\line(4,3){240}}%                  %bond 10-7
+{\thicklines%
+  \put(300,420){\line(-1,4){60}}%                  %bond 4-3
+  \put(-240,660){\line(1,-4){60}}%                 %bond 1-9
+  \put(0,0){\line(1,4){60}}%                       %bond 6-5
+  \put(60,240){\line(4,3){240}}%                   %bond 5-4
+  \put(60,240){\line(-4,3){240}}%                  %bond 5-9
+}%
+%substituents
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}\relax%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa%0 omit
+\or\@adamanea% subst. on 1
+\or\@adamaneb% subst. on 2
+\or\@adamanec% subst. on 3
+\or\@adamaned% subst. on 4
+\or\@adamanee% subst. on 5
+\or\@adamanef% subst. on 6
+\or\@adamaneg% subst. on 7
+\or\@adamaneh% subst. on 8
+\or\@adamanei% subst. on 9
+\or\@adamanej% subst. on 10
+\fi%the end of ifcase
+\fi\fi}%
+\end{picture}}                          %end of \adamantane macro%
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% The command |\yladamanposition| is to obtain the shift values 
+% |\@ylii| and |\@yli| which are used for shifting the standard 
+% point of a substituent. 
+% \changes{v1.02}{1998/10/23}{New commands for setting substituents}
+%
+% \begin{macro}{\yladamanposition}
+%    \begin{macrocode}
+\def\yladamanposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa%0 omit
+ \or\gdef\@ylii{240}\gdef\@yli{-660}\global\@ylswtrue% subst. on 1
+ \or\gdef\@ylii{0}\gdef\@yli{-780}\global\@ylswtrue% subst. on 2
+ \or\gdef\@ylii{-240}\gdef\@yli{-660}\global\@ylswtrue% subst. on 3
+ \or\gdef\@ylii{-300}\gdef\@yli{-420}\global\@ylswtrue% subst. on 4
+ \or\gdef\@ylii{-60}\gdef\@yli{-240}\global\@ylswtrue% subst. on 5
+ \or\gdef\@ylii{0}\gdef\@yli{0}\global\@ylswtrue% subst. on 6
+ \or\gdef\@ylii{60}\gdef\@yli{-240}\global\@ylswtrue% subst. on 7
+ \or\gdef\@ylii{300}\gdef\@yli{-420}\global\@ylswtrue% subst. on 8
+ \or\gdef\@ylii{180}\gdef\@yli{-420}\global\@ylswtrue% subst. on 9
+ \or\gdef\@ylii{-180}\gdef\@yli{-420}\global\@ylswtrue% subst. on 10
+\fi%end of ifcase
+\fi\fi\fi}}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Horizontal drawing}
+%
+% The stereo-type skeleton of adamantane is selected 
+% to have the following specification.  The |\hadamantane| 
+% command prints a horizontal-type formula in which one bridge-head carbon 
+% is put at the top position and a chair-form cyclohexane moiety is 
+% placed at the bottom position. 
+% 
+% \begin{verbatim}
+% ********************************************
+% * adamantane derivatives (horizontal type) *
+% ********************************************
+% The following numbering is adopted in this macro. 
+%
+%                1
+%           h //   `
+%           //i      ` a
+%          89          `
+%         g||            2
+%          ||j           | b
+%       f  7|   l     k  3
+%       *   |   ` 10  *
+%     6  *  5        * c
+%        e    d`  4
+% \end{verbatim}
+%
+% \begin{verbatim}
+% *************************************************
+% * For preparing adamantane derivatives          *
+% *   with 4 substituents on bridgehead positions *
+% *         (1, 3, 5 and 7)                       *
+% *   with 12 substituents on bridge positions    *
+% *         (2, 4, 6, 8, 9, 10)                   *
+% *************************************************
+% \end{verbatim}
+%
+% The macro |\hadamantane| has an argument |SUBSLIST| as well as an optional 
+% argument |BONDLIST|.  
+%
+% \begin{verbatim}
+%   \hadamantane[BONDLIST]{SUBSLIST}          
+% \end{verbatim}
+%
+% The adamantane skeleton scarcely takes an inner (endcyclic) double bond.
+% However, we can designate |BONDLIST|. (This point is different from the
+% specification of the |\adamantane| command.
+%
+% \begin{verbatim}
+%
+%     BONDLIST = 
+%
+%           none       :  adamantane skeleton
+%           a          :  1,2-double bond
+%           b          :  2,3-double bond
+%           c          :  3,4-double bond
+%           d          :  4,5-double bond
+%           e          :  5,6-double bond
+%           f          :  6,7-double bond
+%           g          :  7,8-double bond
+%           h          :  8,1-double bond
+%           i          :  9,1-double bond
+%           j          :  5,9-double bond
+%           k          :  3,10-double bond
+%           l          :  7,10-double bond
+%
+% \end{verbatim}
+%
+% The |SUBSLIST| argument takes the standard format of \XyMTeX{}, in which 
+% more substitution descriptors are separated from each other 
+% by a semicolon.  
+% \begin{verbatim}
+%
+%     SUBSLIST: list of substituents (max 10 substitution positions)
+%
+%       for n = 1, 3, 5, and 7 (bridgeheads)
+%
+%           n or na    :  exocyclic single bond at n-atom
+%
+%       for n = 2, 4, 6, 8, 9, and 10 (bridges)
+%
+%           na         :  exocyclic single bond at n-atom (axial)
+%           nb         :  exocyclic single bond at n-atom (equatorial)
+%           nD         :  exocyclic double bond at n-atom (2 and 6)
+%
+% \end{verbatim}
+%
+% Moreover, bond modifieer used for chair-form cyclohexanes 
+% such as $n$Sa and $n$Se (see above) can be also used in the |SUBSLIST| 
+% of the |\hdadamantane| command. 
+% 
+% For numbers larger than 9 (two digits), you should designate
+% the |SUBSLIST| as, e.g., 
+% \begin{verbatim}
+%             {{10}a}==Cl; ...
+% \end{verbatim}
+%
+% The definition of |\@hadamantane| uses a picture environment, in which 
+% bonds are put directly, while subsituents are typset by using 
+% the macro |\@chairiI| to |\@chairX| defined below. 
+% \changes{v1.02}{1998/10/31}{Adding \cs{ylhadamanposition}, \cs{if@ylsw},
+% \cs{yl@shifti}, \cs{@ylii}, \cs{yl@shiftii}, \cs{@ylii}, 
+% \cs{yl@xdiff} and \cs{yl@ydiff}}
+%
+% \begin{macro}{\@hadamantane}
+% \begin{macro}{\hadamantane}
+%    \begin{macrocode}
+% *************************
+% * input of basic macros *
+% *************************
+\def\hadamantane{\@ifnextchar[{\@hadamantane}{\@hadamantane[H]}}
+\def\@hadamantane[#1]#2{%
+\@reset@ylsw%
+\ylhadamanposition{#2}%
+\def\@@ylii{0}\def\@@yli{0}%
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+\else
+ \begin{picture}(1600,1400)(-400,-319)
+  \iforigpt \put(-400,-319){\circle*{50}}%
+           \put(0,0){\circle{50}}% 
+   \typeout{command `hadamantane' origin: (0,0) ---> (400,319)}
+  \fi%
+\fi
+   \thinlines%
+      \put(0,0){\line(3,4){170}}%          % bond 6 to 7
+      \put(170,226){\line(3,-1){403}}%     %      7 to 10
+      \put(573,91){\line(3,1){270}}%       %      10 to 3
+% %%%
+      \put(170,226){\line(0,1){360}}%      %      7 to 8
+      \put(170,586){\line(3,1){270}}%      %      8 to 1
+      \put(843,181){\line(0,1){360}}%      %      3 to 2
+      \put(843,541){\line(-3,1){403}}%     %      2 to 1
+   \thicklines%
+      \put(843,181){\line(-3,-4){170}}%    %      3 to 4
+      \put(673,-46){\line(-3,1){403}}%     %      4 to 5
+      \put(0,0){\line(3,1){270}}%          %      6 to 5
+% %%%
+      \put(270,90){\line(0,1){360}}%       %      5 to 9
+      \put(270,450){\line(3,4){170}}%      %      9 to 1
+   \thinlines%
+% inner double bonds
+\@tfor\member:=#1\do{%
+\if\member r%no endocyclic bonds
+\else \if\member a%
+      \put(450,636){\line(3,-1){373}}%     % double bond 1 to 2
+\else \if\member b%
+      \put(803,206){\line(0,1){320}}%      %             3 to 2
+\else \if\member c%%%a%
+       \put(767,139){\line(-3,-4){110}}%   %             3 to 4
+\else \if\member d%%%b%
+      \put(640,-5){\line(-3,1){343}}%      %             4 to 5
+\else \if\member e%%%%c%
+       \put(240,111){\line(-3,-1){190}}%   %             5 to 6
+\else \if\member f%%%d%
+      \put(63,40){\line(3,4){110}}%        %             6 to 7
+\else \if\member g%
+      \put(200,246){\line(0,1){320}}%      %             7 to 8
+\else \if\member h%
+       \put(400,626){\line(-3,-1){190}}%   %             8 to 1
+\else \if\member i%
+      \put(450,636){\line(-3,-4){150}}%    %             9 to 1
+\else \if\member j%
+      \put(300,110){\line(0,1){320}}%      %             5 to 9
+\else \if\member k%%%f%
+      \put(768,131){\line(-3,-1){170}}%    %             3 to 10
+\else \if\member l%
+      \put(182,187){\line(3,-1){343}}%     %             7 to 10
+\fi\fi\fi\fi\fi\fi%
+\fi\fi\fi\fi\fi\fi\fi}%
+% %
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa%                  %0 omit
+ \or \put(440,676){\@chairiI}%  %subst. on 1%%%9
+ \or \put(843,541){\@chairiII}% %subst. on 2%%10
+ \or \@chairiIII%               %subst. on 3%%%4
+ \or \@chairiIV%                %subst. on 4%%%3
+ \or \@chairiV%                 %subst. on 5%%%2
+ \or \@chairiVI%                %subst. on 6%%%1
+ \or \@chairiVII%               %subst. on 7%%%6
+ \or \put(170,586){\@chairiVIII}%subst. on 8%%%8
+ \or \put(270,450){\@chairiIX}% %subst. on 9%%%7
+ \or \@chairiX%                 %subst. on 10%%5
+\fi %end of ifcase
+\fi\fi%
+}\end{picture}}%               %end of \hadamantane macro
+% End of addition 1994/03/05 SF
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% The command |\ylhadamanposition| is to obtain the shift values 
+% |\@ylii| and |\@yli| which are used for shifting the standard 
+% point of a substituent. 
+% \changes{v1.02}{1998/10/23}{New commands for setting substituents}
+%
+% \begin{macro}{\ylhadamanposition}
+%    \begin{macrocode}
+\def\ylhadamanposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa%0 omit
+ \or\gdef\@ylii{-440}\gdef\@yli{-676}\global\@ylswtrue% subst. on 1
+ \or\gdef\@ylii{-843}\gdef\@yli{-541}\global\@ylswtrue% subst. on 2
+ \or\gdef\@ylii{-843}\gdef\@yli{-181}\global\@ylswtrue% subst. on 3
+ \or\gdef\@ylii{-673}\gdef\@yli{46}\global\@ylswtrue% subst. on 4
+ \or\gdef\@ylii{-270}\gdef\@yli{-90}\global\@ylswtrue% subst. on 5
+ \or\gdef\@ylii{0}\gdef\@yli{0}\global\@ylswtrue% subst. on 6
+ \or\gdef\@ylii{-170}\gdef\@yli{-226}\global\@ylswtrue% subst. on 7
+ \or\gdef\@ylii{-170}\gdef\@yli{-586}\global\@ylswtrue% subst. on 8
+ \or\gdef\@ylii{-270}\gdef\@yli{-450}\global\@ylswtrue% subst. on 9
+ \or\gdef\@ylii{-573}\gdef\@yli{-91}\global\@ylswtrue% subst. on 10
+\fi%end of ifcase
+\fi\fi\fi}}%
+%    \end{macrocode}
+% \end{macro}
+%
+% Hereafter, the definitions of the commands |\@chairiI| to |\@chairiX| 
+% are described. Each of the commands can treat $n$a-type bond modifiers 
+% as well as $n$Sa-type bond modifiers. 
+%
+% \begin{macro}{\@chairiVI}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% ********************************************************
+% * treatment of the chair form (inverse) of cyclohexane *
+% *  added March 05, 1994 by Shinsaku Fujita             *
+% ********************************************************
+% %%%%%%%%%%%%%%%
+% % subst. on 6 %
+% %%%%%%%%%%%%%%%
+\def\@chairiVI{%
+   \if\@tmpb a%single bond
+     \yl@xdiff=42
+     \yl@ydiff=92
+           \put(0,0){\line(0,-1){168}}% single bond at 6 axial
+           \putlratom{-42}{-260}{\@memberb}% left & right type
+   \else\if\@tmpb b%single bond
+     \yl@xdiff=16
+     \yl@ydiff=36
+           \put(0,0){\line(-5,3){144}}% single bond at 6 equatorial
+           \putlatom{-160}{50}{\@memberb}% left type
+   \else\if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=10
+     \yl@ydiff=90
+           \put(0,0){\line(-1,-1){120}}% single bond at 6
+           \putlatom{-130}{-210}{\@memberb}% left type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=42
+     \yl@ydiff=92
+           \put(0,0){\line(0,-1){168}}% single bond at 6 axial
+           \putlratom{-42}{-260}{\@memberb}% left & right type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=16
+     \yl@ydiff=36
+           \put(0,0){\line(-5,3){144}}% single bond at 6 equatorial
+           \putlatom{-160}{50}{\@memberb}% left type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=10
+     \yl@ydiff=90
+           \putlatom{-130}{-210}{\@memberb}% left type
+           \put(-10,10){\line(-1,-1){120}}% double bond at 6
+           \put(10,-10){\line(-1,-1){120}}% double bond at 6
+          \else%
+     \yl@xdiff=10
+     \yl@ydiff=90
+           \putlatom{-130}{-210}{\@memberb}% left type
+           \put(0,0){\line(-1,-1){120}}% single bond at 6
+   \fi\fi\fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chairiVII}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 7 %
+% %%%%%%%%%%%%%%%
+\def\@chairiVII{%
+   \if\@tmpb a%single bond
+     \yl@xdiff=26
+     \yl@ydiff=46
+           \put(170,226){\line(-5,-3){144}}% single bond at 7 equatorial
+           \putlatom{10}{94}{\@memberb}% left type
+   \else\ifx\@tmpb\empty%single bond
+     \yl@xdiff=26
+     \yl@ydiff=46
+           \put(170,226){\line(-5,-3){144}}% single bond at 7 equatorial
+           \putlatom{10}{94}{\@memberb}% left type
+   \else\if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(170,226){\line(-1,1){120}}% single bond at 7
+           \putratom{40}{316}{\@memberb}% left type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=32
+     \yl@ydiff=12
+           \put(170,226){\line(0,1){168}}% single bond at 7 axial
+           \putlratom{138}{406}{\@memberb}% left & right type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=26
+     \yl@ydiff=46
+           \put(170,226){\line(-5,-3){144}}% single bond at 7 equatorial
+           \putlatom{10}{94}{\@memberb}% left type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \putlatom{40}{316}{\@memberb}% left type
+           \put(160,216){\line(-1,1){120}}% double bond at 7
+           \put(180,236){\line(-1,1){120}}% double bond at 7
+          \else%
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \putlatom{40}{316}{\@memberb}% left type
+           \put(170,226){\line(-1,1){120}}% single bond at 7
+   \fi\fi\fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chairiX}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%%
+% % subst. on 10 %
+% %%%%%%%%%%%%%%%%
+\def\@chairiX{%
+   \if\@tmpb a%single bond
+     \yl@xdiff=40
+     \yl@ydiff=104
+           \put(573,91){\line(0,-1){168}}% single bond at 5 axial
+           \putlratom{533}{-181}{\@memberb}% left type
+   \else\if\@tmpb b%single bond
+     \yl@xdiff=-36
+     \yl@ydiff=3
+           \put(573,91){\line(5,3){144}}% single bond at 5 equatorial
+           \putlatom{753}{180}{\@memberb}% left type
+   \else\if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=-10
+     \yl@ydiff=56
+           \put(573,91){\line(5,-4){170}}% single bond at 5
+           \putratom{753}{-101}{\@memberb}% right type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=40
+     \yl@ydiff=104
+           \put(573,91){\line(0,-1){168}}% single bond at 5 axial
+           \putlratom{533}{-181}{\@memberb}% left type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=-36
+     \yl@ydiff=3
+           \put(573,91){\line(5,3){144}}% single bond at 5 equatorial
+           \putlatom{753}{180}{\@memberb}% left type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=10
+     \yl@ydiff=86
+           \putratom{733}{-141}{\@memberb}% right type
+           \put(563,83){\line(5,-4){170}}% double bond at 5
+           \put(583,99){\line(5,-4){170}}% double bond at 5
+          \else%
+     \yl@xdiff=-10
+     \yl@ydiff=76
+           \put(573,91){\line(5,-4){170}}% single bond at 5
+           \putratom{753}{-121}{\@memberb}% right type
+   \fi\fi\fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chairiIII}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 3 %
+% %%%%%%%%%%%%%%%
+\def\@chairiIII{%
+   \if\@tmpb a%single bond
+     \yl@xdiff=-16
+     \yl@ydiff=64
+           \put(843,181){\line(5,-3){144}}% single bond at 3 equatorial
+           \putratom{1003}{31}{\@memberb}% right type
+   \else\ifx\@tmpb\empty%single bond
+     \yl@xdiff=-16
+     \yl@ydiff=64
+           \put(843,181){\line(5,-3){144}}% single bond at 3 equatorial
+           \putratom{1003}{31}{\@memberb}% right type
+   \else\if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(843,181){\line(1,1){120}}% single bond at 3
+           \putratom{953}{271}{\@memberb}% right type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=42
+     \yl@ydiff=11
+           \put(843,181){\line(0,1){168}}% single bond at 3 axial
+           \putlratom{801}{360}{\@memberb}% left & right type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=-16
+     \yl@ydiff=64
+           \put(843,181){\line(5,-3){144}}% single bond at 3 equatorial
+           \putratom{1003}{31}{\@memberb}% right type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=0
+     \yl@ydiff=30
+           \putratom{953}{271}{\@memberb}% right type
+           \put(833,191){\line(1,1){120}}% double bond at 3
+           \put(853,171){\line(1,1){120}}% double bond at 3
+          \else%
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(843,181){\line(1,1){120}}% single bond at 3
+           \putratom{953}{271}{\@memberb}% right type
+   \fi\fi\fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chairiIV}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 4 %
+% %%%%%%%%%%%%%%%
+\def\@chairiIV{%
+   \if\@tmpb a%single bond
+     \yl@xdiff=40
+     \yl@ydiff=104
+           \put(673,-46){\line(0,-1){168}}% single bond at 4 axial
+           \putlratom{633}{-318}{\@memberb}% left & right type
+   \else\if\@tmpb b%single bond
+     \yl@xdiff=-6
+     \yl@ydiff=17
+           \put(673,-46){\line(5,3){144}}% single bond at 4 equatorial
+           \putratom{823}{23}{\@memberb}% right type
+   \else\if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=-10
+     \yl@ydiff=92
+           \put(673,-46){\line(1,-1){120}}% single bond at 4
+           \putratom{803}{-258}{\@memberb}% right type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=40
+     \yl@ydiff=104
+           \put(673,-46){\line(0,-1){168}}% single bond at 4 axial
+           \putlratom{633}{-318}{\@memberb}% left & right type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=-6
+     \yl@ydiff=17
+           \put(673,-46){\line(5,3){144}}% single bond at 4 equatorial
+           \putratom{823}{23}{\@memberb}% right type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=-10
+     \yl@ydiff=92
+           \putratom{803}{-258}{\@memberb}%  right type
+           \put(663,-53){\line(1,-1){120}}% double bond at 4
+           \put(683,-38){\line(1,-1){120}}% double bond at 4
+          \else%
+     \yl@xdiff=-10
+     \yl@ydiff=76
+           \put(673,-46){\line(5,-4){170}}% single bond at 4
+           \putratom{853}{-258}{\@memberb}% right type
+   \fi\fi\fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chairiV}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 5 %
+% %%%%%%%%%%%%%%%
+\def\@chairiV{%
+   \if\@tmpb a%single bond
+     \yl@xdiff=26
+     \yl@ydiff=102
+           \put(270,90){\line(-5,-3){144}}% single bond at 5 equatorial
+           \putratom{100}{-98}{\@memberb}% left type
+   \else\ifx\@tmpb\empty%single bond
+     \yl@xdiff=26
+     \yl@ydiff=102
+           \put(270,90){\line(-5,-3){144}}% single bond at 5 equatorial
+           \putratom{100}{-98}{\@memberb}% left type
+   \else\if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=0
+     \yl@ydiff=46
+           \put(270,90){\line(-5,4){170}}% single bond at 5
+           \putlatom{100}{180}{\@memberb}% left type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=32
+     \yl@ydiff=12
+           \put(270,90){\line(0,1){168}}% single bond at 5 axial
+           \putlratom{238}{270}{\@memberb}% left type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=36
+     \yl@ydiff=102
+           \put(270,90){\line(-5,-3){144}}% single bond at 5 equatorial
+           \putratom{100}{-98}{\@memberb}% left type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=0
+     \yl@ydiff=36
+           \putlatom{100}{200}{\@memberb}% left or right type
+           \put(260,80){\line(-5,4){170}}% double bond at 5
+           \put(280,100){\line(-5,4){170}}% double bond at 5
+          \else%
+     \yl@xdiff=0
+     \yl@ydiff=26
+           \putlatom{100}{200}{\@memberb}% left type
+           \put(270,90){\line(-5,4){170}}% single bond at 5
+   \fi\fi\fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\@chairiI}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 1 %
+% %%%%%%%%%%%%%%%
+\def\@chairiI{%
+   \if\@tmpb a%single bond
+     \yl@xdiff=42
+     \yl@ydiff=-10
+           \put(0,0){\line(0,1){168}}% single bond at 1 axial
+           \putlratom{-42}{178}{\@memberb}% left & right type
+   \else\ifx\@tmpb\empty%
+     \yl@xdiff=42
+     \yl@ydiff=-10
+           \put(0,0){\line(0,1){168}}% single bond at 1 axial
+           \putlratom{-42}{178}{\@memberb}% left & right type
+   \else\if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=42
+     \yl@ydiff=-10
+           \put(0,0){\line(0,1){168}}% single bond at 1 axial
+           \putlratom{-42}{178}{\@memberb}% left & right type
+    \else\if\@tmpc a%(a) axial
+     \yl@xdiff=42
+     \yl@ydiff=-10
+           \put(0,0){\line(0,1){168}}% single bond at 1 axial
+           \putlratom{-42}{178}{\@memberb}% left & right type
+    \else\if\@tmpc e%(e) beta
+     \yl@xdiff=42
+     \yl@ydiff=-10
+           \put(0,0){\line(0,1){168}}% single bond at 1 axial
+           \putlratom{-42}{178}{\@memberb}% left & right type
+    \fi\fi\fi%
+  \else \if\@tmpb D%double bond
+     \yl@xdiff=42
+     \yl@ydiff=-10
+           \put(0,0){\line(0,1){168}}% single bond at 1 axial
+           \putlratom{-42}{178}{\@memberb}% left & right type
+          \else%
+     \yl@xdiff=42
+     \yl@ydiff=-10
+           \put(0,0){\line(0,1){168}}% single bond at 1 axial
+           \putlratom{-42}{178}{\@memberb}% left & right type
+   \fi\fi\fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chairiII}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%%
+% % subst. on 2 %
+% %%%%%%%%%%%%%%%%
+\def\@chairiII{%
+   \if\@tmpb a%single bond
+     \yl@xdiff=-10
+     \yl@ydiff=13
+           \put(0,0){\line(3,1){190}}% single bond at 6 equatorial
+           \putratom{200}{50}{\@memberb}% right type
+   \else\if\@tmpb b%single bond
+     \yl@xdiff=-10
+     \yl@ydiff=0
+            \put(0,0){\line(3,4){120}}%          % bond 1 to 6
+            \putratom{130}{160}{\@memberb}% left type
+   \else\if\@tmpb S%single bond
+     \ifx\@tmpc\empty%
+     \yl@xdiff=-10
+     \yl@ydiff=-10
+           \put(0,0){\line(1,1){120}}% single bond at 1
+           \putratom{130}{130}{\@memberb}% left type
+      \else\if\@tmpc a%(a) axial
+     \yl@xdiff=-10
+     \yl@ydiff=0
+            \put(0,0){\line(3,4){120}}%          % bond 1 to 6
+            \putratom{130}{160}{\@memberb}% left type
+     \else\if\@tmpc e%(e) beta
+     \yl@xdiff=-10
+     \yl@ydiff=13
+           \put(0,0){\line(3,1){190}}% single bond at 6 equatorial
+           \putratom{200}{50}{\@memberb}% right type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=-10
+     \yl@ydiff=-10
+           \putratom{130}{130}{\@memberb}% left type
+           \put(-10,10){\line(1,1){120}}% double bond at 1
+           \put(10,-10){\line(1,1){120}}% double bond at 1
+          \else%
+     \yl@xdiff=-10
+     \yl@ydiff=-10
+           \putratom{130}{130}{\@memberb}% left type
+           \put(0,0){\line(1,1){120}}% single bond at 1
+   \fi\fi\fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chairigVIII}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 8 %
+% %%%%%%%%%%%%%%%
+\def\@chairiVIII{%
+   \if\@tmpb a%single bond
+     \yl@xdiff=16
+     \yl@ydiff=36
+           \put(0,0){\line(-5,3){144}}% single bond at 1 equatorial
+           \putlatom{-160}{50}{\@memberb}% left type
+   \else\if\@tmpb b%single bond
+     \yl@xdiff=-10
+     \yl@ydiff=0
+            \put(0,0){\line(3,4){120}}%          % bond 1 to 6
+            \putratom{130}{160}{\@memberb}% left type
+   \else\if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=4
+     \yl@ydiff=36
+           \put(0,0){\line(-5,3){144}}% single bond at 1 equatorial
+           \putlatom{-140}{50}{\@memberb}% left type
+    \else\if\@tmpc e% right-hand
+     \yl@xdiff=-10
+     \yl@ydiff=0
+            \put(0,0){\line(3,4){120}}%          % bond 1 to 6
+            \putratom{130}{160}{\@memberb}% left type
+    \else\if\@tmpc a% left-hand
+     \yl@xdiff=16
+     \yl@ydiff=36
+           \put(0,0){\line(-5,3){144}}% single bond at 1 equatorial
+           \putlatom{-160}{50}{\@memberb}% left type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=4
+     \yl@ydiff=26
+            \putlatom{-140}{60}{\@memberb}% left type
+           \put(10,10){\line(-5,3){144}}% single bond at 1 equatorial
+           \put(0,-10){\line(-5,3){144}}% single bond at 1 equatorial
+          \else%
+     \yl@xdiff=4
+     \yl@ydiff=36
+           \put(0,0){\line(-5,3){144}}% single bond at 1 equatorial
+           \putlatom{-140}{50}{\@memberb}% left type
+   \fi\fi\fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@chairiIX}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 9 %
+% %%%%%%%%%%%%%%%
+\def\@chairiIX{%
+   \if\@tmpb a%single bond
+     \yl@xdiff=16
+     \yl@ydiff=36
+           \put(0,0){\line(-5,3){144}}% single bond at 1 equatorial
+           \putlatom{-160}{50}{\@memberb}% left type
+   \else\if\@tmpb b%single bond
+     \yl@xdiff=-16
+     \yl@ydiff=36
+           \put(0,0){\line(5,3){144}}% single bond at 6 equatorial
+           \putratom{160}{50}{\@memberb}% left type
+   \else\if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=4
+     \yl@ydiff=36
+           \put(0,0){\line(-5,3){144}}% single bond at 1 equatorial
+           \putlatom{-140}{50}{\@memberb}% left type
+    \else\if\@tmpc e% right-hand
+     \yl@xdiff=-16
+     \yl@ydiff=36
+           \put(0,0){\line(5,3){144}}% single bond at 6 equatorial
+           \putratom{160}{50}{\@memberb}% left type
+    \else\if\@tmpc a% left-hand
+     \yl@xdiff=16
+     \yl@ydiff=36
+           \put(0,0){\line(-5,3){144}}% single bond at 1 equatorial
+           \putlatom{-160}{50}{\@memberb}% left type
+    \fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=4
+     \yl@ydiff=36
+           \putlatom{-140}{50}{\@memberb}% left type
+           \put(10,10){\line(-5,3){144}}% single bond at 1 equatorial
+           \put(0,-10){\line(-5,3){144}}% single bond at 1 equatorial
+          \else%
+     \yl@xdiff=4
+     \yl@ydiff=36
+           \put(0,0){\line(-5,3){144}}% single bond at 1 equatorial
+           \putlatom{-140}{50}{\@memberb}% left type
+   \fi\fi\fi\fi}%
+%</ccycle>
+%    \end{macrocode}
+% \end{macro}
+%
+% \Finale
+%
+\endinput
+

@@ -1,0 +1,86 @@
+xymtex2.jpn
+XyMTeXのオンラインドキュメント (日本語版)
+Copyright (C) 1993, 1996, 1998 by Shinsak Fujita. All rights reserved. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+(旧)xymtex1.jpnを改名
+XyMTeXのオンラインドキュメント (日本語版)
+Copyright (C) 1993, 1996 by Shinsak Fujita. All rights reserved. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+`XyMTeX' は化学構造式を描くためのマクロパッケージです。
+
+(1) 設定
+
+    このマクロパッケージは、LHAで圧縮されています。この解凍は、次のように
+　行います。
+　　まず、圧縮されたxymtex2.lzhが、ディレクトリーb:にあるとします。解凍先を
+　ディレクトリーa:\texとします。ディレクトリーa:\texに入ったのち、コマンド
+　ラインに次のように入力します。
+
+     a:\tex>lha x b:\xymtex2
+  
+　この結果、解凍が行われて、ディリクトリー\xymtexが自動的に発生します。
+　発生したディレクトリーは、階層を略さずに書けば、a:\tex\xymtexとなります。
+　このディレクトリーの中に、XyMTeXの各種スタイルファイルやドキュメント類
+　が次のように展開されています。
+
+  a---\tex---\xymtex --- hetaromh.sty, hetarom.sty, ccycle.sty, 
+    |      |          |   chemstr.sty, carom.sty, lowcycl.sty, aliphat.sty, 
+                      |   hcycle.sty, locant.sty, polymers.sty, chemist.sty
+                      |   methylen.sty, fusering.sty
+                      |
+                      |   (dtx files)
+                      |
+                      |--\drvdvi---drv files, dvi files
+                      |
+                      |--\doc200--- xymtx200.tex, xymtx200.dvi,
+                      |    xymyl.tex, xymadd.tex 
+                      |    (other files for the document preparation)
+                      |
+                      |---xymtex1.doc (英語版オンラインドキュメント)
+                      |
+                      |---xymtex1.jpn (このドキュメント)
+                      |
+                      |---readme1.doc (覚え書き)
+                      |
+                      |---readme1.jpn (覚え書き)
+
+　　同時にアップロードしたxymtx200.dviは、本システムに含まれるコマンドの
+　使用例と仕様を示したものです。プリンタードライバーやプレビューアーにかけて
+　ご覧下さい。約100ページです。
+　　また、ディレクトリー\doc200に含まれるxymtx200.texは、xymtx200.dviを発生する
+  ためのtexファイルです。両者を比較すると、構造式を書くときのヒントが得
+  られるでしょう。
+
+(2) サーチパスの設定。
+
+　　XyMTeXを使うには、次のようにサーチパスを設定します。この設定は、
+　上記の解凍操作によって発生したことを前提にしています。他のディレクトリー
+　階層にした場合は、それに応じてサーチパスを設定して下さい．多分
+  ディレクトリー\tex\texmf\web2cに\texmf.cnfが含まれているので，
+  これにパスを追加してください．
+  For example, you add 
+
+   platex2e_inputs = .;$TEXMF/tex/platex2e//;$TEXMF/tex/latex2e//;
+    $TEXMF/tex//;a:/tex/inputs//;
+    a:/tex/chem//;a:/tex/xymtex//;a:/tex/opsty//
+                  ~~~~~~~~~~~~~~~ <---- 追加
+(3) 原稿への記入事項
+
+　　XyMTeXの命令を使うには、その命令の含まれているスタイルファイルを
+　オプション指定する必要があります。たとえば、hetarom.styとhetaromh.styを
+　使うときには、
+
+    \documentclass{article}
+    \usepackage{epic,hetarom,hetaromh}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+　と、原稿の先頭に記入します。いちいち指定するのが面倒ならば，
+
+    \documentclass{article}
+    \usepackage{xymtex}
+
+  と指定すると，XyMTeX関係のstyファイルがすべて読み込まれます．
+
+(4) LaTeXeまたはpLaTeX2eの起動
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%(END) 
+

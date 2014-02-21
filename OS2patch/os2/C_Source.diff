@@ -1,0 +1,4441 @@
+diff -PurB -X x-os2unix.dat tetex-src-3.0/libs/gd/gd.h tetex-src-3.0-os2/libs/gd/gd.h
+--- tetex-src-3.0/libs/gd/gd.h	Sat Oct 30 21:54:58 2004
++++ tetex-src-3.0-os2/libs/gd/gd.h	Sun Jul  3 23:26:38 2005
+@@ -59,10 +59,10 @@
+ /* 2.0.23: more Type 1 fonts */
+ #ifndef DEFAULT_FONTPATH
+ /* default fontpath for unix systems  - whatever happened to standards ! */
+-#define DEFAULT_FONTPATH "/usr/X11R6/lib/X11/fonts/TrueType:/usr/X11R6/lib/X11/fonts/truetype:/usr/X11R6/lib/X11/fonts/TTF:/usr/share/fonts/TrueType:/usr/share/fonts/truetype:/usr/openwin/lib/X11/fonts/TrueType:/usr/X11R6/lib/X11/fonts/Type1:/usr/lib/X11/fonts/Type1:/usr/openwin/lib/X11/fonts/Type1"
++#define DEFAULT_FONTPATH "/usr/X11R6/lib/X11/fonts/TrueType;/usr/X11R6/lib/X11/fonts/truetype;/usr/X11R6/lib/X11/fonts/TTF;/usr/share/fonts/TrueType;/usr/share/fonts/truetype;/usr/openwin/lib/X11/fonts/TrueType;/usr/X11R6/lib/X11/fonts/Type1;/usr/lib/X11/fonts/Type1;/usr/openwin/lib/X11/fonts/Type1"
+ #endif
+ #ifndef PATHSEPARATOR
+-#define PATHSEPARATOR ":"
++#define PATHSEPARATOR ";"
+ #endif
+ 
+ /* gd.h: declarations file for the graphic-draw module.
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/dviljk/config.h tetex-src-3.0-os2/texk/dviljk/config.h
+--- tetex-src-3.0/texk/dviljk/config.h	Fri Jan  4 01:40:24 2002
++++ tetex-src-3.0-os2/texk/dviljk/config.h	Sun Mar  6 03:32:52 2005
+@@ -283,7 +283,12 @@
+ #define OS "OS/2"
+ #define READ_BINARY     "rb"
+ #define WRITE_BINARY    "wb"
++#ifdef __EMX__
++# define AssureBinary(f) setmode((f), O_BINARY)
++# undef MSC5
++#else
+ #define MSC5
++#endif /* __EMX__ */
+ #endif
+ #ifdef WIN32
+ #define OS "Win32"
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/dviljk/dvi2xx.h tetex-src-3.0-os2/texk/dviljk/dvi2xx.h
+--- tetex-src-3.0/texk/dviljk/dvi2xx.h	Tue Mar 16 16:03:32 1999
++++ tetex-src-3.0-os2/texk/dviljk/dvi2xx.h	Sun Mar  6 03:32:52 2005
+@@ -292,7 +292,9 @@
+ #ifndef _AMIGA
+ # ifndef unix
+ #  if NeedFunctionPrototypes
++#ifndef __EMX__
+ long    access(char *, int);      /* all the other ones known under RISC OS */
++#endif /* __EMX__ */
+ #  else
+ long    access();
+ #  endif
+@@ -311,7 +313,9 @@
+ unsigned int strlen();
+ #   endif
+ void    free();
++#ifndef __EMX__
+ void    setbuf();
++#endif /* __EMX__ */
+ #  endif
+ 
+ #  ifdef MSC5
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/dvipsk/dvips.c tetex-src-3.0-os2/texk/dvipsk/dvips.c
+--- tetex-src-3.0/texk/dvipsk/dvips.c	Sun Jan 30 22:17:20 2005
++++ tetex-src-3.0-os2/texk/dvipsk/dvips.c	Mon Mar  7 23:22:56 2005
+@@ -151,9 +151,13 @@
+ #endif
+ #endif /* ! KPATHSEA */
+ #ifdef FONTLIB
++#ifdef __EMX__
++#define FLIPATH "c:/texfonts"
++#define FLINAME "lj_0;lj_h;lj_1;lj_2;lj_3;lj_4;lj_5a;lj_5b;lj_sli"
++#endif /* __EMX__ */
+ char *flipath = FLIPATH ;     /* pointer to directories for fli files */
+ char *fliname = FLINAME ;     /* pointer to names of fli files */
+-#endif
++#endif /* FONTLIB */
+ integer swmem ;               /* font memory in the PostScript printer */
+ int quiet ;                   /* should we only print errors to stderr? */
+ int filter ;                  /* act as filter default output to stdout,
+@@ -265,7 +269,7 @@
+ "n # Maximum number of pages        N*  No structured comments          ",
+ "noomega  Disable Omega extensions                                      ",
+ "o f Output file                    O c Set/change paper offset         ",
+-#if defined(MSDOS) || defined(OS2)
++#if defined(MSDOS) || ( defined(OS2) && !defined(OS2UNIX) )
+ "p # First page                     P s Load $s.cfg                     ",
+ #else
+ "p # First page                     P s Load config.$s                  ",
+@@ -1049,7 +1053,7 @@
+          struct papsiz *opapsiz = papsizes ;
+          papsizes = 0 ;
+ 	 if (0 != (p = getenv("PRINTER"))) {
+-#if defined(MSDOS) || defined(OS2)
++#if defined(MSDOS) || ( defined(OS2) && !defined(OS2UNIX) )
+             strcpy(nextstring, p) ;
+             strcat(nextstring, ".cfg") ;
+ #else
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/dvipsk/flib.c tetex-src-3.0-os2/texk/dvipsk/flib.c
+--- tetex-src-3.0/texk/dvipsk/flib.c	Sun Nov  1 12:45:06 1998
++++ tetex-src-3.0-os2/texk/dvipsk/flib.c	Mon Mar  7 22:37:02 2005
+@@ -7,6 +7,15 @@
+ #include "dvips.h"
+ #include "paths.h"
+ #include "protos.h"
++#ifdef __EMX__
++#define PATHSEP         ';'
++#define DIRSEP          '\\'
++#define MAXPATHLEN (2000)
++#define search emx_search
++int to_close ;
++char *realnameoffile ;
++extern char *nextstring ;
++#endif /* __EMX__*/
+ extern int debug_flag ;
+ extern char errbuf[] ;
+ extern char *flipath ;
+@@ -54,6 +63,244 @@
+    return(i) ;
+ }
+ extern char name[] ;
++
++#ifdef __EMX__
++/*
++ *   Get environment variables! These override entries in ./config.h.
++ *   We substitute everything of the form ::, ^: or :$ with default,
++ *   so a user can easily build on to the existing paths.
++ */
++char *getpath P2C(char *, who, char *, what)
++{
++   if (who) {
++      register char *pp, *qq ;
++      int lastsep = 1 ;
++
++      for (pp=nextstring, qq=who; *qq;) {
++         if (*qq == PATHSEP) {
++            if (lastsep) {
++               strcpy(pp, what) ;
++               pp = pp + strlen(pp) ;
++            }
++            lastsep = 1 ;
++         } else
++            lastsep = 0 ;
++         *pp++ = *qq++ ;
++      }
++      if (lastsep) {
++         strcpy(pp, what) ;
++         pp = pp + strlen(pp) ;
++      }
++      *pp = 0 ;
++      qq = nextstring ;
++      nextstring = pp + 1 ;
++      return qq ;
++   } else
++      return what ;
++}
++
++FILE *
++emx_search P3C(char *, path, char *, file, char *, mode)
++{
++   register char *nam ;                 /* index into fname */
++   register FILE *fd ;                  /* file desc of file */
++   char fname[MAXPATHLEN] ;             /* to store file name */
++   static char *home = 0 ;              /* home is where the heart is */
++   int len = strlen(file) ;
++   int tryz = 0 ;
++   if (len>=3 &&
++        ((file[len-2] == '.' && file[len-1] == 'Z') ||
++         (file[len-3] == '.' && file[len-2] == 'g' && file[len-1] == 'z')) &&
++        (path==figpath || path==pictpath || path==headerpath))
++      tryz = file[len-1] ;
++   to_close = USE_FCLOSE ;
++#ifdef MVSXA
++char fname_safe[256];
++register int i, firstext, lastext, lastchar;
++#endif
++#ifdef VMCMS /* IBM: VM/CMS - we don't have paths or dirsep's but we strip off
++                             filename if there is a Unix path dirsep    */
++   register char *lastdirsep ;
++   lastdirsep = strrchr(file, '/') ;
++   if ( NULL != lastdirsep ) file = lastdirsep + 1 ;
++   if ((fd=fopen(file,mode)) != NULL) {
++      return(fd) ;
++   } else {
++      return(NULL) ;
++   }
++#else
++   if (*file == DIRSEP 
++       || NAME_BEGINS_WITH_DEVICE(file)) {               /* if full path name */
++      if ((fd=fopen(file,mode)) != NULL) {
++         strcpy(realnameoffile, file) ;
++         if (tryz) {
++            char *cmd = mymalloc(strlen(file) + 20) ;
++            strcpy(cmd, (tryz=='z' ? "gzip -d <" : "compress -d <")) ;
++            strcat(cmd, file) ;
++            fclose(fd) ;
++            fd = popen(cmd, "r") ;
++            to_close = USE_PCLOSE ;
++            free(cmd) ;
++         }
++         return(fd) ;
++      } else
++         return(NULL) ;
++   }
++#endif   /* IBM: VM/CMS */
++
++#if defined MSDOS || defined OS2 || defined(ATARIST) || defined(WIN32)
++   if ( isalpha(file[0]) && file[1]==':' ) {   /* if full path name */
++      if ((fd=fopen(file,mode)) != NULL) {
++         strcpy(realnameoffile, file) ;
++         return(fd) ;
++      } else
++         return(NULL) ;
++   }
++   if (*file == '/') {/* if full path name with unix DIRSEP less drive code */
++      if ((fd=fopen(file,mode)) != NULL) {
++         strcpy(realnameoffile, file) ;
++         return(fd) ;
++      } else
++         return(NULL) ;
++   }
++#endif
++
++   do {
++      /* copy the current directory into fname */
++      nam = fname;
++      /* copy till PATHSEP */
++      if (*path == '~') {
++         char *p = nam ;
++         path++ ;
++         while (*path && *path != PATHSEP && *path != DIRSEP)
++            *p++ = *path++ ;
++         *p = 0 ;
++         if (*nam == 0) {
++            if (home == 0) {
++               if (0 != (home = getenv("HOME")))
++                  home = newstring(home) ;
++               else
++                  home = "." ;
++            }
++            strcpy(fname, home) ;
++         } else {
++#if defined MSDOS || defined OS2
++            error("! ~username in path???") ;
++#else
++#ifdef WIN32
++	    /* FIXME: at least under NT, it should be possible to 
++	       retrieve the HOME DIR for a given user */
++            error("! ~username in path???") ;
++#else
++#ifdef VMS
++            error("! ~username in path???") ;
++#else
++#ifdef ATARIST
++            error("! ~username in path???") ;
++#else
++#ifdef VMCMS  /* IBM: VM/CMS */
++            error("! ~username in path???") ;
++#else
++#ifdef MVSXA  /* IBM: MVS/XA */
++            error("! ~username in path???") ;
++#else
++#ifdef __THINK__
++            error("! ~username in path???") ;
++#else
++            struct passwd *pw = getpwnam(fname) ;
++            if (pw)
++               strcpy(fname, pw->pw_dir) ;
++            else
++               error("no such user") ;
++#endif
++#endif  /* IBM: VM/CMS */
++#endif
++#endif
++#endif
++#endif
++#endif
++         }
++         nam = fname + strlen(fname) ;
++      }
++      while (*path != PATHSEP && *path) *nam++ = *path++;
++      *nam = 0 ;
++#ifndef VMS
++#ifndef __THINK__
++      if (nam == fname) *nam++ = '.';   /* null component is current dir */
++
++      if (*file != '\0') {
++         if ((nam != fname) && *(nam-1) != DIRSEP) /* GNW 1992.07.09 */
++            *nam++ = DIRSEP;                  /* add separator */
++         (void)strcpy(nam,file);                   /* tack the file on */
++      }
++      else
++         *nam = '\0' ;
++#else
++      (void)strcpy(nam,file);                   /* tack the file on */
++#endif
++#else
++      (void)strcpy(nam,file);                   /* tack the file on */
++#endif
++#ifdef MVSXA
++nam = fname;
++if (strchr(nam,'=') != NULL) {
++   (void) strcpy(fname_safe,fname);  /* save fname */
++   firstext = strchr(nam, '=') - nam + 2;
++   lastext = strrchr(nam, '.') - nam + 1;
++   lastchar  = strlen(nam) - 1;
++
++   (void) strcpy(fname,"dd:");  /* initialize fname */
++   nam=&fname[3];
++   for (i=lastext; i<=lastchar; i++) *nam++ = fname_safe[i] ;
++           *nam++  = '(' ;
++   for (i=firstext; i<lastext-1; i++) *nam++ = fname_safe[i] ;
++           *nam++  = ')' ;
++           *nam++  = 0   ;
++   }
++   else {
++      if (fname[0] == '/') {
++         fname[0] = '\'';
++         strcat(&fname[strlen(fname)],"\'");
++      }
++      if (fname[0] == '.') fname[0] = ' ';
++      if (fname[1] == '.') fname[1] = ' ';
++   }
++#endif
++
++      /* belated check -- bah! */
++      if ((nam - fname) + strlen(file) + 1 > MAXPATHLEN)
++         error("! overran allocated storage in search()");
++
++#ifdef DEBUG
++      if (dd(D_PATHS))
++         (void)fprintf(stderr,"search: Trying to open %s\n", fname) ;
++#endif
++      if ((fd=fopen(fname,mode)) != NULL) {
++         strcpy(realnameoffile, fname) ;
++         if (tryz) {
++            char *cmd = mymalloc(strlen(file) + 20) ;
++            strcpy(cmd, (tryz=='z' ? "gzip -d <" : "compress -d <")) ;
++            strcat(cmd, file) ;
++            fclose(fd) ;
++            fd = popen(cmd, "r") ;
++            to_close = USE_PCLOSE ;
++         }
++         return(fd);
++      }
++
++   /* skip over PATHSEP and try again */
++   } while (*(path++));
++
++   return(NULL);
++
++}               /* end search */
++#endif /* __EMX__ */
++
++
++
++
++
++
+ /*
+  *   fliload opens each font library, then reads in its
+  *   directory for later use.
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/dvipsk/resident.c tetex-src-3.0-os2/texk/dvipsk/resident.c
+--- tetex-src-3.0/texk/dvipsk/resident.c	Sun Jan 23 06:01:18 2005
++++ tetex-src-3.0-os2/texk/dvipsk/resident.c	Mon Mar  7 23:23:12 2005
+@@ -57,7 +57,10 @@
+ extern Boolean downloadpspk ;
+ #ifdef FONTLIB
+ extern char *flipath, *fliname ;
+-#endif
++#ifndef __EMX__
++/* in flib.c  by Jun Sawataichi for OS/2 */
++#endif /* __EMX__ */
++#endif /* FONTLIB */
+ extern char *paperfmt ; 
+ extern char *nextstring ;
+ extern char *maxstring ;
+@@ -427,7 +430,7 @@
+ #endif /* KPATHSEA */
+       }
+    } else {
+-#if defined(MSDOS) || defined(OS2)
++#if defined(MSDOS) || ( defined(OS2) && !defined(OS2UNIX) )
+       strcpy(PSname, printer) ;
+       strcat(PSname, ".cfg") ;
+ #else
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/dvipsk/search.c tetex-src-3.0-os2/texk/dvipsk/search.c
+--- tetex-src-3.0/texk/dvipsk/search.c	Sun Jan 30 19:38:44 2005
++++ tetex-src-3.0-os2/texk/dvipsk/search.c	Sun Mar  6 03:32:52 2005
+@@ -10,6 +10,10 @@
+ #include <kpathsea/tex-file.h>
+ #include <kpathsea/tex-glyph.h>
+ extern char name[];
++#ifdef __EMX__
++#define MAXPATHLEN (2000)
++#define DIRSEP '/'
++#endif /* __EMX__ */
+ #else
+ #include <ctype.h>
+ #if !defined(WIN32)
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/gsftopk/gsftopk.c tetex-src-3.0-os2/texk/gsftopk/gsftopk.c
+--- tetex-src-3.0/texk/gsftopk/gsftopk.c	Sat Feb  7 06:20:54 2004
++++ tetex-src-3.0-os2/texk/gsftopk/gsftopk.c	Sun Mar  6 03:32:52 2005
+@@ -37,6 +37,10 @@
+  */
+ 
+ #include "version.h"
++#ifdef __EMX__
++#include <process.h>
++#define SET_BINARY(f)   setmode((f), O_BINARY)
++#endif /* __EMX__ */
+ 
+ #ifndef KPATHSEA
+ 
+@@ -349,7 +353,11 @@
+ #endif
+ 
+ #ifndef GS_PATH
++#ifndef __EMX__
+ #define	GS_PATH	"gs"
++#else
++#define	GS_PATH	"gsos2"
++#endif /* __EMX__ */
+ #endif
+ 
+ #if __GNUC__
+@@ -2552,7 +2560,12 @@
+ 	    perror("pipe");
+ 	    return 1;
+ 	}
+-
++#ifdef __EMX__
++//	SET_BINARY(std_in[0]);
++//	SET_BINARY(std_in[1]);  write to std_in[1]
++	SET_BINARY(std_out[1]);
++//	SET_BINARY(std_out[0]);
++#endif /* __EMX__ */
+ 	/* Catch the signal for death of the child process. */
+ 
+ #if HAVE_SIGACTION
+@@ -2575,6 +2588,7 @@
+ 	(void) signal(SIGTERM, handle_sigterm);
+ 
+ 	fflush(stderr);		/* to avoid double flushing */
++#ifndef __EMX__
+ 	gs_pid = vfork();
+ 	if (gs_pid == 0) {
+ 	    close(std_in[1]);
+@@ -2598,6 +2612,28 @@
+ 	    perror("fork");
+ 	    exit(1);
+ 	}
++#else
++{
++	int so; int si;
++	so = dup(1); si = dup(0);
++	close(1); close(0);
++	dup2(std_in[0], 0);
++	dup2(std_out[1], 1);
++	close(std_in[0]);
++	close(std_out[1]);
++	SET_BINARY(0);
++	SET_BINARY(1);
++	gs_pid = spawnlp(P_NOWAIT,gspath, "gsos2", "-dNODISPLAY", "-dNOGC", substarg, "-q", "--",
++		/* render.ps */ searchpath,
++	PSname, dlstring != NULL ? dlstring : "", specinfo, dpistr, NULL);
++	dup2(so, 1); close(so);
++	dup2(si, 0); close(si);
++	    if (col != 0) {
++		putc('\n', stderr);
++		col = 0;
++	    }
++ }
++#endif /* __EMX__ */
+ 
+ #endif /* neither _AMIGA nor WIN32 */
+ 
+@@ -2619,6 +2655,9 @@
+ 	strcpy(xfilename + fontlen, ".tfm");
+ 	tfm_file = search(TFMPATH, "TEXFONTS", xfilename);
+ #endif /* not KPATHSEA */
++#ifdef __EMX__
++	_fsetmode(tfm_file, "b");
++#endif /* __EMX__ */
+ 	if (tfm_file == NULL) oops("Cannot find tfm file.");
+ 
+ 	for (i = 0; i < 12; ++i) {
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/c-fopen.h tetex-src-3.0-os2/texk/kpathsea/c-fopen.h
+--- tetex-src-3.0/texk/kpathsea/c-fopen.h	Sun Apr  2 20:04:26 2000
++++ tetex-src-3.0-os2/texk/kpathsea/c-fopen.h	Sun Mar  6 03:32:52 2005
+@@ -59,7 +59,7 @@
+ #endif
+ #endif
+ #if defined (__i386_pc_gnu__) || \
+-    defined (WIN32) || defined (__WIN32__) || defined (_WIN32)
++    defined (WIN32) || defined (__WIN32__) || defined (_WIN32) || defined(__EMX__)
+ #define SET_BINARY(f) setmode((f), O_BINARY)
+ #endif
+ #else  /* not DOSISH */
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/c-unistd.h tetex-src-3.0-os2/texk/kpathsea/c-unistd.h
+--- tetex-src-3.0/texk/kpathsea/c-unistd.h	Sun Oct  1 01:00:46 1995
++++ tetex-src-3.0-os2/texk/kpathsea/c-unistd.h	Sun Mar  6 03:32:54 2005
+@@ -23,7 +23,7 @@
+ /* <unistd.h> is allowed to depend on <sys/types.h>.  */
+ #include <kpathsea/systypes.h>
+ 
+-#if HAVE_UNISTD_H
++#if defined(HAVE_UNISTD_H) && !defined(__EMX__)
+ #include <unistd.h>
+ #endif
+ 
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/config.h tetex-src-3.0-os2/texk/kpathsea/config.h
+--- tetex-src-3.0/texk/kpathsea/config.h	Sat Aug  7 04:39:32 2004
++++ tetex-src-3.0-os2/texk/kpathsea/config.h	Sun May 29 02:31:10 2005
+@@ -45,7 +45,9 @@
+ 
+ /* case-insensitive filename comparisons? */
+ #if defined (DOSISH)
++#ifndef __EMX__
+ #define MONOCASE_FILENAMES
++#endif /* __EMX__ */
+ #endif
+ 
+ /* NULL device. */
+@@ -110,7 +112,7 @@
+ #define pclose(file) 0
+ #endif /* AMIGA */
+ 
+-#ifdef OS2
++#if defined(OS2) && !defined(__EMX__)
+ #define access ln_access
+ #define chmod ln_chmod
+ #define creat ln_creat
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/getopt.c tetex-src-3.0-os2/texk/kpathsea/getopt.c
+--- tetex-src-3.0/texk/kpathsea/getopt.c	Sun Apr  2 20:13:22 2000
++++ tetex-src-3.0-os2/texk/kpathsea/getopt.c	Sun Mar  6 03:32:54 2005
+@@ -69,7 +69,9 @@
+ /* Don't include stdlib.h for non-GNU C libraries because some of them
+    contain conflicting prototypes for getopt.  */
+ #include <stdlib.h>
++#ifndef __EMX__
+ #include <unistd.h>
++#endif /* __EMX__ :jsawa */
+ #endif	/* GNU C library.  */
+ 
+ #ifdef VMS
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/getopt.h tetex-src-3.0-os2/texk/kpathsea/getopt.h
+--- tetex-src-3.0/texk/kpathsea/getopt.h	Sat Aug  7 04:39:32 2004
++++ tetex-src-3.0-os2/texk/kpathsea/getopt.h	Sun Mar  6 03:32:54 2005
+@@ -115,7 +115,7 @@
+ #define optional_argument	2
+ 
+ #if defined (__STDC__) && __STDC__
+-#ifdef __GNU_LIBRARY__
++#if defined(__GNU_LIBRARY__)/* || defined(__EMX__) */
+ /* Many other libraries have conflicting prototypes for getopt, with
+    differences in the consts, in stdlib.h.  To avoid compilation
+    errors, only prototype getopt for the GNU C library.  */
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/xgetcwd.c tetex-src-3.0-os2/texk/kpathsea/xgetcwd.c
+--- tetex-src-3.0/texk/kpathsea/xgetcwd.c	Sun Nov 18 06:33:34 2001
++++ tetex-src-3.0-os2/texk/kpathsea/xgetcwd.c	Sun Mar  6 03:32:54 2005
+@@ -30,7 +30,11 @@
+ static void
+ xchdir P1C(string, dirname)
+ {
++#ifndef __EMX__
+   if (chdir (dirname) != 0)
++#else
++  if (_chdir2 (dirname) != 0)
++#endif /* __EMX__ */
+     FATAL_PERROR (dirname);
+ }
+ 
+@@ -50,8 +54,11 @@
+                                        -- Olaf Weber <infovore@xs4all.nl */
+ #if defined (HAVE_GETCWD) && !defined (GETCWD_FORKS)
+   string path = (string)xmalloc (PATH_MAX + 1);
+-  
++#ifndef __EMX__  
+   if (getcwd (path, PATH_MAX + 1) == 0)
++#else
++  if (_getcwd2 (path, PATH_MAX + 1) == 0)
++#endif /* __EMX__ */
+     {
+       fprintf (stderr, "getcwd: %s", path);
+       exit (1);
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/ps2pkm/basics.h tetex-src-3.0-os2/texk/ps2pkm/basics.h
+--- tetex-src-3.0/texk/ps2pkm/basics.h	Fri Aug  2 19:58:22 2002
++++ tetex-src-3.0-os2/texk/ps2pkm/basics.h	Sun Mar  6 03:32:54 2005
+@@ -16,7 +16,7 @@
+ #  define DIRSEP  DIR_SEP
+ #  define RB FOPEN_RBIN_MODE
+ #  define WB FOPEN_WBIN_MODE
+-#  if defined(DOSISH)
++#  if defined(DOSISH) && !defined(__EMX__)
+ #    define ESCAPECHAR '!'
+ #    define RECURSIVE "!!"
+ #  endif /* DOSISH */
+@@ -30,7 +30,15 @@
+ #  define RB "rb"
+ #  define WB "wb"
+ #endif
+- 
++
++#if defined(__EMX__)
++#  define PATHSEP ';'
++#  define DIRSEP '/'
++#  define PSRES_NAME	"psres.dpr"
++#  define RB "rb"
++#  define WB "wb"
++#endif
++
+ #ifndef PATHSEP
+ #define PATHSEP ':'
+ #endif
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/ps2pkm/t1io.c tetex-src-3.0-os2/texk/ps2pkm/t1io.c
+--- tetex-src-3.0/texk/ps2pkm/t1io.c	Fri Mar 13 06:36:04 1998
++++ tetex-src-3.0-os2/texk/ps2pkm/t1io.c	Sun Mar  6 03:32:54 2005
+@@ -75,7 +75,7 @@
+   Decrypt = 0;
+  
+   /* We know we are only reading */
+-#if defined(MSDOS) || defined(VMS) || defined(WIN32)
++#if defined(MSDOS) || defined(VMS) || defined(WIN32) || defined(__EMX__)
+   if ((of->fd=open(fn, O_RDONLY | O_BINARY)) < 0) return NULL;
+ #else
+   if ((of->fd=open(fn, O_RDONLY)) < 0) return NULL;
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/web2c/lib/main.c tetex-src-3.0-os2/texk/web2c/lib/main.c
+--- tetex-src-3.0/texk/web2c/lib/main.c	Thu Mar 25 03:51:08 2004
++++ tetex-src-3.0-os2/texk/web2c/lib/main.c	Sun Mar  6 03:32:54 2005
+@@ -14,11 +14,12 @@
+ 
+ int main P2C(int, ac,  string *, av)
+ {
++
++  extern void mainbody P1H(void);
+ #ifdef __EMX__
+   _wildcard (&ac, &av);
+   _response (&ac, &av);
+ #endif
+-  extern void mainbody P1H(void);
+ 
+   argc = ac;
+   argv = av;
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/web2c/omegadir/omegabis.c tetex-src-3.0-os2/texk/web2c/omegadir/omegabis.c
+--- tetex-src-3.0/texk/web2c/omegadir/omegabis.c	Sat Feb  1 06:37:44 2003
++++ tetex-src-3.0-os2/texk/web2c/omegadir/omegabis.c	Sun Mar  6 03:32:54 2005
+@@ -27,7 +27,7 @@
+ #include <stdio.h>
+ #include <errno.h>
+ #include <string.h>
+-#ifndef WIN32
++#if !defined(WIN32) && !defined(__EMX__)
+ #include <unistd.h>
+ #endif /* not WIN32 */
+ #include "omegad.h"
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/web2c/pdfetexdir/pdfetex.h tetex-src-3.0-os2/texk/web2c/pdfetexdir/pdfetex.h
+--- tetex-src-3.0/texk/web2c/pdfetexdir/pdfetex.h	Mon May 10 16:38:22 2004
++++ tetex-src-3.0-os2/texk/web2c/pdfetexdir/pdfetex.h	Sun Mar  6 03:32:54 2005
+@@ -21,7 +21,9 @@
+ */
+ 
+ /* Additions to texmfmp.h for pdfTeX */
+-
++#ifdef __EMX__
++#undef HAVE_UNISTD_H
++#endif /* __EMX__ : jsawa */
+ /* mark a char in font */
+ #define pdfmarkchar(f, c) pdfcharused[f][c/8] |= (1<<(c%8))
+ 
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/web2c/pdftexdir/pdftex.h tetex-src-3.0-os2/texk/web2c/pdftexdir/pdftex.h
+--- tetex-src-3.0/texk/web2c/pdftexdir/pdftex.h	Mon May 10 16:35:40 2004
++++ tetex-src-3.0-os2/texk/web2c/pdftexdir/pdftex.h	Sun Mar  6 03:32:54 2005
+@@ -21,7 +21,9 @@
+ */
+ 
+ /* Additions to texmfmp.h for pdfTeX */
+-
++#ifdef __EMX__
++#undef HAVE_UNISTD_H
++#endif /* __EMX__ : jsawa */
+ /* mark a char in font */
+ #define pdfmarkchar(f, c) pdfcharused[f][c/8] |= (1<<(c%8))
+ 
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/xdvik/events.c tetex-src-3.0-os2/texk/xdvik/events.c
+--- tetex-src-3.0/texk/xdvik/events.c	Tue Nov 30 09:45:10 2004
++++ tetex-src-3.0-os2/texk/xdvik/events.c	Sun Mar  6 03:32:54 2005
+@@ -99,6 +99,11 @@
+ #include "xm_prefs_fonts.h"	 /* for update_preferences_color() */
+ #include "xm_prefs_page.h"	 /* for update_preferences_shrink() */
+ 
++#ifdef __EMX__
++#include <sys/time.h>
++#endif /* __EMX__ */
++
++
+ #ifdef	X_NOT_STDC_ENV
+ extern int errno;
+ #endif /* X_NOT_STDC_ENV */
+@@ -4241,7 +4246,9 @@
+ #endif /* not HAVE_SIGACTION */
+ 
+     (void)sigemptyset(&all_signals);
++#ifndef __EMX__
+     (void)sigaddset(&all_signals, SIGPOLL);
++#endif /* __EMX__ */
+     (void)sigaddset(&all_signals, SIGINT);
+     (void)sigaddset(&all_signals, SIGQUIT);
+     (void)sigaddset(&all_signals, SIGTERM);
+@@ -4526,8 +4533,13 @@
+ 
+ 
+ static	struct xtimer		*timers	= NULL;	/* head of timer list */
++#ifndef __EMX__
++static struct itimerval        itv     = {{0, 0}, {0, 0}};
++#else
++struct timeval itv = {0, 0};
++#endif /* __EMX__ */
++
+ 
+-static	struct itimerval	itv	= {{0, 0}, {0, 0}};
+ 
+ #ifndef	timercmp
+ #define	timercmp(a, b, OP)	(((a)->tv_sec OP (b)->tv_sec || \
+@@ -4556,10 +4568,17 @@
+ 	fprintf(stderr, "%s:%d: set_timer\n", __FILE__, __LINE__);
+ 
+     gettimeofday(&tp->when, NULL);
++#ifndef __EMX__
+     itv.it_value.tv_sec = ms / 1000;
+     itv.it_value.tv_usec = (ms % 1000) * 1000;
+     tp->when.tv_sec += itv.it_value.tv_sec;
+     tp->when.tv_usec += itv.it_value.tv_usec;
++#else
++    itv.tv_sec = ms / 1000;
++    itv.tv_usec = (ms % 1000) * 1000;
++    tp->when.tv_sec += itv.tv_sec;
++    tp->when.tv_usec += itv.tv_usec;
++#endif /* __EMX__ */
+     if (tp->when.tv_usec >= 1000000) {
+ 	tp->when.tv_usec -= 1000000;
+ 	++tp->when.tv_sec;
+@@ -4575,7 +4594,9 @@
+     *tpp = tp;
+ 
+     if (tpp == &timers) {
++#ifndef __EMX__
+ 	setitimer(ITIMER_REAL, &itv, NULL);
++#endif/* __EMX__*/
+ 	if (ms == 0)
+ 	    sig_flags |= SF_ALRM;
+     }
+@@ -4610,8 +4631,12 @@
+     *tpp = (*tpp)->next;	/* unlink it */
+ 
+     if (timers == NULL) {	/* cancel SIGALRM */
++#ifndef __EMX__
+ 	itv.it_value.tv_sec = itv.it_value.tv_usec = 0;
+ 	setitimer(ITIMER_REAL, &itv, NULL);
++#else
++	itv.tv_sec = itv.tv_usec = 0;
++#endif /* __EMX__ */
+     }
+ }
+ 
+@@ -4745,15 +4770,29 @@
+ 
+     if (timers != NULL) {		/* set next timer */
+ 	int i;
++#ifndef __EMX__
+ 	itv.it_value.tv_sec = timers->when.tv_sec - now.tv_sec;
++#else
++	itv.tv_sec = timers->when.tv_sec - now.tv_sec;
++#endif /* __EMX__ */
+ 	i = timers->when.tv_usec - now.tv_usec;
+ 	if (i < 0) {
++#ifndef __EMX__
+ 	    --itv.it_value.tv_sec;
++#else
++	    --itv.tv_sec;
++#endif /* __EMX__ */
+ 	    i += 1000000;
+ 	}
++#ifndef __EMX__
+ 	itv.it_value.tv_usec = i;
++#else
++	itv.tv_usec = i;
++#endif /* __EMX__ */
+ 
++#ifndef __EMX__
+ 	setitimer(ITIMER_REAL, &itv, NULL);
++#endif /* __EMX__ */
+     }
+ }
+ 
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/xdvik/gui/sfPath.c tetex-src-3.0-os2/texk/xdvik/gui/sfPath.c
+--- tetex-src-3.0/texk/xdvik/gui/sfPath.c	Sat May  8 09:51:44 2004
++++ tetex-src-3.0-os2/texk/xdvik/gui/sfPath.c	Sun Mar  6 03:32:54 2005
+@@ -100,7 +100,11 @@
+     result = 0;
+ 
+     if (strcmp(path, SFcurrentDir)) {
++#ifndef __EMX__
+ 	result = chdir(path);
++#else
++	result = _chdir2(path);
++#endif /* __EMX__ */
+ 	if (!result) {
+ 	    (void)strcpy(SFcurrentDir, path);
+ 	}
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/xdvik/gui/sfSelFile.c tetex-src-3.0-os2/texk/xdvik/gui/sfSelFile.c
+--- tetex-src-3.0/texk/xdvik/gui/sfSelFile.c	Wed Jun  2 06:57:14 2004
++++ tetex-src-3.0-os2/texk/xdvik/gui/sfSelFile.c	Sun Mar  6 03:32:54 2005
+@@ -843,7 +843,12 @@
+ void
+ SFtextChanged(void)
+ {
++#ifndef __EMX__
+     if ((SFtextBuffer[0] == '/') || (SFtextBuffer[0] == '~')) {
++#else
++   if ((SFtextBuffer[0] == '/') || (SFtextBuffer[1] == ':') 
++                                 || (SFtextBuffer[0] == '~')) {
++#endif
+ 	(void)strcpy(SFcurrentPath, SFtextBuffer);
+ 
+ 	SFtextPos = XawTextGetInsertionPoint(selFileField);
+@@ -946,7 +951,11 @@
+     (void)strcpy(SFcurrentDir, SFstartDir);
+ 
+     if (callback->init_path) {
++#ifndef __EMX__
+ 	if (callback->init_path[0] == '/') {
++#else
++	if (callback->init_path[0] == '/' || callback->init_path[1] == ':') {
++#endif /* __EMX__ */
+ 	    (void)strcpy(SFcurrentPath, callback->init_path);
+ 	    if (strncmp(SFcurrentPath, SFstartDir, strlen(SFstartDir))) {
+ 		SFsetText(SFcurrentPath);
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/xdvik/print-internal.c tetex-src-3.0-os2/texk/xdvik/print-internal.c
+--- tetex-src-3.0/texk/xdvik/print-internal.c	Sun Nov  7 07:56:06 2004
++++ tetex-src-3.0-os2/texk/xdvik/print-internal.c	Sun Mar  6 03:32:54 2005
+@@ -169,11 +169,19 @@
+     print_child.pid = fork();
+     if (print_child.pid == 0) {	/* if child */
+ 	/* change into dir of DVI file so that included image files etc. are found */
++#ifndef __EMX__
+ 	chdir(globals.dvi_file.dirname);
++#else
++	_chdir2(globals.dvi_file.dirname);
++#endif /* __EMX__ */
+ 
+ 	if (globals.debug & DBG_FILES) {
+ 	    char path[MAXPATHLEN];
++#ifndef __EMX__
+ 	    getcwd(path, MAXPATHLEN);
++#else
++	    _getcwd2(path, MAXPATHLEN);
++#endif /* __EMX__ */
+ 	    fprintf(stderr, "Directory of running `%s': `%s'\n",
+ 		    argv[0], path);
+ 	}
+@@ -199,12 +207,13 @@
+  	(void)dup2(print_io[1], STDERR_FILENO);
+  	(void)close(print_io[1]);
+  	(void)close(print_io[0]);
+- 
++#ifndef __EMX__
+  	if (setsid() == -1) {	/* so we can kill the process group */
+  	    perror("setsid");
+  	    fflush(stderr);
+  	    _exit(1);
+  	}
++#endif /* __EMX__ */
+  	(void)execvp(*argv, argv);
+  	popup_message(globals.widgets.top_level,
+ 		      MSG_ERR,
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/xdvik/psgs.c tetex-src-3.0-os2/texk/xdvik/psgs.c
+--- tetex-src-3.0/texk/xdvik/psgs.c	Mon Jan 17 03:39:50 2005
++++ tetex-src-3.0-os2/texk/xdvik/psgs.c	Sun Mar  6 03:32:54 2005
+@@ -75,6 +75,17 @@
+ #ifdef MOTIF
+ # include <Xm/Xm.h>
+ #endif
++#ifdef __EMX__ 
++#include <sys/fcntl.h>
++#include <process.h>
++#define _POSIX_SOURCE 1
++#define SET_BINARY(f)   setmode((f), O_BINARY)
++#define SET_TEXT(f)     setmode((f), O_TEXT)
++#ifdef EMX_DEBUG
++# define dbg(a,b)   fprintf(stderr, "%s %d: %s%d\n", __FILE__,__LINE__, a, b)
++# define sdbg(a,b)   fprintf(stderr,"%s %d: %s%s\n", __FILE__,__LINE__, a, b)
++#endif /* EMX_DEBUG */
++#endif /* __EMX__ */
+ 
+ extern const char psheader[];
+ extern unsigned psheaderlen;
+@@ -112,13 +123,25 @@
+ 
+ static int std_io[2];
+ Pixmap bpixmap;
+-
++#ifndef __EMX__
+ #define	GS_fd	(std_io[0])
++#else
++static int std_oi[2];
++#define	GS_fd	(std_io[1]) /* write to gs  */
++#define	GS_fd_r	(std_oi[0]) /* read from gs  */
++#endif /* __EMX__ */
+ 
+ 		/* some arguments are filled in later */
+ static char arg4[] = "-dDEVICEWIDTH=xxxxxxxxxx";
+ static char arg5[] = "-dDEVICEHEIGHT=xxxxxxxxxx";
+ 
++#ifdef __EMX__
++	int si;
++	int so;
++	int se;
++#endif /* __EMX__ */
++
++
+ static const char *argv[] = {
+     NULL, NULL, "-dNOPAUSE", "-q", arg4, arg5,
+     "-dDEVICEXRESOLUTION=72",
+@@ -609,14 +632,24 @@
+     }
+ 
+     XSync(DISP, False);	/* update the window */
++#ifdef __EMX__
++    if (xpipe(std_oi) != 0) {
++	perror("[xdvik] pipe");
++	return False;
++    }
++#endif /* __EMX__ */
+ 
+     if (xpipe(std_io) != 0) {
+ 	perror("[xdvik] pipe");
+ 	return False;
+     }
+     fflush(stderr);	/* to avoid double flushing */
++#ifndef __EMX__
+     GS_pid = vfork();
+     if (GS_pid == 0) {	/* child */
++#else /* __EMX__ */
++  {
++#endif /* __EMX__ */
+ 	const char **argvp = argv + 10;
+ 
+ 	argv[1] = resource.gs_alpha ? "-sDEVICE=x11alpha" : "-sDEVICE=x11";
+@@ -632,8 +665,8 @@
+ 	    *argvp++ = "-dMaxBitmap=0";
+ 	}
+ #endif
+-	
+ 	*argvp = "-";
++#ifndef __EMX__
+ 	(void) close(std_io[0]);
+ 	(void) dup2(std_io[1], 0);
+ 	(void) dup2(std_io[1], 1);
+@@ -645,16 +678,59 @@
+ 	XDVI_ERROR((stderr, "Execvp of %s failed: %s", argv[0], strerror(errno)));
+ 	_exit(EXIT_FAILURE);
+     }
+-
++#else /* EMX */
++	argv[0]=resource.gs_path;
++	if ( (si = dup(0)) == -1) perror("dup(0) failed");
++	if ( dup2(std_io[0], 0) == -1) perror("dup2(std_io[0], 0)");
++	close(std_io[0]);
++
++	if ( (so = dup(1)) == -1 ) perror("dup(1) failed");
++	if ( dup2(std_oi[1], 1) == -1) perror("dup2(std_io[0], 0)");
++	if ( (se = dup(2)) == -1 ) perror("dup(2) failed");
++	if ( dup2(std_oi[1], 2) == -1) perror("dup2(std_io[0], 0)");
++	close(std_oi[1]);
++
++	SET_BINARY(0);
++	SET_BINARY(1);
++//	prep_fd(1, True);
++//	prep_fd(0, True);
++
++	GS_pid = spawnvp(P_NOWAIT, argv[0], (char * _Xconst *)argv);
++	if ( dup2(si, 0) == -1 ) perror("dup2(si, 0)");
++	close(si);
++	if ( dup2(so, 1) == -1 ) perror("dup2(so, 0)");
++	close(so);
++	if ( dup2(se, 2) == -1 ) perror("dup2(se, 2)");
++	close(se);
++        }
++#ifdef EMX_DEBUG
++	   dbg("GS_pid=", GS_pid);
++#endif /* EMX_DEBUG */
++#endif /* __EMX__ */
++ 
++#ifndef __EMX__
+     (void)close(std_io[1]);
++#endif /* !__EMX__ */
+ 
+     if (GS_pid == -1) {	/* error */
+ 	GS_pid = 0;
+ 	perror("[xdvik] vfork");
++#ifndef __EMX__
+ 	(void)close(GS_fd);
++#else
++     {
++       (void)close(GS_fd);
++       (void)close(GS_fd_r);
++     }
++#endif /* __EMX__ */
+ 
+ 	return False;
+     }
++#ifdef __EMX__
++	SET_BINARY(GS_fd);
++	SET_BINARY(GS_fd_r);
++	prep_fd(GS_fd_r, True);
++#endif /* __EMX__ */
+ 
+     prep_fd(GS_fd, True);	/* Set file descriptor for non-blocking I/O */
+ 
+@@ -667,7 +743,18 @@
+     GS_in_header = True;
+     GS_pending = 1;
+     GS_mag = GS_shrink = -1;
++#ifndef __EMX__
+     gs_xio.fd = GS_fd;
++#else
++/* THIS IS IT!!  
++      Finally xdvi showed `eps' picture. 
++      Porting to OS/2 has almost completed.
++              Jun Sawataishi <jsawa@attglobal.net>
++              Sun Jan  2 21:17:00 JST 2005
++*/
++    gs_xio.fd = GS_fd_r;
++#endif /* __EMX__ */
++
+     gs_xio.xio_events = XIO_IN;
+     GS_write_ack = 0;
+     GS_outb_in = GS_outb_out = GS_outb;
+@@ -760,13 +847,20 @@
+ 	    perror("xdvik: destroy_gs");
+ 	GS_pid = 0;
+ 	clear_chld(&gs_child);
++#ifndef __EMX__
+ 	read_from_gs(GS_fd);
++#else
++	read_from_gs(GS_fd_r);
++#endif /* __EMX__ */
+ 	if (linepos > line) {
+ 	    *linepos = '\0';
+ 	    printf("gs: %s\n", line);
+ 	    linepos = line;
+ 	}
+ 	clear_io(&gs_xio);
++#ifdef __EMX__
++	(void) close(GS_fd_r);
++#endif /* __EMX__ */
+ 	(void) close(GS_fd);
+ 
+ 	scanned_page = scanned_page_ps = scanned_page_reset;
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/xdvik/special.c tetex-src-3.0-os2/texk/xdvik/special.c
+--- tetex-src-3.0/texk/xdvik/special.c	Sat Nov 13 11:22:28 2004
++++ tetex-src-3.0-os2/texk/xdvik/special.c	Sun Mar  6 03:32:54 2005
+@@ -91,6 +91,18 @@
+ # ifdef	PS_GS
+ # include "psgs.h"
+ # endif
++#ifdef __EMX__
++# ifdef OPEN_MODE
++#  undef OPEN_MODE
++# endif
++#define OPEN_MODE "rb"
++#define OPEN_MODE_EMX_PS "rb"
++#include <process.h>
++#ifdef EMX_DEBUG
++# define dbg(a,b)   fprintf(stderr, "%s %d: %s%d\n", __FILE__,__LINE__, a, b)
++# define sdbg(a,b)   fprintf(stderr,"%s %d: %s%s\n", __FILE__,__LINE__, a, b)
++#endif /* EMX_DEBUG */
++#endif /* __EMX__ */
+ 
+ /*
+   Code inside BUG_888087_FIXED improve the appearance of pic specials at magstep 1, but
+@@ -1203,11 +1215,19 @@
+ 	    }
+ 	    
+ 	    sprintf(ffline, "%s > %s", filename + 1, tikp->tempname);
++#ifndef __EMX__
+ 	    argv[0] = "/bin/sh";
++#else
++	    argv[0] = "sh.exe";
++#endif /* __EMX__ */
+ 	    argv[1] = "-c";
+ 	    argv[2] = ffline;
+ 	    argv[3] = NULL;
++#ifndef __EMX__
+ 	    fork_process("/bin/sh", False, globals.dvi_file.dirname, try_open_tempname, tikp, argv);
++#else
++	    fork_process("sh.exe", False, globals.dvi_file.dirname, try_open_tempname, tikp, argv);
++#endif /* __EMX__ */
+ 	}
+ 	else {
+ 	    bufp = tikp->tempname;
+@@ -1245,7 +1265,11 @@
+ 	}
+ 	strcpy(ffline, expanded_filename);
+ 	bufp = ffline;
++#ifndef __EMX__
+ 	f = XFOPEN(expanded_filename, OPEN_MODE);
++#else
++	f = XFOPEN(expanded_filename, OPEN_MODE_EMX_PS);
++#endif /* __EMX__ */
+ 	free(expanded_filename);
+ 	ASSERT(f != NULL, "Internal error opening file");
+ 
+@@ -1273,9 +1297,13 @@
+ 		if (f == NULL) {	/* if not cached, need to create */
+ 		    pid_t pid;
+ 		    int status;
++#ifdef __EMX__
++		    int so;
++#endif /* __EMX__ */
+ 
+ 		    argv[2] = bufp;
+ 		    fflush(stderr);	/* avoid double flushing */
++#ifndef __EMX__
+ 		    pid = vfork();
+ 		    if (pid == 0) {	/* if child */
+ 			(void)dup2(fd, 1);
+@@ -1284,6 +1312,18 @@
+ 			_exit(EXIT_FAILURE);
+ 		    }
+ 		    (void)close(fd);
++#else /* __EMX__ */
++/*                ‚±‚Ìƒtƒ@ƒCƒ‹‚ð‚«‚¿‚ñ‚ÆC³‚µ‚ë!!! */
++			so = dup(1);
++			(void) dup2(fd, 1);
++			(void) close(fd);
++			setmode(1, O_BINARY);
++			fprintf(stderr, "@@ argv[0]=%s\n argv[1]=%s, argv[2]=%s\n",argv[0],
++			             argv[1], argv[2]);
++			pid = spawnvp(P_NOWAIT, argv[0], (char **)argv);
++		    (void) dup2(so, 1);
++		    (void) close(so);
++#endif /* __EMX__ */
+ 
+ 		    for (;;) {
+ #if HAVE_WAITPID
+@@ -1309,7 +1349,12 @@
+ 			perror("[xdvik] waitpid");
+ 			return;
+ 		    }
++#ifndef __EMX__
+ 		    f = XFOPEN(tikp->tempname, OPEN_MODE);
++#else
++		    f = XFOPEN(tikp->tempname, OPEN_MODE_EMX_PS);
++#endif /* __EMX__ */
++
+ 		    if (f == NULL) {
+ 			perror(tikp->tempname);
+ 			return;
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/xdvik/string-utils.c tetex-src-3.0-os2/texk/xdvik/string-utils.c
+--- tetex-src-3.0/texk/xdvik/string-utils.c	Sat Nov 13 11:22:28 2004
++++ tetex-src-3.0-os2/texk/xdvik/string-utils.c	Sun Mar  6 03:32:54 2005
+@@ -136,8 +136,11 @@
+ expand_filename(const char *filename, expandPathTypeT type)
+ {
+     char *path_name = NULL;
+-
++#ifndef __EMX__
+     if (*filename == '/') /* already an absolute path */
++#else
++    if (*filename == '/' || filename[1] == ':') /* already an absolute path */
++#endif /* __EMX__ */
+ 	return xstrdup(filename);
+     
+     if (type == USE_CWD_PATH) {
+@@ -149,7 +152,11 @@
+ 	    for (;;) {
+ 		char *tmp;
+ 		path_name = xrealloc(path_name, path_name_len);
++#ifndef __EMX__
+ 		if ((tmp = getcwd(path_name, path_name_len)) == NULL && errno == ERANGE) {
++#else
++		if ((tmp = _getcwd2(path_name, path_name_len)) == NULL && errno == ERANGE) {
++#endif /* __EMX__ */
+ 		    path_name_len *= 2;
+ 		}
+ 		else {
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/xdvik/util.c tetex-src-3.0-os2/texk/xdvik/util.c
+--- tetex-src-3.0/texk/xdvik/util.c	Fri Dec  3 08:40:40 2004
++++ tetex-src-3.0-os2/texk/xdvik/util.c	Sun Mar  6 03:32:54 2005
+@@ -61,6 +61,14 @@
+ #include <rmsdef.h>
+ #endif /* VMS */
+ 
++#ifdef __EMX__
++#include <process.h>
++# ifdef EMX_DEBUG
++#  define dbg(a,b)   fprintf(stderr, "%s %d: %s%d\n", __FILE__,__LINE__, a, b)
++#  define sdbg(a,b)   fprintf(stderr,"%s %d: %s%s\n", __FILE__,__LINE__, a, b)
++# endif /* EMX_DEBUG */
++#endif /* __EMX__ */
++
+ #ifdef	X_NOT_STDC_ENV
+ extern int errno;
+ extern void *malloc();
+@@ -576,7 +584,11 @@
+ #else /* HAVE_FCHDIR */
+     if (
+ # ifdef HAVE_GETCWD
++#ifndef __EMX__
+ 	getcwd(cwd, MAXPATHLEN)
++#else
++	_getcwd2(cwd, MAXPATHLEN)
++#endif /* __EMX__ */
+ # else
+ 	getwd(cwd)
+ # endif
+@@ -611,7 +623,11 @@
+ 	    }
+ 
+ 	    /* change into that dir */
++#ifndef __EMX__
+ 	    if (chdir(p) != 0)
++#else
++	    if (_chdir2(p) != 0)
++#endif /* __EMX__ */
+ 		break;
+ 	}
+ 	else /* no directory component */
+@@ -641,7 +657,11 @@
+ 		}
+ #endif /* HAVE_LSTAT */
+ 		if (S_ISDIR(sb.st_mode)) { /* if it's a directory, go there */
++#ifndef __EMX__
+ 		    if (chdir(base) != 0)
++#else
++		    if (_chdir2(base) != 0)
++#endif /* __EMX__ */
+ 			break;
+ 
+ 		    base = "";
+@@ -653,8 +673,12 @@
+ 	strcpy(tmpbuf, base); /* cannot overrun, since strlen(base) <= strlen(path) < MAXPATHLEN */
+ 	if (
+ #ifdef HAVE_GETCWD
++#ifndef __EMX__
+ 	    getcwd(resolved, MAXPATHLEN)
+ #else
++	    _getcwd2(resolved, MAXPATHLEN)
++#endif /* __EMX__ */
++#else
+ 	    getwd(resolved)
+ #endif
+ 	    == NULL)
+@@ -682,7 +706,11 @@
+ 	fchdir(fd);
+ 	close(fd);
+ #else
++#ifndef __EMX__
+ 	chdir(cwd);
++#else
++	_chdir2(cwd);
++#endif /* __EMX__ */
+ #endif
+ 	return resolved;
+     }
+@@ -692,7 +720,11 @@
+     fchdir(fd);
+     close(fd);
+ #else
++#ifndef __EMX__
+     chdir(cwd);
++#else
++    _chdir2(cwd);
++#endif /* __EMX__ */
+ #endif
+     return NULL;
+ }
+@@ -798,6 +830,25 @@
+     bitmap->bits = xmalloc(size != 0 ? size : 1);
+ }
+ 
++#ifdef __EMX__
++/*
++  Jun Sawataich <jsawa@attglobal.net>  1-Jan-2005
++  memicmp() of emx  fails
++*/
++int
++x_memicmp(const char *s1, const char *s2, size_t n)
++{
++    while (n > 0) {
++	int i = tolower((int)*s1) - *s2;
++	if (i != 0)
++	    return i;
++	++s1;
++	++s2;
++	--n;
++    }
++    return 0;
++}
++#endif /* __EMX__ */
+ 
+ #ifndef HAVE_MEMICMP
+ /*
+@@ -872,24 +923,18 @@
+  *		SGI IRIX 6.5	F_SETOWN not implemented
+  *		Linux 2.4.2	Not supported
+  */
+-
+ int
+-xpipe(int *fd)
++xpipe(fd)
++        int     *fd;
+ {
+-    int	retval;
+-    
+-    for (;;) {
+-	retval = socketpair(AF_UNIX, SOCK_STREAM, 0, fd);
+-	if (retval == 0) { /* success */
+-	    break;
+-	}
+-	if ((errno != EMFILE && errno != ENFILE)) {
+-	    /* failed, but not because of too many files */
+-	    break;
+-	}
+-	close_a_file();
+-    }
+-    return retval;
++        int     retval;
++
++        for (;;) {
++            retval = pipe(fd);
++            if (retval == 0 || (errno != EMFILE && errno != ENFILE)) break;
++            close_a_file();
++        }
++        return retval;
+ }
+ 
+ 
+@@ -1127,7 +1172,7 @@
+     if (pipe(err_pipe) < 0) {
+ 	XDVI_FATAL((stderr, "pipe error"));
+     }
+-
++#ifndef __EMX__
+     switch (pid = vfork()) {
+     case -1:	/* forking error */
+ 	perror("vfork");
+@@ -1135,11 +1180,24 @@
+ 	close(err_pipe[1]);
+ 	return False;
+     case 0:	/* child */
++#else
++	{
++	int se;
++	int so;
++#endif /* __EMX__ */
+ 	if (dirname != NULL)
++#ifndef __EMX__
+ 	    chdir(dirname);
++#else
++	    _chdir2(dirname);
++#endif /* __EMX__ */
+ 	if (globals.debug & DBG_FILES) {
+ 	    char path[MAXPATHLEN];
++#ifndef __EMX__
+ 	    getcwd(path, MAXPATHLEN);
++#else
++	    _getcwd2(path, MAXPATHLEN);
++#endif /* __EMX__ */
+ 	    fprintf(stderr, "Directory of running `%s': `%s'\n",
+ 		    proc_name, path);
+ 	}
+@@ -1156,15 +1214,29 @@
+ 	close(err_pipe[0]);	/* no reading from stderr */
+ 
+ 	/* redirect writing to stderr */
++#ifdef __EMX__
++	se = dup(STDERR_FILENO);
++#endif /* __EMX__ */
+ 	if (dup2(err_pipe[1], STDERR_FILENO) != STDERR_FILENO) {
+ 	    perror("dup2 for stderr");
++#ifdef __EMX__
++		dup2(se, STDERR_FILENO);
++		close(se);
++#endif /* __EMX__ */
+ 	    _exit(EXIT_FAILURE);
+ 	    return False;	/* make compiler happy */
+ 	}
+ 	if (redirect_stdout) {
++#ifdef __EMX__
++		so = dup(STDOUT_FILENO);
++#endif /* __EMX__ */
+ 	    /* also redirect writing to stdout */
+ 	    if (dup2(err_pipe[1], STDOUT_FILENO) != STDOUT_FILENO) {
+ 		perror("dup2 for stdout");
++#ifdef __EMX__
++		dup2(so, STDERR_FILENO);
++		close(so);
++#endif /* __EMX__ */
+ 		_exit(EXIT_FAILURE);
+ 		return False;	/* make compiler happy */
+ 	    }
+@@ -1177,8 +1249,8 @@
+ 	    close(i++);
+ 	}
+ #endif /* TRY_FIX */
++#ifndef __EMX__
+ 	execvp(proc_name, argv);
+-
+ 	/* arrive here only if execvp failed */
+ 	fprintf(stderr, "%s: Execution of %s failed.\n", globals.program_name, proc_name);
+ 	fflush(stderr);
+@@ -1187,7 +1259,18 @@
+ 	return False;		/* make compiler happy */
+     default:	/* parent */
+ 	close(err_pipe[1]);	/* no writing to stderr */
+-
++#else
++#ifdef EMX_DEBUG
++	sdbg("fork() proc_name=", proc_name);
++#endif /* EMX_DEBUG */
++	pid = spawnvp(P_NOWAIT, proc_name, argv);
++#endif /* __EMX__ */
++	dup2(se, STDERR_FILENO);
++	close(se);
++	if (redirect_stdout) {
++	  dup2(so, STDOUT_FILENO);
++	  close(so);
++	}
+ 	my_io->next = NULL;
+ 	my_io->fd = err_pipe[0];
+ 	my_io->xio_events = XIO_IN;
+@@ -1249,11 +1332,15 @@
+ 	    int arg;
+ 	    
+ 	    arg = getpid();
++#ifndef __EMX__
+ 	    if (ioctl(fd, SIOCSPGRP, &arg) == -1)
+ 		perror("xdvi: ioctl SIOCSPGRP");
++#endif /* __EMX__ */
+ 	    arg = 1;
++#ifndef __EMX__
+ 	    if (ioctl(fd, FIOASYNC, &arg) == -1)
+ 		perror("xdvi: ioctl FIOASYNC");
++#endif /* __EMX__ */
+ # endif
+ 	}
+ #endif /* not FLAKY_SIGPOLL */
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/xdvik/util.h tetex-src-3.0-os2/texk/xdvik/util.h
+--- tetex-src-3.0/texk/xdvik/util.h	Thu Oct 28 08:16:40 2004
++++ tetex-src-3.0-os2/texk/xdvik/util.h	Sun Mar  6 03:32:54 2005
+@@ -104,7 +104,9 @@
+ #ifndef HAVE_MEMICMP
+ extern int memicmp(const char *, const char *, size_t);
+ #endif
+-
++#ifdef __EMX__
++extern int x_memicmp(const char *, const char *, size_t);
++#endif /* __EMX__ */
+ /* NOTE: all of the following are already defined by kpathsea. */
+ /*  extern void *xmalloc(unsigned); */
+ /*  extern void *xrealloc(void *, unsigned); */
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/xdvik/x_util.c tetex-src-3.0-os2/texk/xdvik/x_util.c
+--- tetex-src-3.0/texk/xdvik/x_util.c	Fri Dec  3 08:40:40 2004
++++ tetex-src-3.0-os2/texk/xdvik/x_util.c	Sun Mar  6 03:32:54 2005
+@@ -908,7 +908,7 @@
+     
+     xdvirc_name = get_xdvirc_path(xdvirc_filename);
+ 
+-    if ((to_fp = fopen(xdvirc_name, "r")) != NULL) {
++    if ((to_fp = fopen(xdvirc_name, "rt")) != NULL) {
+ 	TRACE_GUI((stderr, "~/.xdvirc exists, checking file contents ..."));
+ 	if (fgets(testbuf, 1024, to_fp) != NULL &&
+ 	    memcmp(testbuf, xdvirc_signature_line, strlen(xdvirc_signature_line)) != 0) {
+@@ -946,7 +946,7 @@
+     XrmPutFileDatabase(m_user_db, tmpname);
+ 
+     if (full_save) {
+-	if ((from_fp = try_fopen(tmpname, "r")) == NULL) {
++	if ((from_fp = try_fopen(tmpname, "rt")) == NULL) {
+ 	    XDVI_ERROR((stderr, "Could not save preferences!\nOpening %s for reading failed: %s", tmpname, strerror(errno)));
+ 	    return True;
+ 	}
+@@ -957,7 +957,7 @@
+ 	    return True;
+ 	}
+ 	
+-	if ((to_fp = fdopen(fd, "w")) == NULL) {
++	if ((to_fp = fdopen(fd, "wt")) == NULL) {
+ 	    XDVI_ERROR((stderr, "Could not save preferences!\nfdopen for %s for writing failed: %s", xdvirc_name, strerror(errno)));
+ 	    return True;
+ 	}
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/xdvik/xdvi.h tetex-src-3.0-os2/texk/xdvik/xdvi.h
+--- tetex-src-3.0/texk/xdvik/xdvi.h	Mon Jan 17 03:39:50 2005
++++ tetex-src-3.0-os2/texk/xdvik/xdvi.h	Sun Mar  6 03:32:54 2005
+@@ -294,7 +294,11 @@
+  * SU, 2001/01/07: xdvi defines OPEN_MODE as "r" or as "r", "ctx=stm" (for VMS),
+  * but we use the definition of FOPEN_R_MODE from kpathsea/c-fopen.h instead:
+  */
++#ifndef __EMX__
+ # define OPEN_MODE FOPEN_R_MODE
++#else
++# define OPEN_MODE FOPEN_RBIN_MODE
++#endif /* __EMX__ */
+ #endif	/* OPEN_MODE */
+ 
+ #ifndef	VMS
+@@ -1121,4 +1125,10 @@
+ 
+ #define DEVEL_MODE 0
+ 
++#ifdef __EMX__
++# ifdef memicmp
++#  undef memicmp
++# endif
++#define memicmp x_memicmp
++#endif /* __EMX__ */
+ #endif	/* XDVI_H_ */
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/dialog/scrsize.c tetex-src-3.0-os2/utils/dialog/scrsize.c
+--- tetex-src-3.0/utils/dialog/scrsize.c	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/utils/dialog/scrsize.c	Sun Mar  6 03:32:54 2005
+@@ -0,0 +1,70 @@
++/*
++ * Copyright (c) 1999, NBG01720@nifty.ne.jp
++ *
++ * When I wrote this routine, I consulted some part of the source code of the
++ * xwininfo utility by X Consortium.
++ *
++ * Copyright (c) 1987, X Consortium
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a copy
++ * of this software and associated documentation files (the "Software"), to
++ * deal in the Software without restriction, including without limitation the
++ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
++ * sell copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
++ * X CONSORTIUM BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
++ * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
++ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * Except as contained in this notice, the name of the X Consortium shall not
++ * be used in advertising or otherwise to promote the sale, use or other
++ * dealings in this Software without prior written authorization from the X
++ * Consortium.
++ */
++#include <X11/Xlib.h>
++#include <X11/Xutil.h>
++#include <stdlib.h>
++#include <stdio.h>
++
++int main(){
++  char*cp;
++  Display*dpy;
++  Window window;
++  XWindowAttributes win_attributes;
++  XSizeHints hints;
++  long longjunk;
++  int dst[2];
++
++  _scrsize(dst);
++  cp=getenv("WINDOWID");
++  if(cp){
++	dpy=XOpenDisplay(NULL);
++	if(dpy){
++	  if(XGetWindowAttributes(dpy,window=atol(cp),&win_attributes))
++	if(XGetWMNormalHints(dpy,window,&hints,&longjunk))
++	  if(hints.flags&PResizeInc&&hints.width_inc&&hints.height_inc){
++		if(hints.flags&(PBaseSize|PMinSize)){
++		  if(hints.flags&PBaseSize){
++		win_attributes.width -=hints.base_width;
++		win_attributes.height-=hints.base_height;
++		  }else{
++		win_attributes.width -=hints.min_width;
++		win_attributes.height-=hints.min_height;
++		  }
++		}
++		dst[0]=win_attributes.width /hints.width_inc;
++		dst[1]=win_attributes.height/hints.height_inc;
++	  }
++	  XCloseDisplay(dpy);
++	}
++  }
++  printf("%i %i\n",dst[0],dst[1]);
++  return 0;
++}
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/info/dir.c tetex-src-3.0-os2/utils/texinfo/info/dir.c
+--- tetex-src-3.0/utils/texinfo/info/dir.c	Mon Apr 12 02:56:44 2004
++++ tetex-src-3.0-os2/utils/texinfo/info/dir.c	Sun Mar  6 03:32:54 2005
+@@ -44,30 +44,50 @@
+ 
+ typedef struct
+ {
++#ifdef __EMX__
++  char *path;
++#else
+   unsigned long device;
+   unsigned long inode;
++#endif
+ } dir_file_list_entry_type;
+ 
+ static int
++#ifdef __EMX__
++new_dir_file_p (char *test)
++#else
+ new_dir_file_p (struct stat *test)
++#endif
+ {
+   static unsigned dir_file_list_len = 0;
+   static dir_file_list_entry_type *dir_file_list = NULL;
+   unsigned i;
+-  
++#ifdef __EMX__
++  char path[1024];
++  _fullpath(path, test, sizeof(path));
++#endif
++
+   for (i = 0; i < dir_file_list_len; i++)
+     {
+       dir_file_list_entry_type entry;
+       entry = dir_file_list[i];
++#ifdef __EMX__
++      if (stricmp(path, entry.path) == 0)
++#else
+       if (entry.device == test->st_dev && entry.inode == test->st_ino)
++#endif
+         return 0;
+     }
+   
+   dir_file_list_len++;
+   dir_file_list = xrealloc (dir_file_list, 
+                         dir_file_list_len * sizeof (dir_file_list_entry_type));
++#ifdef __EMX__
++  dir_file_list[dir_file_list_len - 1].path = strdup(path);
++#else
+   dir_file_list[dir_file_list_len - 1].device = test->st_dev;
+   dir_file_list[dir_file_list_len - 1].inode = test->st_ino;
++#endif
+   return 1;
+ }
+ 
+@@ -90,7 +110,11 @@
+ 
+   /* Initialize the list we use to avoid reading the same dir file twice
+      with the dir file just found.  */
++#ifdef __EMX__
++  new_dir_file_p (dir_buffer->fullpath);
++#else
+   new_dir_file_p (&dir_buffer->finfo);
++#endif
+   
+   path_index = update_tags = 0;
+ 
+@@ -134,7 +158,11 @@
+           statable = (stat (fullpath, &finfo) == 0);
+ 
+           /* Only add this file if we have not seen it before.  */
++#ifdef __EMX__
++          if (statable && S_ISREG (finfo.st_mode) && new_dir_file_p (fullpath))
++#else
+           if (statable && S_ISREG (finfo.st_mode) && new_dir_file_p (&finfo))
++#endif
+             {
+               long filesize;
+ 	      int compressed;
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/info/echo-area.c tetex-src-3.0-os2/utils/texinfo/info/echo-area.c
+--- tetex-src-3.0/utils/texinfo/info/echo-area.c	Tue Dec 14 09:15:36 2004
++++ tetex-src-3.0-os2/utils/texinfo/info/echo-area.c	Sun Mar  6 03:32:54 2005
+@@ -1482,7 +1482,7 @@
+ static void
+ pause_or_input (void)
+ {
+-#ifdef FD_SET
++#if defined (FD_SET) && !defined(__EMX__)
+   struct timeval timer;
+   fd_set readfds;
+   int ready;
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/info/filesys.c tetex-src-3.0-os2/utils/texinfo/info/filesys.c
+--- tetex-src-3.0/utils/texinfo/info/filesys.c	Sat Jul 31 02:17:40 2004
++++ tetex-src-3.0-os2/utils/texinfo/info/filesys.c	Sun Mar  6 03:32:54 2005
+@@ -122,7 +122,12 @@
+             local_temp_filename = (char *)xrealloc
+               (local_temp_filename, (local_temp_filename_size = 1024));
+ #if defined (HAVE_GETCWD)
++#ifdef __EMX__ /* jsawa */
++          if (!_getcwd2 (local_temp_filename, local_temp_filename_size))
++#else
+           if (!getcwd (local_temp_filename, local_temp_filename_size))
++#endif
++
+ #else /*  !HAVE_GETCWD */
+           if (!getwd (local_temp_filename))
+ #endif /* !HAVE_GETCWD */
+@@ -161,9 +166,8 @@
+ static char *
+ info_file_in_path (char *filename, char *path)
+ {
+-  struct stat finfo;
+-  char *temp_dirname;
+-  int statable, dirname_index;
++  char *temp_dirname, *final_name;
++  int dirname_index;
+ 
+   /* Reject ridiculous cases up front, to prevent infinite recursion
+      later on.  E.g., someone might say "info '(.)foo'"...  */
+@@ -193,10 +197,32 @@
+         strcat (temp, "/");
+       strcat (temp, filename);
+ 
+-      pre_suffix_length = strlen (temp);
+-
+       free (temp_dirname);
+ 
++      final_name = info_check_file (temp);
++
++      free (temp);
++
++      if (final_name)
++	return (final_name);
++    }
++  return ((char *)NULL);
++}
++
++/* check if the file exists, possibly trying the compressed file suffixes */
++static char *
++info_check_file (filename)
++     char *filename;
++{
++  register int i, statable, pre_suffix_length;
++  struct stat finfo;
++  char *temp;
++
++  temp = (char *)xmalloc (30 + strlen (filename));
++  strcpy (temp, filename);
++
++  pre_suffix_length = strlen (temp);
++
+       for (i = 0; info_suffixes[i]; i++)
+         {
+           strcpy (temp + pre_suffix_length, info_suffixes[i]);
+@@ -246,8 +272,6 @@
+                 }
+             }
+         }
+-      free (temp);
+-    }
+   return ((char *)NULL);
+ }
+ 
+@@ -454,7 +478,7 @@
+ filesys_read_info_file (char *pathname, long int *filesize,
+     struct stat *finfo, int *is_compressed)
+ {
+-  long st_size;
++  long st_size, result;
+ 
+   *filesize = filesys_error_number = 0;
+ 
+@@ -481,7 +505,8 @@
+       /* Try to read the contents of this file. */
+       st_size = (long) finfo->st_size;
+       contents = (char *)xmalloc (1 + st_size);
+-      if ((read (descriptor, contents, st_size)) != st_size)
++      result = read (descriptor, contents, st_size);
++      if (result == -1 || result > st_size)
+         {
+ 	  filesys_error_number = errno;
+ 	  close (descriptor);
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/info/filesys.h tetex-src-3.0-os2/utils/texinfo/info/filesys.h
+--- tetex-src-3.0/utils/texinfo/info/filesys.h	Mon Apr 12 02:56:44 2004
++++ tetex-src-3.0-os2/utils/texinfo/info/filesys.h	Sun Mar  6 03:32:54 2005
+@@ -78,7 +78,11 @@
+ 
+ /* The default value of INFOPATH. */
+ #if !defined (DEFAULT_INFOPATH)
++#ifndef __EMX__
+ #  define DEFAULT_INFOPATH "/usr/local/info:/usr/info:/usr/local/lib/info:/usr/lib/info:/usr/local/gnu/info:/usr/local/gnu/lib/info:/usr/gnu/info:/usr/gnu/lib/info:/opt/gnu/info:/usr/share/info:/usr/share/lib/info:/usr/local/share/info:/usr/local/share/lib/info:/usr/gnu/lib/emacs/info:/usr/local/gnu/lib/emacs/info:/usr/local/lib/emacs/info:/usr/local/emacs/info:."
++#else
++#  define DEFAULT_INFOPATH ".;/emx/info;/usr/share/info;/usr/local/info;/usr/info;"
++#endif /* __EMX__ */
+ #endif /* !DEFAULT_INFOPATH */
+ 
+ #if !defined (S_ISREG) && defined (S_IFREG)
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/info/info.c tetex-src-3.0-os2/utils/texinfo/info/info.c
+--- tetex-src-3.0/utils/texinfo/info/info.c	Mon Apr 12 02:56:44 2004
++++ tetex-src-3.0-os2/utils/texinfo/info/info.c	Sun Mar  6 03:32:54 2005
+@@ -28,6 +28,14 @@
+ #  include "man.h"
+ #endif /* HANDLE_MAN_PAGES */
+ 
++#ifdef __EMX__
++#include <stdlib.h>
++#define X_INFO_ENVNAME  "WINDOWID"
++#define XFREE86_YES       1
++#define XFREE86_NO        0
++int is_xfree86 = XFREE86_NO;
++#endif /* __EMX__ */
++
+ static char *program_name = "info";
+ 
+ /* Non-zero means search all indices for APROPOS_SEARCH_STRING. */
+@@ -138,6 +146,22 @@
+ static void info_short_help (void);
+ static void init_messages (void);
+ 
++#ifdef __EMX__
++int
++query_xfree86(void)
++{
++	if (getenv(X_INFO_ENVNAME) != NULL) 
++	  return XFREE86_YES;
++	else if (strncmp (getenv("TERM"), "xterm", 5) == 0)
++	   return XFREE86_YES;
++	else if (strncmp (getenv("TERM"), "kterm", 5) == 0)
++	   return XFREE86_YES;
++	else if (strncmp (getenv("TERM"), "rxvt", 4) == 0)
++	   return XFREE86_YES;
++	else
++	   return XFREE86_NO;
++}
++#endif /* __EMX__ */
+ 
+ /* **************************************************************** */
+ /*                                                                  */
+@@ -155,6 +179,10 @@
+   /* Set locale via LC_ALL.  */
+   setlocale (LC_ALL, "");
+ #endif
++
++#ifdef __EMX__
++	is_xfree86 = query_xfree86();
++#endif /* __EMX__ */
+ 
+ #ifdef ENABLE_NLS
+   /* Set the text message domain.  */
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/info/info.h tetex-src-3.0-os2/utils/texinfo/info/info.h
+--- tetex-src-3.0/utils/texinfo/info/info.h	Mon Apr 12 02:56:44 2004
++++ tetex-src-3.0-os2/utils/texinfo/info/info.h	Sun Mar  6 03:32:54 2005
+@@ -52,7 +52,7 @@
+ #endif /* !whitespace */
+ 
+ #if !defined (whitespace_or_newline)
+-#  define whitespace_or_newline(c) (whitespace (c) || (c == '\n'))
++#  define whitespace_or_newline(c) (whitespace (c) || (c == '\n') || (c == '\r'))
+ #endif /* !whitespace_or_newline */
+ 
+ /* Add POINTER to the list of pointers found in ARRAY.  SLOTS is the number
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/info/man.c tetex-src-3.0-os2/utils/texinfo/info/man.c
+--- tetex-src-3.0/utils/texinfo/info/man.c	Mon Apr 12 02:56:46 2004
++++ tetex-src-3.0-os2/utils/texinfo/info/man.c	Sun Mar  6 03:32:54 2005
+@@ -29,6 +29,12 @@
+ #if defined (HAVE_SYS_WAIT_H)
+ #include <sys/wait.h>
+ #endif
++#ifdef __EMX__
++#include <process.h>
++#include <sys/wait.h>
++#ifdef PIPE_USE_FORK
++#undef PIPE_USE_FORK
++#endif
+ 
+ #include "tilde.h"
+ #include "man.h"
+@@ -421,6 +427,7 @@
+ 	    }
+ 	}
+     }
++#endif
+ 
+   newpage[j++] = 0;
+ 
+@@ -470,7 +477,7 @@
+   int bsize = 0;
+   int bindex = 0;
+   int select_result;
+-#if defined (FD_SET)
++#if defined (FD_SET) && !defined(__EMX__)
+   fd_set read_fds;
+ 
+   timeout.tv_sec = 15;
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/info/session.c tetex-src-3.0-os2/utils/texinfo/info/session.c
+--- tetex-src-3.0/utils/texinfo/info/session.c	Tue Dec 14 09:15:36 2004
++++ tetex-src-3.0-os2/utils/texinfo/info/session.c	Sun Mar  6 03:32:54 2005
+@@ -24,6 +24,14 @@
+ #include "search.h"
+ #include <sys/ioctl.h>
+ 
++#ifdef __EMX__
++#include <stdlib.h>
++extern int is_xfree86;
++#define XFREE86_YES       1
++#define XFREE86_NO        0
++#  include <pc.h>
++#endif /* __EMX__ */
++
+ #if defined (HAVE_SYS_TIME_H)
+ #  include <sys/time.h>
+ #  define HAVE_STRUCT_TIMEVAL
+@@ -3144,7 +3152,7 @@
+   if (strcmp (output_filename, "-") == 0)
+     output_stream = stdout;
+   else
+-    output_stream = fopen (output_filename, "w");
++    output_stream = fopen (output_filename, "wb");
+ 
+   if (!output_stream)
+     {
+@@ -3262,7 +3270,7 @@
+   if (strcmp (filename, "-") == 0)
+     output_stream = stdout;
+   else
+-    output_stream = fopen (filename, "w");
++    output_stream = fopen (filename, "wb");
+ 
+   if (!output_stream)
+     {
+@@ -3289,7 +3297,11 @@
+ }
+ 
+ #if !defined (DEFAULT_INFO_PRINT_COMMAND)
++#ifndef __EMX__
+ #  define DEFAULT_INFO_PRINT_COMMAND "lpr"
++#else
++#  define DEFAULT_INFO_PRINT_COMMAND "expand --tabs=4 >>InfoLog.tmp"
++#endif /* __EMX__ */
+ #endif /* !DEFAULT_INFO_PRINT_COMMAND */
+ 
+ DECLARE_INFO_COMMAND (info_print_node,
+@@ -4561,7 +4573,7 @@
+       if (!info_any_buffered_input_p () &&
+           !info_input_pending_p ())
+         {
+-#if defined (FD_SET)
++#if defined (FD_SET) && !defined(__EMX__)
+           struct timeval timer;
+           fd_set readfds;
+ 
+@@ -4908,6 +4920,14 @@
+ 
+   space_avail = info_input_buffer_space_available ();
+ 
++#ifdef __EMX__
++  if ( is_xfree86 == XFREE86_NO ) {
++  while (chars_avail < space_avail && (tty = pc_getc(0)) != -1)
++    input[chars_avail++] = tty;
++  } 
++  else 
++  {
++#endif /* __EMX__ */
+   /* If we can just find out how many characters there are to read, do so. */
+ #if defined (FIONREAD)
+   {
+@@ -4960,6 +4980,9 @@
+ #   endif/* __DJGPP__ */
+ #  endif /* O_NDELAY */
+ #endif /* !FIONREAD */
++#ifdef __EMX__
++  }
++#endif /* __EMX__ */
+ 
+   while (i < chars_avail)
+     {
+@@ -4987,6 +5010,14 @@
+       unsigned char c;
+       int tty = fileno (info_input_stream);
+ 
++#ifdef __EMX__
++  if ( is_xfree86 == XFREE86_NO ) {
++    keystroke = pc_getc(1);
++  } 
++  else 
++  {
++#endif /* __EMX__ */
++
+       /* Using stream I/O causes FIONREAD etc to fail to work
+          so unless someone can find a portable way of finding
+          out how many characters are currently buffered, we
+@@ -5030,6 +5061,9 @@
+               xexit (0);
+             }
+         }
++#ifdef __EMX__
++   }
++#endif /* __EMX__ */
+     }
+ 
+   if (info_dribble_file)
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/info/terminal.c tetex-src-3.0-os2/utils/texinfo/info/terminal.c
+--- tetex-src-3.0/utils/texinfo/info/terminal.c	Mon Apr 12 02:56:46 2004
++++ tetex-src-3.0-os2/utils/texinfo/info/terminal.c	Sun Mar  6 03:32:54 2005
+@@ -23,6 +23,12 @@
+ #include "info.h"
+ #include "terminal.h"
+ #include "termdep.h"
++#ifdef __EMX__
++#include <stdlib.h>
++extern int is_xfree86;
++#define XFREE86_YES       1
++#define XFREE86_NO        0
++#endif /* __EMX__ */
+ 
+ #include <sys/types.h>
+ #include <signal.h>
+@@ -115,7 +121,11 @@
+ static int
+ output_character_function (int c)
+ {
++#ifdef __RSXNT__
++  pc_putc (c);
++#else
+   putc (c, stdout);
++#endif
+   return c;
+ }
+ 
+@@ -130,8 +140,9 @@
+ static void
+ terminal_begin_using_terminal (void)
+ {
++#ifdef SIGWINCH
+   RETSIGTYPE (*sigsave) (int signum);
+-
++#endif
+   if (term_keypad_on)
+       send_to_terminal (term_keypad_on);
+   
+@@ -149,8 +160,9 @@
+        cmdtool (TERM=sun-cmd) with scrollbars loses -- the scrollbars are
+        not restored properly.
+        From: strube@physik3.gwdg.de (Hans Werner Strube).  */
++#ifndef __EMX__
+     sleep (1);
+-
++#endif
+ #ifdef SIGWINCH
+   signal (SIGWINCH, sigsave);
+ #endif
+@@ -161,8 +173,9 @@
+ static void
+ terminal_end_using_terminal (void)
+ {
++#ifdef SIGWINCH
+   RETSIGTYPE (*sigsave) (int signum);
+-
++#endif
+   if (term_keypad_off)
+       send_to_terminal (term_keypad_off);
+   
+@@ -177,8 +190,9 @@
+   fflush (stdout);
+   if (STREQ (term_name, "sun-cmd"))
+     /* See comments at other sleep.  */
++#ifndef __EMX__
+     sleep (1);
+-
++#endif
+ #ifdef SIGWINCH
+   signal (SIGWINCH, sigsave);
+ #endif
+@@ -457,7 +471,21 @@
+   else
+     {
+       screenwidth = screenheight = 0;
+-
++#ifdef __EMX__
++  {
++    int s[2];  
++    _scrsize(s);
++    screenwidth = s[0];
++    screenheight = s[1];
++    if(getenv("WINDOWID")){
++       FILE*fd=popen("scrsize","rt");
++       if(fd) {
++         fscanf(fd,"%i %i",&screenwidth,&screenheight);
++         pclose(fd);
++       }
++    }
++  }
++#endif /* __EMX__ */
+ #if defined (TIOCGWINSZ)
+       {
+         struct winsize window_size;
+@@ -703,6 +731,14 @@
+ 
+   tty = fileno (stdin);
+ 
++#ifdef __EMX__
++  if ( is_xfree86 == XFREE86_NO ) 
++  {
++    pc_init ();
++  } 
++  else 
++  {
++#endif /* __EMX__ */
+ #if defined (HAVE_TERMIOS_H)
+   tcgetattr (tty, &original_termios);
+   tcgetattr (tty, &ttybuff);
+@@ -824,6 +860,9 @@
+   ttybuff.sg_flags |= CBREAK;
+   ioctl (tty, TIOCSETN, &ttybuff);
+ #endif /* !HAVE_TERMIOS_H && !HAVE_TERMIO_H */
++#ifdef __EMX__
++  }
++#endif /* __EMX__ */
+ }
+ 
+ /* Restore the tty settings back to what they were before we started using
+@@ -841,6 +880,14 @@
+ 
+   tty = fileno (stdin);
+ 
++#ifdef __EMX__
++  if ( is_xfree86 == XFREE86_NO )
++  {
++    pc_exit ();
++  } 
++  else 
++  {
++#endif /* __EMX__ */
+ #if defined (HAVE_TERMIOS_H)
+   tcsetattr (tty, TCSANOW, &original_termios);
+ #else
+@@ -865,6 +912,9 @@
+ 
+ #  endif /* !HAVE_TERMIO_H */
+ #endif /* !HAVE_TERMIOS_H */
++#ifdef __EMX__
++  }
++#endif /* __EMX__ */
+   terminal_end_using_terminal ();
+ }
+ 
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/lib/pc.c tetex-src-3.0-os2/utils/texinfo/lib/pc.c
+--- tetex-src-3.0/utils/texinfo/lib/pc.c	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/utils/texinfo/lib/pc.c	Sun Mar  6 03:32:54 2005
+@@ -0,0 +1,230 @@
++/* pc.c - terminal I/O calls for GNU info for OS/2
++   and other PC support functions
++   Kai Uwe Rommel, 1990-1993
++ */
++
++#ifdef HAVE_CONFIG_H
++#include <config.h>
++#endif
++
++#include <stdio.h>
++#include <stdlib.h>
++
++#include <io.h>
++#include <fcntl.h>
++#include <sys/stat.h>
++#include <string.h>
++#include <sys/kbdscan.h>
++
++#ifndef __RSXNT__
++#define INCL_VIO
++#include <os2emx.h>
++static VIOCURSORINFO vci;
++#endif
++
++#include "pc.h"
++
++#ifdef __RSXNT__
++
++char buffer[4096];
++int idx;
++
++static void pc_flush(void)
++{
++  if (idx > 0)
++    _rsxnt_write_with_ansi (buffer, idx);
++
++  idx = 0;
++}
++
++void pc_putc (int c)
++{
++  if (idx == sizeof(buffer))
++    pc_flush();
++
++  buffer[idx++] = (char) c;
++}
++
++void pc_puts (char *s)
++{
++  while (*s)
++    pc_putc(*s++);
++}
++
++void pc_putx (char *s, int x)
++{
++  for (; x; x--)
++    pc_putc(*s++);
++}
++
++#endif
++
++void pc_init (void)
++{
++#ifdef __RSXNT__
++  extern void (*terminal_put_text_hook)();
++  extern void (*terminal_write_chars_hook)();
++  terminal_put_text_hook = pc_puts;
++  terminal_write_chars_hook = pc_putx;
++#else
++  VIOCURSORINFO vcin;
++  VioGetCurType(&vci, 0);
++  vcin = vci;
++  vcin.yStart = 0;
++  vcin.cEnd = -100;
++  VioSetCurType(&vcin, 0);
++#endif
++}
++
++void pc_exit (void)
++{
++#ifndef __RSXNT__
++  VioSetCurType(&vci, 0);
++#endif
++}
++
++int pc_getc (int wait)
++{
++  int c;
++  static int next;
++
++  if (next)
++    return c = next, next = 0, c;
++
++#ifdef __RSXNT__
++  if (wait)
++    pc_flush();
++#endif
++
++  if ((c = _read_kbd (0, wait, 0)) == -1)
++    return -1;
++
++  if (c == 26)
++    return next = 'V', 27;
++  if (c != 0x00 && c != 0xE0)
++    return c;
++
++  if ((c = _read_kbd (0, wait, 0)) == -1)
++    return -1;
++
++  switch (c)
++  {
++  case K_F1:
++    return 'H' - 64;
++
++  case K_HOME:
++    return 'A' - 64;
++  case K_END:
++    return 'E' - 64;
++
++  case K_CTRL_HOME:
++    return next = '<', 27;
++  case K_CTRL_END:
++    return next = '>', 27;
++
++  case K_RIGHT:
++    return 'F' - 64;
++  case K_LEFT:
++    return 'B' - 64;
++  case K_DOWN:
++    return 'N' - 64;
++  case K_UP:
++    return 'P' - 64;
++  case K_INS:       /* jsawa */
++    return 0;     /* How can we toggle insert mode ??? */
++  case K_CTRL_LEFT:
++    return next = 'B', 27;
++  case K_CTRL_RIGHT:
++    return next = 'F', 27;
++#ifdef __EMX__
++  case K_ALT_0:                /* for M+'0' :  */
++    return next = '0', 27;
++  case K_ALT_1:                /* for M+'1' :  */
++    return next = '1', 27;
++  case K_ALT_2:                /* for M+'2' :  */
++    return next = '2', 27;
++  case K_ALT_3:                /* for M+'3' :  */
++    return next = '3', 27;
++  case K_ALT_4:                /* for M+'4' :  */
++    return next = '4', 27;
++  case K_ALT_5:                /* for M+'5' :  */
++    return next = '5', 27;
++  case K_ALT_6:                /* for M+'6' :  */
++    return next = '6', 27;
++  case K_ALT_7:                /* for M+'7' :  */
++    return next = '7', 27;
++  case K_ALT_8:                /* for M+'8' :  */
++    return next = '8', 27;
++  case K_ALT_9:                /* for M+'9' :  */
++    return next = '9', 27;
++  case K_ALT_A:
++    return next = 'A', 27;
++  case K_ALT_B:
++    return next = 'B', 27;
++  case K_ALT_C:
++    return next = 'C', 27;
++  case K_ALT_D:
++    return next = 'D', 27;
++  case K_ALT_E:
++    return next = 'E', 27;
++  case K_ALT_F:
++    return next = 'F', 27;
++  case K_ALT_G:
++    return next = 'G', 27;
++  case K_ALT_H:
++    return next = 'H', 27;
++  case K_ALT_I:
++    return next = 'I', 27;
++  case K_ALT_J:
++    return next = 'J', 27;
++  case K_ALT_K:
++    return next = 'K', 27;
++  case K_ALT_L:
++    return next = 'L', 27;
++  case K_ALT_M:
++    return next = 'M', 27;
++  case K_ALT_N:
++    return next = 'N', 27;
++  case K_ALT_O:
++    return next = 'O', 27;
++  case K_ALT_P:
++    return next = 'P', 27;
++  case K_ALT_Q:
++    return next = 'Q', 27;
++  case K_ALT_R:
++    return next = 'R', 27;
++  case K_ALT_S:
++    return next = 'S', 27;
++  case K_ALT_T:
++    return next = 'T', 27;
++  case K_ALT_U:
++    return next = 'U', 27;
++  case K_ALT_V:
++    return next = 'V', 27;
++  case K_ALT_W:
++    return next = 'W', 27;
++  case K_ALT_X:
++    return next = 'X', 27;
++  case K_ALT_Y:
++    return next = 'Y', 27;
++  case K_ALT_Z:
++    return next = 'Z', 27;
++  case K_ALT_DEL:              /* for M+'DEL' : scroll-other-window-backward */
++    return next = '\177', 27;
++  case K_ALT_PERIOD:           /* for M+'<' beginning-of-node */
++    return next = '<', 27;
++  case K_ALT_COMMA:            /* for M+'>' end-of-node */
++    return next = '>', 27;
++  case K_ALT_PAD_MINUS:        /* for M+'-' add-digit-to-numeric-arg */
++    return next = '-', 27;
++#endif
++  case K_DEL:
++    return 'D' - 64;
++  case K_PAGEUP:
++    return next = 'V', 27;
++  case K_PAGEDOWN:
++    return 'V' - 64;
++  default:
++    return ' ';
++  }
++}
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/lib/pc.h tetex-src-3.0-os2/utils/texinfo/lib/pc.h
+--- tetex-src-3.0/utils/texinfo/lib/pc.h	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/utils/texinfo/lib/pc.h	Sun Mar  6 03:32:54 2005
+@@ -0,0 +1,30 @@
++/* pc.h - terminal I/O for GNU info for OS/2
++   and other PC support functions
++   Kai Uwe Rommel, 1990-1993
++ */
++
++extern void pc_init (void);
++extern void pc_exit (void);
++extern int pc_getc (int wait);
++
++#ifdef getc
++#undef getc
++#endif
++#define getc(s)      pc_getc(1)
++
++/* difinition added by SAWATAISHI Jun */
++
++#define K_ALT_0                 0x81   /* <Alt>+<0> */
++#define K_ALT_1                 0x78   /* <Alt>+<1> */
++#define K_ALT_2                 0x79   /* <Alt>+<2> */
++#define K_ALT_3                 0x7a   /* <Alt>+<3> */
++#define K_ALT_4                 0x7b   /* <Alt>+<4> */
++#define K_ALT_5                 0x7c   /* <Alt>+<5> */
++#define K_ALT_6                 0x7d   /* <Alt>+<6> */
++#define K_ALT_7                 0x7e   /* <Alt>+<7> */
++#define K_ALT_8                 0x7f   /* <Alt>+<8> */
++#define K_ALT_9                 0x80   /* <Alt>+<9> */
++
++/* end */
++
++
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/lib/system.h tetex-src-3.0-os2/utils/texinfo/lib/system.h
+--- tetex-src-3.0/utils/texinfo/lib/system.h	Mon Apr 26 22:56:56 2004
++++ tetex-src-3.0-os2/utils/texinfo/lib/system.h	Sun Mar  6 03:32:54 2005
+@@ -212,9 +212,15 @@
+ #  define SET_SCREEN_SIZE_HELPER terminal_prep_terminal()
+ #  define DEFAULT_INFO_PRINT_COMMAND ">PRN"
+ # else   /* O_BINARY && !__MSDOS__ */
++#ifdef __EMX__
++#  define NULL_DEVICE	"nul"
++#  define HAVE_LONG_FILENAMES(dir)   (1)
++#  define DEFAULT_INFO_PRINT_COMMAND "expand --tabs=4 >>InfoLog.tmp"
++#else
+ #  define setmode(f,m)  _setmode(f,m)
+ #  define HAVE_LONG_FILENAMES(dir)   (1)
+ #  define NULL_DEVICE	"NUL"
++#endif /* !__EMX__*/
+ # endif  /* O_BINARY && !__MSDOS__ */
+ # ifdef __CYGWIN__
+ #  define DEFAULT_TMPDIR	"/tmp/"
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/lib/tempname.c tetex-src-3.0-os2/utils/texinfo/lib/tempname.c
+--- tetex-src-3.0/utils/texinfo/lib/tempname.c	Mon Sep 15 22:25:44 2003
++++ tetex-src-3.0-os2/utils/texinfo/lib/tempname.c	Sun Mar  6 03:32:54 2005
+@@ -101,7 +101,11 @@
+ # define __mkdir mkdir
+ # define __open open
+ # define __open64 open
++#ifndef __EMX__
+ # define __lxstat64(version, path, buf) lstat (path, buf)
++#else
++# define __lxstat64(version, path, buf) stat (path, buf)
++#endif /* __EMX__ */
+ # define __xstat64(version, path, buf) stat (path, buf)
+ #endif
+ 
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/makeinfo/cmds.c tetex-src-3.0-os2/utils/texinfo/makeinfo/cmds.c
+--- tetex-src-3.0/utils/texinfo/makeinfo/cmds.c	Tue Dec 14 09:15:36 2004
++++ tetex-src-3.0-os2/utils/texinfo/makeinfo/cmds.c	Sun Mar  6 03:32:54 2005
+@@ -33,6 +33,10 @@
+ #include "toc.h"
+ #include "xml.h"
+ 
++#ifdef SJIS
++#include "kanji.h"
++#endif
++
+ #ifdef TM_IN_SYS_TIME
+ #include <sys/time.h>
+ #else
+@@ -932,7 +936,11 @@
+       while (start_pos < end_pos)
+         {
+           unsigned char c = output_paragraph[start_pos];
++#ifdef SJIS
++          if (strchr ("[](),", c) && !iskanji(output_paragraph[start_pos-1]))
++#else
+           if (strchr ("[](),", c))
++#endif
+             warning (_("unlikely character %c in @var"), c);
+           output_paragraph[start_pos] = coerce_to_upper (c);
+           start_pos++;
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/makeinfo/defun.c tetex-src-3.0-os2/utils/texinfo/makeinfo/defun.c
+--- tetex-src-3.0/utils/texinfo/makeinfo/defun.c	Mon Apr 12 02:56:46 2004
++++ tetex-src-3.0-os2/utils/texinfo/makeinfo/defun.c	Sun Mar  6 03:32:54 2005
+@@ -26,6 +26,9 @@
+ #include "cmds.h"
+ #include "html.h"
+ 
++#ifdef SJIS
++#include "kanji.h"
++#endif
+ 
+ #define DEFUN_SELF_DELIMITING(c) \
+   ((c) == '(' || (c) == ')' || (c) == '[' || (c) == ']')
+@@ -86,6 +89,12 @@
+           *string_pointer = scan_string - 1;
+           return 0;
+         }
++#ifdef SJIS
++      if(iskanji(c)) {
++	scan_string++;
++	c = (*scan_string++);
++      }
++#endif
+ 
+       if (c == '{' && !started_command)
+         level++;
+@@ -135,6 +144,12 @@
+                 {
+                   c = *scan_string++;
+ 
++#ifdef SJIS
++		  if(iskanji(c)) {
++		    scan_string++;
++		    c = *scan_string++;
++		  }
++#endif
+                   if ((c == 0) || (c == '{') || (whitespace (c)))
+                     {
+                       scan_string -= 1;
+@@ -195,6 +210,12 @@
+               /* Do not back up if we're looking at a }; since the only
+                  valid }'s are those matched with {'s, we want to give
+                  an error.  If we back up, we go into an infinite loop.  */
++#ifdef SJIS
++	      if(iskanji(c)) {
++		scan_string++;
++		c = *scan_string++;
++	      }
++#endif
+               if (!c || whitespace (c) || DEFUN_SELF_DELIMITING (c)
+                   || c == '{')
+                 {
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/makeinfo/files.c tetex-src-3.0-os2/utils/texinfo/makeinfo/files.c
+--- tetex-src-3.0/utils/texinfo/makeinfo/files.c	Tue Jul 27 09:06:30 2004
++++ tetex-src-3.0-os2/utils/texinfo/makeinfo/files.c	Sun Mar  6 03:32:54 2005
+@@ -26,6 +26,10 @@
+ #include "makeinfo.h"
+ #include "node.h"
+ 
++#if defined (SJIS) || defined (EUC)
++#include "kanji.h"
++#endif
++
+ FSTACK *filestack = NULL;
+ 
+ static int node_filename_stack_index = 0;
+@@ -52,11 +56,23 @@
+      `:'.  If i == 0, then the path has a leading colon.  Trailing colons
+      are handled OK by the `else' part of the if statement; an empty
+      string is returned in that case. */
++#ifdef SJIS
++  if ((i && string[i] == path_sep_char) && (!iskanji(string[i-1])))
++#else
+   if (i && string[i] == path_sep_char)
++#endif
+     i++;
+ 
+   start = i;
++#ifdef KANJI
++  while (string[i] && string[i] != path_sep_char) {
++    if(iskanji(string[i]))
++      i++;
++    i++;
++  }
++#else
+   while (string[i] && string[i] != path_sep_char) i++;
++#endif
+   *index = i;
+ 
+   if (i == start)
+@@ -371,7 +387,15 @@
+ char *
+ filename_part (char *filename)
+ {
++#if defined(__EMX__) || defined(WIN32)
++  char *pp, *basename;
++  for(pp = filename; *pp; pp++) {
++    if(*pp == '\\') *pp = '/';
++  }
++  basename = filename_non_directory (filename);
++#else
+   char *basename = filename_non_directory (filename);
++#endif
+ 
+ #ifdef REMOVE_OUTPUT_EXTENSIONS
+   /* See if there is an extension to remove.  If so, remove it. */
+@@ -390,6 +414,12 @@
+ {
+   char *result = NULL;
+   int i;
++#if defined(__EMX__) || defined(WIN32)
++  char *pp;
++  for(pp = filename; *pp; pp++) {
++    if(*pp == '\\') *pp = '/';
++  }
++#endif
+ 
+   filename = expand_filename (filename, "");
+ 
+@@ -410,11 +440,19 @@
+ {
+   int initial_character;
+   char *result;
++#if defined(__EMX__) || defined(WIN32)
++  char *akp;
++#endif
+ 
+   /* No filename given? */
+   if (!filename || !*filename)
+     return xstrdup ("");
+   
++#if defined(__EMX__) || defined(WIN32)
++  for(akp = filename; *akp; akp++) {
++    if(*akp == '\\') *akp = '/';
++  }
++#endif
+   /* Already absolute? */
+   if (IS_ABSOLUTE (filename) ||
+       (*filename == '.' &&
+@@ -427,8 +465,12 @@
+     {
+       char *localdir = xmalloc (1025);
+ #ifdef HAVE_GETCWD
++#ifndef __EMX__
+       if (!getcwd (localdir, 1024))
+ #else
++      if (!_getcwd2 (localdir, 1024))
++#endif /* __EMX__ */
++#else
+       if (!getwd (localdir))
+ #endif
+         {
+@@ -439,6 +481,11 @@
+ 
+       strcat (localdir, "/");
+       strcat (localdir, filename);
++#if defined(__EMX__) || defined(WIN32)
++      for(akp=localdir; *akp; akp++) {
++	if(*akp == '\\') *akp='/';
++      }
++#endif
+       result = xstrdup (localdir);
+       free (localdir);
+     }
+@@ -501,6 +548,17 @@
+ expand_filename (char *filename, char *input_name)
+ {
+   int i;
++#if defined(__EMX__) || defined(WIN32)
++  char *pp;
++  if(filename) {
++    for(pp = filename; *pp; pp++) {
++      if(*pp == '\\') *pp = '/';
++    }
++  }
++  for(pp = input_name; *pp; pp++) {
++    if(*pp == '\\') *pp = '/';
++  }
++#endif
+ 
+   if (filename)
+     {
+@@ -575,9 +633,9 @@
+   char orig[PATH_MAX + 1];
+   int i;
+   char *lastdot, *p;
+-
+-#ifdef _PC_NAME_MAX
+-  maxlen = pathconf (fname, _PC_NAME_MAX);
++                                                /* NOTE! by Jun Sawataishi  */
++#if defined(_PC_NAME_MAX) && !defined(__EMX__)  /* "/emx/include/unistd.h " */
++  maxlen = pathconf (fname, _PC_NAME_MAX);      /*  contains _PC_NAME_MAX " */
+   if (maxlen < 1)
+ #endif
+     maxlen = PATH_MAX;
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/makeinfo/footnote.c tetex-src-3.0-os2/utils/texinfo/makeinfo/footnote.c
+--- tetex-src-3.0/utils/texinfo/makeinfo/footnote.c	Mon Apr 12 02:56:46 2004
++++ tetex-src-3.0-os2/utils/texinfo/makeinfo/footnote.c	Sun Mar  6 03:32:54 2005
+@@ -25,6 +25,10 @@
+ #include "xml.h"
+ #include "xref.h"
+ 
++#if defined (SJIS) || defined (EUC)
++#include "kanji.h"
++#endif
++
+ /* Nonzero means that the footnote style for this document was set on
+    the command line, which overrides any other settings. */
+ int footnote_style_preset = 0;
+@@ -165,7 +169,10 @@
+               line_error (_("No closing brace for footnote `%s'"), marker);
+               return;
+             }
+-
++#ifdef KANJI
++	  if(iskanji(input_text[loc]))
++	    loc +=2;
++#endif
+           if (input_text[loc] == '{')
+             braces++;
+           else if (input_text[loc] == '}')
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/makeinfo/html.c tetex-src-3.0-os2/utils/texinfo/makeinfo/html.c
+--- tetex-src-3.0/utils/texinfo/makeinfo/html.c	Mon Dec  6 10:13:06 2004
++++ tetex-src-3.0-os2/utils/texinfo/makeinfo/html.c	Sun Mar  6 03:32:54 2005
+@@ -185,6 +185,10 @@
+ 
+ HSTACK *htmlstack = NULL;
+ 
++#if defined (SJIS) || defined (EUC)
++#include "kanji.h"
++#endif
++
+ /* See html.h.  */
+ int html_output_head_p = 0;
+ int html_title_written = 0;
+@@ -346,6 +350,13 @@
+ 
+   do
+     {
++#ifdef SJIS
++	  if(iskanji(string[i])) {
++	    newlen+=2;
++	    i++;
++	    goto labela;
++	  }
++#endif
+       /* Find how much to allocate. */
+       switch (string[i])
+         {
+@@ -362,6 +373,9 @@
+         default:
+           newlen++;
+         }
++#ifdef SJIS
++     labela:
++#endif
+     }
+   while (string[i++]);
+ 
+@@ -371,6 +385,13 @@
+   i = 0;
+   do
+     {
++#ifdef SJIS
++	  if(iskanji(string[i])) {
++	    *newstring++ = string[i++];
++	    *newstring++ = string[i];
++	    goto labelb;
++	  }
++#endif
+       switch (string[i])
+         {
+         case '"':
+@@ -393,6 +414,9 @@
+           newstring[0] = string[i];
+           newstring++;
+         }
++#ifdef SJIS
++	labelb: ;
++#endif
+     }
+   while (string[i++]);
+   free (string);
+@@ -613,8 +637,14 @@
+       add_word ("g_t");
+     }
+ 
+-  for (; *name; name++)
+-    {
++  for (; *name; name++) {
++#ifdef KANJI
++    if(iskanji(*name)) {
++      add_char (*name++);
++      add_char (*name);
++      continue;
++    }
++#endif
+       if (cr_or_whitespace (*name))
+         add_char ('-');
+ 
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/makeinfo/insertion.c tetex-src-3.0-os2/utils/texinfo/makeinfo/insertion.c
+--- tetex-src-3.0/utils/texinfo/makeinfo/insertion.c	Fri Nov 12 03:34:28 2004
++++ tetex-src-3.0-os2/utils/texinfo/makeinfo/insertion.c	Sun Mar  6 03:32:54 2005
+@@ -29,6 +29,10 @@
+ #include "multi.h"
+ #include "xml.h"
+ 
++#if defined (SJIS)
++#include "kanji.h"
++#endif
++
+ /* Must match list in insertion.h.  */
+ static char *insertion_type_names[] =
+ { 
+@@ -2105,6 +2109,9 @@
+ cm_item (void)
+ {
+   char *rest_of_line, *item_func;
++#ifdef SJIS
++  int  alen;
++#endif
+ 
+   /* Can only hack "@item" while inside of an insertion. */
+   if (insertion_level)
+@@ -2206,9 +2213,17 @@
+                          themselves, and we know it needs them.  */
+                       if (item_func && *item_func)
+                         {
++#ifdef SJIS
++		      alen = strlen(item_func);
++                          if ((*item_func == COMMAND_PREFIX
++                              && item_func[strlen (item_func) - 1] != '}'
++                              && command_needs_braces (item_func + 1))
++                           || (alen>1 && iskanji(item_func[alen-2])))
++#else
+                           if (*item_func == COMMAND_PREFIX
+                               && item_func[strlen (item_func) - 1] != '}'
+                               && command_needs_braces (item_func + 1))
++#endif
+                             execute_string ("%s{}", item_func);
+                           else
+                             execute_string ("%s", item_func);
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/makeinfo/kanji.c tetex-src-3.0-os2/utils/texinfo/makeinfo/kanji.c
+--- tetex-src-3.0/utils/texinfo/makeinfo/kanji.c	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/utils/texinfo/makeinfo/kanji.c	Sun Mar  6 03:32:54 2005
+@@ -0,0 +1,82 @@
++/* Japanese support (A. Kakuto 1998/11/12) */
++#if defined (SJIS) || defined (EUC)
++#ifndef KANJI
++#define KANJI 1
++#endif
++#endif
++
++#ifdef KANJI
++/* First byte of SJIS or EUC character */
++int iskanji(int c)
++{
++    c &= 0xff;
++#ifdef SJIS
++    return((c>=0x81 && c<=0x9f) || (c>=0xe0 && c<=0xfc));
++#else
++    return(c>=0xa1 && c<=0xfe);
++#endif
++}
++int this_is_kanji = 0;
++int kanji_space = 0;
++#endif
++
++#ifdef KANJI
++int iskanji2(int c)
++{
++    c &= 0xff;
++#ifdef SJIS
++    return(c>=0x40 && c<=0xfc && c!=0x7f);
++#else
++    return(c>=0xa1 && c<=0xfe);
++#endif
++}
++#endif
++
++#ifdef KANJI
++int gyoto(int a, int b)
++{
++  a &= 0xff;
++  b &= 0xff;
++#ifdef SJIS
++  return (a == 0x81 && ((b >= 0x41 && b <= 0x49) ||
++		       (b == 0x4c) ||
++		       (b >= 0x52 && b <= 0x56) ||
++		       (b == 0x5e) ||
++		       (b == 0x5f) ||
++		       (b == 0x66) ||
++		       (b == 0x68) ||
++		       (b == 0x6a) ||
++		       (b == 0x6c) ||
++		       (b == 0x6e) ||
++		       (b == 0x70) ||
++		       (b == 0x72) ||
++		       (b == 0x74) ||
++		       (b == 0x76) ||
++		       (b == 0x78) ||
++		       (b == 0x7a) ||
++		       (b == 0x8c) ||
++		       (b == 0x8d))
++	  );
++#else
++  return (a == 0xa1 && ((b >= 0xa2 && b <= 0xaa) ||
++		       (b == 0xad) ||
++		       (b >= 0xb3 && b <= 0xb7) ||
++		       (b == 0xbf) ||
++		       (b == 0xc0) ||
++		       (b == 0xc7) ||
++		       (b == 0xc9) ||
++		       (b == 0xcb) ||
++		       (b == 0xcd) ||
++		       (b == 0xcf) ||
++		       (b == 0xd1) ||
++		       (b == 0xd3) ||
++		       (b == 0xd5) ||
++		       (b == 0xd7) ||
++		       (b == 0xd9) ||
++		       (b == 0xdb) ||
++		       (b == 0xec) ||
++		       (b == 0xed))
++	  );
++#endif
++}
++#endif
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/makeinfo/kanji.h tetex-src-3.0-os2/utils/texinfo/makeinfo/kanji.h
+--- tetex-src-3.0/utils/texinfo/makeinfo/kanji.h	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/utils/texinfo/makeinfo/kanji.h	Sun Mar  6 03:32:54 2005
+@@ -0,0 +1,11 @@
++#ifndef KANJI_H
++#define KANJI_H
++#ifndef KANJI
++#define KANJI 1
++#endif
++extern int iskanji(int c);
++extern int iskanji2(int c);
++extern int gyoto(int a, int b);
++extern int this_is_kanji;
++extern int kanji_space;
++#endif
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/makeinfo/macro.c tetex-src-3.0-os2/utils/texinfo/makeinfo/macro.c
+--- tetex-src-3.0/utils/texinfo/makeinfo/macro.c	Mon Apr 12 02:56:46 2004
++++ tetex-src-3.0-os2/utils/texinfo/makeinfo/macro.c	Sun Mar  6 03:32:54 2005
+@@ -24,6 +24,10 @@
+ #include "makeinfo.h"
+ #include "insertion.h"
+ 
++#if defined (SJIS)
++#include "kanji.h"
++#endif
++
+ /* If non-NULL, this is an output stream to write the full macro expansion
+    of the input text to.  The result is another texinfo file, but
+    missing @include, @infoinclude, @macro, and macro invocations.  Instead,
+@@ -177,7 +181,14 @@
+ 
+   while ((character = curchar ()))
+     {
++#ifdef SJIS
++      if (iskanji(character)) {
++	input_text_offset +=2;
++      }
++      else if (character == '\\')
++#else
+       if (character == '\\')
++#endif
+         {
+           input_text_offset += 2;
+           escape_seen = 1;
+@@ -203,7 +214,12 @@
+                 {
+                   int i;
+                   for (i = 0; word[i]; i++)
++#ifdef SJIS
++                    if ((word[i] == '\\')
++                        && (i < 1 || !iskanji(word[i-1])))
++#else
+                     if (word[i] == '\\')
++#endif
+                       memmove (word + i, word + i + 1,
+                                1 + strlen (word + i + 1));
+                 }
+@@ -308,7 +324,12 @@
+ 
+   while (body[i])
+     { /* Anything but a \ is easy.  */
++#ifdef SJIS
++      if ((body[i] != '\\') ||
++          (i>0 && iskanji(body[i-1])))
++#else
+       if (body[i] != '\\')
++#endif
+         new_body[new_body_index++] = body[i++];
+       else
+         { /* Snarf parameter name, check against named parameters. */
+@@ -316,7 +337,12 @@
+           int param_start, len;
+ 
+           param_start = ++i;
++#ifdef SJIS
++          while ((body[i]) && ((body[i] != '\\') || 
++                 (i>0 && iskanji(body[i-1]))))
++#else
+           while (body[i] && body[i] != '\\')
++#endif
+             i++;
+ 
+           len = i - param_start;
+@@ -478,6 +504,15 @@
+     for (i = start; i < input_text_length && input_text[i] != '{'
+                     && !cr_or_whitespace (input_text[i]);
+          i++) ;
++#ifdef SJIS
++      {
++	if(iskanji(input_text[i])) {
++	  i++;
++	}
++      }
++#else
++      ;
++#endif
+ 
+     len = i - start;
+     name = xmalloc (1 + len);
+@@ -512,6 +547,12 @@
+                (character = input_text[i]);
+                i++)
+             {
++#ifdef SJIS
++	      if(iskanji(character)) {
++		i++;
++		continue;
++	      }
++#endif
+               switch (character)
+                 {
+                 case '\n':
+@@ -533,6 +574,10 @@
+                          && character != ','
+                          && character != '}')
+                     {
++#ifdef SJIS
++		      if(iskanji(character))
++			input_text_offset++;
++#endif
+                       input_text_offset++;
+                       if (character == '\n')
+                         line_number++;
+@@ -857,8 +902,13 @@
+ {
+   int i;
+ 
++#ifdef SJIS
++  for (i = input_text_offset; i && (input_text[i] != COMMAND_PREFIX
++       || (i>0 && iskanji(input_text[i-1]))); i--);
++#else
+   for (i = input_text_offset; i && (input_text[i] != COMMAND_PREFIX); i--)
+     ;
++#endif
+   maybe_write_itext (input_text, i);
+ }
+ 
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/makeinfo/makeinfo.c tetex-src-3.0-os2/utils/texinfo/makeinfo/makeinfo.c
+--- tetex-src-3.0/utils/texinfo/makeinfo/makeinfo.c	Mon Dec 20 02:15:42 2004
++++ tetex-src-3.0-os2/utils/texinfo/makeinfo/makeinfo.c	Sun Mar  6 03:32:54 2005
+@@ -21,8 +21,19 @@
+    Original author of makeinfo: Brian Fox (bfox@ai.mit.edu).  */
+ 
+ #include "system.h"
++#ifdef WIN32
++#include <malloc.h>
++#include <string.h>
++#include <ctype.h>
++#include <fcntl.h>
++#ifndef R_OK
++#define R_OK 4
++#endif
++#endif
++#if defined (SJIS) || defined (EUC)
++#include "kanji.h"
++#endif
+ #include "getopt.h"
+-
+ #define COMPILING_MAKEINFO
+ #include "makeinfo.h"
+ #include "cmds.h"
+@@ -539,6 +550,11 @@
+   int c, ind;
+   int reading_from_stdin = 0;
+ 
++#ifdef WIN32
++  getlongname(argv[0]);
++  setmode(fileno(stdout), _O_BINARY);
++#endif
++
+ #ifdef HAVE_SETLOCALE
+   /* Do not use LC_ALL, because LC_NUMERIC screws up the scanf parsing
+      of the argument to @multicolumn.  */
+@@ -604,6 +620,13 @@
+                  progname, getenv ("TEXINFO_OUTPUT_FORMAT"));
+     }
+ 
++#ifdef __EMX__
++  _response (&argc, &argv);
++  _wildcard (&argc, &argv);
++  if (argc == 1 && isatty (0))
++  usage (0);
++#endif
++  
+   /* Parse argument flags from the input line. */
+   while ((c = getopt_long (argc, argv, "D:de:E:f:hI:i:o:p:P:r:s:t:U:vV:wx",
+                            long_options, &ind)) != EOF)
+@@ -655,7 +678,11 @@
+             {
+               macro_expansion_filename = optarg;
+               macro_expansion_output_stream
++#if defined(__EMX__) || defined(WIN32)
++                = strcmp (optarg, "-") == 0 ? stdout : fopen (optarg, "wb");
++#else
+                 = strcmp (optarg, "-") == 0 ? stdout : fopen (optarg, "w");
++#endif
+               if (!macro_expansion_output_stream)
+                 error (_("%s: could not open macro expansion output `%s'"),
+                        progname, optarg);
+@@ -896,6 +923,14 @@
+                && (character = curchar ())
+                && COMMAND_CHAR (character));
+        i++, input_text_offset++);
++#ifdef SJIS
++    {
++      if(iskanji(character)) {
++	i++;
++	input_text_offset++;
++       }
++     }
++#endif /* SJIS */
+   result = xmalloc (i + 1);
+   memcpy (result, &input_text[input_text_offset - i], i);
+   result[i] = 0;
+@@ -953,7 +988,16 @@
+   while (string[string_index])
+     {
+       c = temp[temp_index++] = string[string_index++];
+-
++#ifdef KANJI
++      if ((c == '\n' || c == ' ' || c == '\t') &&
++         (string_index >2 && iskanji(string[string_index-3]) &&
++	  iskanji2(string[string_index-2])) &&
++         (iskanji(string[string_index])) &&
++	  !gyoto(string[string_index-3], string[string_index-2])) {
++	temp_index--;
++	continue;
++      }
++#endif
+       if (c == ' ' || c == '\n' || c == '\t')
+         {
+           temp[temp_index - 1] = ' ';
+@@ -1205,6 +1249,13 @@
+ 
+   for (i = input_text_offset; i < input_text_length; i++)
+     {
++#ifdef SJIS
++      if(iskanji(input_text[i])) {
++	i++;
++	continue;
++      }
++#endif
++
+       if (i < input_text_length - 1 && input_text[i] == '@')
+         {
+           i++;                  /* skip commands like @, and @{ */
+@@ -1250,6 +1301,8 @@
+   ".texinfo",
+   ".texi",
+   ".txinfo",
++  ".txi",
++  ".tex",
+   "",
+   NULL
+ };
+@@ -1542,6 +1595,9 @@
+         for (i = 0; i < end_of_first_line; i++)
+           {
+             if ((input_text[i] == '\\') &&
++#ifdef SJIS
++		(i == 0 || !iskanji(input_text[i-1])) &&
++#endif
+                 (strncmp (input_text + i + 1, "input", 5) == 0))
+               {
+                 input_text_offset = i;
+@@ -1626,7 +1682,11 @@
+       else
+         real_output_filename = xstrdup (real_output_filename);
+ 
++#if defined(__EMX__) || defined(WIN32)
++      output_stream = fopen (real_output_filename, "wb");
++#else
+       output_stream = fopen (real_output_filename, "w");
++#endif
+     }
+ 
+   set_current_output_filename (real_output_filename);
+@@ -2086,6 +2146,7 @@
+ void
+ reader_loop (void)
+ {
++  extern int executing_string;
+   int character;
+   int done = 0;
+ 
+@@ -2095,6 +2156,20 @@
+         break;
+ 
+       character = curchar ();
++#ifdef KANJI
++      if(iskanji(character)){
++#ifdef NEWEMACS /* Koji Arai */
++	kchar_num++;
++#endif
++	add_char (character);
++	input_text_offset++;
++	character = curchar();
++	this_is_kanji = 1;
++	add_char(character);
++	input_text_offset++;
++	continue;
++      }
++#endif
+ 
+       /* If only_macro_expansion, only handle macros and leave
+          everything else intact.  */
+@@ -2545,6 +2620,11 @@
+ void
+ add_char (int character)
+ {
++#ifdef KANJI
++  int ktmp, kk, temp;
++#endif
++
++
+   if (xml)
+     {
+       xml_add_char (character);
+@@ -2595,6 +2675,9 @@
+       if (!filling_enabled && !(html && (in_menu || in_detailmenu)))
+         {
+           insert ('\n');
++#ifdef KANJI
++      kanji_space = 0;
++#endif
+ 
+           if (force_flush_right)
+             {
+@@ -2639,7 +2722,20 @@
+       {
+         int len = get_char_len (character);
+         int suppress_insert = 0;
+-
++#ifdef KANJI
++	if(!html && iskanji(character) && !kanji_space) {
++	  if(output_paragraph_offset > 2 &&
++             iskanji(output_paragraph[output_paragraph_offset-3]) &&
++             iskanji2(output_paragraph[output_paragraph_offset-2]) &&
++	     output_paragraph[output_paragraph_offset-1] == ' ' &&
++	     !gyoto(output_paragraph[output_paragraph_offset-3],
++		    output_paragraph[output_paragraph_offset-2])) {
++	    output_paragraph_offset--;
++	    /* output_column--; */
++	  }
++	}
++	kanji_space = 0;
++#endif
+         if ((character == ' ') && (last_char_was_newline))
+           {
+             if (!paragraph_is_open)
+@@ -2684,13 +2780,84 @@
+                 adjust_braces_following (0, 3); /* adjust for <p> */
+               }
+           }
+-
++#ifdef KANJI
++	output_column += len;
++	if(this_is_kanji) ktmp = output_column + 1;
++	else ktmp = output_column;
++        if (ktmp > fill_column)
++#else
+         output_column += len;
+         if (output_column > fill_column)
++#endif
+           {
++#ifdef KANJI
++	    if(this_is_kanji) {
++	      this_is_kanji = 0;
++	      if (!html && filling_enabled) {
++		if(!gyoto(output_paragraph[output_paragraph_offset-1],
++			  character)) {
++		  kanji_space = 1;
++		  kk = output_paragraph[output_paragraph_offset-1];
++		  insert(kk);
++		  /* output_column++; */
++		  output_paragraph[output_paragraph_offset-2] = ' ';
++		}
++	      }
++	    }
++#endif
+             if (filling_enabled && !html)
+               {
++#ifdef KANJI
++		if(!html && !kanji_space) {
++		  for(ktmp = output_paragraph_offset - 1;
++		      ktmp > 0 && output_paragraph[ktmp] != '\n';
++		      ktmp--) {
++		    if(!iskanji(output_paragraph[ktmp]) &&
++		       !(iskanji(output_paragraph[ktmp-1]) &&
++			 iskanji2(output_paragraph[ktmp])) &&
++		       COMMAND_CHAR(output_paragraph[ktmp]) &&
++		       output_paragraph[ktmp] != '\"' &&
++		       output_paragraph[ktmp] != '\'') {
++		      if(ktmp > 1 && iskanji2(output_paragraph[ktmp-1]) &&
++			 iskanji(output_paragraph[ktmp-2])&&
++			 output_paragraph[ktmp] != ')' &&
++			 output_paragraph[ktmp] != '.' &&
++			 output_paragraph[ktmp] != ',' &&
++			 output_paragraph[ktmp] != ']' &&
++			 output_paragraph[ktmp] != '!') {
++			kk=output_paragraph[output_paragraph_offset - 1];
++			insert(kk);
++			/* output_column++; */
++			for(kk=output_paragraph_offset - 3;
++			    kk >= ktmp; kk--)
++			  output_paragraph[kk+1] = output_paragraph[kk];
++			output_paragraph[ktmp] = ' ';
++			break;
++		      }
++		      else if(ktmp < output_paragraph_offset - 1 &&
++			      iskanji(output_paragraph[ktmp+1]) &&
++			      output_paragraph[ktmp] != '(' &&
++			      output_paragraph[ktmp] != '[' &&
++			      output_paragraph[ktmp] != '`' &&
++			      (ktmp > output_paragraph_offset-3 ||
++			       !gyoto(output_paragraph[ktmp+1],
++				      output_paragraph[ktmp+2]))) {
++			kk = output_paragraph[output_paragraph_offset - 1];
++			insert(kk);
++			/* output_column++; */
++			for(kk=output_paragraph_offset - 3;
++			    kk > ktmp; kk--)
++			  output_paragraph[kk+1] = output_paragraph[kk];
++			output_paragraph[ktmp+1] = ' ';
++			break;
++		      }
++		    }
++		  }
++		}
++                temp = output_paragraph_offset;
++#else
+                 int temp = output_paragraph_offset;
++#endif
+                 while (--temp > 0 && output_paragraph[temp] != '\n')
+                   {
+                     /* If we have found a space, we have the place to break
+@@ -2786,6 +2953,10 @@
+ 
+         if (!suppress_insert)
+           {
++#ifdef KANJI
++	    if(this_is_kanji)
++	      this_is_kanji = 0;
++#endif
+             insert (character);
+             last_inserted_character = character;
+           }
+@@ -2793,6 +2964,17 @@
+         line_already_broken = 0;
+       }
+     }
++#ifdef KANJI
++  kk = output_paragraph_offset;
++  if(kk > 2 && iskanji(output_paragraph[kk-2]) &&
++     iskanji2(output_paragraph[kk-1]) &&
++     gyoto(output_paragraph[kk-2], output_paragraph[kk-1]) &&
++     output_paragraph[kk-3] == '\n') {
++    output_paragraph[kk-3] = output_paragraph[kk-2];
++    output_paragraph[kk-2] = output_paragraph[kk-1];
++    output_paragraph[kk-1] = '\n';
++  }
++#endif
+ }
+ 
+ /* Add a character and store its position in meta_char_pos.  */
+@@ -2930,7 +3112,12 @@
+       if (!html && (output_paragraph[i] & meta_character_bit))
+         {
+           int temp = UNMETA (output_paragraph[i]);
++#ifdef SJIS
++          if ((temp == ' ') &&
++              (i<1 || !iskanji(output_paragraph[i-1])))
++#else
+           if (temp == ' ')
++#endif
+             output_paragraph[i] &= 0x7f;
+         }
+     }
+@@ -2938,6 +3125,10 @@
+   fwrite (output_paragraph, 1, output_paragraph_offset, output_stream);
+ 
+   output_position += output_paragraph_offset;
++#ifdef NEWEMACS /* Koji Arai */
++  output_char_offset += output_paragraph_offset - kchar_num;
++  kchar_num = 0;
++#endif
+   output_paragraph_offset = 0;
+   meta_char_pos = 0;
+ }
+@@ -3074,6 +3265,7 @@
+ {
+   last_inserted_character = '\n';
+   last_char_was_newline = 1;
++  last_inserted_character = 0;
+ }
+ 
+ /* Align the end of the text in output_paragraph with fill_column. */
+@@ -3363,13 +3555,21 @@
+                                       ? strlen (ext_arg) : 4) + 1);
+           strcpy (txtname, name_arg);
+           strcat (txtname, ".txt");
++#ifndef __EMX__
+           image_file = fopen (txtname, "r");
++#else
++          image_file = fopen (txtname, "rt");
++#endif /* __EMX__ */
+           if (image_file == NULL)
+             {
+               txtpath = get_file_info_in_path (txtname,
+                                                include_files_path, &file_info);
+               if (txtpath != NULL)
++#ifndef __EMX__
++                image_file = fopen (txtpath, "r");
++#else
+                 image_file = fopen (txtpath, "r");
++#endif /* __EMX__ */
+             }
+ 
+           if (image_file != NULL
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/makeinfo/makeinfo.h tetex-src-3.0-os2/utils/texinfo/makeinfo/makeinfo.h
+--- tetex-src-3.0/utils/texinfo/makeinfo/makeinfo.h	Tue Nov 30 11:03:22 2004
++++ tetex-src-3.0-os2/utils/texinfo/makeinfo/makeinfo.h	Sun Mar  6 03:32:54 2005
+@@ -58,6 +58,10 @@
+ 
+ /* Position in the output file. */
+ DECLARE (int, output_position, 0);
++#ifdef NEWEMACS /* Koji Arai */
++DECLARE (int, output_char_offset, 0);
++DECLARE (int, kchar_num, 0);
++#endif
+ 
+ /* Number of lines in the output.  */
+ DECLARE (int, output_line_number, 1);
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/makeinfo/multi.c tetex-src-3.0-os2/utils/texinfo/makeinfo/multi.c
+--- tetex-src-3.0/utils/texinfo/makeinfo/multi.c	Mon Apr 12 02:56:46 2004
++++ tetex-src-3.0-os2/utils/texinfo/makeinfo/multi.c	Sun Mar  6 03:32:54 2005
+@@ -27,6 +27,10 @@
+ #include "multi.h"
+ #include "xml.h"
+ 
++#if defined (SJIS)
++#include "kanji.h"
++#endif
++
+ #define MAXCOLS 100             /* remove this limit later @@ */
+ 
+ 
+@@ -107,6 +111,9 @@
+ 
+   do
+     {
++#ifdef SJIS
++      if(iskanji(**params)) (*params) += 2;
++#endif
+       if (**params == '{' && (*params == start || (*params)[-1] != '@'))
+         brace_level++;
+       else if (**params == '}' && (*params)[-1] != '@')
+@@ -206,6 +213,10 @@
+     while (whitespace (*params))
+       params++;
+ 
++#ifdef SJIS
++    if(iskanji(*params))
++      params += 2;
++#endif
+     if (*params == '@') {
+       sscanf (params, "%200s", command);
+       nchars = strlen (command);
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/makeinfo/node.c tetex-src-3.0-os2/utils/texinfo/makeinfo/node.c
+--- tetex-src-3.0/utils/texinfo/makeinfo/node.c	Tue Dec 21 08:56:06 2004
++++ tetex-src-3.0-os2/utils/texinfo/makeinfo/node.c	Sun Mar  6 03:32:54 2005
+@@ -99,7 +99,11 @@
+         { /* This reference is to a node.  */
+           execute_string ("Node: %s", node->node);
+         }
++#ifdef NEWEMACS /* Koji Arai */
++      add_word_args ("\177%d\n", node->char_offset);
++#else
+       add_word_args ("\177%d\n", node->position);
++#endif
+     }
+ 
+   add_word ("\037\nEnd Tag Table\n");
+@@ -299,6 +303,9 @@
+     new->next = next;
+     new->up = up;
+     new->position = position;
++#ifdef NEWEMACS /* Koji Arai */
++    new->char_offset = char_offset;
++#endif
+     new->line_no = line_no;
+     new->filename = node_filename;
+     new->touched = 0;
+@@ -889,8 +896,13 @@
+       if (!*next) { free (next); next = NULL; }
+       if (!*prev) { free (prev); prev = NULL; }
+       if (!*up)   { free (up);   up = NULL;   }
++#ifdef NEWEMACS /* Koji Arai */
++      remember_node (node, prev, next, up, new_node_pos, output_char_offset, 
++                                     line_number, fname_for_this_node, no_warn);
++#else
+       remember_node (node, prev, next, up, new_node_pos, line_number,
+ 		     fname_for_this_node, no_warn);
++#endif
+       outstanding_node = 1;
+     }
+ 
+@@ -1227,6 +1239,9 @@
+   /* Save it in the tag table.  */
+   remember_node (anchor, NULL, NULL, NULL,
+                  output_position + output_paragraph_offset,
++#ifdef NEWEMACS /* Koji Arai */
++		 output_char_offset + output_column,
++#endif
+                  line_number, fname_for_anchor, TAG_FLAG_ANCHOR);
+ }
+ 
+@@ -1791,9 +1806,15 @@
+     while (tags)
+       {
+         int file_top, file_bot, limit;
++#ifdef NEWEMACS /* Koji Arai */
++	int file_top_offset;
++#endif
+ 
+         /* Have to include the Control-_. */
+         file_top = file_bot = tags->position;
++#ifdef NEWEMACS /* Koji Arai */
++	file_top_offset = tags->char_offset;
++#endif
+         limit = file_top + size;
+ 
+         /* If the rest of this file is only one node, then
+@@ -1871,8 +1892,11 @@
+                   char *split_filename = enumerate_filename (root_pathname,
+                       root_filename, which_file);
+                   char *split_basename = filename_part (split_filename);
+-
++#ifdef __EMX__
++                   fd = open (split_filename, O_BINARY|O_WRONLY|O_TRUNC|O_CREAT, 0666);
++#else
+                   fd = open (split_filename, O_WRONLY|O_TRUNC|O_CREAT, 0666);
++#endif /* __EMX__ */
+                   if (fd < 0
+                       || write (fd, the_header, header_size) != header_size
+                       || write (fd, the_file + file_top, file_bot - file_top)
+@@ -1895,7 +1919,11 @@
+                     }
+ 
+                   sprintf (indirect_info, "%s: %d\n",
++#ifdef NEWEMACS /* Koji Arai */
++                           split_basename, file_top_offset);
++#else
+                            split_basename, file_top);
++#endif
+ 
+                   free (split_basename);
+                   free (split_filename);
+@@ -1910,7 +1938,11 @@
+     /* We have sucessfully created the subfiles.  Now write out the
+        original again.  We must use `output_stream', or
+        write_tag_table_indirect () won't know where to place the output. */
++#if defined(__EMX__) || defined(WIN32)
++    output_stream = fopen (filename, "wb");
++#else
+     output_stream = fopen (filename, "w");
++#endif
+     if (!output_stream)
+       {
+         perror (filename);
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/makeinfo/node.h tetex-src-3.0-os2/utils/texinfo/makeinfo/node.h
+--- tetex-src-3.0/utils/texinfo/makeinfo/node.h	Mon Apr 12 02:56:46 2004
++++ tetex-src-3.0-os2/utils/texinfo/makeinfo/node.h	Sun Mar  6 03:32:54 2005
+@@ -34,6 +34,9 @@
+   char *next;           /* Name of "Next:" for this node. */
+   char *up;             /* Name of "Up:" for this node.   */
+   int position;         /* Output file position of this node. */
++#ifdef NEWEMACS /* Koji Arai */
++  int char_offset;
++#endif
+   int line_no;          /* Defining line in source file. */
+   char *filename;       /* The file that this node was found in. */
+   int touched;          /* Nonzero means this node has been referenced. */
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/makeinfo/toc.c tetex-src-3.0-os2/utils/texinfo/makeinfo/toc.c
+--- tetex-src-3.0/utils/texinfo/makeinfo/toc.c	Mon Apr 12 02:56:46 2004
++++ tetex-src-3.0-os2/utils/texinfo/makeinfo/toc.c	Sun Mar  6 03:32:54 2005
+@@ -31,6 +31,9 @@
+ #include "sectioning.h"
+ #include "toc.h"
+ #include "xml.h"
++#if defined (SJIS) || defined (EUC)
++#include "kanji.h"
++#endif
+ 
+ /* array of toc entries */
+ static TOC_ENTRY_ELT **toc_entry_alist = NULL;
+@@ -91,7 +94,14 @@
+         {
+           for (; *s; s++)
+             {
+-              if (cr_or_whitespace (*s))
++#ifdef KANJI
++	      if(iskanji(*s)) {
++		*d++ = *s++;
++		*d++ = *s;
++		continue;
++	      }
++#endif
++             if (cr_or_whitespace (*s))
+                 *d++ = '-';
+               else if (! URL_SAFE_CHAR (*s))
+                 {
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/util/deref.c tetex-src-3.0-os2/utils/texinfo/util/deref.c
+--- tetex-src-3.0/utils/texinfo/util/deref.c	Mon Aug 26 08:38:38 2002
++++ tetex-src-3.0-os2/utils/texinfo/util/deref.c	Sun Mar  6 03:32:54 2005
+@@ -35,18 +35,27 @@
+ #include <stdio.h>
+ #include <ctype.h>
+ #include <errno.h>
++#ifdef WIN32
++#include <fcntl.h>
++int
++iskanji(int c)
++{
++  c &= 0xff;
++  return((c>=0x81 && c<=0x9f) || (c>=0xe0 && c<=0xfc));
++}
++#endif
+ 
+ /* for gcc on the 3B1, delete if this gives you grief */
+-extern int fclose(FILE *fp);
+-extern int fprintf(FILE *fp, const char *str, ...);
++//extern int fclose(FILE *fp);
++//extern int fprintf(FILE *fp, const char *str, ...);
+ /* extern int sprintf(char *str, const char *fmt, ...); */
+-extern int fputs(char *buf, FILE *fp);
++//extern int fputs(char *buf, FILE *fp);
+ 
+-extern char *strerror(int errno);
+-extern char *strchr(char *cp, int ch);
+-extern int strncmp(const char *s1, const char *s2, int count);
++//extern char *strerror(int errno);
++//extern char *strchr(char *cp, int ch);
++//extern int strncmp(const char *s1, const char *s2, int count);
+ 
+-extern int errno;
++//extern int errno;
+ 
+ void process(FILE *fp);
+ void repair(char *line, char *ref, int toffset);
+@@ -63,6 +72,10 @@
+ {
+ 	FILE *fp;
+ 
++#ifdef WIN32
++	getlongname(argv[0]);
++	setmode(fileno(stdout), _O_BINARY);
++#endif
+ 	Me = argv[0];
+ 
+ 	if (argc == 1)
+@@ -112,7 +125,7 @@
+ 
+ 	while (fgets(buf, sizeof buf, fp) != NULL) {
+ 		Line++;
+-		cp = strchr(buf, '@');
++		cp = (char *)strchr(buf, '@');
+ 		if (cp == NULL) {
+ 			fputs(buf, stdout);
+ 			continue;
+@@ -121,7 +134,7 @@
+ 			count = isref(cp);
+ 			if (count == 0) {
+ 				cp++;
+-				cp = strchr(cp, '@');
++				cp = (char *)strchr(cp, '@');
+ 				if (cp == NULL) {
+ 					fputs(buf, stdout);
+ 					goto next;
+@@ -194,6 +207,7 @@
+ 
+ /* strerror --- return error string, delete if in your library */
+ 
++/*
+ char *
+ strerror(int errno)
+ {
+@@ -207,3 +221,4 @@
+ 	sprintf(buf, "unknown error %d", errno);
+ 	return buf;
+ }
++*/
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/util/install-info.c tetex-src-3.0-os2/utils/texinfo/util/install-info.c
+--- tetex-src-3.0/utils/texinfo/util/install-info.c	Mon Apr 12 02:56:46 2004
++++ tetex-src-3.0-os2/utils/texinfo/util/install-info.c	Sun Mar  6 03:32:54 2005
+@@ -21,6 +21,16 @@
+ #include "system.h"
+ #include <getopt.h>
+ 
++#ifdef WIN32
++#include <fcntl.h>
++int
++iskanji(int c)
++{
++  c &= 0xff;
++  return((c>=0x81 && c<=0x9f) || (c>=0xe0 && c<=0xfc));
++}
++#endif
++
+ static char *progname = "install-info";
+ 
+ struct spec_entry;
+@@ -431,6 +441,7 @@
+ void
+ print_help (void)
+ {
++  printf ("\nGNU %s %s - install-info\n\nUsage: ", PACKAGE, VERSION);
+   printf (_("Usage: %s [OPTION]... [INFO-FILE [DIR-FILE]]\n\
+ \n\
+ Install or delete dir entries from INFO-FILE in the Info directory file\n\
+@@ -482,7 +493,11 @@
+       FILE *f;
+       char *readerr = strerror (errno);
+       close (desc);
++#ifdef WIN32
++      f = fopen (dirfile, "wb");
++#else
+       f = fopen (dirfile, "w");
++#endif
+       if (f)
+         {
+           fprintf (f, _("This is the file .../info/dir, which contains the\n\
+@@ -605,7 +620,7 @@
+     compression_program = &local_compression_program;
+ 
+   if (data[0] == '\x1f' && data[1] == '\x8b')
+-#if STRIP_DOT_EXE
++#ifdef STRIP_DOT_EXE
+     /* An explicit .exe yields a better diagnostics from popen below
+        if they don't have gzip installed.  */
+     *compression_program = "gzip.exe";
+@@ -632,7 +647,11 @@
+       char *command = concat (*compression_program," -cd <", *opened_filename);
+       if (fclose (f) < 0)
+         pfatal_with_name (*opened_filename);
++#ifdef WIN32
++      f = _popen (command, "r");
++#else
+       f = popen (command, "r");
++#endif
+       if (f)
+         *is_pipe = 1;
+       else
+@@ -701,7 +720,11 @@
+      by popen is simulated by a temporary file which only gets removed
+      inside pclose.  */
+   if (pipe_p)
++#ifdef WIN32
++    _pclose (f);
++#else
+     pclose (f);
++#endif
+   else
+     fclose (f);
+ 
+@@ -714,6 +737,10 @@
+    null, pipe to it to create DIRFILE.  Thus if we read dir.gz on input,
+    we'll write dir.gz on output.  */
+ 
++#ifdef WIN32
++#include "mkind.h"
++#endif
++
+ static void
+ output_dirfile (char *dirfile, int dir_nlines, struct line_data *dir_lines,
+                 int n_entries_to_add, struct spec_entry *entries_to_add,
+@@ -725,10 +752,18 @@
+   if (compression_program)
+     {
+       char *command = concat (compression_program, ">", dirfile);
++#ifdef WIN32
++      output = _popen (command, "wb");
++#else
+       output = popen (command, "w");
++#endif
+     }
+   else
++#ifdef WIN32
++    output = fopen (dirfile, "wb");
++#else
+     output = fopen (dirfile, "w");
++#endif
+ 
+   if (!output)
+     {
+@@ -838,7 +873,11 @@
+      On those systems, the compressor actually gets run inside pclose,
+      so we must call pclose.  */
+   if (compression_program)
++#ifdef WIN32
++    _pclose (output);
++#else
+     pclose (output);
++#endif
+   else
+     fclose (output);
+ }
+@@ -1158,6 +1197,11 @@
+   int quiet_flag = 0;
+ 
+   int i;
++
++#ifdef WIN32
++  getlongname(argv[0]);
++  setmode(fileno(stdout), _O_BINARY);
++#endif
+ 
+ #ifdef HAVE_SETLOCALE
+   /* Set locale via LC_ALL.  */
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/util/texindex.c tetex-src-3.0-os2/utils/texinfo/util/texindex.c
+--- tetex-src-3.0/utils/texinfo/util/texindex.c	Mon Apr 12 02:56:46 2004
++++ tetex-src-3.0-os2/utils/texinfo/util/texindex.c	Sun Mar  6 03:32:54 2005
+@@ -21,6 +21,14 @@
+ #include "system.h"
+ #include <getopt.h>
+ 
++#ifdef WIN32
++#include <fcntl.h>
++#endif
++#ifdef __EMX__
++#define SJIS 1
++#include <stdlib.h>
++#endif /* __EMX__ */
++
+ static char *program_name = "texindex";
+ 
+ #if defined (emacs)
+@@ -153,7 +161,14 @@
+ main (int argc, char **argv)
+ {
+   int i;
+-
++#ifdef __EMX__
++  _response(&argc, &argv);
++  _wildcard(&argc, &argv);
++#endif
++#ifdef WIN32
++  getlongname(argv[0]);
++  setmode(fileno(stdout), _O_BINARY);
++#endif
+   tempcount = 0;
+   last_deleted_tempcount = 0;
+ 
+@@ -637,6 +652,12 @@
+       while (bracelevel)
+         {
+           c = *p++;
++#ifdef	SJIS
++	  if ( iskanji(c)) {
++		  p++;
++		  continue;
++	  }
++#endif
+           if (c == '{')
+             bracelevel++;
+           if (c == '}')
+@@ -679,6 +700,12 @@
+   while (bracelevel)
+     {
+       c = *p++;
++#ifdef	SJIS
++	  if ( iskanji(c)) {
++		  p++;
++		  continue;
++	  }
++#endif
+       if (c == '{')
+         bracelevel++;
+       if (c == '}')
+@@ -705,7 +732,394 @@
+ /* Vector used to translate characters for comparison.
+    This is how we make all alphanumerics follow all else,
+    and ignore case in the first sorting.  */
++/*
+ int char_order[256];
++*/
++int char_order[0x10000]; /* japanese */
++
++#ifdef	EUC
++#define	KANJI
++#endif
++
++#ifdef	SJIS
++#define	KANJI
++#endif
++
++#ifdef		KANJI
++
++#ifndef		EUC
++#	ifndef		SJIS
++#		define	EUC
++#	endif
++#else
++#	ifdef	SJIS
++#		error
++#	endif
++#endif
++
++#ifdef          EUC
++#define		JIS_NUM_0		0xa3b0
++#define		JIS_NUM_9		(JIS_NUM_0 + '9'- '0')
++#define		JIS_ALPH_A		0xa3c1
++#define		JIS_ALPH_Z		(JIS_ALPH_A + 'Z'-'A')
++#define		JIS_ALPH_a		0xa3e1
++#define		JIS_HIRA_SMALL_A	0xa4a1
++#define		JIS_HIRA_NN             0xa4f3
++#define		JIS_KATA_SMALL_A        0xa5a1
++#define		JIS_KATA_SMALL_KE       0xa5f6
++#define		JIS_HIRA_U              0xa4a6
++#define		JIS_KATA_U              0xa5a6
++#define		JIS_KATA_VU             0xa5f4
++
++#define		JIS_KATA_UPPER		0xa5
++#define		JIS_HIRA_UPPER		0xa4
++
++#define		JIS_HIRA_A		0xa4a2
++#define		JIS_KATA_A		0xa5a2
++
++#define		JIS_DAKUTEN		0xa1ab
++#define		JIS_HANDAKUTEN          0xa1ac
++#define		JIS_CHOUON		0xa2ac
++
++int kana[] = {
++/*	          .        [      ]      ,        .       wo      a */	
++	0xa1a1, 0xa1a3, 0xa1d6, 0xa1d7, 0xa1a2, 0xa1a6, 0xa5f2, 0xa5a1,
++/*    i       u       e       o       ya      yu      yo      tsu   */	
++	0xa5a3, 0xa5a5, 0xa5a7, 0xa5a9, 0xa5e3, 0xa5e5, 0xa5e7, 0xa5c3,
++/*     -       a       i       u       e       o      ka      ki    */
++	0xa1bc, 0xa5a2, 0xa5a4, 0xa5a6, 0xa5a8, 0xa5aa, 0xa5ab, 0xa5ad,
++/*    ku      ke      ko      sa      si      su     se       so    */
++	0xa5af,	0xa5b1, 0xa5b3, 0xa5b5, 0xa5b7, 0xa5b9, 0xa5bb, 0xa5bd,
++/*    ta      ti      tu      te      to      na     ni       nu    */	
++	0xa5bf, 0xa5c1, 0xa5c4, 0xa5c6, 0xa5c8, 0xa5ca, 0xa5cb, 0xa5cc,
++/*    ne      no      ha      hi      hu      he      ho      ma    */
++	0xa5cd, 0xa5ce, 0xa5cf, 0xa5d2, 0xa5d5, 0xa5d8, 0xa5db, 0xa5de,
++/*    mi      mu      me      mo      ya      yu      yo      ra    */
++	0xa5df, 0xa5e0, 0xa5e1, 0xa5e2, 0xa5e4, 0xa5e6, 0xa5e8, 0xa5e9,
++/*	  ri      ru      re      ro      wa      nn      ""      maru  */
++	0xa5ea, 0xa5eb, 0xa5ec, 0xa5ed, 0xa5ef, 0xa5f3,	JIS_DAKUTEN,JIS_HANDAKUTEN
++};
++
++int daku[] = {0xa5ac, 0xa5ae, 0xa5b0, 0xa5b2, 0xa5b4, /* ¥¬*/
++              0xa5b6, 0xa5b8, 0xa5ba, 0xa5bc, 0xa5be, /* ¥¶ */
++              0xa5c0, 0xa5c2, 0xa5c5, 0xa5c7, 0xa5c9, /* ¥À */
++              0xa5d0, 0xa5d3, 0xa5d6, 0xa5d9, 0xa5dc}; /* ¥Ð */
++int handaku[] = {0xa5d1, 0xa5d4, 0xa5d7, 0xa5da, 0xa5dd}; /* ¥Ñ */
++int dakuall[] = {0xa4ac, 0xa4ae, 0xa4b0, 0xa4b2, 0xa4b4, /* ¤¬ */
++                 0xa4b6, 0xa4b8, 0xa4ba, 0xa4bc, 0xa4be, /* ¤¶ */
++                 0xa4c0, 0xa4c2, 0xa4c5, 0xa4c7, 0xa4c9, /* ¤À */
++                 0xa4d0, 0xa4d3, 0xa4d6, 0xa4d9, 0xa4dc, /* ¤Ð */
++                 0xa5ac, 0xa5ae, 0xa5b0, 0xa5b2, 0xa5b4, /* ¥¬ */
++                 0xa5b6, 0xa5b8, 0xa5ba, 0xa5bc, 0xa5be, /* ¥¶ */
++                 0xa5c0, 0xa5c2, 0xa5c5, 0xa5c7, 0xa5c9, /* ¥À */
++                 0xa5d0, 0xa5d3, 0xa5d6, 0xa5d9, 0xa5dc}; /* ¥Ð */
++int handakuall[] = {0xa4d1, 0xa4d4, 0xa4d7, 0xa4da, 0xa4dd, /* ¤Ñ */
++                    0xa5d1, 0xa5d4, 0xa5d7, 0xa5da, 0xa5dd}; /* ¥Ñ */
++int
++iskanji(int c) /* japanses extention */
++{
++	if ( !(c & 0x80 )) return 0;
++	if ( c == 0x8e ) return 0;
++	return 1;
++}
++
++int 
++is201kana(int c)  /* japanses extention */
++{
++	if ( c == 0x8e ) return 1;
++	else return 0;
++}
++#else /* SJIS */
++#define		JIS_NUM_0		0x824f
++#define		JIS_NUM_9		(JIS_NUM_0 + '9'- '0')
++#define		JIS_ALPH_A		0x8260
++#define		JIS_ALPH_Z		(JIS_ALPH_A + 'Z'-'A')
++#define		JIS_ALPH_a		0x8281
++#define		JIS_HIRA_SMALL_A	0x829f
++#define		JIS_HIRA_NN		0x82f1
++#define		JIS_KATA_SMALL_A	0x8340
++#define		JIS_KATA_SMALL_KE	0x8396
++#define		JIS_HIRA_U		0x82a4
++#define		JIS_KATA_U		0x8345 /* org 0x83a5  A.K. 1999 */
++#define		JIS_KATA_VU		0x8394
++
++#define		JIS_KATA_UPPER		0x83
++#define		JIS_HIRA_UPPER		0x82
++
++#define		JIS_HIRA_A		0x82a0
++#define		JIS_KATA_A		0x8341
++
++#define		JIS_DAKUTEN		0x814a
++#define		JIS_HANDAKUTEN          0x814b
++#define		JIS_CHOUON		0x815b
++
++int kana[] = {
++/*	          .        [      ]      ,        .       wo     a  */
++	0x813f, 0x8142, 0x8175, 0x8176, 0x8141, 0x8145, 0x8392, 0x8340,
++/*    i       u       e       o       ya      yu      yo      tsu   */
++	0x8342, 0x8344, 0x8346, 0x8348, 0x8383, 0x8385, 0x8387, 0x8362,
++/*     -       a       i       u       e       o      ka      ki    */
++	0x815b, 0x8341, 0x8343, 0x8345, 0x8347, 0x8349, 0x834a, 0x834c,
++/*    ku      ke      ko      sa      si      su     se       so    */
++	0x834e,	0x8350, 0x8352, 0x8354, 0x8356, 0x8358, 0x835a, 0x835c,
++/*    ta      ti      tu      te      to      na     ni       nu    */	
++	0x835e, 0x8360, 0x8363, 0x8365, 0x8367, 0x8369, 0x836a, 0x836b,
++/*    ne      no      ha      hi      hu      he      ho      ma    */
++	0x836c, 0x836d, 0x836e, 0x8371, 0x8374, 0x8377, 0x837a, 0x837d,
++/*    mi      mu      me      mo      ya      yu      yo      ra    */
++	0x837e, 0x8380, 0x8381, 0x8382, 0x8384, 0x8386, 0x8388, 0x8389,
++/*	  ri      ru      re      ro      wa      nn      ""  maru  */
++	0x838a, 0x838b, 0x838c, 0x838d, 0x838f, 0x8393,	JIS_DAKUTEN,JIS_HANDAKUTEN
++};
++
++int daku[] = {0x834b, 0x834d, 0x834f, 0x8351, 0x8353, /* ¥¬*/
++              0x8355, 0x8357, 0x8359, 0x835b, 0x835d, /* ¥¶ */
++              0x835f, 0x8361, 0x8364, 0x8366, 0x8367, /* ¥À */
++              0x836f, 0x8372, 0x8375, 0x8378, 0x837b}; /* ¥Ð */
++
++int handaku[] = {0x8370, 0x8373, 0x8376, 0x8379, 0x837c}; /* ¥Ñ */
++
++int dakuall[] = {0x82aa, 0xa2ac, 0x82a3, 0x82b0, 0x82b2, /* ¤¬ */
++                 0x82b4, 0x82b6, 0x82b8, 0x82ba, 0x82bc, /* ¤¶ */
++                 0x82be, 0x82c0, 0x82c3, 0x82c5, 0x82c7, /* ¤À */
++                 0x82ce, 0x82d1, 0x82d4, 0x82d7, 0x82da, /* ¤Ð */
++                 0x834b, 0x834d, 0x834f, 0x8351, 0x8353, /* ¥¬*/
++                 0x8355, 0x8357, 0x8359, 0x835b, 0x835d, /* ¥¶ */
++                 0x835f, 0x8361, 0x8364, 0x8366, 0x8367, /* ¥À */
++                 0x836f, 0x8372, 0x8375, 0x8378, 0x837b}; /* ¥Ð */
++
++int handakuall[] = {0x82cf, 0x82d2, 0x82d5, 0x82d8, 0x82db, /* ¤Ñ */
++                    0x8370, 0x8373, 0x8376, 0x8379, 0x837c}; /* ¥Ñ */
++
++int
++iskanji(int c)   /* japanses extention */
++{
++	c &= 0xff;
++	if (( c >= 0x81 && c <= 0x9f ) ||
++		( c >= 0xe0 && c <= 0xea )) return 1;
++	return 0;
++}
++
++int
++is201kana(int c)   /* japanses extention */
++{
++	if ( c >= 0xa0 && c <= 0xdf ) return 1;
++	else return 0;
++}
++#endif
++
++void
++kana_char_order(void) /* japanese */
++{
++	unsigned int c, i, j, cc;
++
++	for ( c = 0x8000 ; c < 0x10000 ; c++ )
++		char_order[c] = c;
++
++	/* NUMERIC */
++	for ( c = JIS_NUM_0 , i = '0' + 512; c <= JIS_NUM_9 ; i++,c++)
++		char_order[c] = i;
++
++	/* ALPHABET */
++	for ( c = JIS_ALPH_A , i = 'a' + 512; c <= JIS_ALPH_Z ; i++,c++) {
++		char_order[c] = i;
++		char_order[c+JIS_ALPH_a - JIS_ALPH_A] = i;
++	}
++
++	/* KANA */
++	for ( c = JIS_HIRA_SMALL_A ; c <= JIS_HIRA_NN ; c++ ) {
++		char_order[c] = c+512;
++		cc = c+JIS_KATA_SMALL_A-JIS_HIRA_SMALL_A;
++#ifdef	SJIS
++		if ( cc > 0x837e ) cc++;
++#endif
++		char_order[cc] = c+512;
++		if (isdaku(c) ) {
++			char_order[c] = c+512-1;
++			char_order[cc] = c+512-1;
++		} else if (ishandaku(c) ) {
++			char_order[c] = c+512-2;
++			char_order[cc] = c+512-2;
++		}
++	}
++	for ( c = JIS_KATA_VU ; c <= JIS_KATA_SMALL_KE ; c++ ) {
++		char_order[c] = c+512;
++		if (c == JIS_KATA_VU ) {
++			char_order[c] = JIS_KATA_U + 512;
++		}
++	}
++}
++
++
++#ifdef	EUC
++#define	KANA_BYTES	2
++#else
++#define	KANA_BYTES	2
++#endif
++  
++static int convert_htoz(str,ret)
++unsigned char *str;
++int *ret;
++{
++	int c, c2;
++
++	int num = KANA_BYTES;
++
++#ifdef	EUC
++	str++;
++#endif
++	c = *str++;
++	if (!is201kana(*str)) {
++		if (c >= 0xa0 && c <= 0xdf)
++			*ret = kana[c - 0xa0];
++		else *ret = 0x8e00 + c;
++		return num;
++	}
++#ifdef	EUC
++	str++;
++#endif
++	num += KANA_BYTES;
++	
++	if ( (c2 = *str++) == 0xde) {                           /* ÂùÅÀ */
++		if      (c >= 0xb6 && c <= 0xba)                /* line-ga */
++			c = daku[c - 0xb6];
++		else if (c >= 0xbb && c <= 0xbf)                /* line-za */
++			c = daku[c - 0xbb+5];
++		else if (c >= 0xc0 && c <= 0xc4)                /* line-da */
++			c = daku[c - 0xc0+10];
++		else if (c >= 0xca && c <= 0xce)                /* line-ba */
++			c = daku[c - 0xca+15];
++		else if ( c == 0xb3 )                           /* vu */
++			c = JIS_KATA_VU;
++	} else if (c2 == 0xdf) {                                /* È¾ÂùÅÀ */
++		if (c >= 0xca && c <= 0xce)                     /* line-pa */
++			c = handaku[c - 0xca];
++	} else if ( c2 == 0xb1 ) {                              /* Ä¹²» */
++		if (c >= 0xa0 && c <= 0xdd)
++			*ret = kana[c - 0xa0];
++		else *ret = 0x8e00 + c;
++	}
++	if ( c < 0x100 ) c += 0x8e00;
++	return num;
++}
++
++int
++isadddaku(int c)
++{
++	int	i;
++	for ( i = 0 ; i < sizeof(dakuall) / sizeof(dakuall[1]) ; i++ )
++		if ( dakuall[i]-1 == c ) return 1;
++	return 0;
++}
++
++int
++isaddhandaku(int c)
++{
++	int	i;
++	for ( i = 0 ; i < sizeof(handakuall) / sizeof(handakuall[1]) ; i++ )
++		if ( handakuall[i]-2 == c ) return 1;
++	return 0;
++}
++
++int
++isdaku(int c)
++{
++	int i;
++	for ( i = 0 ; i < sizeof(dakuall) / sizeof(dakuall[1]) ; i++ )
++		if ( dakuall[i] == c ) return 1;
++	return 0;
++}
++
++int
++ishandaku(int c)
++{
++	int i;
++	for ( i = 0 ; i < sizeof(handakuall) / sizeof(handakuall[1]) ; i++ )
++		if ( handakuall[i] == c ) return 1;
++	return 0;
++}
++
++int mbchar(str,ret)
++unsigned char *str;
++int *ret;
++{
++	int c = *str++;
++	int cc, ccc;
++	if ( !iskanji(c) && !is201kana(c)) {
++		*ret = c & 0xff;
++		return 1;
++	}
++	if ( iskanji (c) ) {
++		cc = ((c & 0xff) << 8) | ((*str++) & 0xff);
++		ccc = (((*str++ ) & 0xff) << 8 ) | ((*str++) & 0xff);
++
++		if ( ccc == JIS_DAKUTEN ) {
++			if ( isadddaku(cc)) cc++;
++			else if ( cc == JIS_KATA_U || cc == JIS_HIRA_U )
++				cc = JIS_KATA_VU;
++			*ret = cc;
++			return 4;
++		} else if ( ccc == JIS_HANDAKUTEN ) {
++			if ( isaddhandaku(cc)) cc+=2;
++			*ret = cc;
++			return 4;
++		} else if ( ccc == JIS_CHOUON ) {
++			*ret = cc;
++			return 4;
++		} else {
++			*ret = cc;
++			return 2;
++		}
++	} else if ( is201kana(c)) {
++		/* EUC */
++		return convert_htoz(str-1,ret);
++	}
++}
++
++void
++xinitial(str,c)
++unsigned char *str;
++int c;
++{
++	int up;
++	if (isdaku(c)) c--;
++	else if (ishandaku(c)) c -= 2;
++	else if ( c == JIS_KATA_VU ) c = JIS_KATA_U;
++#ifdef SJIS  /* A.K. 1999 */
++	if (((up= (c & 0xff00) >>8) == JIS_KATA_UPPER) &&
++            (c & 0xff) < 0x97)
++#else
++	if ((up= (c & 0xff00) >>8) == JIS_KATA_UPPER) 
++#endif
++                                                        { /* katakana */
++		c += JIS_HIRA_SMALL_A - JIS_KATA_SMALL_A;
++#ifdef	SJIS
++		if ( (c & 0xff) > 0xdd ) c--;    /* A.K. 1999 */
++#endif		
++	}
++	*str++ = (c >> 8 ) & 0xfff;
++	*str++ = c & 0xff;
++	*str= 0;
++}
++
++int
++make_initial(src,dst)
++unsigned char *src,*dst;
++{
++	int len;
++	int c;
++
++	len = mbchar(src,&c);
++	if ( len == 1 ) {
++		dst[0] =c;
++		dst[1] = 0;
++	} else {
++		xinitial(dst,c);
++		len = 2;
++	}
++	return len;
++}
++#endif
+ 
+ void
+ init_char_order (void)
+@@ -722,6 +1136,9 @@
+       char_order[i] = 512 + i;
+       char_order[i + 'A' - 'a'] = 512 + i;
+     }
++#ifdef	KANJI  
++	kana_char_order(); /* japanese */
++#endif
+ }
+ 
+ /* Compare two fields (each specified as a start pointer and a character count)
+@@ -762,12 +1179,19 @@
+           if (p1 == e1)
+             c1 = 0;
+           else
++#ifdef	KANJI		
++	    p1 += mbchar(p1,&c1); /* japanese */
++#else	  
+             c1 = *p1++;
++#endif
+           if (p2 == e2)
+             c2 = 0;
+           else
++#ifdef	KANJI		  
++	    p2 += mbchar(p2,&c2); /* japanese */
++#else
+             c2 = *p2++;
+-
++#endif	  
+           if (char_order[c1] != char_order[c2])
+             return char_order[c1] - char_order[c2];
+           if (!c1)
+@@ -784,15 +1208,33 @@
+           if (p1 == e1)
+             c1 = 0;
+           else
++#ifdef	KANJI		  
++	    p1 += mbchar(p1,&c1); /* japanese */
++#else
+             c1 = *p1++;
++#endif
+           if (p2 == e2)
+             c2 = 0;
+           else
++#ifdef	KANJI		  
++	    p2 += mbchar(p2,&c2); /* japanese */	  
++#else
+             c2 = *p2++;
+-
++#endif	  
++#ifdef	KANJI
++	  if ( iskanji(c1) || is201kana(c1)) {
+           if (c1 != c2)
+             /* Reverse sign here so upper case comes out last.  */
+             return c2 - c1;
++	  } else {
++	    if (c1 != c2)
++	      return c1 - c2;
++	  }
++#else
++ 	  if (c1 != c2)
++ 	    /* Reverse sign here so upper case comes out last.  */
++ 	    return c2 - c1;
++#endif
+           if (!c1)
+             break;
+         }
+@@ -883,7 +1325,11 @@
+   for (i = 0; i < ntemps; i++)
+     {
+       char *outname = maketempname (++tempcount);
++#ifdef WIN32
++      FILE *ostream = fopen (outname, "wb");
++#else
+       FILE *ostream = fopen (outname, "w");
++#endif
+       long tempsize = 0;
+ 
+       if (!ostream)
+@@ -949,6 +1395,10 @@
+    assuming that is small enough to be done in-core,
+    then indexify it and send the output to OUTFILE (or to stdout).  */
+ 
++#ifdef WIN32
++#include "mkind.h"
++#endif
++
+ void
+ sort_in_core (char *infile, int total, char *outfile)
+ {
+@@ -1048,7 +1498,11 @@
+ 
+   if (outfile)
+     {
++#ifdef WIN32
++      ostream = fopen (outfile, "wb");
++#else
+       ostream = fopen (outfile, "w");
++#endif
+       if (!ostream)
+         pfatal_with_name (outfile);
+     }
+@@ -1160,7 +1614,10 @@
+ /* When we need a string of length 1 for the value of lastinitial,
+    store it here.  */
+ 
++/*
+ char lastinitial1[2];
++*/
++char lastinitial1[3]; /* japanese */
+ 
+ /* Initialize static storage for writing an index. */
+ 
+@@ -1191,7 +1648,10 @@
+   int nosecondary;
+   int initiallength;
+   char *initial;
++/*
+   char initial1[2];
++*/
++  char initial1[3]; /* japanese */
+   register char *p;
+ 
+   /* First, analyze the parts of the entry fed to us this time. */
+@@ -1207,9 +1667,13 @@
+   else
+     {
+       initial = initial1;
++#ifdef	KANJI
++      initiallength = make_initial(p,initial1);	/* japanese */
++#else	  
+       initial1[0] = toupper (*p);
+       initial1[1] = 0;
+       initiallength = 1;
++#endif /* ! KANJI */
+     }
+ 
+   pagenumber = find_braced_pos (line, 1, 0, 0);
+@@ -1248,6 +1712,8 @@
+             {
+               lastinitial = lastinitial1;
+               *lastinitial1 = *initial1;
++              *(lastinitial1 + 1) = *(initial1 + 1);
++              *(lastinitial1 + 2) = *(initial1 + 2);
+             }
+           else
+             {
+@@ -1441,7 +1907,11 @@
+ 
+   if (outfile)
+     {
++#ifdef WIN32
++      ostream = fopen (outfile, "wb");
++#else
+       ostream = fopen (outfile, "w");
++#endif
+     }
+   if (!ostream)
+     pfatal_with_name (outfile);

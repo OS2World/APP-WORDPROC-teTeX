@@ -1,0 +1,106 @@
+#!sh
+# Thomas Esser, David Aspinall, Simon Wilkinson, 1998, 1999. Public domain.
+#
+# Simple script to attempt to find documentation for tex files.
+# Uses kpsewhich to find a .dvi, .pdf or .ps file along the
+# 'TeX system documentation' ($TEXDOCS, default: $TEXMF/doc) search path.
+#
+# Original version by David Aspinall <da@dcs.ed.ac.uk>
+#
+# This version rewritten for use with bash 2 and teTeX under Linux by
+# Simon Wilkinson <sxw@dcs.ed.ac.uk>
+#
+# Changes for web2c-7.2 resp. teTeX-0.9 and portability fixes by
+# Thomas Esser <te@informatik.uni-hannover.de>, Jun 14 1998
+
+# Viewing programs, according to filename extension.  (You can
+# override or add to them by setting environment variables).
+: ${TEXDOCVIEW_dvi=' xdvi %s &'}
+: ${TEXDOCVIEW_pdf='xpdf %s &'}
+: ${TEXDOCVIEW_ps='gv %s &'}
+: ${TEXDOCVIEW_html='rxvt -e w3m %s &'}
+: ${TEXDOCVIEW_txt="rxvt -e ${PAGER-more} %s &"}
+: ${TEXDOCVIEW_doc="rxvt -e ${PAGER-more} %s &"}
+
+# Commands run to uncompress files, according to filename extension.
+: ${TEXDOCUNZIP_gz='gzip -d -c'}
+: ${TEXDOCUNZIP_bz2='bzip2 -d -c'}
+: ${TEXDOCUNZIP_zip='unzip -p'}
+
+mode=viewer
+help='Usage: texdoc [OPTION]... [NAME]...
+  Search for NAME in the TeX documentation and start a viewer.
+
+  --help        show this help
+  -v		verbose mode: show viewer command
+  -l            just list all matching files. Do not start a viewer.'
+
+verbosemode=false
+while 
+  case $1 in
+     -l)     mode=list;;
+     -v)     verbosemode=true;;
+     *-help)
+             echo "$help" >&2
+             exit 1;;
+     -*)     echo "texdoc: option $1 not recognized" 1>&2;;
+      *)     break;;
+  esac
+do shift; done
+
+tmpdir=${TMP-/tmp}
+
+umask 077
+
+
+#listext=`kpsewhich --expand-brace='$TEXDOCEXT'`
+listext=".gz;.bz2;.zip;"
+for name
+do
+  found=false
+  OIFS=$IFS
+  IFS=';'
+  for ext in $listext; do
+
+    filename=`kpsewhich -format='TeX system documentation' $name$ext 2>/dev/null`
+    test -z "$filename" && continue
+    found=true
+
+    if test $mode = list; then
+      echo $filename
+    else
+      ext=`echo $filename | sed 's%.*\.%%'`
+      eval uncompress="\$TEXDOCUNZIP_$ext"
+      if test -n "$uncompress"
+      then
+        cmpext=$ext
+        ext=`echo $filename | sed -e "s|\\.$ext\$||" | sed 's%.*\.%%'`
+      fi
+      viewer=\$"TEXDOCVIEW_$ext"
+      if test -z "$viewer"
+      then 
+        echo "Don't know how to view file type $ext" 1>&2
+        echo "(matching file was $filename)" 1>&2
+      else 
+        $verbosemode && { echo $viewer | sed -e "s|%s|$filename|g"; }
+        if test -n "$uncompress"
+        then
+          src=`echo "$filename" | sed -e 's%.*/%%' -e 's%\.[^.]*$%%'`
+          eval "$uncompress $filename > $tmpdir/$$_$src"
+          filename="$tmpdir/$$_$src;rm $tmpdir/$$_$src"
+        fi
+        dir=`echo "$filename" | sed 's%/[^/]*$%%'`
+        test -n "$dir" && test -d "$dir" && cd "$dir"
+        viewer=`eval echo $viewer | sed -e "s|%s|$filename|g" `
+        echo $viewer | sed -e "s|%s|$filename|g"
+#        viewer=`eval echo $viewer | sed -e "s|%s|$filename|g" -e 's@/@\\\\\\\\@g'`
+        eval $viewer
+        break     # just stop after the first usable extension
+      fi
+    fi
+
+  done
+  $found || echo "Can't find documentation for \`$name'" 1>&2
+  IFS=$OIFS
+done
+exit 0

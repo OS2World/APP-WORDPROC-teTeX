@@ -1,0 +1,92 @@
+v2.4 [2006/01/04]
+  * nidanfloat.dtx: 必須フォーマットファイルをpLaTeX2eからLaTeX2eへ変更
+  * plfonts.dtx: \DeclareFontEncoding@ 中で \LastDeclaredEncodeng の再定義が
+      抜けていたので追加
+
+v2.3 [2005/01/04]
+  * plfonts.dtx: \fontfamily中のフラグを修正
+  * plvers.dtx: バージョン番号更新(platex<2005/01/04>)
+
+v2.2 [2004/08/10]
+  * plfonts.dtx: verbatim環境で余計な前後空きが発生しないように \fontfamily
+      を修正
+  * plfonts.dtx: JY1,JT1以外の和文エンコーディングも使用できるように修正
+  * jclasses.dtx: \part, \chapter の \@afterindentfalse を \@afterindenttrue
+      に変更
+  * jclasses.dtx: \section, \subsection, \subsubsection の前後空きの伸縮幅を
+      修正
+  * LaTeX2e 2003/12/01 版への対応を確認
+  * min, goth, nmin, ngoth のtfmに余計な文字コードの定義があったので削除
+  * 契約条文和訳を修正
+
+v2.1 [2002/05/07]
+  * cls ファイルや clo ファイルなどの漢字コードを JIS に変換
+
+v2.1 [2002/04/09]
+  * jclasses.dtx: 縦組クラスで \flushbottom しないようにした
+
+v2.1 [2002/04/05]
+  * plfonts.dtx: |\adjustbaseline|の|\iftdir|の位置を、和文フォントの
+      基準値を設定した後に移動
+
+v2.1 [2002/04/01]
+  * tascmac.sty: \ascii, \Ascii, \ASCII マクロがエラーになっていたのを修正
+
+v2.0 [2001/08/24]
+  * jtexdoc.tex: cmsy の \{ のコードを 0x6e と書いてあったのを 0x66 に修正
+
+v2.0 [2001/07/26]
+  * pTeX本体のライセンス変更に伴い、COPYRIGHT, COPYRIGHT.jis, README.txt を追加。
+     [2001/07/23]
+  * nidanfloat.dtx: combinefloatsマクロ修正
+
+v1.9 [2001/02/27]
+  * fonts/vf/ptex/ に dvips 用の vf を追加。
+  * ptex/platex/base/nidanfloat.dtx : 柱が出ない現象と分割した箇所の行間がおかしい現象を修正。
+
+v1.8 [2000/11/03]
+  * platex <2000/11/03>：LaTeX <2000/06/01> に対応。\adjustbaselineで余分なアキが入らないように
+
+v1.7.1 [2000/07/14]
+  * platex <2000/02/29>+2：\text* の修正をより効果的に
+
+v1.7 [2000/07/13]
+  * ptex/platex/base/nidanfloat.{dtx,ins,sty} を追加
+  * platex <2000/02/29>+1：\text* の左側のアキが入るよう修正
+
+v1.6 [2000/06/13]
+    * ptex/plain/base/jplain.tex での kinsoku.tex のパス指定を削除
+
+v1.6 [2000/06/09]
+    * ptex/plain/base/ptex.tex での kinsoku.tex のパス指定を削除
+    * ptex 用のファイルを ptex/plain/base に移動
+    * fmtutil で使うファイルを作成
+
+v1.5 [2000/03/01]
+    * platex 用のファイルを ptex/platex/base に移動
+    * platex 用のファイルが EUC コードになっていたのを jis コードに変更
+
+v1.5 [2000/02/28]
+    * tex/ptex ディレクトリを ptex/plain に移動
+    * platex <2000/02/29>+0 のファイルを収録
+
+v1.4 [1998/04/09]
+    * doc/ptex/ptexskip.tex を追加
+
+v1.3 [1997/03/17]
+    * kpathsea 3.0 のディレクトリ構造に対応
+
+v1.2.1 [1997/05/12]
+    * ptex.tex の４行目が $ になっていたのを % に修正
+
+v1.2 [1997/02/03]
+    * jplain.tex を横組専用にした
+    * $TEXMF が $TEXMf となっていたのを修正
+
+v1.1 [1996/01/24]
+    * ascgrp.{tfm,mf} が古いバージョンだったのを差し替え
+
+v1.0 [1995/11/14]
+    * ptex 2.0 とともに配布
+
+-- ASCII Co. <www-ptex＠ascii.co.jp>

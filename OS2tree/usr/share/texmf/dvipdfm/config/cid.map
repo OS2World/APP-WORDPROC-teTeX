@@ -1,0 +1,15 @@
+%% PostScript 'standard' font
+%% Ryumin-Light and GothicBBB-Medium will not be embedded.
+%% see cid_basefont.h for predefined base/core fonts.
+rml none Ryumin-Light
+gbm none GothicBBB-Medium
+rmlv none Ryumin-Light
+gbmv none GothicBBB-Medium
+
+%% PDF 'core' font
+%% HeiseiMin-W3 and HeiseiKakuGo-W5 will not be embedded also.
+%% see cid_basefont.h for predefined base/core fonts.
+%rml none HeiseiMin-W3
+%gbm none HeiseiKakuGo-W5
+%rmlv none HeiseiMin-W3
+%gbmv none HeiseiKakuGo-W5

@@ -1,0 +1,141 @@
+%%
+%% This is file `lowcycle.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% lowcycle.dtx  (with options: `lowcycle')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 1996,1998 by Shinsaku Fujita
+%% 
+%% This file is part of the XyMTeX system.
+%% =======================================
+%% 
+%% Version 1.01 Released on August 16, 1996
+%% Version 1.02 Released on October 31, 1996 (private version)
+%% Version 2.00 Released on December 25, 1998
+%% 
+%% Copyright (C) 1996, 1998 by Shinsaku Fujita, all rights reserved.
+%% This style file is created for drawing chemical structural formulas
+%% This style file is to be contained in the ``xymtex'' directory which
+%% is an input directory for TeX.
+%% 
+%% Copying of this file is authorized only if either
+%% 
+%%  (1) you make absolutely no changes to your copy, including name and
+%%      directory name
+%%  (2) if you do make changes,
+%%      (a) you name it something other than the names included in the
+%%          ``xymtex'' directory and
+%%      (b) you acknowledge the original name.
+%%  This restriction ensures that all standard styles are identical.
+%% 
+%% =======================================
+%% 
+%% This file contains several codes modified from latex.tex (LaTeX2.09)
+%% and from latex.ltx (a LaTeX2e), the reused parts of which are subject to
+%% Copyright 1994 the LaTeX3 project and the individual authors (For further
+%% copyright information see the file legal.txt of the LaTeX2e standard
+%% distribution, and any other copyright indicated in this file.)
+%% 
+%% File: lowcycle.dtx
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+\typeout{XyMTeX for Drawing Chemical Structural Formulas. Version 2.00}
+\typeout{       -- Released December 25, 1998 by Shinsaku Fujita}
+\def\j@urnalname{lowcycle}
+\def\versi@ndate{December 25, 1998}
+\def\versi@nno{ver2.00}
+\def\copyrighth@lder{SF} % Shinsaku Fujita
+\typeout{XyMTeX Macro File `\j@urnalname' (\versi@nno) <\versi@ndate>%
+\space[\copyrighth@lder]}
+\@ifundefined{setsixringv}{\input chemstr.sty\relax}{}
+\@ifundefined{threehetero}{\input hetarom.sty\relax}{}
+\@ifundefined{sixheteroh}{\input hetaromh.sty\relax}{}
+\unitlength=0.1pt
+\def\cyclopentanev{\@ifnextchar[{\@cyclopentanev[@}{\@cyclopentanev[]}}
+\def\@cyclopentanev[#1]#2{%
+\iforigpt \typeout{command `cyclopentanev' %
+                  is based on `fiveheterov'.}\fi%
+\fiveheterov[#1]{}{#2}}
+\def\cyclopentanevi{\@ifnextchar[{\@cyclopentanevi[@}{\@cyclopentanevi[]}}
+\def\@cyclopentanevi[#1]#2{%
+\iforigpt \typeout{command `cyclopentanevi' %
+                   is based on `fiveheterovi'.}\fi%
+\fiveheterovi[#1]{}{#2}}
+\def\cyclopentaneh{\@ifnextchar[{\@cyclopentaneh[@}{\@cyclopentaneh[]}}
+\def\@cyclopentaneh[#1]#2{%
+\iforigpt \typeout{command `cyclophentaneh' %
+                   is based on `fiveheteroh'.}\fi%
+\fiveheteroh[#1]{}{#2}}
+\def\cyclopentanehi{%
+  \@ifnextchar[{\@cyclopentanehi[@}{\@cyclopentanehi[]}}
+\def\@cyclopentanehi[#1]#2{%
+\iforigpt \typeout{command `cyclopentanehi' %
+                   is based on `fiveheterohi'.}\fi%
+\fiveheterohi[#1]{}{#2}}
+\def\indanev{\@ifnextchar[{\@indanev[@}{\@indanev[rb]}}
+\def\@indanev[#1]#2{%
+\iforigpt \typeout{command `indanev' %
+               is based on `nonaheterov'.}\fi%
+\nonaheterov[#1]{}{#2}}
+\def\indanevi{\@ifnextchar[{\@indanevi[@}{\@indanevi[rb]}}
+\def\@indanevi[#1]#2{%
+\iforigpt \typeout{command `indanevi' %
+              is based on `nonaheterovi'.}\fi%
+\nonaheterovi[#1]{}{#2}}
+\def\indaneh{\@ifnextchar[{\@indaneh[@}{\@indaneh[rb]}}
+\def\@indaneh[#1]#2{%
+\iforigpt \typeout{command `indaneh' %
+        is based on `nonaheteroh'.}\fi%
+\nonaheteroh[#1]{}{#2}}
+\def\indanehi{\@ifnextchar[{\@indanehi[@}{\@indanehi[rb]}}
+\def\@indanehi[#1]#2{%
+\iforigpt \typeout{command `indanehi' %
+        is based on `nonaheterohi'.}\fi%
+\nonaheterohi[#1]{}{#2}}
+\def\cyclobutane{\@ifnextchar[{\@cyclobutane[@}{\@cyclobutane[]}}
+\def\@cyclobutane[#1]#2{%
+\iforigpt \typeout{command `cyclobutane' %
+      is based on `fourhetero'.}\fi%
+\fourhetero[#1]{}{#2}}
+\def\cyclopropane{\@ifnextchar[{\@cyclopropane[@}{\@cyclopropane[]}}
+\def\@cyclopropane[#1]#2{%
+\iforigpt \typeout{command `cyclopropane' %
+      is based on `threehetero'.}\fi%
+\threehetero[#1]{}{#2}}
+\let\cyclopropanev=\cyclopropane
+\def\cyclopropanei{\@ifnextchar[{\@cyclopropanei[@}{\@cyclopropanei[]}}
+\def\@cyclopropanei[#1]#2{%
+\iforigpt \typeout{command `cyclopropanei' %
+      is based on `threeheteroi'.}\fi%
+\threeheteroi[#1]{}{#2}}
+\let\cyclopropanevi=\cyclopropanei
+\def\cyclopropaneh{\@ifnextchar[{\@cyclopropaneh[@}{\@cyclopropaneh[]}}
+\def\@cyclopropaneh[#1]#2{%
+\iforigpt \typeout{command `cyclopropaneh' %
+      is based on `threeheteroh'.}\fi%
+\threeheteroh[#1]{}{#2}}
+\def\cyclopropanehi{\@ifnextchar[{\@cyclopropanehi[@}{\@cyclopropanehi[]}}
+\def\@cyclopropanehi[#1]#2{%
+\iforigpt \typeout{command `cyclopropanehi' %
+      is based on `threeheterohi'.}\fi%
+\threeheterohi[#1]{}{#2}}
+\endinput
+%%
+%% End of file `lowcycle.sty'.

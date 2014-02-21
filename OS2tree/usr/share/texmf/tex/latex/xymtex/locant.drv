@@ -1,0 +1,78 @@
+%%
+%% This is file `locant.drv',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% locant.dtx  (with options: `driver')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 1996 by Shinsaku Fujita
+%% 
+%% This file is part of the XyMTeX system.
+%% =======================================
+%% 
+%% Released on August 16, 1996
+%% 
+%% Copyright (C) 1996 by Shinsaku Fujita, all rights reserved.
+%% This style file is created for drawing chemical structural formulas
+%% This style file is to be contained in the ``xymtex'' directory which
+%% is an input directory for TeX.
+%% 
+%% Copying of this file is authorized only if either
+%% 
+%%  (1) you make absolutely no changes to your copy, including name and
+%%      directory name
+%%  (2) if you do make changes,
+%%      (a) you name it something other than the names included in the
+%%          ``xymtex'' directory and
+%%      (b) you acknowledge the original name.
+%%  This restriction ensures that all standard styles are identical.
+%% 
+%% =======================================
+%% 
+%% This file contains several codes modified from latex.tex (LaTeX2.09)
+%% and from latex.ltx (a LaTeX2e), the reused parts of which are subject to
+%% Copyright 1994 the LaTeX3 project and the individual authors (For further
+%% copyright information see the file legal.txt of the LaTeX2e standard
+%% distribution, and any other copyright indicated in this file.)
+%% 
+%% File: locant.dtx
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+\NeedsTeXFormat{pLaTeX2e}
+\ProvidesFile{locant.dtx}[1996/08/16 v1.01 XyMTeX{} package file]
+\documentclass{ltxdoc}
+\GetFileInfo{locant.dtx}
+\def\UPSILON{\char'7}
+\def\XyM{X\kern-.30em\smash{%
+\raise.50ex\hbox{\UPSILON}}\kern-.30em{M}}
+\def\XyMTeX{\XyM\kern-.1em\TeX}
+\title{Setting locant numbers by {\sffamily locant.sty}
+(\fileversion) of \XyMTeX{}}
+\author{Shinsaku Fujita \\
+Ashigara Research Laboratories,
+Fuji Photo Film Co., Ltd., \\
+Minami-Ashigara, Kanagawa, 250-01 Japan}
+\date{\filedate}
+\begin{document}
+   \maketitle
+   \DocInput{locant.dtx}
+\end{document}
+\endinput
+%%
+%% End of file `locant.drv'.

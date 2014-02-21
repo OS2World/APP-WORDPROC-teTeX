@@ -1,0 +1,94 @@
+xymtex2.doc
+On-line document for XyMTeX in English
+Copyright (C) 1993, 1996, 1998 by Shinsak Fujita. All rights reserved. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+renamed and revised: xymtex1.doc
+Copyright (C) 1993, 1996 by Shinsak Fujita. All rights reserved. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+`XyMTeX' is a macro package for drawing chemical structural formulas. 
+
+(1) Setting up 
+
+    This package has been frozen with LHA.  Let the frozen package 
+  (xymtex2.lzh) be placed in the b: directory.  To melt the frozen package 
+  in the a:\tex directory, please input the following statement in the 
+  command line of your display. 
+
+     a:\tex>lha x b:\xymtex2
+
+  Thereby, the directory <\xymtex> is automatically created as the 
+  subdirectory of the a:\tex directory; and the following hierarchy of 
+  directories and files is generated. 
+
+  a---\tex---\xymtex --- hetaromh.sty, hetarom.sty, ccycle.sty, 
+    |      |          |   chemstr.sty, carom.sty, lowcycl.sty, aliphat.sty, 
+                      |   hcycle.sty, locant.sty, polymers.sty, chemist.sty
+                      |   methylen.sty, fusering.sty
+                      |
+                      |   (dtx files)
+                      |
+                      |--\drvdvi---drv files, dvi files
+                      |
+                      |--\doc200--- xymtx200.tex, xymtx200.dvi,
+                      |    xymyl.tex, xymadd.tex 
+                      |    (other files for the document preparation)
+                      |
+                      |---xymtex2.doc (this document)
+                      |
+                      |---xymtex2.jpn (on-line document in Japanes)
+                      |
+                      |---readme2.doc (notes in English)
+                      |
+                      |---readme2.jpn (notes in Japanese)
+
+   The package (sty) files in the \xymtex directory contains the macro 
+  codes of XymTeX commands. The specification of XyMTeX commands and 
+  examples of using these commands are included in the xymtex.dvi file of 
+  the \doc directory. 
+
+   The xymtx200.dvi file is a dvi file that is a manual for utilizing 
+  XyMTeX (about 100 pages). The processed dvi file can be obtained in the same 
+  directory of this distribution.  It can be printed with an appropriate 
+  printer driver (lips3dvi, dviprt, or others) and can be displayed with an 
+  appropriate previewer (dviout, etc.). 
+
+   The xymtx200.tex is the main file of the manuscript for creating the 
+  xymtx200.dvi. The other tex files in the \doc200 directory are input files 
+  which are read by the main file. 
+
+(2) Designating a serach path 
+
+  In order to set a search path for using XyMTeX, please add the directory 
+  name to the TEXINPUTS line in \texmf.cnf, which is stored in the 
+  \tex\texmf\web2c directory (for a standard distribution of LaTeX2e). 
+  For example, you add 
+
+   platex2e_inputs = .;$TEXMF/tex/platex2e//;$TEXMF/tex/latex2e//;
+    $TEXMF/tex//;a:/tex/inputs//;
+    a:/tex/chem//;a:/tex/xymtex//;a:/tex/opsty//
+                  ~~~~~~~~~~~~~~~ <---- to be added 
+
+(3) Writing your manuscript 
+
+   Each command of XyMTeX can be used if you add the name of the 
+   corresponding style file to the option list at the top of your 
+   manuscript file, e.g. 
+
+    \documentclass{article}
+    \usepackage{epic,hetarom,hetaromh}
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  where the underlined names are XyMTeX package files containing your 
+  requisite commands. If all of the XyMTeX commands are required, 
+  the short-cut declaration 
+
+    \documentclass{article}
+    \usepackage{xymtex}
+ 
+  can be used for simplicity. 
+
+(4) Running LaTeX2e or pLaTeX2e
+
+   You should use XyMTeX commands within LaTeX. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%(END) 
+

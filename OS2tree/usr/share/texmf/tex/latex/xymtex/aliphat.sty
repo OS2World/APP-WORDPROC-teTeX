@@ -1,0 +1,1464 @@
+%%
+%% This is file `aliphat.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% aliphat.dtx  (with options: `aliphat')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 1996, 1998 by Shinsaku Fujita
+%% 
+%% This file is part of the XyMTeX system.
+%% =======================================
+%% 
+%% Version 1.01 Released on August 16, 1996
+%% Version 1.02 Released on October 31, 1996
+%% Version 2.00 Released on December 25, 1998
+%% 
+%% Copyright (C) 1996, 1998 by Shinsaku Fujita, all rights reserved.
+%% This style file is created for drawing chemical structural formulas
+%% This style file is to be contained in the ``xymtex'' directory which
+%% is an input directory for TeX.
+%% 
+%% Copying of this file is authorized only if either
+%% 
+%%  (1) you make absolutely no changes to your copy, including name and
+%%      directory name
+%%  (2) if you do make changes,
+%%      (a) you name it something other than the names included in the
+%%          ``xymtex'' directory and
+%%      (b) you acknowledge the original name.
+%%  This restriction ensures that all standard styles are identical.
+%% 
+%% =======================================
+%% 
+%% This file contains several codes modified from latex.tex (LaTeX2.09)
+%% and from latex.ltx (a LaTeX2e), the reused parts of which are subject to
+%% Copyright 1994 the LaTeX3 project and the individual authors (For further
+%% copyright information see the file legal.txt of the LaTeX2e standard
+%% distribution, and any other copyright indicated in this file.)
+%% 
+%% File: aliphat.dtx
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+\typeout{XyMTeX for Drawing Chemical Structural Formulas. Version 2.00}
+\typeout{       -- Released December 25, 1998 by Shinsaku Fujita}
+\def\j@urnalname{aliphat}
+\def\versi@ndate{December 25, 1998}
+\def\versi@nno{ver2.00}
+\def\copyrighth@lder{SF} % Shinsaku Fujita
+\typeout{XyMTeX Macro File `\j@urnalname' (\versi@nno) <\versi@ndate>%
+\space[\copyrighth@lder]}
+\@ifundefined{setsixringv}{\input chemstr.sty\relax}{}
+\unitlength=0.1pt
+\def\Northbond{%
+\yl@xdiff=40
+\yl@ydiff=-15
+\begin{picture}(100,200)(0,0)
+  \if\@tmpb D\relax%
+    \multiput(-13,52)(26,0){2}{\line(0,1){100}}% double bond up
+  \else\if\@tmpb T\relax%
+    \multiput(-20,52)(20,0){3}{\line(0,1){100}}% triple bond up
+  \else\if\@tmpb A%(A) alpha
+    {\thicklines\put(-8,52){\line(0,1){100}}}% single bond (alpha)
+  \else\if\@tmpb B%(B) beta
+       \@ifundefined{dottedline}{\put(0,52){\line(0,1){100}}}%
+         {{\thicklines \dottedline{20}(0,52)(0,152)}}%
+  \else\if\@tmpb S%
+       \put(0,52){\line(0,1){100}}%
+  \else \put(0,52){\line(0,1){100}}%
+  \fi\fi\fi\fi\fi%
+  \putlratom{-40}{167}{\@memberb}%==1 upper substituent
+\end{picture}}%
+\def\Eastbond{%
+\yl@xdiff=-10
+\yl@ydiff=33
+\begin{picture}(200,200)(0,0)
+  \if\@tmpb D\relax%
+     \multiput(50,-13)(0,26){2}{\line(1,0){140}}% double bond right
+  \else\if\@tmpb T\relax%
+     \multiput(50,-20)(0,20){3}{\line(1,0){140}}% double bond right
+  \else\if\@tmpb A%(A) alpha
+    {\thicklines\put(50,0){\line(1,0){140}}}% single bond (alpha)
+  \else\if\@tmpb B%(B) beta
+       \@ifundefined{dottedline}{\put(50,0){\line(1,0){140}}}%
+         {{\thicklines \dottedline{20}(50,0)(203,0)}}%
+  \else\if\@tmpb S%
+       \put(50,0){\line(1,0){140}}%
+    \else \put(50,0){\line(1,0){140}}%
+  \fi\fi\fi\fi\fi%
+  \putratom{200}{-33}{\@memberb}%==2 right substituent
+\end{picture}}%
+\def\Southbond{%
+\yl@xdiff=40
+\yl@ydiff=95
+\begin{picture}(100,300)(0,0)
+  \if\@tmpb D\relax%
+     \multiput(-13,-48)(26,0){2}{\line(0,-1){100}}% double bond down
+  \else\if\@tmpb T\relax%
+     \multiput(-20,-48)(20,0){3}{\line(0,-1){100}}% double bond down
+  \else\if\@tmpb A%(A) alpha
+    {\thicklines\put(-8,-48){\line(0,-1){100}}}% single bond (alpha)
+  \else\if\@tmpb B%(B) beta
+       \@ifundefined{dottedline}{\put(0,-48){\line(0,-1){100}}}%
+         {{\thicklines \dottedline{20}(0,-48)(0,-148)}}%
+  \else\if\@tmpb S%
+       \put(0,-48){\line(0,-1){100}}%
+    \else \put(0,-48){\line(0,-1){100}}%
+  \fi\fi\fi\fi\fi%
+  \putlratom{-40}{-243}{\@memberb}%==3 down substituent
+\end{picture}}%
+\def\Westbond{%
+\yl@xdiff=10
+\yl@ydiff=33
+\begin{picture}(100,300)(0,0)
+  \if\@tmpb D\relax%
+     \multiput(-190,-13)(0,26){2}{\line(1,0){140}}% double bond left
+  \else\if\@tmpb T\relax%
+     \multiput(-190,-20)(0,20){3}{\line(1,0){140}}% double bond left
+  \else\if\@tmpb A%(A) alpha
+    {\thicklines\put(-190,0){\line(1,0){140}}}% single bond (alpha)
+  \else\if\@tmpb B%(B) beta
+       \@ifundefined{dottedline}{\put(-190,0){\line(1,0){140}}}%
+         {{\thicklines \dottedline{20}(-190,0)(-40,0)}}%
+  \else\if\@tmpb S%
+       \put(-190,0){\line(1,0){140}}%
+  \else \put(-190,0){\line(1,0){140}}%
+  \fi\fi\fi\fi\fi%
+  \putlatom{-200}{-33}{\@memberb}%==4 left substituent
+\end{picture}}%
+\def\NEBond{%degree 120
+\yl@xdiff=-9
+\yl@ydiff=13
+\begin{picture}(100,300)(0,0)
+  \if\@tmpb D\relax%
+    \put(33,48){\line(5,3){121}}%
+    \put(47,26){\line(5,3){121}}%northeast double bond
+  \else\if\@tmpb T\relax%
+    \put(31,52){\line(5,3){121}}%
+    \put(40,37){\line(5,3){121}}%
+    \put(49,22){\line(5,3){121}}%northeast triple bond
+  \else\if\@tmpb A%(A) alpha
+    {\thicklines\put(40,47){\line(5,3){121}}}% single bond (alpha)
+  \else\if\@tmpb B%(B) beta
+       \@ifundefined{dottedline}{\put(40,47){\line(5,3){121}}}%
+         {{\thicklines \dottedline{20}(40,47)(161,120)}}%
+  \else\if\@tmpb S%
+       \put(40,47){\line(5,3){121}}%
+  \else \put(40,47){\line(5,3){121}}%
+  \fi\fi\fi\fi\fi%
+  \putratom{170}{107}{\@memberb}%==2 (northeast substituent)
+\end{picture}}%
+\def\NEbond{%degree 90
+\yl@xdiff=-5
+\yl@ydiff=10
+\begin{picture}(100,300)(0,0)
+  \if\@tmpb D\relax%
+     \put(31,46){\line(1,1){100}}%
+     \put(49,28){\line(1,1){100}}%northeast double bond
+  \else\if\@tmpb T\relax%
+     \put(27,50){\line(1,1){100}}%
+     \put(40,37){\line(1,1){100}}%
+     \put(53,24){\line(1,1){100}}%northeast triple bond
+  \else\if\@tmpb A%(A) alpha
+    {\thicklines\put(40,47){\line(1,1){100}}}% single bond (alpha)
+  \else\if\@tmpb B%(B) beta
+       \@ifundefined{dottedline}{\put(40,47){\line(1,1){100}}}%
+         {{\thicklines \dottedline{20}(40,47)(140,147)}}%
+  \else\if\@tmpb S%
+       \put(40,47){\line(1,1){100}}%
+  \else \put(40,47){\line(1,1){100}}%
+  \fi\fi\fi\fi\fi%
+  \putratom{145}{137}{\@memberb}%==2 (northeast substituent)
+\end{picture}}%
+\def\SEBond{%degree 120
+\yl@xdiff=-9
+\yl@ydiff=67
+\begin{picture}(100,300)(0,0)
+  \if\@tmpb D\relax%
+    \put(33,-48){\line(5,-3){121}}%
+    \put(47,-26){\line(5,-3){121}}%southeast double bond
+  \else\if\@tmpb T\relax%
+    \put(31,-52){\line(5,-3){121}}%
+    \put(40,-37){\line(5,-3){121}}%
+    \put(49,-22){\line(5,-3){121}}%southeast triple bond
+  \else\if\@tmpb A%(A) alpha
+    {\thicklines\put(40,-47){\line(5,-3){121}}}% single bond (alpha)
+  \else\if\@tmpb B%(B) beta
+       \@ifundefined{dottedline}{\put(40,-47){\line(5,-3){121}}}%
+         {{\thicklines \dottedline{20}(40,-47)(161,-120)}}%
+  \else\if\@tmpb S%
+       \put(40,-47){\line(5,-3){121}}%
+  \else \put(40,-47){\line(5,-3){121}}%
+  \fi\fi\fi\fi\fi%
+  \putratom{170}{-187}{\@memberb}%==2 (southeast substituent)
+\end{picture}}%
+\def\SEbond{%degree 90
+\yl@xdiff=-5
+\yl@ydiff=56
+\begin{picture}(100,300)(0,0)
+  \if\@tmpb D\relax%
+     \put(31,-46){\line(1,-1){100}}%
+     \put(49,-28){\line(1,-1){100}}%southeast double bond
+  \else\if\@tmpb T\relax%
+     \put(27,-50){\line(1,-1){100}}%
+     \put(40,-37){\line(1,-1){100}}%
+     \put(53,-24){\line(1,-1){100}}%southeast triple bond
+  \else\if\@tmpb A%(A) alpha
+    {\thicklines\put(53,-47){\line(1,-1){100}}}% single bond (alpha)
+  \else\if\@tmpb B%(B) beta
+       \@ifundefined{dottedline}{\put(40,-47){\line(1,-1){100}}}%
+         {{\thicklines \dottedline{20}(40,-47)(140,-147)}}%
+  \else\if\@tmpb S%
+       \put(40,-47){\line(1,-1){100}}%
+  \else \put(40,-47){\line(1,-1){100}}%
+  \fi\fi\fi\fi\fi%
+ \putratom{145}{-203}{\@memberb}%==3 (southeast substituent)
+\end{picture}}%
+\def\NWBond{%
+\begin{picture}(100,300)(0,0)
+\yl@xdiff=9
+\yl@ydiff=13
+  \if\@tmpb D\relax%
+    \put(-59,48){\line(-5,3){121}}%
+    \put(-73,26){\line(-5,3){121}}%northwest double bond
+  \else\if\@tmpb T\relax%
+    \put(-57,52){\line(-5,3){121}}%
+    \put(-66,37){\line(-5,3){121}}%
+    \put(-75,22){\line(-5,3){121}}%northwest triple bond
+  \else\if\@tmpb A%(A) alpha
+    {\thicklines\put(-66,47){\line(-5,3){121}}}% single bond (alpha)
+  \else\if\@tmpb B%(B) beta
+       \@ifundefined{dottedline}{\put(-66,47){\line(-5,3){121}}}%
+         {{\thicklines \dottedline{20}(-66,47)(-187,120)}}%
+  \else\if\@tmpb S%
+       \put(-66,47){\line(-5,3){121}}%
+  \else \put(-66,47){\line(-5,3){121}}%
+  \fi\fi\fi\fi\fi%
+  \putlatom{-196}{107}{\@memberb}%==2 (northwest substituent)
+\end{picture}}%
+\def\NWbond{%
+\begin{picture}(100,300)(0,0)
+\yl@xdiff=13
+\yl@ydiff=10
+  \if\@tmpb D\relax%
+     \put(-41,46){\line(-1,1){100}}%
+     \put(-59,28){\line(-1,1){100}}%northwest double bond
+  \else\if\@tmpb T\relax%
+     \put(-37,50){\line(-1,1){100}}%
+     \put(-50,37){\line(-1,1){100}}%
+     \put(-63,24){\line(-1,1){100}}%northwest triple bond
+  \else\if\@tmpb A%(A) alpha
+    {\thicklines\put(-50,47){\line(-1,1){100}}}% single bond (alpha)
+  \else\if\@tmpb B%(B) beta
+       \@ifundefined{dottedline}{\put(-50,47){\line(-1,1){100}}}%
+         {{\thicklines \dottedline{20}(-50,47)(-137,147)}}%
+  \else\if\@tmpb S%
+       \put(-50,47){\line(-1,1){100}}%
+  \else \put(-50,47){\line(-1,1){100}}%
+  \fi\fi\fi\fi\fi%
+  \putlatom{-163}{137}{\@memberb}%==2 (northwest substituent)
+\end{picture}}%
+\def\SWBond{%
+\yl@xdiff=9
+\yl@ydiff=67
+\begin{picture}(100,300)(0,0)
+  \if\@tmpb D\relax%
+    \put(-59,-48){\line(-5,-3){121}}%
+    \put(-73,-26){\line(-5,-3){121}}%southwest double bond
+  \else\if\@tmpb T\relax%
+    \put(-57,-52){\line(-5,-3){121}}%
+    \put(-66,-37){\line(-5,-3){121}}%
+    \put(-75,-22){\line(-5,-3){121}}%southwest triple bond
+  \else\if\@tmpb A%(A) alpha
+    {\thicklines\put(-66,-47){\line(-5,-3){121}}}% single bond (alpha)
+  \else\if\@tmpb B%(B) beta
+       \@ifundefined{dottedline}{\put(-66,-47){\line(-5,-3){121}}}%
+         {{\thicklines \dottedline{20}(-66,-47)(-187,-120)}}%
+  \else\if\@tmpb S%
+       \put(-66,-47){\line(-5,-3){121}}%
+  \else \put(-66,-47){\line(-5,-3){121}}%
+  \fi\fi\fi\fi\fi%
+  \putlatom{-196}{-187}{\@memberb}%==2 (southwest substituent)
+\end{picture}}%
+\def\SWbond{%
+\yl@xdiff=13
+\yl@ydiff=56
+\begin{picture}(100,300)(0,0)
+  \if\@tmpb D\relax%
+     \put(-41,-46){\line(-1,-1){100}}%
+     \put(-59,-28){\line(-1,-1){100}}%southwest double bond
+  \else\if\@tmpb T\relax%
+     \put(-37,-50){\line(-1,-1){100}}%
+     \put(-50,-37){\line(-1,-1){100}}%
+     \put(-63,-24){\line(-1,-1){100}}%southwest triple bond
+  \else\if\@tmpb A%(A) alpha
+    {\thicklines\put(-50,-47){\line(-1,-1){100}}}% single bond (alpha)
+  \else\if\@tmpb B%(B) beta
+       \@ifundefined{dottedline}{\put(-50,-47){\line(-1,-1){100}}}%
+         {{\thicklines \dottedline{20}(-50,-47)(-137,-147)}}%
+  \else\if\@tmpb S%
+       \put(-50,-47){\line(-1,-1){100}}%
+  \else \put(-50,-47){\line(-1,-1){100}}%
+  \fi\fi\fi\fi\fi%
+ \putlatom{-163}{-203}{\@memberb}%==3 (southwest substituent)
+\end{picture}}%
+\def\NEBOND{%degree 120
+\yl@xdiff=-1
+\yl@ydiff=-10
+\begin{picture}(100,300)(0,0)
+  \if\@tmpb D\relax%
+    \put(48,33){\line(3,5){72}}%
+    \put(26,47){\line(3,5){72}}%northeast double bond
+  \else\if\@tmpb T\relax%
+    \put(52,31){\line(3,5){72}}%
+    \put(37,40){\line(3,5){72}}%
+    \put(22,49){\line(3,5){72}}%northeast triple bond
+  \else\if\@tmpb A%(A) alpha
+    {\thicklines\put(40,47){\line(3,5){72}}}% single bond (alpha)
+  \else\if\@tmpb B%(B) beta
+       \@ifundefined{dottedline}{\put(47,40){\line(3,5){72}}}%
+         {{\thicklines \dottedline{20}(47,40)(120,161)}}%
+  \else\if\@tmpb S%
+       \put(47,40){\line(3,5){72}}%
+  \else \put(47,40){\line(3,5){72}}%
+  \fi\fi\fi\fi\fi%
+  \putratom{120}{170}{\@memberb}%==2 (northeast substituent)
+\end{picture}}%
+\def\SEBOND{%degree 120
+\yl@xdiff=-1
+\yl@ydiff=70
+\begin{picture}(100,300)(0,0)
+  \if\@tmpb D\relax%
+    \put(48,-33){\line(3,-5){72}}%
+    \put(26,-47){\line(3,-5){72}}%southeast double bond
+  \else\if\@tmpb T\relax%
+    \put(52,-31){\line(3,-5){72}}%
+    \put(37,-40){\line(3,-5){72}}%
+    \put(22,-49){\line(3,-5){72}}%southeast triple bond
+  \else\if\@tmpb A%(A) alpha
+    {\thicklines\put(47,-40){\line(3,-5){72}}}% single bond (alpha)
+  \else\if\@tmpb B%(B) beta
+       \@ifundefined{dottedline}{\put(47,-40){\line(3,-5){72}}}%
+         {{\thicklines \dottedline{20}(47,-40)(120,-161)}}%
+  \else\if\@tmpb S%
+       \put(47,-40){\line(3,-5){72}}%
+  \else \put(47,-40){\line(3,-5){72}}%
+  \fi\fi\fi\fi\fi%
+  \putratom{120}{-230}{\@memberb}%==2 (southeast substituent)
+\end{picture}}%
+\def\NWBOND{%
+\yl@xdiff=1
+\yl@ydiff=-10
+\begin{picture}(100,300)(0,0)
+  \if\@tmpb D\relax%
+    \put(-48,33){\line(-3,5){72}}%
+    \put(-26,47){\line(-3,5){72}}%northwest double bond
+  \else\if\@tmpb T\relax%
+    \put(-52,31){\line(-3,5){72}}%
+    \put(-37,40){\line(-3,5){72}}%
+    \put(-22,49){\line(-3,5){72}}%northwest triple bond
+  \else\if\@tmpb A%(A) alpha
+    {\thicklines\put(-40,47){\line(-3,5){72}}}% single bond (alpha)
+  \else\if\@tmpb B%(B) beta
+       \@ifundefined{dottedline}{\put(-47,40){\line(-3,5){72}}}%
+         {{\thicklines \dottedline{20}(-47,40)(-120,161)}}%
+  \else\if\@tmpb S%
+       \put(-47,40){\line(-3,5){72}}%
+  \else \put(-47,40){\line(-3,5){72}}%
+  \fi\fi\fi\fi\fi%
+  \putlatom{-120}{170}{\@memberb}%==2 (northwest substituent)
+%%  \putlatom{-120}{170}{\@memberb}%==2 (northwest substituent)
+\end{picture}}%
+\def\SWBOND{%
+\yl@xdiff=1
+\yl@ydiff=70
+\begin{picture}(100,300)(0,0)
+  \if\@tmpb D\relax%
+    \put(-48,-33){\line(-3,-5){72}}%
+    \put(-26,-47){\line(-3,-5){72}}%southwest double bond
+  \else\if\@tmpb T\relax%
+    \put(-52,-31){\line(-3,-5){72}}%
+    \put(-37,-40){\line(-3,-5){72}}%
+    \put(-22,-49){\line(-3,-5){72}}%southwest triple bond
+  \else\if\@tmpb A%(A) alpha
+    {\thicklines\put(-47,-40){\line(-3,-5){72}}}% single bond (alpha)
+  \else\if\@tmpb B%(B) beta
+       \@ifundefined{dottedline}{\put(-47,-40){\line(-3,-5){72}}}%
+         {{\thicklines \dottedline{20}(-47,-40)(-120,-161)}}%
+  \else\if\@tmpb S%
+       \put(-47,-40){\line(-3,-5){72}}%
+  \else \put(-47,-40){\line(-3,-5){72}}%
+  \fi\fi\fi\fi\fi%
+  \putlatom{-120}{-230}{\@memberb}%==2 (southwest substituent)
+\end{picture}}%
+\def\tetrahedral{\@ifnextchar[{\@tetrahedral[r}{\@tetrahedral[r]}}
+\def\@tetrahedral#1]#2{%
+\@reset@ylsw%
+\yltetrahedralposition{#2}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+ \begin{picture}(600,600)(-300,-300)%
+  \iforigpt \put(-300,-300){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `tetrahedral' origin: %
+    (\the\noshift,\the\noshift) ---> (300,300)}\fi%
+\fi
+\@tfor\member:=#1\do{%
+   \expandafter\twoch@@r\member{}{}%
+   \if\@@tmpa 0\relax {\putratom{47}{50}{\scriptsize\@@tmpb}}\fi}%
+\@forsemicol\member:=#2\do{
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa
+{\putlratom{-40}{-33}{\hbox to.72em{\hss\@memberb\hss}}}%central atom
+\or\put(0,0){\Northbond}%
+\or\put(0,0){\Westbond}%
+\or\put(0,0){\Southbond}%
+\or\put(0,0){\Eastbond}\fi%end of ifcase
+\fi\fi}%
+\end{picture}}%end of macro tetrahedral
+\def\yltetrahedralposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa
+ \or \gdef\@ylii{0}\gdef\@yli{-52}\global\@ylswtrue%N subst. on 1
+ \or \gdef\@ylii{52}\gdef\@yli{0}\global\@ylswtrue%W subst. on 1
+ \or \gdef\@ylii{0}\gdef\@yli{52}\global\@ylswtrue%S subst. on 1
+ \or \gdef\@ylii{-52}\gdef\@yli{0}\global\@ylswtrue%E subst. on 1
+\fi%end of ifcase
+\fi\fi\fi}}%
+
+\def\divalenth#1#2{%
+\@reset@ylsw%
+\yldivalenthposition{#1}{#2}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+ \begin{picture}(600,400)(-300,-200)%
+  \iforigpt \put(-300,-200){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `tetrahedral' origin: %
+    (\the\noshift,\the\noshift) ---> (300,200)}\fi%
+\fi
+{\expandafter\@m@mb@r#1;\relax
+   \putratom{-30}{-33}{\@memberb}}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa
+\or\put(0,0){\Westbond}%
+\or\put(\the\@tempcnta,0){\Eastbond}\fi%end of ifcase
+\fi\fi}%
+\end{picture}}%end of macro tetrahedral
+\def\yldivalenthposition#1#2{%
+{\expandafter\@m@mb@r#1;\relax
+   \setbox0=\hbox{\@memberb}%
+   \@tempcnta=\wd0
+   \@tempcntb=\unitlength
+   \divide\@tempcnta by\@tempcntb
+   \global\advance\@tempcnta by-62%
+   \@tempcntb=\@tempcnta \global\advance\@tempcntb by50\relax
+   }%
+\@@ylswfalse%
+\@forsemicol\member:=#2\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa
+ \or \gdef\@ylii{50}\gdef\@yli{0}\global\@ylswtrue%W subst. on 1
+ \or \edef\@ylii{-\the\@tempcntb}\gdef\@yli{0}\global\@ylswtrue%E subst. on 1
+\fi%end of ifcase
+\fi\fi\fi}}%
+\def\rtrigonal{\@ifnextchar[{\@rtrigonal[r}{\@rtrigonal[r]}}
+\def\@rtrigonal#1]#2{%
+\@reset@ylsw%
+\ylrtrigonalposition{#2}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(600,600)(-300,-300)%
+  \iforigpt \put(-300,-300){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `rtrigonal' origin: %
+    (\the\noshift,\the\noshift) ---> (300,300)}\fi%
+\fi
+\@tfor\member:=#1\do{%
+   \expandafter\twoch@@r\member{}{}%
+   \if\@@tmpa 0\relax {\putratom{-27}{50}{\scriptsize\@@tmpb}}\fi}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa {\putlratom{-40}{-33}{\@memberb}}%central atom
+\or\put(0,0){\Westbond}%
+\or\put(0,0){\SEbond}%
+\or\put(0,0){\NEbond}%
+\fi%end of ifcase
+\fi\fi}%
+\end{picture}}%end of macro rtrigonal
+\def\ylrtrigonalposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa
+ \or \gdef\@ylii{52}\gdef\@yli{0}\global\@ylswtrue% W subst. on 1
+ \or \gdef\@ylii{-40}\gdef\@yli{47}\global\@ylswtrue% SE subst. on 1
+ \or \gdef\@ylii{-40}\gdef\@yli{-47}\global\@ylswtrue% NE subst. on 1
+\fi%end of ifcase
+\fi\fi\fi}}%
+\def\Rtrigonal{\@ifnextchar[{\@Rtrigonal[r}{\@Rtrigonal[r]}}
+\def\@Rtrigonal#1]#2{%
+\@reset@ylsw%
+\ylRtrigonalposition{#2}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(600,600)(-300,-300)%
+  \iforigpt \put(-300,-300){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `Rtrigonal' origin: %
+    (\the\noshift,\the\noshift) ---> (300,300)}\fi%
+\fi
+\@tfor\member:=#1\do{%
+   \expandafter\twoch@@r\member{}{}%
+   \if\@@tmpa 0\relax {\putratom{-27}{50}{\scriptsize\@@tmpb}}\fi}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa {\putlratom{-40}{-33}{\@memberb}}%central atom
+\or\put(0,0){\Westbond}%
+\or\put(0,0){\SEBOND}%
+\or\put(0,0){\NEBOND}%
+\fi%end of ifcase
+\fi\fi}%
+\end{picture}}%end of macro Rtrigonal
+\def\ylRtrigonalposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa
+ \or \gdef\@ylii{52}\gdef\@yli{0}\global\@ylswtrue% W subst. on 1
+ \or \gdef\@ylii{-47}\gdef\@yli{40}\global\@ylswtrue% SE subst. on 1
+ \or \gdef\@ylii{-47}\gdef\@yli{-40}\global\@ylswtrue% NE subst. on 1
+\fi%end of ifcase
+\fi\fi\fi}}%
+\def\ltrigonal{\@ifnextchar[{\@ltrigonal[r}{\@ltrigonal[r]}}
+\def\@ltrigonal#1]#2{%
+\@reset@ylsw%
+\ylltrigonalposition{#2}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+ \begin{picture}(600,600)(-300,-300)%
+  \iforigpt \put(-300,-300){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `ltrigonal' origin: %
+    (\the\noshift,\the\noshift) ---> (300,300)}\fi%
+\fi
+\@tfor\member:=#1\do{%
+   \expandafter\twoch@@r\member{}{}%
+   \if\@@tmpa 0\relax {\putratom{-27}{50}{\scriptsize\@@tmpb}}\fi}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa
+{\putlratom{-40}{-33}{\@memberb}}%central atom
+\or\put(0,0){\Eastbond}%
+\or\put(0,0){\NWbond}%
+\or\put(0,0){\SWbond}%
+\fi%end of ifcase
+\fi\fi}%
+\end{picture}}%end of macro ltrigonal
+\def\ylltrigonalposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa
+ \or \gdef\@ylii{-52}\gdef\@yli{0}\global\@ylswtrue% W subst. on 1
+ \or \gdef\@ylii{50}\gdef\@yli{-47}\global\@ylswtrue% NW subst. on 1
+ \or \gdef\@ylii{50}\gdef\@yli{47}\global\@ylswtrue% SW subst. on 1
+\fi%end of ifcase
+\fi\fi\fi}}%
+\def\Ltrigonal{\@ifnextchar[{\@Ltrigonal[r}{\@Ltrigonal[r]}}
+\def\@Ltrigonal#1]#2{%
+\@reset@ylsw%
+\ylLtrigonalposition{#2}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+ \begin{picture}(600,600)(-300,-300)%
+  \iforigpt \put(-300,-300){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `Ltrigonal' origin: %
+    (\the\noshift,\the\noshift) ---> (300,300)}\fi%
+\fi
+\@tfor\member:=#1\do{%
+   \expandafter\twoch@@r\member{}{}%
+   \if\@@tmpa 0\relax {\putratom{-27}{50}{\scriptsize\@@tmpb}}\fi}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa
+{\putlratom{-40}{-33}{\@memberb}}%central atom
+\or\put(0,0){\Eastbond}%
+\or\put(0,0){\NWBOND}%
+\or\put(0,0){\SWBOND}%
+\fi%end of ifcase
+\fi\fi}%
+\end{picture}}%end of macro Ltrigonal
+\def\ylLtrigonalposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa
+ \or \gdef\@ylii{-52}\gdef\@yli{0}\global\@ylswtrue% W subst. on 1
+ \or \gdef\@ylii{47}\gdef\@yli{-40}\global\@ylswtrue% NWB subst. on 1
+ \or \gdef\@ylii{47}\gdef\@yli{40}\global\@ylswtrue% SWB subst. on 1
+\fi%end of ifcase
+\fi\fi\fi}}%
+\def\utrigonal{\@ifnextchar[{\@utrigonal[r}{\@utrigonal[r]}}
+\def\@utrigonal#1]#2{%
+\@reset@ylsw%
+\ylutrigonalposition{#2}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+ \begin{picture}(600,600)(-300,-300)%
+  \iforigpt \put(-300,-300){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `utrigonal' origin: %
+    (\the\noshift,\the\noshift) ---> (300,300)}\fi%
+\fi
+\@tfor\member:=#1\do{%
+   \expandafter\twoch@@r\member{}{}%
+   \if\@@tmpa 0\relax {\putratom{-27}{50}{\scriptsize\@@tmpb}}\fi}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa
+{\putlratom{-40}{-33}{\@memberb}}%central atom
+\or\put(0,0){\Southbond}%
+\or\put(0,0){\NEbond}%
+\or\put(0,0){\NWbond}%
+\fi%end of ifcase
+\fi\fi}%
+\end{picture}}%end of macro utrigonal
+\def\ylutrigonalposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa
+ \or \gdef\@ylii{0}\gdef\@yli{52}\global\@ylswtrue%S subst. on 1
+ \or \gdef\@ylii{-40}\gdef\@yli{-47}\global\@ylswtrue% NE subst. on 1
+ \or \gdef\@ylii{50}\gdef\@yli{-47}\global\@ylswtrue% NW subst. on 1
+\fi%end of ifcase
+\fi\fi\fi}}%
+\def\Utrigonal{\@ifnextchar[{\@Utrigonal[r}{\@Utrigonal[r]}}
+\def\@Utrigonal#1]#2{%
+\@reset@ylsw%
+\ylUtrigonalposition{#2}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+ \begin{picture}(600,600)(-300,-300)%
+  \iforigpt \put(-300,-300){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `Utrigonal' origin: %
+    (\the\noshift,\the\noshift) ---> (300,300)}\fi%
+\fi
+\@tfor\member:=#1\do{%
+   \expandafter\twoch@@r\member{}{}%
+   \if\@@tmpa 0\relax {\putratom{-27}{50}{\scriptsize\@@tmpb}}\fi}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa
+{\putlratom{-40}{-33}{\@memberb}}%central atom
+\or\put(0,0){\Southbond}%
+\or\put(0,0){\NEBond}%
+\or\put(0,0){\NWBond}%
+\fi%end of ifcase
+\fi\fi}%
+\end{picture}}%end of macro Utrigonal
+\def\ylUtrigonalposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa
+ \or \gdef\@ylii{0}\gdef\@yli{52}\global\@ylswtrue%S subst. on 1
+ \or \gdef\@ylii{-40}\gdef\@yli{-47}\global\@ylswtrue% NEB subst. on 1
+ \or \gdef\@ylii{66}\gdef\@yli{-47}\global\@ylswtrue% NWB subst. on 1
+\fi%end of ifcase
+\fi\fi\fi}}%
+\def\dtrigonal{\@ifnextchar[{\@dtrigonal[r}{\@dtrigonal[r]}}
+\def\@dtrigonal#1]#2{%
+\@reset@ylsw%
+\yldtrigonalposition{#2}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+ \begin{picture}(600,600)(-300,-300)
+  \iforigpt \put(-300,-300){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `dtrigonal' origin: %
+    (\the\noshift,\the\noshift) ---> (300,300)}\fi%
+\fi
+\@tfor\member:=#1\do{%
+   \expandafter\twoch@@r\member{}{}%
+   \if\@@tmpa 0\relax {\putratom{37}{50}{\scriptsize\@@tmpb}}\fi}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa
+{\putlratom{-40}{-33}{\@memberb}}%central atom
+\or\put(0,0){\Northbond}%
+\or\put(0,0){\SEbond}%
+\or\put(0,0){\SWbond}%
+\fi%end of ifcase
+\fi\fi}%
+\end{picture}}%end of macro dtrigonal
+\def\yldtrigonalposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa
+ \or \gdef\@ylii{0}\gdef\@yli{-52}\global\@ylswtrue%N subst. on 1
+ \or \gdef\@ylii{-40}\gdef\@yli{47}\global\@ylswtrue% SE subst. on 1
+ \or \gdef\@ylii{50}\gdef\@yli{47}\global\@ylswtrue% SW subst. on 1
+\fi%end of ifcase
+\fi\fi\fi}}%
+\def\Dtrigonal{\@ifnextchar[{\@Dtrigonal[r}{\@Dtrigonal[r]}}
+\def\@Dtrigonal#1]#2{%
+\@reset@ylsw%
+\ylDtrigonalposition{#2}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+ \begin{picture}(600,600)(-300,-300)
+  \iforigpt \put(-300,-300){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `Dtrigonal' origin: %
+    (\the\noshift,\the\noshift) ---> (300,300)}\fi%
+\fi
+\@tfor\member:=#1\do{%
+   \expandafter\twoch@@r\member{}{}%
+   \if\@@tmpa 0\relax {\putratom{37}{50}{\scriptsize\@@tmpb}}\fi}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa
+{\putlratom{-40}{-33}{\@memberb}}%central atom
+\or\put(0,0){\Northbond}%
+\or\put(0,0){\SEBond}%
+\or\put(0,0){\SWBond}%
+\fi%end of ifcase
+\fi\fi}%
+\end{picture}}%end of macro Dtrigonal
+\def\ylDtrigonalposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa
+ \or \gdef\@ylii{0}\gdef\@yli{-52}\global\@ylswtrue%N subst. on 1
+ \or \gdef\@ylii{-40}\gdef\@yli{47}\global\@ylswtrue% SEB subst. on 1
+ \or \gdef\@ylii{66}\gdef\@yli{47}\global\@ylswtrue% SWB subst. on 1
+\fi%end of ifcase
+\fi\fi\fi}}%
+\def\ethylene{\@ifnextchar[{\@ethylene}{\@ethylene[]}}
+\def\@ethylene[#1]#2#3{%
+\@reset@ylsw%
+\ylethylenepositiona{#3}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\else
+\ylethylenepositionb{#3}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-230}\def\@@yli{0}\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(800,600)(-300,-300)
+  \iforigpt \put(-300,-300){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `ethylene' origin: %
+    (\the\noshift,\the\noshift) ---> (300,300)}\fi%
+\fi
+{\def\aaa{#1}\ifx\aaa\empty%
+ \multiput(42,-13)(0,25){2}{\line(1,0){140}}\fi% double bond
+}%
+\@tfor\member:=#1\do{%
+ \expandafter\twoch@@r\member{}{}%
+   \if\@@tmpa 1\relax {\putratom{-27}{60}{\scriptsize\@@tmpb}}%
+   \else\if\@@tmpa 2\relax {\putratom{203}{60}{\scriptsize\@@tmpb}}%
+   \else\if\@@tmpa d\relax%
+       {\multiput(42,-13)(0,25){2}{\line(1,0){140}}}% double bond
+   \else\if\@@tmpa t\relax%
+     {\multiput(42,-20)(0,20){3}{\line(1,0){140}}}% triple bond right
+   \fi\fi\fi\fi}%
+{\def\aaa{#2}%
+\ifx\aaa\empty%
+\putratom{-40}{-33}{C}%central atom
+\putratom{190}{-33}{C}%central atom
+\else%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifcase\@tmpa%
+\or\putratom{-40}{-33}{\@memberb}%central atom
+\or\putratom{190}{-33}{\@memberb}%central atom
+\fi\fi}%end of ifcase
+\fi%
+}%
+\@forsemicol\member:=#3\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa%
+\or\put(0,0){\NWbond}%
+\or\put(0,0){\SWbond}%
+\or\put(230,0){\SEbond}%
+\or\put(230,0){\NEbond}%
+\fi%end of ifcase
+\fi\fi}%
+\end{picture}}%end of macro ethylene
+\let\ethyleneh=\ethylene
+\def\ylethylenepositiona#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa
+ \or \gdef\@ylii{50}\gdef\@yli{-47}\global\@ylswtrue% NW subst. on 1
+ \or \gdef\@ylii{50}\gdef\@yli{47}\global\@ylswtrue% SW subst. on 1
+\fi%end of ifcase
+\fi\fi\fi}}%
+\def\ylethylenepositionb#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa
+ \or%omit
+ \or%omit
+ \or \gdef\@ylii{-40}\gdef\@yli{47}\global\@ylswtrue% SE subst. on 1
+ \or \gdef\@ylii{-40}\gdef\@yli{-47}\global\@ylswtrue% NE subst. on 1
+\fi%end of ifcase
+\fi\fi\fi}}%
+\def\Ethylene{\@ifnextchar[{\@ethylene}{\@ethylene[]}}
+\def\@ethylene[#1]#2#3{%
+\@reset@ylsw%
+\ylethylenepositiona{#3}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\else
+\ylethylenepositionb{#3}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-230}\def\@@yli{0}\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(800,600)(-300,-300)
+  \iforigpt \put(-300,-300){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `ethylene' origin: %
+    (\the\noshift,\the\noshift) ---> (300,300)}\fi%
+\fi
+{\def\aaa{#1}\ifx\aaa\empty%
+ \multiput(42,-13)(0,25){2}{\line(1,0){140}}\fi% double bond
+}%
+\@tfor\member:=#1\do{%
+ \expandafter\twoch@@r\member{}{}%
+   \if\@@tmpa 1\relax {\putratom{-27}{60}{\scriptsize\@@tmpb}}%
+   \else\if\@@tmpa 2\relax {\putratom{203}{60}{\scriptsize\@@tmpb}}%
+   \else\if\@@tmpa d\relax%
+       {\multiput(42,-13)(0,25){2}{\line(1,0){140}}}% double bond
+   \else\if\@@tmpa t\relax%
+     {\multiput(42,-20)(0,20){3}{\line(1,0){140}}}% triple bond right
+   \fi\fi\fi\fi}%
+{\def\aaa{#2}%
+\ifx\aaa\empty%
+\putratom{-40}{-33}{C}%central atom
+\putratom{190}{-33}{C}%central atom
+\else%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifcase\@tmpa%
+\or\putratom{-40}{-33}{\@memberb}%central atom
+\or\putratom{190}{-33}{\@memberb}%central atom
+\fi\fi}%end of ifcase
+\fi%
+}%
+\@forsemicol\member:=#3\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa%
+\or\put(0,0){\NWBOND}%
+\or\put(0,0){\SWBOND}%
+\or\put(230,0){\SEBOND}%
+\or\put(230,0){\NEBOND}%
+\fi%end of ifcase
+\fi\fi}%
+\end{picture}}%end of macro Ethylene
+\let\Ethyleneh=\Ethylene
+\def\ethylenev{\@ifnextchar[{\@ethylenev}{\@ethylenev[]}}
+\def\@ethylenev[#1]#2#3{%
+\@reset@ylsw%
+\ylethylenevpositiona{#3}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\else
+\ylethylenevpositionb{#3}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{-230}\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(600,800)(-300,-300)
+  \iforigpt \put(-300,-300){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `ethylenev' origin: %
+    (\the\noshift,\the\noshift) ---> (300,300)}\fi%
+\fi
+\def\aaa{#1}\ifx\aaa\empty%
+    \put(-20,47){\line(0,1){140}}% vertical
+    \put(6,47){\line(0,1){140}}\fi%  double bond
+\@tfor\member:=#1\do{%
+ \expandafter\twoch@@r\member{}{}%
+   \if\@@tmpa 1\relax \putratom{37}{0}{\scriptsize\@@tmpb}
+   \else\if\@@tmpa 2\relax \putratom{37}{216}{\scriptsize\@@tmpb}
+   \else\if\@@tmpa d\relax%
+      \put(-13,47){\line(0,1){140}}% vertical
+      \put(13,47){\line(0,1){140}}%  double bond
+   \else\if\@@tmpa t\relax%
+      \put(-20,47){\line(0,1){140}}% vertical
+      \put(-0,47){\line(0,1){140}}%   triple bond
+      \put(20,47){\line(0,1){140}}%
+   \fi\fi\fi\fi}%
+\def\aaa{#2}%
+\ifx\aaa\empty%
+\putratom{-40}{-33}{C}%central atom
+\putratom{-40}{197}{C}%central atom
+\else%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifcase\@tmpa%
+\or\putratom{-40}{-33}{\@memberb}%central atom
+\or\putratom{-40}{197}{\@memberb}%central atom
+\fi\fi}%end of ifcase
+\fi%
+\@forsemicol\member:=#3\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa%
+\or\put(0,0){\SWbond}%
+\or\put(0,0){\SEbond}%
+\or\put(0,230){\NEbond}%
+\or\put(0,230){\NWbond}%
+\fi%end of ifcase
+\fi\fi}%
+\end{picture}}%end of macro ethylenev
+\def\ylethylenevpositiona#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa
+ \or \gdef\@ylii{50}\gdef\@yli{47}\global\@ylswtrue% SW subst. on 1
+ \or \gdef\@ylii{-40}\gdef\@yli{47}\global\@ylswtrue% SE subst. on 1
+\fi%end of ifcase
+\fi\fi\fi}}%
+\def\ylethylenevpositionb#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa
+ \or%omit
+ \or%omit
+ \or \gdef\@ylii{-40}\gdef\@yli{-47}\global\@ylswtrue% NE subst. on 1
+ \or \gdef\@ylii{50}\gdef\@yli{-47}\global\@ylswtrue% NW subst. on 1
+\fi%end of ifcase
+\fi\fi\fi}}%
+\def\Ethylenev{\@ifnextchar[{\@Ethylenev}{\@Ethylenev[]}}
+\def\@Ethylenev[#1]#2#3{%
+\@reset@ylsw%
+\ylethylenevpositiona{#3}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\else
+\ylethylenevpositionb{#3}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{-230}\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(600,800)(-300,-300)
+  \iforigpt \put(-300,-300){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `Ethylenev' origin: %
+    (\the\noshift,\the\noshift) ---> (300,300)}\fi%
+\fi
+\def\aaa{#1}\ifx\aaa\empty%
+    \put(-20,47){\line(0,1){140}}% vertical
+    \put(6,47){\line(0,1){140}}\fi%  double bond
+\@tfor\member:=#1\do{%
+ \expandafter\twoch@@r\member{}{}%
+   \if\@@tmpa 1\relax \putratom{37}{0}{\scriptsize\@@tmpb}
+   \else\if\@@tmpa 2\relax \putratom{37}{216}{\scriptsize\@@tmpb}
+   \else\if\@@tmpa d\relax%
+      \put(-13,47){\line(0,1){140}}% vertical
+      \put(13,47){\line(0,1){140}}%   double bond
+   \else\if\@@tmpa t\relax%
+      \put(-20,47){\line(0,1){140}}% vertical
+      \put(-0,47){\line(0,1){140}}%   triple bond
+      \put(20,47){\line(0,1){140}}%
+   \fi\fi\fi\fi}%
+\def\aaa{#2}%
+\ifx\aaa\empty%
+\putratom{-40}{-33}{C}%central atom
+\putratom{-40}{197}{C}%central atom
+\else%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifcase\@tmpa%
+\or\putratom{-40}{-33}{\@memberb}%central atom
+\or\putratom{-40}{197}{\@memberb}%central atom
+\fi\fi}%end of ifcase
+\fi%
+\@forsemicol\member:=#3\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa%
+\or\put(0,0){\SWBond}%
+\or\put(0,0){\SEBond}%
+\or\put(0,230){\NEBond}%
+\or\put(0,230){\NWBond}%
+\fi%end of ifcase
+\fi\fi}%
+\end{picture}}%end of macro Ethylenev
+\def\square{\@ifnextchar[{\@square[r}{\@square[r]}}
+\def\@square#1]#2{%
+\@reset@ylsw%
+\ylsquareposition{#2}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+ \begin{picture}(600,600)(-300,-300)
+  \iforigpt \put(-300,-300){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `square' origin: %
+    (\the\noshift,\the\noshift) ---> (300,300)}\fi%
+\fi
+\@tfor\member:=#1\do{%
+   \expandafter\twoch@@r\member{}{}%
+   \if\@@tmpa 0\relax {\putratom{37}{0}{\scriptsize\@@tmpb}}\fi}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa {\putlratom{-40}{-33}{\@memberb}}%central atom
+\or\put(0,0){\NEbond}%
+\or\put(0,0){\SEbond}%
+\or\put(0,0){\SWbond}%
+\or\put(0,0){\NWbond}%
+\fi%end of ifcase
+\fi\fi}%
+\end{picture}}%end of macro square
+\def\ylsquareposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa
+ \or \gdef\@ylii{-40}\gdef\@yli{-47}\global\@ylswtrue% NE subst. on 1
+ \or \gdef\@ylii{-40}\gdef\@yli{47}\global\@ylswtrue% SE subst. on 1
+ \or \gdef\@ylii{50}\gdef\@yli{47}\global\@ylswtrue% SW subst. on 1
+ \or \gdef\@ylii{50}\gdef\@yli{-47}\global\@ylswtrue% NW subst. on 1
+\fi%end of ifcase
+\fi\fi\fi}}%
+\def\tetrastereo{\@ifnextchar[{\@tetrastereo[r}{\@tetrastereo[r]}}
+\def\@tetrastereo#1]#2{%
+\begin{picture}(600,600)(-300,-300)
+  \iforigpt \put(-300,-300){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `tetrastero' origin: %
+    (\the\noshift,\the\noshift) ---> (300,300)}\fi%
+\put(0,0){\circle{200}}%
+\@tfor\member:=#1\do{%
+   \expandafter\twoch@@r\member{}{}%
+   \if\@@tmpa 0\relax \putratom{87}{90}{\scriptsize\@@tmpb}\fi}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifcase\@tmpa \putlratom{-40}{-33}{\@memberb}%central atom
+\or%
+   \put(0,100){\line(0,1){70}}% behind
+   \putlratom{-30}{180}{\@memberb}%   and up
+\or%
+  {\thicklines%
+   \put(-60,10){\line(-5,2){140}}%   in front
+   \putlatom{-205}{30}{\@memberb}}%  and left
+\or%
+   \put(0,-100){\line(0,-1){90}}%     behind and
+   \putlratom{-30}{-260}{\@memberb}% down
+\or%
+  {\thicklines%
+   \put(60,10){\line(5,2){140}}%     in front
+   \putratom{210}{30}{\@memberb}}%   and right
+\fi\fi}%end of ifcase
+\end{picture}}%end of macro tetrastereo
+\def\dtetrastereo{\@ifnextchar[{\@dtetrastereo[r}{\@dtetrastereo[r]}}
+\def\@dtetrastereo#1]#2{%
+\begin{picture}(600,600)(-300,-300)
+  \iforigpt \put(-300,-300){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `dtetrastero' origin: %
+    (\the\noshift,\the\noshift) ---> (300,300)}\fi%
+\put(0,0){\circle{200}}%
+\@tfor\member:=#1\do{%
+   \expandafter\twoch@@r\member{}{}%
+   \if\@@tmpa 0\relax \putratom{87}{90}{\scriptsize\@@tmpb}\fi}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifcase\@tmpa \putlratom{-40}{-33}{\@memberb}%central atom
+\or%
+   \put(0,100){\line(0,1){70}}% behind
+   \putlratom{-30}{180}{\@memberb}%   and up
+\or%
+   \put(-94,-10){\line(-5,-2){108}}%   in back
+   \putlatom{-205}{-110}{\@memberb}%  and left
+\or%
+  {\thicklines%
+   \put(0,-50){\line(0,-1){150}}%     behind and
+   \putlratom{-30}{-260}{\@memberb}}% down
+\or%
+   \put(94,-10){\line(5,-2){108}}%     in back
+   \putratom{210}{-110}{\@memberb}%   and right
+\fi\fi}%end of ifcase
+\end{picture}}%end of macro dtetrastereo
+\def\ethanestereo{\@ifnextchar[{\@ethanestereo}{\@ethanestereo[]}}
+\def\@ethanestereo[#1]#2#3{%
+\begin{picture}(600,800)(-300,-300)
+  \iforigpt \put(-300,-300){\circle*{50}}%
+           \put(-\noshift,-\noshift){\circle{50}}%
+   \typeout{command `ethanestereo' origin: %
+    (\the\noshift,\the\noshift) ---> (300,300)}\fi%
+\put(0,0){\circle{200}}%
+\put(0,270){\circle{200}}%
+\put(0,100){\line(0,1){70}}% central bond
+\@tfor\member:=#1\do{%
+ \expandafter\twoch@@r\member{}{}%
+   \if\@@tmpa 1\relax \putratom{87}{90}{\scriptsize\@@tmpb}
+   \else\if\@@tmpa 2\relax \putratom{87}{360}{\scriptsize\@@tmpb}
+   \fi\fi}%
+\def\aaa{#2}%
+\ifx\aaa\empty\else%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifcase\@tmpa%
+\or\putratom{-40}{-33}{\@memberb}%central atom
+\or\putratom{-40}{237}{\@memberb}%central atom
+\fi\fi}%end of ifcase
+\fi%
+\@forsemicol\member:=#3\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifcase\@tmpa \putlratom{-40}{-33}{\@memberb}%central atom
+\or%
+   \put(-94,-10){\line(-5,-2){108}}%   in back
+   \putlatom{-205}{-110}{\@memberb}%  and left
+\or%
+  {\thicklines%
+   \put(0,-50){\line(0,-1){150}}%     behind and
+   \putlratom{-30}{-260}{\@memberb}}% down
+\or%
+   \put(94,-10){\line(5,-2){108}}%     in back
+   \putratom{210}{-110}{\@memberb}%   and right
+\or%
+  {\thicklines%
+   \put(60,280){\line(5,2){140}}%     in front
+   \putratom{210}{300}{\@memberb}}%   and right
+\or%
+   \put(0,370){\line(0,1){70}}% behind
+   \putlratom{-30}{450}{\@memberb}%   and up
+\or%
+  {\thicklines%
+   \put(-60,280){\line(-5,2){140}}%   in front
+   \putlatom{-205}{300}{\@memberb}}%  and left
+\fi\fi}%end of ifcase
+\end{picture}}%end of macro ethanestereo
+\endinput
+%%
+%% End of file `aliphat.sty'.

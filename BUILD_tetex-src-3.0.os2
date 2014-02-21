@@ -1,0 +1,327 @@
+/*-- tetex-src-3.0  for OS/2   Feb 1 2006 -*/
+
+ Jun Sawataishi, YOKOHAMA, JAPAN <jsawa@attglobal.net>
+
+
+  
+
+
+                           http://www2s.biglobe.ne.jp/~vtgf3mpr/index-e.htm
+
+
+YOU_MUST_DO
+===========
+ `eof' of `texk/web2c/lib/eofeofln.c' conflicts `/emx/include/io.h'.
+ To make tetex/web2c, you must  modify `/emx/include/io.h'. 
+ 
+#ifndef KPATHSEA
+int eof (int);
+#endif /* !KPATHSEA */e
+
+ If env. var. C_INCLUDE_PATH contains ';', execution of "make" fails. 
+ To avoid failure, "SET C_INCLUDE_PATH=x:/emx/include" in your config.sys. 
+
+
+
+General Instruction
+===================
+
+  A lot of Linux distributions follow the Filesystem Hierarchy Standard (FHS),
+a collaborative document that defines the names and locations of many files 
+and  directories. 
+  I have decided to make zip archive for which end users can install files 
+in FHS like way. 
+
+
+Files in the patch kit
+~~~~~~~~~~~~~~~~~~~~~~
+  
+  - OS2patch.zip  
+       os2config.cmd                  -- modify source using `os2unix' 
+                                         and apply diff files 
+                                         followed by running configure 
+                                         
+       os2/C_Source.diff              -- patch for C soure
+       os2/In-make.diff                        for Makefile.in's and scripts
+       os2/Other.diff                          for other files
+       
+    +--- os2unix utility -------------------------------+
+    |  os2/os2_convert_configure.sed                    |
+    |  os2/os2_convert_ltmain.sed                       |
+    |  os2/os2_convert_Makefile_in.sed                  |
+    |  os2/os2_convert_Makefile_in_in.sed               |
+    |  os2/os2_convert_Makefile_in_lib_prog.sed         |
+    |  os2/os2_convert_mk.sed                           |
+    |  os2/os2_convert_Makefile_in.grep                 |
+    |  os2/os2_mkinstalldirs                            |
+    |  os2/os2_missing                                  |
+    |  os2unix.cmd                                      |
+    +---------------------------------------------------+
+
+
+How to Build
+============
+
+ Get source from CTAN (if you don't know CTAN urls, see `CTAN.site' (lines 185 or so) chapter in this file.
+ 
+  For example 
+    ftp://ftp.uni-stuttgart.de/tex-archive/systems/unix/teTeX/3.0/distrib/tetex-src-3.0.tar.gz
+    ftp://ftp.uni-stuttgart.de/tex-archive/systems/unix/teTeX/3.0/distrib/tetex-texmf-3.0.tar.gz
+
+
+     x:/> mkdir usr
+     x:/> mkdir usr\share
+     x:/> mkdir usr\share\texmf
+     x:/>cd  usr\share\texmf
+     x:/usr/share/texmf> tar zxvf SOMEWHERE/tetex-texmf-3.0.tar.gz
+     x:/usr/share/texmf> cd \src
+     x:/src> set TEXMF=x:/usr/share/texmf
+     x:/src> set TEXMFCNF=x:/usr/share/texmf/web2c
+
+     x:/src>tar zxvf SOMEWHER/tetex-src-3.0.tar.gz
+     x:/src> cd tetex-src-3.0
+     x:/src/tetex-src-3.0> unzip SOMEWHERE/OS2patch.zip
+
+
+   Read instruction in both `os2config.cmd' and `os2unix.cmd'. 
+   If your environment lacks required executables, install them. 
+   `os2unix.cmd' will stop running when essential utilities cannot be run. 
+
+
+     x:/src/tetex-src-3.0> os2unix -all
+     x:/src/tetex-src-3.0> os2unix -patch
+
+prog_cflags = -DUNIX -DKPATHSEA -DNeedFunctionPrototypes -DSHIFTLOWCHARS\
+  -DFONTLIB -DOS2UNIX
+
+     x:/src/tetex-src-3.0> sh configure
+  or
+     x:/src/tetex-src-3.0>os2configure_make
+     
+     x:/src/tetex-src-3.0>make all
+
+  Installation is simple.
+     
+     x:/src/tetex-src-3.0> make install
+     x:/src/tetex-src-3.0> copy texk/kpathsea/*.dll IN_YOUR_LIBPATH
+
+
+   NOTE: C header files (*.h) will be installed in %C_INCLUDE_PATH% !!
+
+
+  Files except DLLs will be installed in this way
+
+       /usr/bin/                           -- executables
+       /usr/lib/                           -- C library files
+       /usr/include/                       -- C include files
+       /usr/share/man/                     -- manpages
+       /usr/share/info/                    -- Info manuals
+       /usr/share/locale/                  -- message files for gettext 
+                                              compliant programs and other 
+                                              locale related files
+
+
+
+  Confirm your `config.sys'
+  
+        set UNIXROOT=x:
+  
+        LIBPATH=x:\usr\dll;............
+
+        PATH=x:\usr\bin;.........
+
+        MANPATH=x:/usr/share/man;.....
+        
+        INFOPATH=x:/usr/share/info;.....
+        
+        TEXMF=x:/usr/share/texmf
+        
+        TEXMFCNF=x:/usr/share/texmf/web2c
+
+        TERMINFO_DIRS=x:/usr/share/terminfo;....
+          or
+        TERMINFOS=x:/usr/share/terminfo
+        
+        TERM=os2
+
+        PAGER=less
+        
+        
+  Edit `x:/usr/share/texmf/web2c/texmf.cnf' according to you environment.
+  
+
+  Make LS-R database
+  
+        x:> texhash
+        
+
+  Make format files
+  
+        x:> fmtutil --all
+
+  Update fontmap
+  
+        x:> updmap
+
+
+Important Notice
+~~~~~~~~~~~~~~~~
+
+  At the time I am writing this document, programs linked with 
+gettext (libintl.{a,lib}) and id-utils depend on UNIXROOT environment 
+variable. 
+
+  If UNIXROOT env. var. is not set or empty and HOME env. var. is 
+set, drive name part of HOME is assumed as UNIXROOT. 
+
+         e.g.  HOME=g:\emx
+               programs treat `g:/usr/share/locale'  as locale directory
+
+
+  GNULOCALEDIR env. var. is not refered to. 
+
+
+
+                                             SAWATAISHI JUN, YOKOHAMA JAPAN
+                                                      <jsawa@attglobal.net>
+                           http://www2s.biglobe.ne.jp/~vtgf3mpr/indxos2.htm
+
+CTAN.site                         @ctan
+=========
+
+In order to reduce network load, it is recommended that you use the
+Comprehensive TeX Archive Network (CTAN) host which is located in the
+closest network proximity to your site.  Alternatively, you may wish to
+obtain a copy of the CTAN via CD-ROM (see help/CTAN.cdrom for details).
+
+
+   
+Known mirrors of the CTAN reside on (alphabetically, by country):
+  ctan.unsw.edu.au (NSW, Australia)       /tex-archive
+  mirror.aarnet.edu.au (QLD, Australia)   /pub/tex-archive
+  mirror.pacific.net.au (Sydney, Australia) /CTAN
+  ftp.univie.ac.at (Austria)              /packages/tex
+  gd.tuwien.ac.at (Austria)               /publishing/tex/CTAN
+
+  ftp.belnet.be (Belgium)                 /packages/ctan
+
+  ftp.das.ufsc.br (Brazil)                /pub/ctan
+  ftp.linorg.usp.br (Brazil)              /CTAN
+
+  ctan.cms.math.ca (Canada)               /tex-archive
+  ctan.dcc.uchile.cl (Chile)              /pub/lang/ctan/tex-archive
+  ftp.ctex.org (China)                    /CTAN
+  scratchy.emate.ucr.ac.cr (Costa Rica)   /pub/ctan
+  ftp.cstug.cz (The Czech Republic)       /pub/tex/CTAN
+
+  sunsite.dk (Denmark)                    /pub/tex/ctan
+
+  ftp.fu-berlin.de (Germany)              /tex/CTAN
+  ftp.gwdg.de (Germany)                   /pub/dante
+  ftp.mpi-sb.mpg.de (Germany)             /pub/tex/mirror/ftp.dante.de/pub/tex
+  ftp.tu-chemnitz.de (Germany)            /pub/tex
+  ftp.uni-augsburg.de (Germany)           /pub/tex/ctan
+  ftp.uni-bielefeld.de (Germany)          /pub/tex
+  ftp.uni-stuttgart.de (Germany)          /tex-archive (/pub/tex)
+
+  ftp.linux.ee (Estonia)                  /pub/tex-archive
+
+  ftp.funet.fi (Finland)                  /pub/TeX/CTAN
+  ftp.inria.fr (France)                   /pub/TeX/CTAN
+  ftp.jussieu.fr (France)                 /pub/TeX/CTAN
+  ftp.loria.fr (France)                   /pub/ctan
+  ftp.oleane.net (France)                 /pub/mirrors/CTAN/
+  ftp.uvsq.fr (France)                    /pub/TeX/CTAN
+
+  ftp.ntua.gr (Greece)                    /mirror/ctan
+
+  ftp.comp.hkbu.edu.hk (Hong Kong)        /pub/TeX/CTAN
+  ftp.sztaki.hu (Hungary)                 /pub/tex
+
+  mirror.csa.iisc.ernet.in (India)        /tex-archive
+  komo.padinet.com (Indonesia)            /CTAN
+  ftp.heanet.ie (Ireland)                 /pub/ctan/tex
+  cis.uniRoma2.it (Italy)                 /TeX
+
+  ftp.lab.kdd.co.jp (Japan)               /CTAN
+  ftp.meisei-u.ac.jp (Japan)              /pub/CTAN
+  ftp.riken.go.jp (Japan)                 /pub/tex-archive
+  ftp.u-aizu.ac.jp (Japan)                /pub/tex/CTAN
+  sunsite.sut.ac.jp (Japan)               /pub/archives/ctan
+
+  ftp.kreonet.re.kr (Korea)               /pub/CTAN
+  ftp.ktug.or.kr (Korea)                  /tex-archive
+
+  ftp.fciencias.unam.mx (Mexiko)          /pub/tex
+
+  ftp.easynet.nl (The Netherlands)        /mirror/CTAN
+  ftp.ntg.nl (The Netherlands)            /mirror/tex-archive
+  ctan.unik.no (Norway)                   /tex-archive
+
+  elena.aut.ac.nz (New Zealand)           /pub/CTAN
+
+  sunsite.icm.edu.pl (Poland)             /pub/CTAN
+  ftp.di.uminho.pt (Portugal)             /pub/ctan
+  ftp.eq.uc.pt (Portugal)                 /pub/software/TeX
+  ftp.ist.utl.pt (Portugal)               /pub/ctan
+
+  ftp.iasi.roedu.net (Romania)            /pub/mirrors/ftp.ctan.org
+  ftp.chg.ru (Russia)                     /pub/TeX/CTAN
+  tex.ihep.su (Russia) (http only)        /pub/TeX/CTAN
+
+  ftp.nus.edu.sg (Singapore)              /pub/docs/TeX
+  sunsite.uakom.sk (Slovak Republic)      /pub/mirrors/CTAN
+  ftp.sun.ac.za (South Africa)            /CTAN
+  ftp.rediris.es (Spain)                  /mirror/tex-archive
+  ftp.sunsite.kth.se (Sweden)             /pub/tex
+  sunsite.cnlab-switch.ch (Switzerland)   /ftp/mirror/tex
+
+  ctan.cdpa.nsysu.edu.tw (Taiwan)         /CTAN
+  ftp.ccu.edu.tw (Taiwan)                 /pub/tex
+  ftp.nctu.edu.tw (Taiwan)                /pub/tex
+  ftp.kmitl.ac.th (Thailand)              /pub/tex
+  sunsite.bilkent.edu.tr (Turkey)         /pub/tex/ctan
+
+  sunsite.doc.ic.ac.uk (UK)               /package/ctan
+
+  ctan.math.utah.edu (Utah, USA)          /tex-archive
+  ftp.cise.ufl.edu (Florida, USA)         /pub/mirrors/tex-archive
+  ftp.duke.edu (North Carolina, USA)      /pub/tex-archive
+  ftp.rge.com (New York, USA)             /pub/tex
+  ftp.sunsite.utk.edu (Tennessee, USA)    /pub/CTAN
+  ibiblio.org (North Carolina, USA)	  /pub/packages/TeX
+  indian.cse.msu.edu (Michigan, USA)      /pub/mirrors/CTAN
+  mirror.sg.depaul.edu (Illinois, USA)    /pub/TeX/CTAN
+  carroll.aset.psu.edu (Pennsylvania, USA)	/pub/CTAN
+
+Known partial mirrors of the CTAN reside on:
+  ftp.gust.org.pl (Poland)                /pub/TeX
+  sunsite.dsi.unimi.it (Italy)            /pub/TeX
+  ftp.jaist.ac.jp (Japan)                 /pub/TeX/tex-archive
+
+Please send updates to this list to <ctan@dante.de>.
+
+The participating hosts in the Comprehensive TeX Archive Network are:
+  ftp.dante.de  (Hamburg, Germany)         
+       -- anonymous ftp                   /tex-archive (/pub/tex /pub/archive)
+       -- rsync access on rsync://rsync.dante.de/CTAN/
+       -- email via ftpmail@dante.de
+       -- World Wide Web access on http://www.dante.de/
+       -- Administrator: <ftpmaint@dante.de>
+
+  ftp.tex.ac.uk (Cambridge, UK)
+       -- anonymous ftp                   /tex-archive (/pub/tex /pub/archive)
+       -- rsync access on rsync://rsync.tex.ac.uk/CTAN/
+       -- NFS mountable from nfs.tex.ac.uk:/tex-archive
+       -- World Wide Web access on http://www.tex.ac.uk/
+       -- Administrator: <ctan-uk@tex.ac.uk>
+
+  tug.ctan.org (Colchester, Vermont, USA)
+       -- anonymous ftp                   /tex-archive (/pub/archive)
+       -- World Wide Web access on http://www.ctan.org/
+       -- Administrator: <tex@ctan.tug.org>
+
+
+
+/*----- end of document -----------------------------------------------------*/
+

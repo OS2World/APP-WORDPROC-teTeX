@@ -1,0 +1,408 @@
+$Header: /home/cvsroot/dvipdfmx/README,v 1.25 2004/09/06 11:12:40 hirata Exp $
+
+The dvipdfmx Project
+====================
+
+Last modified: April 2, 2004
+
+
+Copyright (C) 2002 by Jin-Hwan Cho and Shunsaku Hirata,
+the dvipdfmx project team <dvipdfmx@project.ktug.or.kr>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+
+
+Contents
+--------
+
+1. Introduction
+
+2. Installation
+
+3. CJK Support
+
+4. Unicode Support
+
+5. Graphics and Image Format
+
+6. PDF Specials
+
+7. Fontmap
+
+8. Incompatible Changes From Dvipdfm
+
+9. Other Improvement Over Dvipdfm
+
+10. Bugs
+
+11. Font Licensing and Embedding
+
+12. References
+
+
+
+1. Introduction
+   ------------
+
+   The dvipdfmx (formerly dvipdfm-cjk) project provides an eXtended version
+   of the dvipdfm, a DVI to PDF translator developed by Mark A. Wicks.
+
+   The primary goal of this project is to support multi-byte character
+   encodings and large character sets for East Asian languages by using
+   CID-keyed font technology. The secondary goal is to support as many
+   features as pdfTeX developed by Han The Thanh.
+
+   This project is a combined work of the dvipdfm-jpn project by Shunsaku
+   Hirata and its modified one, dvipdfm-kor, by Jin-Hwan Cho.
+
+
+2. Installation
+   -----------------------
+
+   Typical usage and installation steps are not different from the original
+   dvipdfm. Please refer documents from dvipdfm distribution for detailed
+   instruction on how to install or how to use dvipdfm.
+
+   The latest snapshot of the dvipdfmx is available at:
+
+     http://project.ktug.or.kr/dvipdfmx/snapshot/
+
+   The CVS repository for this project can be checked out through anonymous
+   CVS with the following command:
+
+     cvs -d:pserver:anonymous@cvs.ktug.or.kr:/home/cvsroot login
+     cvs -d:pserver:anonymous@cvs.ktug.or.kr:/home/cvsroot co dvipdfmx
+
+   When prompted for a password for anonymous, simply press the Enter key.
+
+   The kpathsea library is required to compile and install dvipdfmx in UNIX
+   or UNIX-like platforms. It is part of common TeX distributions, for example,
+   teTeX. See `INSTALL' for more details. If you already installed dvipdfm (the
+   original) by yourself, you should already have this library library and it's
+   headers installed on your system.
+
+   The typical installation step for teTeX might look like:
+
+     % ./configure --prefix=/usr/local/teTeX --with-kpathsea=/usr/local/teTeX
+     % make && make install
+
+   If you are using libpaper to handle paper sizes for various program, it
+   is highly recommended to use them. The location of libpaper library can
+   be specified with the configure script option
+
+     --with-paper=DIR
+
+   Dvipdfmx uses JIS paper size for B-series paper instead of ISO's one for
+   historical reason. (too late to change the default behavior) The most
+   easiest way to fix this is to use libpaper if you already have libpaper
+   installed on your system and using it, otherwise please add a line
+   
+     #define ISO_PAPERSIZE
+     
+   in config.h after ./configure or use -DISO_PAPERSIZE in CPP flags.
+
+   Dvipdfmx requires libpng library available from
+   
+     http://www.libpng.org/pub/png/libpng.html
+   
+   to read PNG format images. To tell dvipdfmx the location of libpng header
+   and library, use configure option
+   
+     --with-png=DIR
+
+ 
+   In addition to the original dvipdfm, dvipdfmx may use CMap files, SFD files,
+   and glyph list file. (not always required) The location to place them may
+   differ for different TeX installation. If your kpsewhich program recognizes
+   those format, they should be installed under the directory ${TEXMF}/fonts.
+   To test if kpsewhich program know file formats required by dvipdfmx, type
+   command on console
+   
+     kpsewhich --help
+  
+   Kpsewhich will answer like
+
+     ....
+     enc files: .enc
+     cmap files: .cmap
+     subfont definition files: .sfd
+     opentype fonts:
+     ....
+
+   if it can recognize those file formats.
+
+
+ 1) CMap PostScript Resources
+
+   Dvipdfmx internally uses CID (Character IDentifier) to identify each glyphs
+   for double-byte fonts (instead of glyph names). And it uses CMap PostScript
+   resources (like enc files used by dvips and pdfTeX for single-byte fonts) to
+   convert DVI input text from DVI-internal encodings to a sequence of CIDs.
+
+   All CJK (CID-keyed font) supporting features requires CMap resources.
+   If your kpsewhich program recognizes CMap files, please install CMap resource
+   files under the directory
+
+     ${TEXMF}/fonts/cmap
+
+   , or set CMAPFONTS variable to point the directory containing CMap resource
+   in texmf.cnf. If kpsewhich program do not recognize CMap files, you should
+   install them under
+
+     ${TEXMF}/dvipdfm/CMap
+ 
+   The directory "data/CMap" in dvipdfmx source distribution contains a few files
+   written by the dvipdfmx project team. Adobe's "CMaps for PDF 1.4 CJK Fonts" are
+   available from:
+
+     http://partners.adobe.com/asn/developer/technotes/acrobatpdf.html
+
+   Standard CMap files for CJK-languages are also available at:
+
+     ftp://ftp.oreilly.com/pub/examples/nutshell/cjkv/adobe/
+
+
+ 2) SubFont Definition Files
+
+   CJK fonts usually contains more than thousands of glyphs. To use them with TeX
+   that only capable of handling 7 or 8-bit encodings, they must be split into
+   multiple smaller fonts (subfonts). CJK-LaTeX and HLaTeX employs this approach.
+   However, dvipdfmx want a single font rather than multiple subfonts for various
+   reason, and it provide a way to map subfonts originated from a single font to
+   a single font. This mapping is done through subfont definition (SFD) file.
+
+   The subfont definition file describes how font is split into a set of subfonts,
+   and is used by ttf2pk program. Please refer documents from ttf2pk program for
+   detailed information on SFD file format.
+
+   The SubFont Definition files must be installed under the directory
+   
+     ${TEXMF}/fonts/sfd
+
+   If kpathsea library do not recognize SFD file, you must put them into
+   
+     ${TEXMF}/ttf2pk
+ 
+   or
+ 
+     ${TEXMF}/ttf2tfm
+
+
+ 3) Glyph List File
+
+   The (Adobe) glyph list (AGL) file describes the mapping between PostScript
+   glyph names (e.g., AE, Aacute, ...) and it's corresponding Unicode values.
+   Most features described in the section "Unicode Support" requires this file.
+
+   Dvipdfmx looks for a file "glyphlist.txt" when conversion from PostScript
+   glyph names to Unicode is necessary. This conversion is done in various
+   situations; when creating ToUnicode CMap for simple (single-byte) fonts, to
+   find glyph description from Unicode TrueType fonts when the TrueType font
+   itself does not provide the mapping from PostScript glyph names to glyph
+   indices (version 2.0 "post" table), and when encoding "unicode" is specified
+   for Type 1 font.
+
+   The content of this file should look like:
+
+     # comment
+     A;0041
+     AE;00C6
+
+   Each lines (not starting with '#') describe a mapping, the first field is
+   PostScript glyph name (without '/'), a semicolon delimiting each fields,
+   and the corresponding Unicode values in uppercase hexadecimal notion.
+
+   The "glyphlist.txt" file written by Adobe is found at
+
+     http://partners.adobe.com/asn/tech/type/glyphlist.txt
+
+   You must place the "glyphlist.txt" in a directory shown by
+
+     kpsewhich --progname=dvipdfm --show-path="other text files"
+
+   Please check that kpathsearch library can find this file by "kpsewhich"
+   command:
+
+     kpsewhich --progname=dvipdfm --format="other text files" glyphlist.txt
+
+   The argument for --progname option is not dvipdfmx but dvipdfm, dvipdfmx
+   pretends to be dvipdfm for some reasons (might be changed someday).
+
+
+3. CJK Support
+
+
+4. Unicode Support
+
+
+5  Graphics and Image Format Support
+
+
+6. PDF Specials
+
+
+7. Fontmap
+
+
+7.1. Options for CJK Font
+
+   Few options are available in dvipdfmx (for CID-keyed fonts) in addition
+   to the original dvipdfm.
+
+
+ 1) TTC Index
+
+   You can specify TrueType Collection index number with :n: option in front
+   of TrueType font name.
+
+     min10  H :1:mincho
+
+   In this example, the option :1: tells dvipdfmx to select TrueType font #1
+   from TrueType collection font "mincho.ttc".
+
+
+ 2) No-embed Switch
+
+   It is possible to block embedding glyph data with the character `!'
+   in front of the font name in the font mapping file.
+
+   This feature reduces the size of the final PDF output, but the PDF file
+   may not be viewed exactly in other systems on which appropriate fonts
+   are not installed.
+
+   Use of this option is not recommended for fonts that contains unusual
+   characters (and characters having different width from default value).
+   Please note that glyph metric information is not written in the output
+   PDF file for TrueType fonts without embedding. It will be treated as
+   fixed-pitch with all widths equal to the default value (will be fixed
+   someday).
+
+
+ 3) Stylistic Variants
+
+   Keywords ",Bold", ",Italic", and ",BoldItalic" can be used to create
+   synthetic bold, italic, and bolditalic style variants from other font
+   using PDF viewer's (or OS's) function.
+
+     jbtmo@UKS@     UniKSCms-UCS2-H :0:!batang,Italic
+     jbtb@Unicode@  Identity-H      !batang/UCS,Bold
+
+   Availability of this feature highly depends on the implementation of PDF
+   viewers. This feature is not supported for embedded fonts in the most of
+   PDF viewers, like Adobe Acrobat Reader and GNU Ghostscript.
+
+   Notice that this option automatically disable font embedding.
+
+
+
+8. Incompatible Changes From Dvipdfm
+
+
+9. Other Improvement Over Dvipdfm
+
+
+9.1. Encryption
+
+
+9.2. Font
+
+
+10. Bugs
+
+
+11. Font Licensing and Embedding
+
+   In OpenType format, information regarding how the font should be treated
+   when creating documents can be recorded. Dvipdfmx uses this information
+   to decide whether embedding font into the document is permitted.
+
+   This font embedding information is indicated by a flag called as "fsType"
+   flag; each bit representing different restrictions on font embedding.
+   If multiple flag bits are set in fsType, the least restrictive license
+   granted takes precedence in dvipdfmx. The fsType flag bits recognized by
+   dvipdfmx is as follows:
+
+     * Installable embedding
+
+       All font with this type of license can be embedded.
+
+     * Editable embedding
+
+       All font with this type of license can be embedded.
+
+     * Embedding for Preview & Print only
+
+       Dvipdfmx give the following warning message for fonts with this
+       type of license:
+
+         This document contains `Preview & Print' only licensed font
+
+       For the font with this type of licensing, font embedding is allowed
+       solely for the purpose of (on-screen) viewing and/or printing the
+       document; further editing of the document or extracting an embedded
+       font data for other purpose is not allowed. To ensure this condition,
+       you must at least protect your document with non-empty password.
+
+   All other flags are treated as more restrictive license than any of the
+   above flags and treated as "No embedding allowed"; e.g., if both of the
+   editable-embedding flag and unrecognized license flag is set, the font
+   is treated as editable-embedding allowed, however, if only unrecognized
+   flags are set, the font is not embedded.
+
+   Embedding flags are preserved in embedded font if the font is embedded
+   as a TrueType font or a CIDFontType 2 CIDFont. For all font embedded as
+   a PostScript font (CFF, CIDFontType 0 CIDFont), they are not preserved.
+   Only /Copyright and /Notice in the FontInfo dictionary are preserved in
+   this case.
+
+   Some font vendors put different embedding restrictions for different
+   condition; e.g., font embedding might be not permitted for commercial
+   materials unless you acquire "commercial license" separately.
+   Please read EULA carefully before making decision on font usage.
+
+
+   Adobe provide a font licensing FAQ and a list of embedding permissions
+   for Adobe Type Library fonts:
+
+     http://www.adobe.com/type/browser/legal/
+
+   For Japanese font in general, embedding permission tend to be somewhat
+   restrictive. Japanese users should read the statement regarding font
+   embedding from Japan Typography Association (in Japanese):
+
+     http://www.typo.or.jp/info/morals/moral4.html
+
+
+
+12. References
+
+  1) Font Licensing
+
+     Adobe Technical Note #5147,
+     "Font Embedding Guidelines for Adobe Third-party Developers"
+
+  2) Adobe Solution Network | Adobe PDF
+
+     http://partners.adobe.com/asn/tech/pdf/index.jsp
+
+
+  3) Adobe Solution Network | Type Technology - CID-Keyed Fonts
+
+     http://partners.adobe.com/asn/tech/type/cidfonts.jsp
+
+
+  4) Microsoft Typography
+
+     http://www.microsoft.com/typography/default.mspx

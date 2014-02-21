@@ -1,0 +1,387 @@
+%%
+%% This is file `hcycle.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% hcycle.dtx  (with options: `hcycle')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 1996,1998 by Shinsaku Fujita
+%% 
+%% This file is part of the XyMTeX system.
+%% =======================================
+%% 
+%% Version 1.01 Released on August 16, 1996
+%% Version 1.02 Released on October 31, 1996 (private version)
+%% Version 2.00 Released on December 25, 1998
+%% 
+%% Copyright (C) 1996,1998 by Shinsaku Fujita, all rights reserved.
+%% This style file is created for drawing chemical structural formulas
+%% This style file is to be contained in the ``xymtex'' directory which
+%% is an input directory for TeX.
+%% 
+%% Copying of this file is authorized only if either
+%% 
+%%  (1) you make absolutely no changes to your copy, including name and
+%%      directory name
+%%  (2) if you do make changes,
+%%      (a) you name it something other than the names included in the
+%%          ``xymtex'' directory and
+%%      (b) you acknowledge the original name.
+%%  This restriction ensures that all standard styles are identical.
+%% 
+%% =======================================
+%% 
+%% This file contains several codes modified from latex.tex (LaTeX2.09)
+%% and from latex.ltx (a LaTeX2e), the reused parts of which are subject to
+%% Copyright 1994 the LaTeX3 project and the individual authors (For further
+%% copyright information see the file legal.txt of the LaTeX2e standard
+%% distribution, and any other copyright indicated in this file.)
+%% 
+%% File: hcycle.dtx
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+\typeout{XyMTeX for Drawing Chemical Structural Formulas. Version 2.00}
+\typeout{       -- Released December 25, 1998 by Shinsaku Fujita}
+\def\j@urnalname{hcycle}
+\def\versi@ndate{December 25, 1998}
+\def\versi@nno{ver2.00}
+\def\copyrighth@lder{SF} % Shinsaku Fujita
+\typeout{XyMTeX Macro File `\j@urnalname' (\versi@nno) <\versi@ndate>%
+\space[\copyrighth@lder]}
+\@ifundefined{setsixringv}{\input chemstr.sty\relax}{}
+\unitlength=0.1pt
+\def\@pyrana{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=-10
+     \yl@ydiff=30
+           \put(0,0){\line(1,0){120}}% single bond at 1
+           \putratom{130}{-30}{\@memberb}% right type
+    \else\if\@tmpc a%(a) alpha
+     \yl@xdiff=32
+     \yl@ydiff=72
+           \put(0,0){\line(0,-1){118}}% single bond at 1 alpha (down)
+           \putratom{-32}{-190}{\@memberb}% right type
+    \else\if\@tmpc b%(e) beta
+     \yl@xdiff=32
+     \yl@ydiff=-12
+           \put(0,0){\line(0,1){118}}% single bond at 1 beta (up)
+           \putratom{-32}{130}{\@memberb}% right type
+    \else\if\@tmpc A% alpha
+     \yl@xdiff=-10
+     \yl@ydiff=60
+           \put(0,0){\line(1,-1){120}}% single bond at 1
+           \putratom{130}{-180}{\@memberb}% right type
+    \else\if\@tmpc B% beta
+     \yl@xdiff=-10
+     \yl@ydiff=10
+           \put(0,0){\line(1,1){120}}% single bond at 1
+           \putratom{130}{110}{\@memberb}% right type
+    \fi\fi\fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=-10
+     \yl@ydiff=30
+           \put(0,-15){\line(1,0){120}}% double bond at 1
+           \put(0,15){\line(1,0){120}}% double bond at 1
+           \putratom{130}{-30}{\@memberb}% right type
+          \else%
+     \yl@xdiff=-10
+     \yl@ydiff=30
+           \put(0,0){\line(1,0){120}}% single bond at 1
+           \putratom{130}{-30}{\@memberb}% right type
+   \fi\fi}%
+\def\@pyranb{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=-10
+     \yl@ydiff=60
+           \put(0,0){\line(1,-1){120}}% single bond at 1
+           \putratom{130}{-180}{\@memberb}% left type
+    \else\if\@tmpc a%(a) alpha
+     \yl@xdiff=32
+     \yl@ydiff=72
+           \put(0,0){\line(0,-1){118}}% single bond alpha (down)
+           \putlratom{-32}{-190}{\@memberb}% left & right type
+    \else\if\@tmpc b%(b) beta
+     \yl@xdiff=32
+     \yl@ydiff=-12
+           \put(0,0){\line(0,1){118}}% single bond beta (up)
+           \putlratom{-32}{130}{\@memberb}% left & right type
+    \fi\fi\fi%\fi\fi%
+   \else \if\@tmpb D%double bond: Added by SF 1998/10/25
+     \yl@xdiff=-10
+     \yl@ydiff=60
+           \put(-15,-15){\line(1,-1){120}}% double bond at 1
+           \put(0,15){\line(1,-1){120}}% double bond at 1
+           \putratom{130}{-180}{\@memberb}% right type
+          \else%
+     \yl@xdiff=-10
+     \yl@ydiff=10
+           \put(0,0){\line(1,1){120}}% single bond at 1
+           \putratom{130}{110}{\@memberb}% left type
+\fi\fi}%
+\def\@pyranbb{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=-10
+     \yl@ydiff=60
+           \put(0,0){\line(1,-1){120}}% single bond at 1
+           \putratom{130}{-180}{\@memberb}% left type
+    \else\if\@tmpc a%(a) alpha
+     \yl@xdiff=32
+     \yl@ydiff=72
+           \put(0,0){\line(0,-1){118}}% single bond alpha (down)
+           \putlratom{-32}{-190}{\@memberb}% left & right type
+    \else\if\@tmpc b%(b) beta
+     \yl@xdiff=32
+     \yl@ydiff=-12
+           \put(0,0){\line(0,1){118}}% single bond beta (up)
+           \putlratom{-32}{130}{\@memberb}% left & right type
+    \fi\fi\fi%\fi\fi%
+   \else \if\@tmpb D%double bond: Added by SF 1998/10/25
+     \yl@xdiff=20
+     \yl@ydiff=60
+           \put(15,-15){\line(-1,-1){120}}% double bond at 1
+           \put(0,15){\line(-1,-1){120}}% double bond at 1
+           \putlatom{-130}{-180}{\@memberb}%left type
+          \else%
+     \yl@xdiff=10
+     \yl@ydiff=60
+           \put(0,0){\line(-1,-1){120}}% single bond at 1
+           \putlatom{-130}{-180}{\@memberb}% left type
+\fi\fi}%
+\def\@pyranbB{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=-10
+     \yl@ydiff=60
+           \put(0,0){\line(1,-1){120}}% single bond at 5
+           \putratom{130}{-180}{\@memberb}% left type
+    \else\if\@tmpc a%(a) alpha
+     \yl@xdiff=32
+     \yl@ydiff=72
+           \put(0,0){\line(0,-1){118}}% single bond alpha (down)
+           \putlratom{-32}{-190}{\@memberb}% left & right type
+    \else\if\@tmpc b%(b) beta
+     \yl@xdiff=32
+     \yl@ydiff=-12
+           \put(0,0){\line(0,1){118}}% single bond beta (up)
+           \putlratom{-32}{130}{\@memberb}% left & right type
+    \fi\fi\fi%\fi\fi%
+   \else \if\@tmpb D%double bond: Added by SF 1998/10/25
+     \yl@xdiff=0
+     \yl@ydiff=-20
+           \put(15,15){\line(-1,1){120}}% double bond at 5
+           \put(0,-15){\line(-1,1){120}}% double bond at 5
+           \putlatom{-120}{140}{\@memberb}%left type
+          \else%
+     \yl@xdiff=10
+     \yl@ydiff=-20
+           \put(0,0){\line(-1,1){120}}% single bond at 1
+           \putlatom{-130}{140}{\@memberb}% left type
+\fi\fi}%
+\def\@pyranc{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(0,0){\line(-1,0){120}}% single bond at 4
+           \putlatom{-130}{-30}{\@memberb}% left type
+    \else\if\@tmpc a%(a) alpha
+     \yl@xdiff=-32
+     \yl@ydiff=72
+           \put(0,0){\line(0,-1){118}}% single bond at 4 alpha (down)
+           \putlatom{32}{-190}{\@memberb}% left type
+    \else\if\@tmpc b%(e) beta
+     \yl@xdiff=-32
+     \yl@ydiff=-12
+           \put(0,0){\line(0,1){118}}% single bond at 4 beta (up)
+           \putlatom{32}{130}{\@memberb}% left type
+    \else\if\@tmpc A% alpha
+     \yl@xdiff=10
+     \yl@ydiff=60
+           \put(0,0){\line(-1,-1){120}}% single bond at 4
+           \putlatom{-130}{-180}{\@memberb}% left type
+    \else\if\@tmpc B% beta
+     \yl@xdiff=10
+     \yl@ydiff=10
+           \put(0,0){\line(-1,1){120}}% single bond at 4
+           \putlatom{-130}{110}{\@memberb}% left type
+    \fi\fi\fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(0,-15){\line(-1,0){120}}% double bond at 4
+           \put(0,15){\line(-1,0){120}}% double bond at 4
+           \putlatom{-130}{-30}{\@memberb}% left type
+          \else%
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(0,0){\line(-1,0){120}}% single bond at 4
+           \putlatom{-130}{-30}{\@memberb}% left type
+   \fi\fi}%
+\def\pyranose{\@ifnextchar[{\@pyranose}{\@pyranose[r]}}
+\def\@pyranose[#1]#2{%
+\@reset@ylsw%
+\ylpyranoseposition{#2}%
+\def\@@ylii{0}\def\@@yli{0}%
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+ \begin{picture}(880,800)(-240,-400)
+  \iforigpt \put(-240,-400){\circle*{50}}%
+           \put(0,0){\circle{50}}%
+   \typeout{command `pyranose' origin: (0,0) ---> (240,400)}
+  \fi%
+\fi
+  \put(0,0){\line(3,5){120}}%           %bond 4-5
+  \put(120,200){\line(1,0){252}}%       %bond 5-6
+  \put(532,0){\line(-3,5){96}}%         %bond 1-6
+ {\thicklines%
+  \put(0,0){\line(3,-5){120}}%          %bond 4-3
+  \put(412,-200){\line(3,5){120}}%      %bond 2-1
+  \put(120,-200){\line(1,0){292}}}%     %bond 3-2
+  \putratom{382}{160}{O}% left type
+  %
+\@tfor\member:=#1\do{%
+\if\member r%no endcyclic double bonds
+\else \if\member a%
+  \put(400,-150){\line(3,5){90}}%       %double bond 2-1
+\else \if\member b%
+  \put(150,-160){\line(1,0){232}}%      %double bond 3-2
+\else \if\member c%
+  \put(50,-12){\line(3,-5){90}}%        %double bond 4-3
+\else \if\member d%
+  \put(50,12){\line(3,5){90}}%          %double bond 4-5
+\else \if\member e%
+  \put(150,160){\line(1,0){232}}%       %double bond 5-6
+\else \if\member f%
+  \put(482,12){\line(-3,5){70}}%        %double bond 1-6
+\fi\fi\fi\fi\fi\fi\fi}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa%0 omit
+ \or \put(532,0){\@pyrana}% subst. on 1
+ \or \put(412,-200){\@pyranb}% subst. on 2
+ \or \put(120,-200){\@pyranbb}% subst. on 3
+ \or \put(0,0){\@pyranc}% subst. on 4
+ \or \put(120,200){\@pyranbB}% subst. on 5
+\fi %end of ifcase
+\fi\fi%
+}\end{picture}}%               %end of \pyranose macro
+\def\ylpyranoseposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa%0 omit
+ \or\gdef\@ylii{-532}\gdef\@yli{0}\global\@ylswtrue% subst. on 1
+ \or\gdef\@ylii{-412}\gdef\@yli{200}\global\@ylswtrue% subst. on 2
+ \or\gdef\@ylii{-120}\gdef\@yli{200}\global\@ylswtrue% subst. on 3
+ \or\gdef\@ylii{0}\gdef\@yli{0}\global\@ylswtrue% subst. on 4
+ \or\gdef\@ylii{-120}\gdef\@yli{-200}\global\@ylswtrue% subst. on 5
+\fi%end of ifcase
+\fi\fi\fi}}%
+\def\furanose{\@ifnextchar[{\@furanose}{\@furanose[r]}}
+\def\@furanose[#1]#2{%
+\@reset@ylsw%
+\ylfuranoseposition{#2}%
+\def\@@ylii{0}\def\@@yli{0}%
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+ \begin{picture}(880,800)(-240,-400)
+  \iforigpt \put(-240,-400){\circle*{50}}%
+           \put(0,0){\circle{50}}%
+   \typeout{command `furanose' origin: (0,0) ---> (240,400)}
+\fi
+  \fi%
+   \put(0,0){\line(5,3){236}}%          %bond 4-5
+   \put(532,0){\line(-5,3){236}}%       %bond 1-5
+ {\thicklines%
+  \put(0,0){\line(3,-5){120}}%          %bond 4-3
+  \put(412,-200){\line(3,5){120}}%      %bond 2-1
+  \put(120,-200){\line(1,0){292}}}%     %bond 3-2
+  \putratom{236}{130}{O}% left type
+\@tfor\member:=#1\do{%
+\if\member r%no endcyclic double bonds
+\else \if\member a%
+  \put(400,-150){\line(3,5){80}}%       %double bond 2-1
+\else \if\member b%
+  \put(150,-160){\line(1,0){232}}%      %double bond 3-2
+\else \if\member c%
+  \put(50,-12){\line(3,-5){80}}%        %double bond 4-3
+\else \if\member d%
+  \put(50,0){\line(5,3){180}}%          %double bond 4-5
+\else \if\member e%
+  \put(482,0){\line(-5,3){180}}%        %double bond 1-5
+\fi\fi\fi\fi\fi\fi}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa%0 omit
+ \or \put(532,0){\@pyrana}% subst. on 1
+ \or \put(412,-200){\@pyranb}% subst. on 2
+ \or \put(120,-200){\@pyranbb}% subst. on 3
+ \or \put(0,0){\@pyranc}% subst. on 4
+\fi%end of ifcase
+\fi\fi%
+}\end{picture}}%               %end of \furanose macro
+\def\ylfuranoseposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa%0 omit
+ \or\gdef\@ylii{-532}\gdef\@yli{0}\global\@ylswtrue% subst. on 1
+ \or\gdef\@ylii{-412}\gdef\@yli{200}\global\@ylswtrue% subst. on 2
+ \or\gdef\@ylii{-120}\gdef\@yli{200}\global\@ylswtrue% subst. on 3
+ \or\gdef\@ylii{0}\gdef\@yli{0}\global\@ylswtrue% subst. on 4
+\fi%end of ifcase
+\fi\fi\fi}}%
+\endinput
+%%
+%% End of file `hcycle.sty'.

@@ -1,0 +1,145 @@
+VFONTCAPの設定方法
+==================
+
+まずは、FreeType機能を使用しない場合です。MS明朝とゴシックを使用することとします。
+
+もしもf:/win/system/に msmincho.ttf, msgothic.ttf が存在するならば、そのディレクトリに移動。
+
+ > ttindex msminho.ttf (msmincho.ttiが生成）
+
+     > ttindex msgoghic.ttf (msgothic.ttiが生成)
+
+ gs5.10/kanji/vfontcap.ft-noをエディタでオープン。ただし、記載はこれと異なるので編集のこと。
+
+### TRUETYPE FONT (Windows fonts)
+
+r-microsoft-mincho|MicroSoft mincho:\
+
+        :ft=truetype:\
+
+        :ff=f\072/win/system/msmincho:
+
+r-microsoft-gothic|Microsoft gothic:\
+
+        :ft=truetype:\
+
+        :ff=f\072/win/system/msgothic:
+
+このようにしてください（同梱のvfontcapはこうなってます）。
+f\072とドライブレターのあとの、":"を\072とすることと、ファイルの拡張子をいれないということのがポイントです。もちろんディレクトリ名は自分の環境に合わせて変えてください。
+r-microsoft-minchoとr-microsoft-gothicという名前に注目していてください。
+
+"### CORRECTED"とある行から下に注目。
+
+microsoft-mincho:\
+
+   :fc=r-microsoft-mincho:
+
+microsoft-gothic:\
+
+   :fc=r-microsoft-gothic:
+
+### ALIASESに続く行に注目
+
+mincho:\
+
+   :fc=microsoft-mincho:
+
+gothic:\
+
+   :fc=microsoft-gothic:
+
+このようにして下さい。
+
+● 注意!!! (98/9/17に追加)
+
+mincho:\
+#   :fc=ricoh-heisei-mincho-w3
+#   :fc=r-IBM-mincho:
+#   :fc=heiseimin:
+    :fc=ms-mincho:
+このようにしてはなりません。"#"が行頭にある行は無視されるはずですが、これでは
+エラーになります。
+
+mincho:\
+    :fc=ms-mincho:
+#   :fc=ricoh-heisei-mincho-w3
+#   :fc=r-IBM-mincho:
+#   :fc=heiseimin:
+
+このように、"mincho:\"の次の行には"#"の行を入れないで指定してください。
+
+さらに、
+
+### for ASCII jTeX のところにて
+min|min5|min6|min7|min8|min9|min10|min12|min17|Mincho Font:\
+
+   :fc=mincho:
+
+goth|goth5||goth6|goth7|goth8|goth9|goth10|goth12|goth17|Gothic Font:\
+
+   :fc=gothic:
+
+\
+
+ 要するに、r-microsoft-mincho → microsoft-mincho → mincho と別名定義が
+連鎖しているわけです。別名定義で最も短い名前の  mincho と gothic
+という名称を次に編集する kconfig.ps で用います。
+
+では、gs5.10/kanji/kconfig.psをオープンしてください。
+
+/Ryumin-Light           4300000 (mincho) VFlibkanji
+
+/GothicBBB-Medium       4300200 (gothic) VFlibkanji
+
+このような行があればオーケーです。お気付きかと思いますが、ここでの指定は、
+(microsoft-mincho), (r-microsoft-mincho)のでもいいです。gothicも同様。以上でvfontcap and kconfig.psの設定は終了です。
+
+もしも他のフォント、例えばリコー平成明朝w3ならば、##TRUETYPE FONT, ##CORRECTED, ##for ASCII jTeX, ##ALIASESにおける名称を適切に対応させてください。私の場合はリコーフォントを使用しています。基本的な原理を理解できれば、他のフォントでも大丈夫でしょう。（詳しい解説は前述の如く man.psを参照のこと）
+
+■■■FreeType機能を使用するための設定。
+
+これまでは、「従来のghostscript」のための設定です。ただし、このような記載のvfontcapはVFlib対応のdvipsで用いますので残しておいて下さい。では説明に入ります。
+
+ ★★ FreeType機能を使用した方が美しく表示・印刷できるのでここからが実は本番です。
+
+     同梱したvfontcap or vfontcap.ftでやっているように、
+
+         1)  フォントの拡張子まで指定して、さらに
+         2)  ft=freetype として下さい。
+
+       要するに、これまでに編集したvfontcapがあれば、エディタで
+        ft=truetypeをft=freetypeに変更する。
+
+          r-ricoh-ttw-heisei-mincho-w9|Ricoh TrueTypeWorld Heisei Mincho W9:\
+             :ft=freetype:\
+
+        ファイルの実体の指定のことろは、
+             :ff=c\072/psfonts/dfhsm-w3: から
+
+             :ff=c\072/psfonts/dfhsm-w3.ttf:   に
+
+        3) kconfig.ps
+           6/10以前は kconfig.ftのごとく 日本語Truetype fontを"直接指定"
+           してましたが、新しいVFlib2.23のghostscriptでは、そうではあり
+           ません。同梱の kconfig.psをほぼそのまま使えます。ただし、
+           行書体(gyosho)を指定している行が二つありまして、vfontcapでそ
+           れに対応したフォントを設定してない場合は、エラーになります。
+           よって、明朝とゴシックだけしか使用しないなら、同梱の
+           kconfig.psから"gyosho"を含む二行を削除のこと。
+
+  gs5.10/kanji/のvfontcapとkconfig.psが設定できたら、
+        > set VFONTCAP=x:/yyyy/gs5.10/vfontcap (in CONFIG.SYS or shell)
+
+   以上で基本設定は終了。
+
+         VFONTCAPで指定するファイルの名前はなんでもかまいません。
+              例えば PM と X windowで使い分ける場合は、
+                 set VFONTCAP=g:/emx/vfontcap  ------   config.sys にて
+                'set VFONTCAP=g:/emx/vfontcap.x' -- xinitrc.cmd にて
+
+              VFlib対応 X serverは 改行コードがUNIX式のVFONTCAPでないと
+              エラーになることに御注意ください。ghostscriptは改行コード
+              はDOS式でもUNIX式でも大丈夫です。
+
+#EOF

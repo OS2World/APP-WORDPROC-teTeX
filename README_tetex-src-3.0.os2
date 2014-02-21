@@ -1,0 +1,838 @@
+/*  tetex-3.0  release 4  , Feb  1  2006 */
+
+                       @@@@@@@@@@@@@           @@@@@@@    @@@@@@ 
+                       @@@  @@@  @@@            @@@@@@     @@@@  
+                      @@   @@@@   @@             @@@@      @@    
+       @              @    @@@@   @               @@@@    @@     
+      @@              @    @@@    @               @@@@   @@      
+     @@                   @@@@                    @@@@  @@       
+   @@@@@      @@@@        @@@@          @@@@       @@@@@@        
+    @@@     @@@ @@@       @@@@        @@@ @@@      @@@@@         
+    @@     @@@  @@@       @@@        @@@  @@@       @@@@         
+    @@    @@@  @@@       @@@@       @@@  @@@        @@@@         
+   @@@    @@@  @@        @@@@       @@@  @@        @@@@@@        
+   @@@   @@@ @@@         @@@       @@@ @@@        @  @@@@        
+   @@    @@@@@          @@@@       @@@@@         @    @@@@       
+  @@@    @@@            @@@@       @@@         @@     @@@@       
+  @@@ @  @@@    @@      @@@@       @@@    @@  @@      @@@@@      
+  @@@@@  @@@@  @       @@@@        @@@@  @   @@@      @@@@@      
+  @@@     @@@@@       @@@@@@@       @@@@@   @@@@@     @@@@@@@    for OS/2
+
+
+
+                                             SAWATAISHI JUN, YOKOHAMA JAPAN
+                                                       <jsawa@attglobal.net>
+                           http://www2s.biglobe.ne.jp/~vtgf3mpr/index-e.htm
+
+
+
+ For a long time, I used old version of teTeX (1.0.7). In November 2004, 
+I tried to make PDF from Japanese LaTeX source. Then I realized I had to 
+build the latest version of web2c to compile `dvipdmfx'. 
+ Porting web2c 3.5.3 was easy (modification of c source and shell scripts). 
+ Next I started porting of teTeX-beta to OS/2. I think 99% of porting has 
+completed. 
+
+  After I have uploaded OS/2 binaries and needed files for teTeX 2.99x-beta, 
+I kept on building newly updated beta source. 
+
+  As soon as teTeX 3.0 was released  Feb 2005, I built teTeX. 
+  
+  `mktexdir'(in `usr/share/texmf/web2c') included in the first release 
+was broken. I'm very sorry to trouble those who downloded release 1. 
+  
+  This is the 4th release of teTeX 3.0 for OS/2. Please send me 
+  a mail if you have any troubles and opinions. 
+
+  You can get newest release of teTeX 3.0 for OS/2 in hobbes:
+    
+   http://hobbes.nmsu.edu/cgi-bin/h-browse?sh=1&dir=//pub/os2/apps/wp/tex
+   http://hobbes.nmsu.edu/pub/os2/apps/wp/tex/os2tetex-3.0.zip
+
+
+NOTE 1: `enctex' feature is included in web2c 7.5.3/7.5.4.
+NOTE 2: No format files (*.fmt, *.mem) are included in this zip archive. 
+        So make format files by yourself using `fmtutil'. 
+NOTE 3: Japanized version of tex (ptex), dvips and related files 
+        are included in this package. 
+
+NOTE for Japanese user:  Read "For Japanese users" section after installation. 
+
+
+
+Version numbers for main programs of tetex-20050111-beta @@//
+     TeX 3.141592 (Web2C 7.5.4)
+     
+     pTeX 3.141592-p3.1.9 (SJIS) (Web2C 7.5.4) [for Japanese] 
+     
+     Aleph 3.141592-1.15-2.1-rc4 (Web2C 7.5.4)
+     
+     pdfTeX, pdfeTeX, pdfxTeX  3.141592-1.21a-2.2
+     
+     Web2C 7.5.4
+     
+     kpathsea version 3.5.4
+
+     xdvi-os2.exe: LESSTIF version
+         xdvik version 22.84.9 (#(@)GNU/LessTif Version 1.2 
+         Release 0.88.1, runtime verson 0.0)
+     
+     xdvi-xaw: Xaw3d version
+        xdvik version 22.84.9 (Xaw toolkit)
+        
+     xdvi-jp.exe: LESSTIF version
+        xdvik version 22.84.8 (#(@)GNU/LessTif Version 1.2 
+        Release 0.88.1, runtime version 0.0)
+     
+     dvips(k) 5.95a
+     
+     dvipdfm, version 0.13.2c: dvi to pdf converter
+     
+     dvipdfmx-20050201 : dvi to pdf converter which can handle Japanese DVI
+     
+     dvipng 1.5: Create png format graphics from DVI file!!
+     EPSTOPDF 2.7, 2001/03/05
+     ..................
+     .................
+
+     (`dvipdfmx' is not originally included in teTeX 3.0)
+
+
+//** Special utility included **//
+
+    `sh2exe':  to use UNIXy shell script from command line.
+       sh2exe depends on `exe.exe'. 
+       If you have a script `foo'. 
+         > copy exe.exe foo.exe
+       Now you can run `foo' from cmd.exe. 
+       
+       If you'd like to automaticaly perform copying in `x:/foo/bin' 
+       execute "sh2exe x:/foo/bin" or "sh2.exe ."
+
+//** DLLs included **//
+        89625  2000-09-25 22:41  VFlib251.dll ; vflib 2.51 for Japanese
+       226618  1998-08-28 23:44  Xaw3d.dll    ; Xaw3d 1.5
+       912020  2005-01-27 00:01  iconv.dll    ; libiconv 1.9.2
+        39156  2005-01-24 23:02  intl014.dll  ; intl lib of gettext 0.14.1
+        64719  2005-02-10 00:26  kpath354.dll ; kpathsea 3.5.4
+       136887  1999-12-20 23:31  ttf13.dll    ; freetype 1.3 for VFlib251.dll
+
+
+
+
+Table of contents
+=================
+
+General Instruction                          @gen
+History of OS/2 Port                         @his
+Required Executables                         @req
+How to install                               @ins
+For Japanese users                           @jap
+On xdvi, dvips,dvipdfm, dvipdfmx             @dvi
+About teTeX utilities                        @tetex
+Important documents                          @doc
+CTAN.site                                    @ctan
+
+
+General Instruction
+===================
+
+  A lot of Linux distributions follow the Filesystem Hierarchy Standard (FHS),
+a collaborative document that defines the names and locations of many files 
+and  directories. 
+  I have decided to make zip archive for which end users can install files 
+in FHS like way. 
+
+File Structure of ZIP archive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Zip archive contains six files. 
+   1)  README_tetex-src-3.0.os2           -- instruction
+   2)  OS2tree.zip                         -- binary and library treee
+   3) filelist.dat                        -- list of `OS2tree.zip'
+
+   - OS2tree.zip
+    ** dvips-jp.zip                        -- dvips with Japanese patch
+       /usr/bin/                           -- executables
+       /usr/dll/                           -- DLLs
+       /usr/lib/                           -- C library files
+       /usr/include/                       -- C include files
+       /usr/share/doc/tetex-src-3.0  -- documents
+                      00dll_list.dat       -- DLL list needed by programs
+       /usr/share/man/                     -- manpages
+       /usr/share/info/                    -- Info manuals
+       /usr/src/redhat/SOUCRS              -- OS/2 patch files
+       /usr/etc/termcap.dat                -- modified by me
+       /usr/share/terminfo/*               -- modified by me
+
+   4) BUILD_tetex-src-3.0.os2                -- instruction to build teTeX 
+   5)OS2patch.zip
+       os2config.cmd                       -- modify source using `os2unix' 
+                                              and apply diff files 
+                                              followed by running configure 
+                                         
+       os2/C_Source.diff                   -- patch for C source
+       os2/In-make.diff                         for Makefile.in's and scripts
+       os2/Other.diff                           for other files
+       
+    +--- os2unix utility -------------------------------+
+    |  os2/os2_convert_configure.sed                    |
+    |  os2/os2_convert_Makefile_in.sed                  |
+    |  os2/os2_convert_Makefile_in_in.sed               |
+    |  os2/os2_convert_Makefile_in_lib_prog.sed         |
+    |  os2/os2_convert_mk.sed                           |
+    |  os2/os2_convert_Makefile_in.grep                 |
+    |  os2/os2_mkinstalldirs                            |
+    |  os2/os2_missing                                  |
+    |  os2unix.cmd                                      |
+    +---------------------------------------------------+
+
+   6) os2tetex-3.0.txt
+   
+
+UNIXROOT environment variable
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  I recommend you to set UNIXROOT env. var., where OS/2 ported free software 
+are to be installed. You will be able to install ZIP archives easily, and 
+will be able to run programs with minimun efforts. 
+  Without UNIXROOT env. var., message from a program will be always 
+in English. 
+
+
+  Installation is simple: when UNIXROOT is equal to "e:"
+
+       x:\foo\tmp> unzip -o tetex-src-3.0.zip
+
+       x:\foo\tmp> unzip -o OS2tree -d e:/
+    or
+       x:\foo\tmp> e:
+       e:\> unzip -o x:/foo/tmp/OS2tree
+
+
+  Confirm these variables are properly set. 
+
+         UNIXROOT       x:
+         PATH           x:\usr\bin;.....
+         LIBPATH        x:\usr\dll;....
+
+         INFOPATH       x:/usr/share/info;...
+         MANPATH        x:/usr/share/man;....
+     or
+         INFOPATH       %UNIXROOT%/usr/share/info;...
+         MANPATH        %UNIXROOT%/usr/share/man;....
+
+  If UNIXROOT env. var. is not set or empty and HOME env. var. is 
+set, drive name part of HOME is assumed as UNIXROOT. 
+
+         e.g.  HOME=g:\emx
+               programs treat `x:/usr/share/locale'  as locale directory
+
+
+
+History of OS/2 Port	@his
+====================
+
+ Fixed Sun May 29 2005
+
+ In `tetex-src-3.0/texk/kpathsea/config.h
+ /* case-insensitive filename comparisons? */
+#if defined (DOSISH)
+#ifndef __EMX__
+#define MONOCASE_FILENAMES
+#endif /* __EMX__ */
+#endif
+
+ kpsewhich -format='TeX system documentation' README.knuth failed, now OK!
+
+tetex-src-3.0                   release 4, 1 Feb 2005
+  1) `dvips -Pfoo' reads `config.foo' (old one reads `foo.cfg')
+  2) configuration file for `dvips' accepts "L" option for 
+    fli font file. 
+  3) dvipdfmx updated ==> dvipdfmx-20050201
+  4) Sample `texmf.cnf' for "texmf-dist"
+              /usr/share/texmf/web2c/texmf.cnf-dist
+
+
+tetex-src-3.0                   release 3  Sat Mar  5 2005
+  `ps2pk.exe' and `fmtutil' fixed, `ed.exe' added
+tetex-src-3.0                   release 2  Tue Feb 22 2005
+  `mktexdir' script fixed; 
+tetex-src-3.0                   release 1  Fri Feb 11 2005
+
+tetex-src-2.99.9.20050111-beta  release 2  Fri Jan 21 2005
+tetex-src-2.99.9.20050111-beta  release 1  Sun Jan 16 2005
+
+
+Required Executables	@req
+====================
+
+XFree86 for OS/2 and lesstif library for `xdvi' to work
+  ftp://ftp.xfree86.org/pub/XFree86/3.3.6/binaries/OS2/
+  ftp://hobbes.nmsu.edu/pub/os2/dev/x11/lesstif-0.88.9-os2.zip
+
+ghohstscript for OS/2 for
+  If you'd like to use ghostscript in XFree86 with xdvi, 
+    get ftp://24.2.168.186/pub/os2/unix/ghost/gs601x.zip
+
+
+GNU utilities needed for teTeX 
+  GNU textutils: sort.exe
+  GNU sh-utils:
+    pwd.exe, expr.exe, env.exe
+  GNU fileutils:
+    mkdir.exe
+  Unixy shell:
+   sh.exe of KSH
+  GNU awk: name must be `awk.exe'
+  GNU grep: grep.exe and egrep.exe
+  GNU sed: sed.exe
+
+
+   HOBBES=ftp://hobbes.nmsu.edu/pub/os2
+   LEO=ftp://ftp.leo.org/pub/comp/os/os2/leo
+   JSAWA=http://www2s.biglobe.ne.jp/~vtgf3mpr
+ 
+ emx runtime version 0.9d (or later): Not included
+     HOBBES/dev/emx/v0.9d/emxrt.zip
+     LEO/dev/emx/v0.9d/emxrt.zip
+
+ `man' (requires GNU groff)
+      HOBBES/dev/help/gnuman.zip        ; v1.0
+      LEO/gnu/doc/man11a.zip            ; v1.1a
+      JSAWA/linux/man.htm               ; v1.5g
+                         
+
+ GNU groff  -- to read manpages
+   Groff v1.10
+      HOBBES/apps/wp/gnugroff.zip
+      LEO/gnu/doc/gnugroff.zip
+
+   GNU groff v1.15 (with Japanization patch) 
+     JSAWA/manpage/manpage-e.htm [English]
+     JSAWA/manpage/manpage.htm  [Japanese]
+          
+
+ GNU grep (grep.exe, egrep.exe)
+     HOBBES/util/file/gnugrep.zip    ; v2.0
+     LEO/gnu/systools/gnugrep.zip    ; v2.0 
+     JSAWA/gnu/grep.htm              ; v2.3h or later
+
+ Pager : I strongly recommend you to install `less'
+
+      less 332 with Japanese patch: 
+
+               http://hp.vector.co.jp/authors/VA000199/os2/
+
+         You can use this in virtual terminal (xterm etc) of XFree86 for OS/2. 
+         You should get this one if you'd like to see manpages in XFree86. 
+
+      less 329 without XFree86 capability
+               LEO/unix/gnu/less329-2.zip
+               HOBBES/unix/util/util/file/less329-2.zip
+
+`gzip.exe' and `bzip2.exe'
+    [gzip]
+        HOBBES/util/archiver/gz124_32.zip
+        LEO/gnu/archiver/gz124-32.zip
+    [bzip2]
+        HOBBES/util/archiver/bzip090b.zip
+        LEO/archiver/bzip090b.zip
+        http://www.muraroa.demon.co.uk/
+        JSAWA/rpm/bzip2.htm  ; v0.9.5d --- this version preserve time stamp
+        http://netpassport-wc.netpassport.or.jp/~wmakoto/CLUB-bzip2.html
+
+  GNU Awk (gawk.exe, awk.exe)
+     [English version]
+         HOBBES/dev/awk/gnuawk.zip   ; v3.0.3
+     [Japanized version]
+         JSAWA/gnu/awk.htm           ; v3.0.4
+
+  GNU find (find.exe)
+      LEO/gnu/systools/gnufind.zip   ; v4.1
+      HOBBES/util/disk/gnufind.zip   ; v4.1
+  
+  GNU sed 
+      LEO/gnu/systools/gnused.zip    ; v2.05
+      HOBBES/apps/editors/gnused.zip ; v3.0
+      JSAWA/gnu/sed.htm              ; v3.02.80
+  
+ `tr.exe' and `cat.exe' included in GNU text utilities
+     LEO/gnu/systools/gnututil.zip   ; v1.19
+     HOBBES/util/file/gnututil.zip   ; v1.19
+     JSAWA/gnu/text-util.htm         ; v1.22f or later
+
+ `sh.exe' included in KSH package
+     LEO/shells/pdksh-5.2.13-emx.zip
+     HOBBES/util/shell/ksh527rt.zip
+  
+  `chmod.exe' included in GNU file utilities
+     LEO/gnu/systools/gnufutil.zip   ; v3.13
+     HOBBES/util/file/gnufutil.zip   ; v3.13
+     JSAWA/gnu/fileutils.htm         ; v3.16
+
+
+
+How to install          @ins
+==============
+1. Delete `sort.exe' installed from OS/2 installation CDROM
+  GNU version of `sort.exe' must be available. 
+
+2a. Confirm an environment variable `TMP' is set like `d:/temp', not 
+  `d:\temp'. And make sure `d:/temp' exists in your system. 
+
+2b. Confirm an environment variable `TMPDIR' is set like `d:/temp', not 
+  `d:\temp'. And make sure `d:/temp' exists in your system. 
+
+3. Confirm GNU utilities are properly installed
+  Copy `grep.exe' to `egrep.exe'. 
+  Copy `gawk.exe' to `awk.exe'. 
+
+4. Get `tetex-texmf-3.0.tar.gz' and optinally `tetex-texmfsrc-3.0.tar.gz' 
+   from CTAN.  If you don't know URLs for CTAN, see section "CTAN.site" 
+   in this document. 
+
+
+5. Decide where to install teTeX
+   I assume you will install teTeX in drive `x:'. 
+
+6. Intall tetex-*****.tar.gz and OS/2 files for them
+
+   x:> mkdir usr
+   x:> mkdir usr\share
+   x:> mkdir usr\share\texmf
+   x:> cd usr\shar\texmf
+   x:\usr\share\texmf> tar zxvf SOMEWHERE/tetex-texmf-3.0.tar.gz
+   x:\usr\share\texmf> tar zxvf SOMEWHERE/tetex-texmfsrc-3.0.tar.gz
+
+   x:\usr\share\texmf> cd \
+   x:\>unzip SOMEWHER/tetex-src-3.0.zip
+   x:\>unzip OS2tree.zip
+
+(6b. If you'd like to install in "x:/usr/share/texmf-dist", you will 
+    have to use "/usr/share/texmf/web2c/texmf.cnf-dist". 
+    I have not tried to install "x:/usr/share/texmf-dist", so I cannot 
+    tell you anything. Sorry. 
+    To know "standard" installation, 
+      read "/usr/share/texmf/doc/tetex/TETEXDOC.pdf. )
+
+7. setup env. vars in your `config.sys' 
+
+  for DLLs
+     add "x:\usr\dll" to your LIBPATH
+   or
+    x:/usr>copy dll\*.dll YOUR_LIBPATH_DIR
+
+  For `texconfig'(one of tetex utilities), you may have to setup terminfo
+       set TERMINFO_DIRS=x:/usr/share/terminfo;................
+       set TERMINFO=x:/usr/share/terminfo
+       set TERMCAP=x:/usr/etc/termcap.dat
+       set TERM=os2
+
+              I strongly recommend  you  to set "TERM=os2".You will see 
+              beautiful look-and-feel. 
+
+   For TeX programs
+       set TEXMF=x:/usr/share/texmf
+       set TEXMFCNF=x:/usr/share/texmf/web2c
+
+   For `texconfig'
+       set EDITOR=your_editor
+       set PAGER=less
+
+
+8. Edit `x:/usr/share/texmf/web2c/texmf.cnf'
+      
+      texmf.cnf: edit this file!! This file was modified to use `dvipdfmx'. 
+      
+      texmf.cnf-pre : tetex original + my modification (I failed to use) 
+                I think new variable SELFAUTODIR is not suitable for OS/2. 
+                
+      texmf.cnf-os2   : a copy of `texmf.cnf'
+
+
+
+          line 70: TEXMFMAIN = p:/usr/share/texmf
+             ===>  TEXMFMAIN = x:/usr/share/texmf
+          line 71: CMAP=p:/usr/share/cmap
+             ===>  CMAP=x:/usr/share/cmap
+          
+
+
+9. Edit `x:/usr/share/texmf/web2c/fmtutil.cnf'
+
+
+       If you'd like to make uncommented format files, just remove  "#"
+
+            NOTES: definition which contains "-enc" enables `enctex'!!
+                  If you need to use enctex feature for `tex'
+                          tex tex - tex.ini --enc
+                     for latex
+                          latex pdfetex ...... -enc
+
+      Non-Japanese users should uncomment these lines
+          ptex      ptex            -  ptex.ini
+          platex    ptex            -  platex.ini
+
+
+10. If XFree86 for OS/2 is not available in your machine
+
+      x:/> copy usr\bin\mf-nowin.exe usr\bin\mf.exe
+
+                `mf.exe' requires ice.dll, sm.dll, x11.dll, and xt.dll
+
+11. Update LS-R database
+
+       x:/foo> mktexlsr
+       
+    Test kpsewhich avalability
+       x:/foo> kpsewhich times.sty
+       
+       x:/foo> kpsewhich -expand-var $TEXMFMAIN
+       
+    If `kpsewhich' failes, TEXMF/TEXMFCNF env. vars. are wrong or
+    some of `texmf.cnf' definition is wrong. 
+
+
+12. Make format files
+    I strongly recommend `fmtutil'. 
+
+     x:/foo> fmtutil --all
+
+13. Update fontmap files
+     x:/foo> updmap
+
+
+14. Setup executables according to `fmtutil.cnf'
+
+   For example, see a line below.
+
+      latex   pdfetex language.dat  -translate-file=cp227.tcx *latex.i
+
+   This means only `latex.fmt' is for `pdfetex.exe'. 
+       So you must copy pdfetex.exe to latex.exe, or make cmd file named 
+       `latex.cmd' with a line; 
+               @pdfetex -fmt=latex %1 %2 %3 %4 %5
+   
+   You can copy from executables to other names automatically.
+   
+     x:>cd \usr\bin
+     x:/usr/bin> 00copy_tex_executables_for_fmtutil_cnf.cmd
+
+    Now `00copy.cmd' is created.
+
+     x:/usr/bin>00copy
+
+
+  If you need `odvips'
+
+     x:/usr/bin> copy dvips.exe odvips.exe
+
+
+  That's all. 
+
+
+
+For Japanese users            @jap
+==================
+  First of all, edit $TEXMF/web2c/updmap.cfg to enable `dvips', `dvipdfm' 
+process Japanese. Uncomment line 79. 
+    Line 78: #   For Japanese ASCII ptex
+    Line 79: #Map japanese.map
+
+ Next execute `updmap' in OS/2 command prompt. 
+
+
+1) `dvipdfmx', `makeinfo', `mendex'(makeindex) and `texindex'  
+ included in this package  can handle files encoded by Japanese SJIS. 
+ ASCII `ptex' and `platex' are  for Japanese users. 
+
+  `dvips' include in this release is not for ASCII pTeX. 
+  
+  To use dvips (5.94b p1.6a1 Copyright 2004 ASCII Corp.), unzip 
+  `dvips-jp.zip' in "x:/"
+  
+      x:/> unzip dvips-jp
+           usr/bin/dvips.exe
+           usr/bin/odvips.exe
+           usr/share/doc/
+           usr/share/doc/dvips-jp/
+           usr/share/doc/dvips-jp/ChangeLog.jpatch
+           usr/share/doc/dvips-jp/PSTricks.patch
+           usr/share/doc/dvips-jp/README.jpatch
+           usr/share/texmf/dvips/
+           usr/share/texmf/dvips/base/
+           usr/share/texmf/dvips/base/color.pro
+           usr/share/texmf/dvips/base/crop.pro
+           usr/share/texmf/dvips/base/finclude.pro
+           usr/share/texmf/dvips/base/hps.pro
+           usr/share/texmf/dvips/base/psfonts.map
+           usr/share/texmf/dvips/base/special.pro
+           usr/share/texmf/dvips/base/tex.pro
+           usr/share/texmf/dvips/base/texc.pro
+           usr/share/texmf/dvips/base/texps.pro
+           usr/share/texmf/dvips/config/
+           usr/share/texmf/dvips/config/config.ps
+           usr/share/texmf/dvips/config/config.ps.jsawa
+           usr/share/texmf/fonts/map/dvips/ptex/psfonts_jp.map
+
+2) xdvi-jp.exe included in this package can handle Japanese 
+
+   How to use xdvi-jp.exe :
+
+   a) Read /usr/share/texmf/xdvi/README.sjis
+       and edit /usr/share/texmf/xdvi/vfontcap
+
+   b) In your `config.sys'
+
+        set VFONTCAP=x:/usr/share/temf/xdvi/vfontcap
+        set VFONTMAP=x:/usr/share/temf/xdvi/vfontmap
+
+3)ghostscript: You can use ghostscript 8.51 or later to read Japanes ps/pdf. 
+   You can read instruction in Japanese in OS2Wiki: 
+       http://wiki.fdiary.net/OS2Wiki/?TeXPostScriptPDF
+
+   a) Confirm that Japanese CID fonts are installed in your system. 
+        If you can't find "c:/PSFONTS/IBJHKGW5.CID", then install 
+        them from OS/2 installation CDROM. 
+
+   b) get ghostscript and GSView from CTAN and then install them. 
+   
+     For example get these files and install
+          ftp://ftp.riken.go.jp/tex-archive/nonfree/support/
+              ghostscript/AFPL/gs853/gs853os2.zip
+          ftp://ftp.riken.go.jp/tex-archive/nonfree/support/
+              ghostscript/ghostgum/gsv47os2.zip
+   
+   
+   c) Get `gs800-j-vlib-os2.zip' from 
+        http://www.ipc.shizuoka.ac.jp/~sctokab/UNOFF/INDEX.HTM
+
+   d) Setup to use Japanese CID font included in Japanese OS/2 
+       If you have installed ghostscript in "x:/foo/gs8.53":
+         > x:
+         > cd \foo\gs8.53
+         > unzip SOMEWHERE/gs800-j-vlib-os2.zip gs8.00/bin/CIDJ.cmd
+         > copy gs8.00\bin\CIDJ.cmd .
+         
+       Edit `CIDJ.cmd': 
+          "c:\gs\gs_res.ps" to "x:/foo/gs8.53/lib/gs_res.ps"
+          
+         > CIDJ
+         
+         Move "x]y/CIDFont/" directory into "x:/foo/gs8.53/Resource"
+         Be sure "x:/foo/gs8.53/Resource/CIDFont" directory exists. 
+
+
+
+About teTeX utilities                                     @tetex
+=====================
+texdoc/xtexdoc
+  To see tex documentation, you can use `texdoc' in normal OS/2 
+  environment. `xtexdoc' in XFree86 for OS/2. 
+  I strongly recommend you to edit these scripts to match your 
+  environment.
+  
+  `texdoc'
+        : ${TEXDOCVIEW_dvi=' dvi2tty.exe %s &'}
+        : ${TEXDOCVIEW_pdf='(I:/GSVIEW/GVPM.EXE %s )&'}
+        : ${TEXDOCVIEW_ps='(I:/GSVIEW/GVPM.EXE %s )&'}
+        : ${TEXDOCVIEW_html='(netscape.exe %s )&'}
+        : ${TEXDOCVIEW_txt="${PAGER-more} %s"}
+        : ${TEXDOCVIEW_doc="${PAGER-more} %s"}
+        : ${TEXDOCVIEW_txt="${PAGER-more} %s"}
+
+  `xtexdoc'
+        : ${TEXDOCVIEW_dvi=' xdvi %s &'}
+        : ${TEXDOCVIEW_pdf='xpdf %s &'}
+        : ${TEXDOCVIEW_ps='gv %s &'}
+        : ${TEXDOCVIEW_html='rxvt -e w3m %s &'}
+        : ${TEXDOCVIEW_txt="rxvt -e ${PAGER-more} %s &"}
+        : ${TEXDOCVIEW_doc="rxvt -e ${PAGER-more} %s &"}
+
+   To test `texdoc' do like this
+       x:/foo> texdoc xcolor.dvi
+
+   `texdoc/xtexdoc' will fail to read files
+
+      [P:\var\dvi]texdoc amstex.bug
+       Don't know how to view file type bug
+       (matching file was e:/usr/share/texmf/doc/amstex/amstex.bug)
+
+      [P:\var\dvi]texdoc amsppt.faq
+      Don't know how to view file type faq
+      (matching file was e:/usr/share/texmf/doc/amstex/amsppt.faq)
+
+     If you'd like to read files with extension like ".faq" and ".bug", 
+     add them to `texdoc/xtexdoc'
+          : ${TEXDOCVIEW_faq="${PAGER-more} %s"}
+          : ${TEXDOCVIEW_bug="${PAGER-more} %s"}
+          extlist='.dvi .dvi.gz .dvi.bz2 .pdf .pdf.gz..... .faq .bug"
+
+updmap: after you modified fontmaps or added new fontmaps, do not 
+    forget to run `updmap'. 
+   
+    I recommend you to check(change) $TEXMF/web2c/updmap.cfg 
+    according to your preference. 
+
+
+texconfig: this depends on terminfo, so if you failed to setup 
+  terminfo, texconfig won't run properly. 
+  texconfig is very useful utility to modify configuration, 
+  make format files, and confirm TeX environments. 
+
+Manpages for teTeX utilities:
+  allcm  allec allneeded dvi2fax dvired e2pall epstopdf fdf2tex fontinst
+  kpsetool kpsewhere makempy mkocp mkofm ofm2opl opl2ofm otp2ocp outocp
+  ovf2ovp ovp2ovf ps2frag pslatex rubibtex rumakeindex texconfig 
+  texdoc texdoctk texexec texfind texfont texshow texutil thumbpdf
+  ttf2afm updmap
+       
+      NOTE: I did not test all utilitis, so if you face any troubles 
+         please inform me. 
+
+
+Important documents               @doc
+===================
+  Read documents in `/usr/share/doc/tetex-3.0'
+   for dviljk, dvipdfm, dvipdfmx, dvipng, makeindexk, mendex
+   ps2pkm, xdvik
+
+
+CTAN.site                         @ctan
+=========
+
+In order to reduce network load, it is recommended that you use the
+Comprehensive TeX Archive Network (CTAN) host which is located in the
+closest network proximity to your site.  Alternatively, you may wish to
+obtain a copy of the CTAN via CD-ROM (see help/CTAN.cdrom for details).
+
+
+   
+Known mirrors of the CTAN reside on (alphabetically, by country):
+  ctan.unsw.edu.au (NSW, Australia)       /tex-archive
+  mirror.aarnet.edu.au (QLD, Australia)   /pub/tex-archive
+  mirror.pacific.net.au (Sydney, Australia) /CTAN
+  ftp.univie.ac.at (Austria)              /packages/tex
+  gd.tuwien.ac.at (Austria)               /publishing/tex/CTAN
+
+  ftp.belnet.be (Belgium)                 /packages/ctan
+
+  ftp.das.ufsc.br (Brazil)                /pub/ctan
+  ftp.linorg.usp.br (Brazil)              /CTAN
+
+  ctan.cms.math.ca (Canada)               /tex-archive
+  ctan.dcc.uchile.cl (Chile)              /pub/lang/ctan/tex-archive
+  ftp.ctex.org (China)                    /CTAN
+  scratchy.emate.ucr.ac.cr (Costa Rica)   /pub/ctan
+  ftp.cstug.cz (The Czech Republic)       /pub/tex/CTAN
+
+  sunsite.dk (Denmark)                    /pub/tex/ctan
+
+  ftp.fu-berlin.de (Germany)              /tex/CTAN
+  ftp.gwdg.de (Germany)                   /pub/dante
+  ftp.mpi-sb.mpg.de (Germany)             /pub/tex/mirror/ftp.dante.de/pub/tex
+  ftp.tu-chemnitz.de (Germany)            /pub/tex
+  ftp.uni-augsburg.de (Germany)           /pub/tex/ctan
+  ftp.uni-bielefeld.de (Germany)          /pub/tex
+  ftp.uni-stuttgart.de (Germany)          /tex-archive (/pub/tex)
+
+  ftp.linux.ee (Estonia)                  /pub/tex-archive
+
+  ftp.funet.fi (Finland)                  /pub/TeX/CTAN
+  ftp.inria.fr (France)                   /pub/TeX/CTAN
+  ftp.jussieu.fr (France)                 /pub/TeX/CTAN
+  ftp.loria.fr (France)                   /pub/ctan
+  ftp.oleane.net (France)                 /pub/mirrors/CTAN/
+  ftp.uvsq.fr (France)                    /pub/TeX/CTAN
+
+  ftp.ntua.gr (Greece)                    /mirror/ctan
+
+  ftp.comp.hkbu.edu.hk (Hong Kong)        /pub/TeX/CTAN
+  ftp.sztaki.hu (Hungary)                 /pub/tex
+
+  mirror.csa.iisc.ernet.in (India)        /tex-archive
+  komo.padinet.com (Indonesia)            /CTAN
+  ftp.heanet.ie (Ireland)                 /pub/ctan/tex
+  cis.uniRoma2.it (Italy)                 /TeX
+
+  ftp.lab.kdd.co.jp (Japan)               /CTAN
+  ftp.meisei-u.ac.jp (Japan)              /pub/CTAN
+  ftp.riken.go.jp (Japan)                 /pub/tex-archive
+  ftp.u-aizu.ac.jp (Japan)                /pub/tex/CTAN
+  sunsite.sut.ac.jp (Japan)               /pub/archives/ctan
+
+  ftp.kreonet.re.kr (Korea)               /pub/CTAN
+  ftp.ktug.or.kr (Korea)                  /tex-archive
+
+  ftp.fciencias.unam.mx (Mexiko)          /pub/tex
+
+  ftp.easynet.nl (The Netherlands)        /mirror/CTAN
+  ftp.ntg.nl (The Netherlands)            /mirror/tex-archive
+  ctan.unik.no (Norway)                   /tex-archive
+
+  elena.aut.ac.nz (New Zealand)           /pub/CTAN
+
+  sunsite.icm.edu.pl (Poland)             /pub/CTAN
+  ftp.di.uminho.pt (Portugal)             /pub/ctan
+  ftp.eq.uc.pt (Portugal)                 /pub/software/TeX
+  ftp.ist.utl.pt (Portugal)               /pub/ctan
+
+  ftp.iasi.roedu.net (Romania)            /pub/mirrors/ftp.ctan.org
+  ftp.chg.ru (Russia)                     /pub/TeX/CTAN
+  tex.ihep.su (Russia) (http only)        /pub/TeX/CTAN
+
+  ftp.nus.edu.sg (Singapore)              /pub/docs/TeX
+  sunsite.uakom.sk (Slovak Republic)      /pub/mirrors/CTAN
+  ftp.sun.ac.za (South Africa)            /CTAN
+  ftp.rediris.es (Spain)                  /mirror/tex-archive
+  ftp.sunsite.kth.se (Sweden)             /pub/tex
+  sunsite.cnlab-switch.ch (Switzerland)   /ftp/mirror/tex
+
+  ctan.cdpa.nsysu.edu.tw (Taiwan)         /CTAN
+  ftp.ccu.edu.tw (Taiwan)                 /pub/tex
+  ftp.nctu.edu.tw (Taiwan)                /pub/tex
+  ftp.kmitl.ac.th (Thailand)              /pub/tex
+  sunsite.bilkent.edu.tr (Turkey)         /pub/tex/ctan
+
+  sunsite.doc.ic.ac.uk (UK)               /package/ctan
+
+  ctan.math.utah.edu (Utah, USA)          /tex-archive
+  ftp.cise.ufl.edu (Florida, USA)         /pub/mirrors/tex-archive
+  ftp.duke.edu (North Carolina, USA)      /pub/tex-archive
+  ftp.rge.com (New York, USA)             /pub/tex
+  ftp.sunsite.utk.edu (Tennessee, USA)    /pub/CTAN
+  ibiblio.org (North Carolina, USA)	  /pub/packages/TeX
+  indian.cse.msu.edu (Michigan, USA)      /pub/mirrors/CTAN
+  mirror.sg.depaul.edu (Illinois, USA)    /pub/TeX/CTAN
+  carroll.aset.psu.edu (Pennsylvania, USA)	/pub/CTAN
+
+Known partial mirrors of the CTAN reside on:
+  ftp.gust.org.pl (Poland)                /pub/TeX
+  sunsite.dsi.unimi.it (Italy)            /pub/TeX
+  ftp.jaist.ac.jp (Japan)                 /pub/TeX/tex-archive
+
+Please send updates to this list to <ctan@dante.de>.
+
+The participating hosts in the Comprehensive TeX Archive Network are:
+  ftp.dante.de  (Hamburg, Germany)         
+       -- anonymous ftp                   /tex-archive (/pub/tex /pub/archive)
+       -- rsync access on rsync://rsync.dante.de/CTAN/
+       -- email via ftpmail@dante.de
+       -- World Wide Web access on http://www.dante.de/
+       -- Administrator: <ftpmaint@dante.de>
+
+  ftp.tex.ac.uk (Cambridge, UK)
+       -- anonymous ftp                   /tex-archive (/pub/tex /pub/archive)
+       -- rsync access on rsync://rsync.tex.ac.uk/CTAN/
+       -- NFS mountable from nfs.tex.ac.uk:/tex-archive
+       -- World Wide Web access on http://www.tex.ac.uk/
+       -- Administrator: <ctan-uk@tex.ac.uk>
+
+  tug.ctan.org (Colchester, Vermont, USA)
+       -- anonymous ftp                   /tex-archive (/pub/archive)
+       -- World Wide Web access on http://www.ctan.org/
+       -- Administrator: <tex@ctan.tug.org>
+
+
+
+/*----- end of document -----------------------------------------------------*/

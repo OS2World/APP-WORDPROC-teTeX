@@ -1,0 +1,91 @@
+This is pTeX, Version 3.1415 p2.1.4 (SJIS) (C version 6.1) (format=tmpeb85b 97.3.16)  3 FEB 1999 22:02
+**locant.ins
+(locant.ins
+pLaTeX2e <1997/02/01>+2 (based on LaTeX2e <1996/12/01> patch level 0)
+(a:/ptex/texmf/tex/latex2e/base\docstrip.tex
+\blockLevel=\count81
+\emptyLines=\count82
+\processedLines=\count83
+\commentsRemoved=\count84
+\commentsPassed=\count85
+\codeLinesPassed=\count86
+\NumberOfFiles=\count87
+\TotalprocessedLines=\count88
+\TotalcommentsRemoved=\count89
+\TotalcommentsPassed=\count90
+\TotalcodeLinesPassed=\count91
+\inFile=\read1
+\inputcheck=\read2
+\off@0=\count92
+\off@1=\count93
+\off@2=\count94
+\off@3=\count95
+\off@4=\count96
+\off@5=\count97
+\off@6=\count98
+\off@7=\count99
+\off@8=\count100
+\off@9=\count101
+\off@10=\count102
+\off@11=\count103
+\off@12=\count104
+\off@13=\count105
+\off@14=\count106
+\off@15=\count107
+\@maxfiles=\count108
+\@maxoutfiles=\count109
+
+Utility: `docstrip' 2.4g <1996/12/13>
+English documentation    <1996/12/13>
+
+**********************************************************
+* This program converts documented macro-files into fast *
+* loadable files by stripping off (nearly) all comments! *
+**********************************************************
+
+******************************************
+* Using Configuration file docstrip.cfg. *
+******************************************
+
+(a:/ptex/texmf/tex/platex2e/9702\docstrip.cfg) (locant.ins
+
+Generating file(s) ./locant.drv 
+
+Processing file locant.dtx (driver) -> locant.drv
+File locant.dtx ended by \endinput.
+Lines  processed: 238
+Comments removed: 151
+Comments  passed: 16
+Codelines passed: 67
+
+File ./locant.sty already exists on the system.
+Overwrite it? [y/n]
+\answer=y
+
+Generating file(s) ./locant.sty 
+
+Processing file locant.dtx (locant) -> locant.sty
+File locant.dtx ended by \endinput.
+Lines  processed: 238
+Comments removed: 151
+Comments  passed: 16
+Codelines passed: 67
+
+)
+Overall statistics:
+Files  processed: 2
+Lines  processed: 476
+Comments removed: 302
+Comments  passed: 32
+Codelines passed: 134
+ ) ) 
+Here is how much of TeX's memory you used:
+ 340 strings out of 10622
+ 3198 string characters out of 125124
+ 54386 words of memory out of 262141
+ 3475 multiletter control sequences out of 9500
+ 7519 words of font info for 31 fonts, out of 100000 for 255
+ 0 hyphenation exceptions out of 607
+ 16i,0n,18p,165b,126s stack positions out of 300i,40n,60p,4096b,4000s
+
+No pages of output.

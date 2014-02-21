@@ -1,0 +1,780 @@
+% \iffalse meta-comment
+%% File: hcycle.dtx
+%
+%  Copyright 1993,1996,1998 by Shinsaku Fujita
+%
+%  This file is part of XyMTeX system.
+%  -------------------------------------
+%
+% This file is a successor to:
+%
+% hcycle.sty
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \typeout{XyMTeX for Drawing Chemical Structural Formulas. Version 1.00}
+% \typeout{       -- Released December 1, 1993 by Shinsaku Fujita}
+% Copyright (C) 1993 by Shinsaku Fujita, all rights reserved.
+%
+% This file is a part of the macro package ``XyMTeX'' which has been 
+% designed for typesetting chemical structural formulas.
+%
+% This file is to be contained in the ``xymtex'' directory which is 
+% an input directory for TeX. It is a LaTeX optional style file and 
+% should be used only within LaTeX, because several macros of the file 
+% are based on LaTeX commands. 
+%
+% For the review of XyMTeX, see
+%  (1)  Shinsaku Fujita, ``Typesetting structural formulas with the text
+%    formatter TeX/LaTeX'', Computers and Chemistry, in press.    
+% The following book deals with an application of TeX/LaTeX to 
+% preparation of manuscripts of chemical fields:
+%  (2)  Shinsaku Fujita, ``LaTeX for Chemists and Biochemists'' 
+%    Tokyo Kagaku Dozin, Tokyo (1993) [in Japanese].  
+%
+% Copying of this file is authorized only if either
+%  (1) you make absolutely no changes to your copy, including name and 
+%     directory name; or
+%  (2) if you do make changes, 
+%     (a) you name it something other than the names included in the 
+%         ``xymtex'' directory and 
+%     (b) you are requested to leave this notice intact.
+% This restriction ensures that all standard styles are identical.
+%
+% Please report any bugs, comments, suggestions, etc. to:
+%   Shinsaku Fujita, 
+%   Ashigara Research Laboratories, Fuji Photo Film Co., Ltd., 
+%   Minami-Ashigara, Kanagawa-ken, 250-01, Japan.
+%
+% New address:
+%   Shinsaku Fujita, 
+%   Department of Chemistry and Materials Technology, 
+%   Kyoto Institute of Technology, \\
+%   Matsugasaki, Sakyoku, Kyoto, 606 Japan
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \def\j@urnalname{hcycle}
+% \def\versi@ndate{December 01, 1993}
+% \def\versi@nno{ver1.00}
+% \def\copyrighth@lder{SF} % Shinsaku Fujita
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \def\j@urnalname{hcycle}
+% \def\versi@ndate{August 16, 1996}
+% \def\versi@nno{ver1.01}
+% \def\copyrighth@lder{SF} % Shinsaku Fujita
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \def\j@urnalname{hcycle}
+% \def\versi@ndate{October 31, 1998}
+% \def\versi@nno{ver1.02}
+% \def\copyrighth@lder{SF} % Shinsaku Fujita
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \fi
+%
+% \CheckSum{740}
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%
+% \setcounter{StandardModuleDepth}{1}
+%
+% \StopEventually{}
+% \MakeShortVerb{\|}
+%
+% \iffalse
+% \changes{v1.01}{1996/06/26}{first edition for LaTeX2e}
+% \changes{v1.02}{1998/10/31}{revised edition for LaTeX2e}
+% \changes{v2.00}{1998/12/25}{enhanced edition for LaTeX2e}
+% \fi
+%
+% \iffalse
+%<*driver>
+\NeedsTeXFormat{pLaTeX2e}
+% \fi
+\ProvidesFile{hcycle.dtx}[1996/12/25 v2.00 XyMTeX{} package file]
+% \iffalse
+\documentclass{ltxdoc}
+\GetFileInfo{hcycle.dtx}
+%
+% %%XyMTeX Logo: Definition 2%%%
+\def\UPSILON{\char'7}
+\def\XyM{X\kern-.30em\smash{%
+\raise.50ex\hbox{\UPSILON}}\kern-.30em{M}}
+\def\XyMTeX{\XyM\kern-.1em\TeX}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Further Hetrocycles by {\sffamily hcycle.sty} 
+(\fileversion) of \XyMTeX{}}
+\author{Shinsaku Fujita \\ 
+Department of Chemistry and Materials Technology, \\
+Kyoto Institute of Technology, \\
+Matsugasaki, Sakyoku, Kyoto, 606 Japan
+% % (old address)
+% % Ashigara Research Laboratories, 
+% % Fuji Photo Film Co., Ltd., \\ 
+% % Minami-Ashigara, Kanagawa, 250-01 Japan
+}
+\date{\filedate}
+%
+\begin{document}
+   \maketitle
+   \DocInput{hcycle.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \section{Introduction}\label{hcycle:intro}
+%
+% \subsection{Options for {\sffamily docstrip}}
+%
+% \DeleteShortVerb{\|}
+% \begin{center}
+% \begin{tabular}{|l|l|}
+% \hline
+% \emph{option} & \emph{function}\\ \hline
+% hcycle & hcycle.sty \\
+% driver & driver for this dtx file \\
+% \hline
+% \end{tabular}
+% \end{center}
+% \MakeShortVerb{\|}
+%
+% \subsection{Version Information}
+%
+%    \begin{macrocode}
+%<*hcycle>
+\typeout{XyMTeX for Drawing Chemical Structural Formulas. Version 2.00}
+\typeout{       -- Released December 25, 1998 by Shinsaku Fujita}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\j@urnalname{hcycle}
+\def\versi@ndate{December 25, 1998}
+\def\versi@nno{ver2.00}
+\def\copyrighth@lder{SF} % Shinsaku Fujita
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\typeout{XyMTeX Macro File `\j@urnalname' (\versi@nno) <\versi@ndate>%
+\space[\copyrighth@lder]}
+%    \end{macrocode}
+%
+% \section{List of commands for hcycle.sty}
+%
+% \begin{verbatim}
+% ********************************
+% * hcycle.sty: list of commands *
+% ********************************
+%
+% <Convention for bond-setting>
+%
+%     \@pyrana
+%     \@pyranb
+%     \@pyranc
+%
+% <Pyranose and Furanose>
+%
+%     \pyranose                 \@pyranose
+%     \furanose                 \@furanose
+%
+% <Adustment as substituents>
+%
+%     \ylpyranoseposition
+%     \ylfuranoseposition
+% \end{verbatim}
+%
+% \section{Input of basic macros}
+%
+% To assure the compatibility to \LaTeX{}2.09 (the native mode), 
+% the commands added by \LaTeXe{} have not been used in the resulting sty 
+% files ({\sf hcycle.sty} for the present case).  Hence, the combination 
+% of |\input| and |\@ifundefined| is used to crossload sty 
+% files ({\sf chemstr.sty} for the present case) in place of the 
+% |\RequirePackage| command of \LaTeXe{}. 
+%
+%    \begin{macrocode}
+% *************************
+% * input of basic macros *
+% *************************
+\@ifundefined{setsixringv}{\input chemstr.sty\relax}{}
+\unitlength=0.1pt
+%    \end{macrocode}
+%
+% \section{Macros for setting substituents}
+% 
+% Macros |\@pyrana| to |\@pyranc| are used to set substituents 
+% on each position of a pyranose and furanose. Note that 
+% comments (conerning locant numbers) on the end of each row have 
+% lost the exact meaning, 
+% since such a command moiety is used in many macros after copying. 
+%
+% \begin{macro}{\@pyrana}
+% \begin{macro}{\@pyranb}
+% \begin{macro}{\@pyranbb}
+% \begin{macro}{\@pyranbB}
+% \begin{macro}{\@pyranc}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% **************************************************
+% * setting substituents for pyranose and furanose *
+% **************************************************
+% %%%%%%%%%%%%%%%
+% % subst. on 1 %
+% %%%%%%%%%%%%%%%
+\def\@pyrana{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=-10
+     \yl@ydiff=30
+           \put(0,0){\line(1,0){120}}% single bond at 1
+           \putratom{130}{-30}{\@memberb}% right type
+    \else\if\@tmpc a%(a) alpha
+     \yl@xdiff=32
+     \yl@ydiff=72
+           \put(0,0){\line(0,-1){118}}% single bond at 1 alpha (down)
+           \putratom{-32}{-190}{\@memberb}% right type
+    \else\if\@tmpc b%(e) beta
+     \yl@xdiff=32
+     \yl@ydiff=-12
+           \put(0,0){\line(0,1){118}}% single bond at 1 beta (up)
+           \putratom{-32}{130}{\@memberb}% right type
+    \else\if\@tmpc A% alpha
+     \yl@xdiff=-10
+     \yl@ydiff=60
+           \put(0,0){\line(1,-1){120}}% single bond at 1
+           \putratom{130}{-180}{\@memberb}% right type
+    \else\if\@tmpc B% beta
+     \yl@xdiff=-10
+     \yl@ydiff=10
+           \put(0,0){\line(1,1){120}}% single bond at 1
+           \putratom{130}{110}{\@memberb}% right type
+    \fi\fi\fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=-10
+     \yl@ydiff=30
+           \put(0,-15){\line(1,0){120}}% double bond at 1
+           \put(0,15){\line(1,0){120}}% double bond at 1
+           \putratom{130}{-30}{\@memberb}% right type
+          \else%
+     \yl@xdiff=-10
+     \yl@ydiff=30
+           \put(0,0){\line(1,0){120}}% single bond at 1
+           \putratom{130}{-30}{\@memberb}% right type
+   \fi\fi}%
+%    \end{macrocode}
+%
+% \changes{v1.02}{1998/10/25}{\cs{@pyranb} is divided into 
+% \cs{@pyranb}, \cs{@pyranbb} and \cs{@pyranbB}}
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%%%%%
+% % subst. on 2,3,5 %
+% %%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%
+% % subst. on 2 %
+% %%%%%%%%%%%%%%%
+\def\@pyranb{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=-10
+     \yl@ydiff=60
+           \put(0,0){\line(1,-1){120}}% single bond at 1
+           \putratom{130}{-180}{\@memberb}% left type
+    \else\if\@tmpc a%(a) alpha
+     \yl@xdiff=32
+     \yl@ydiff=72
+           \put(0,0){\line(0,-1){118}}% single bond alpha (down)
+           \putlratom{-32}{-190}{\@memberb}% left & right type
+    \else\if\@tmpc b%(b) beta
+     \yl@xdiff=32
+     \yl@ydiff=-12
+           \put(0,0){\line(0,1){118}}% single bond beta (up)
+           \putlratom{-32}{130}{\@memberb}% left & right type
+    \fi\fi\fi%\fi\fi%
+   \else \if\@tmpb D%double bond: Added by SF 1998/10/25
+     \yl@xdiff=-10
+     \yl@ydiff=60
+           \put(-15,-15){\line(1,-1){120}}% double bond at 1
+           \put(0,15){\line(1,-1){120}}% double bond at 1
+           \putratom{130}{-180}{\@memberb}% right type
+          \else%
+     \yl@xdiff=-10
+     \yl@ydiff=10
+           \put(0,0){\line(1,1){120}}% single bond at 1
+           \putratom{130}{110}{\@memberb}% left type
+\fi\fi}%
+%    \end{macrocode}
+%
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 3 %
+% %%%%%%%%%%%%%%%
+\def\@pyranbb{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=-10
+     \yl@ydiff=60
+           \put(0,0){\line(1,-1){120}}% single bond at 1
+           \putratom{130}{-180}{\@memberb}% left type
+    \else\if\@tmpc a%(a) alpha
+     \yl@xdiff=32
+     \yl@ydiff=72
+           \put(0,0){\line(0,-1){118}}% single bond alpha (down)
+           \putlratom{-32}{-190}{\@memberb}% left & right type
+    \else\if\@tmpc b%(b) beta
+     \yl@xdiff=32
+     \yl@ydiff=-12
+           \put(0,0){\line(0,1){118}}% single bond beta (up)
+           \putlratom{-32}{130}{\@memberb}% left & right type
+    \fi\fi\fi%\fi\fi%
+   \else \if\@tmpb D%double bond: Added by SF 1998/10/25
+     \yl@xdiff=20
+     \yl@ydiff=60
+           \put(15,-15){\line(-1,-1){120}}% double bond at 1
+           \put(0,15){\line(-1,-1){120}}% double bond at 1
+           \putlatom{-130}{-180}{\@memberb}%left type
+          \else%
+     \yl@xdiff=10
+     \yl@ydiff=60
+           \put(0,0){\line(-1,-1){120}}% single bond at 1
+           \putlatom{-130}{-180}{\@memberb}% left type
+\fi\fi}%
+%    \end{macrocode}
+%
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 5 %
+% %%%%%%%%%%%%%%%
+\def\@pyranbB{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=-10
+     \yl@ydiff=60
+           \put(0,0){\line(1,-1){120}}% single bond at 5
+           \putratom{130}{-180}{\@memberb}% left type
+    \else\if\@tmpc a%(a) alpha
+     \yl@xdiff=32
+     \yl@ydiff=72
+           \put(0,0){\line(0,-1){118}}% single bond alpha (down)
+           \putlratom{-32}{-190}{\@memberb}% left & right type
+    \else\if\@tmpc b%(b) beta
+     \yl@xdiff=32
+     \yl@ydiff=-12
+           \put(0,0){\line(0,1){118}}% single bond beta (up)
+           \putlratom{-32}{130}{\@memberb}% left & right type
+    \fi\fi\fi%\fi\fi%
+   \else \if\@tmpb D%double bond: Added by SF 1998/10/25
+     \yl@xdiff=0
+     \yl@ydiff=-20
+           \put(15,15){\line(-1,1){120}}% double bond at 5
+           \put(0,-15){\line(-1,1){120}}% double bond at 5
+           \putlatom{-120}{140}{\@memberb}%left type
+          \else%
+     \yl@xdiff=10
+     \yl@ydiff=-20
+           \put(0,0){\line(-1,1){120}}% single bond at 1
+           \putlatom{-130}{140}{\@memberb}% left type
+\fi\fi}%
+%    \end{macrocode}
+%
+% \changes{v1.02}{1998/10/31}{Adding \cs{yl@xdiff} and \cs{yl@ydiff}}
+%    \begin{macrocode}
+% %%%%%%%%%%%%%%%
+% % subst. on 4 %
+% %%%%%%%%%%%%%%%
+\def\@pyranc{%
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(0,0){\line(-1,0){120}}% single bond at 4
+           \putlatom{-130}{-30}{\@memberb}% left type
+    \else\if\@tmpc a%(a) alpha
+     \yl@xdiff=-32
+     \yl@ydiff=72
+           \put(0,0){\line(0,-1){118}}% single bond at 4 alpha (down)
+           \putlatom{32}{-190}{\@memberb}% left type
+    \else\if\@tmpc b%(e) beta
+     \yl@xdiff=-32
+     \yl@ydiff=-12
+           \put(0,0){\line(0,1){118}}% single bond at 4 beta (up)
+           \putlatom{32}{130}{\@memberb}% left type
+    \else\if\@tmpc A% alpha
+     \yl@xdiff=10
+     \yl@ydiff=60
+           \put(0,0){\line(-1,-1){120}}% single bond at 4
+           \putlatom{-130}{-180}{\@memberb}% left type
+    \else\if\@tmpc B% beta
+     \yl@xdiff=10
+     \yl@ydiff=10
+           \put(0,0){\line(-1,1){120}}% single bond at 4
+           \putlatom{-130}{110}{\@memberb}% left type
+    \fi\fi\fi\fi\fi%
+   \else \if\@tmpb D%double bond
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(0,-15){\line(-1,0){120}}% double bond at 4
+           \put(0,15){\line(-1,0){120}}% double bond at 4
+           \putlatom{-130}{-30}{\@memberb}% left type
+          \else%
+     \yl@xdiff=10
+     \yl@ydiff=30
+           \put(0,0){\line(-1,0){120}}% single bond at 4
+           \putlatom{-130}{-30}{\@memberb}% left type
+   \fi\fi}%
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \section{Pyranose derivatives}
+%
+% The standard skeleton of pyranose is selected 
+% to have the following locant numbers. 
+%
+% \begin{verbatim}
+% ***********************
+% * pyranose derivative *
+% ***********************
+%
+% The following numbering is adopted in this macro. 
+%
+%                                5  e  6
+%                                 ----O
+%                             d *       * f
+%   the original point ===> 4 *           * 1
+%          (0,0)                *       * a
+%                             c   -----
+%                                3  b   2
+% \end{verbatim}
+%
+% The macro |\pyranose| has an argument |SUBSLIST| as well as an optional 
+% argument |BONDLIST|.  
+% \begin{verbatim}
+%
+%   \pyranose[BONDLIST]{SUBSLIST}          
+%
+% \end{verbatim}
+%
+% The |BONDLIST| argument contains one or more 
+% characters selected from a to f, each of which indicates the presence of 
+% an inner (endcyclic) double bond on the corresponding position. 
+% \begin{verbatim}
+%
+%     BONDLIST = 
+%
+%           none       :  mother skeleton
+%           a          :  1,2-double bond
+%           b          :  2,3-double bond
+%           c          :  4,3-double bond
+%           d          :  4,5-double bond
+%           e          :  5,6-double bond
+%           f          :  6,1-double bond
+%
+% \end{verbatim}
+%
+% The |SUBSLIST| argument contains one or more substitution descriptors 
+% which are separated from each other by a semicolon.  Each substitution 
+% descriptor has a locant number with a bond modifier and a substituent, 
+% where these are separated with a double equality symbol. 
+% \begin{verbatim}
+%
+%     SUBSLIST: list of substituents (max 5 substitution positions)
+%
+%       for n = 1 to 5 
+%
+%           nD         :  exocyclic double bond at n-atom
+%           n or nS    :  exocyclic single bond at n-atom
+%           nSA        :  single bond (down) at n-atom (for n=1)
+%           nSB        :  single bond (up) at n-atom (for n=1)
+%           nSa        :  alpha single bond at n-atom
+%           nSb        :  beta single bond at n-atom
+%
+% \end{verbatim}
+%
+% Several examples are shown as follows.
+% \begin{verbatim}
+%       e.g. 
+%        
+%        \pyranose{1Sb==Cl;2Sa==F}
+%        \pyranose{1Sb==Cl;4Sa==F;2Sa==CH$_{3}$}
+%        \pyranose[a]{3Sb==OAc;4Sb==\lmoiety{MeO};5Sb==CH$_{2}$OAc}
+% \end{verbatim}
+%
+% The definition of |\@pyranose| uses a picture environment, in which 
+% bonds are put directly, while subsituents are typset by using 
+% the macros |\@pyrana| to |\@pyranc| described above.  
+% \changes{v1.02}{1998/10/31}{Adding \cs{ylpyranoseposition}, \cs{if@ylsw},
+% \cs{yl@shifti}, \cs{@ylii}, \cs{yl@shiftii}, \cs{@ylii}, 
+% \cs{yl@xdiff} and \cs{yl@ydiff}}
+%
+% \begin{macro}{\pyranose}
+% \begin{macro}{\@pyranose}
+%    \begin{macrocode}
+\def\pyranose{\@ifnextchar[{\@pyranose}{\@pyranose[r]}}
+\def\@pyranose[#1]#2{%
+\@reset@ylsw%
+\ylpyranoseposition{#2}%
+\def\@@ylii{0}\def\@@yli{0}%
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+ \begin{picture}(880,800)(-240,-400)
+  \iforigpt \put(-240,-400){\circle*{50}}%
+           \put(0,0){\circle{50}}% 
+   \typeout{command `pyranose' origin: (0,0) ---> (240,400)}
+  \fi%
+\fi
+  \put(0,0){\line(3,5){120}}%           %bond 4-5
+  \put(120,200){\line(1,0){252}}%       %bond 5-6
+  \put(532,0){\line(-3,5){96}}%         %bond 1-6
+ {\thicklines%
+  \put(0,0){\line(3,-5){120}}%          %bond 4-3
+  \put(412,-200){\line(3,5){120}}%      %bond 2-1
+  \put(120,-200){\line(1,0){292}}}%     %bond 3-2
+  \putratom{382}{160}{O}% left type
+  %
+\@tfor\member:=#1\do{%
+\if\member r%no endcyclic double bonds
+\else \if\member a%
+  \put(400,-150){\line(3,5){90}}%       %double bond 2-1
+\else \if\member b%
+  \put(150,-160){\line(1,0){232}}%      %double bond 3-2
+\else \if\member c%
+  \put(50,-12){\line(3,-5){90}}%        %double bond 4-3
+\else \if\member d%
+  \put(50,12){\line(3,5){90}}%          %double bond 4-5
+\else \if\member e%
+  \put(150,160){\line(1,0){232}}%       %double bond 5-6
+\else \if\member f%
+  \put(482,12){\line(-3,5){70}}%        %double bond 1-6
+\fi\fi\fi\fi\fi\fi\fi}%
+%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa%0 omit
+ \or \put(532,0){\@pyrana}% subst. on 1
+ \or \put(412,-200){\@pyranb}% subst. on 2
+ \or \put(120,-200){\@pyranbb}% subst. on 3
+ \or \put(0,0){\@pyranc}% subst. on 4
+ \or \put(120,200){\@pyranbB}% subst. on 5
+\fi %end of ifcase
+\fi\fi%
+}\end{picture}}%               %end of \pyranose macro
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% The command |\ylpyranoseposition| is to obtain the shift values 
+% |\@ylii| and |\@yli| which are used for shifting the standard 
+% point of a substituent. 
+% \changes{v1.02}{1998/10/25}{New commands for setting substituents}
+%
+% \begin{macro}{\ylpyranoseposition}
+%    \begin{macrocode}
+\def\ylpyranoseposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa%0 omit
+ \or\gdef\@ylii{-532}\gdef\@yli{0}\global\@ylswtrue% subst. on 1
+ \or\gdef\@ylii{-412}\gdef\@yli{200}\global\@ylswtrue% subst. on 2
+ \or\gdef\@ylii{-120}\gdef\@yli{200}\global\@ylswtrue% subst. on 3
+ \or\gdef\@ylii{0}\gdef\@yli{0}\global\@ylswtrue% subst. on 4
+ \or\gdef\@ylii{-120}\gdef\@yli{-200}\global\@ylswtrue% subst. on 5
+\fi%end of ifcase
+\fi\fi\fi}}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \section{Furanose derivatives}
+%
+% The standard skeleton of furanose is selected 
+% to have the following locant numbers. 
+%
+% \begin{verbatim}
+% ***********************
+% * furanose derivative *
+% ***********************
+%
+% The following numbering is adopted in this macro. 
+%
+%                                   5
+%                                   O
+%                             d  *     * e
+%   the original point ===> 4 *           * 1
+%          (0,0)                *       * a
+%                             c   -----
+%                                3  b   2
+%
+% \end{verbatim}
+%
+% The macro |\furanose| has an argument |SUBSLIST| as well as an optional 
+% argument |BONDLIST|.  
+% \begin{verbatim}
+%   \furanose[BONDLIST]{SUBSLIST}          
+% \end{verbatim}
+%
+% The |BONDLIST| argument contains one or more 
+% characters selected from a to e, each of which indicates the presence of 
+% an inner (endcyclic) double bond on the corresponding position. 
+% \begin{verbatim}
+%     BONDLIST = 
+%
+%           none       :  mother skeleton
+%           a          :  1,2-double bond
+%           b          :  2,3-double bond
+%           c          :  4,3-double bond
+%           d          :  4,5-double bond
+%           e          :  5,6-double bond
+% \end{verbatim}
+%
+% The |SUBSLIST| argument contains one or more substitution descriptors 
+% which are separated from each other by a semicolon.  Each substitution 
+% descriptor has a locant number with a bond modifier and a substituent, 
+% where these are separated with a double equality symbol. 
+% \begin{verbatim}
+%     SUBSLIST: list of substituents (max 4 substitution positions)
+%
+%       for n = 1 to 4
+%
+%           nD         :  exocyclic double bond at n-atom
+%           n or nS    :  exocyclic single bond at n-atom
+%           nSA        :  single bond (down) at n-atom (for n=1)
+%           nSB        :  single bond (up) at n-atom (for n=1)
+%           nSa        :  alpha single bond at n-atom
+%           nSb        :  beta single bond at n-atom
+%\end{verbatim}
+%
+% Several examples are shown as follows.
+% \begin{verbatim}
+%       e.g. 
+%        
+%        \furanose{1Sa==Cl;2Sb==F}
+%
+% \end{verbatim}
+%
+% The definition of |\@furanose| uses a picture environment, in which 
+% bonds are put directly, while subsituents are typset by using 
+% the macros |\@pyrana| to |\@pyranc| described above.  
+% \changes{v1.02}{1998/10/31}{Adding \cs{ylfuranoseposition}, \cs{if@ylsw},
+% \cs{yl@shifti}, \cs{@ylii}, \cs{yl@shiftii}, \cs{@ylii}, 
+% \cs{yl@xdiff} and \cs{yl@ydiff}}
+%
+% \begin{macro}{\furanose}
+% \begin{macro}{\@furanose}
+%    \begin{macrocode}
+\def\furanose{\@ifnextchar[{\@furanose}{\@furanose[r]}}
+\def\@furanose[#1]#2{%
+\@reset@ylsw%
+\ylfuranoseposition{#2}%
+\def\@@ylii{0}\def\@@yli{0}%
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+ \begin{picture}(880,800)(-240,-400)
+  \iforigpt \put(-240,-400){\circle*{50}}%
+           \put(0,0){\circle{50}}% 
+   \typeout{command `furanose' origin: (0,0) ---> (240,400)}
+\fi
+  \fi%
+   \put(0,0){\line(5,3){236}}%          %bond 4-5
+   \put(532,0){\line(-5,3){236}}%       %bond 1-5
+ {\thicklines%
+  \put(0,0){\line(3,-5){120}}%          %bond 4-3
+  \put(412,-200){\line(3,5){120}}%      %bond 2-1
+  \put(120,-200){\line(1,0){292}}}%     %bond 3-2
+  \putratom{236}{130}{O}% left type
+%
+\@tfor\member:=#1\do{%
+\if\member r%no endcyclic double bonds
+\else \if\member a%
+  \put(400,-150){\line(3,5){80}}%       %double bond 2-1
+\else \if\member b%
+  \put(150,-160){\line(1,0){232}}%      %double bond 3-2
+\else \if\member c%
+  \put(50,-12){\line(3,-5){80}}%        %double bond 4-3
+\else \if\member d%
+  \put(50,0){\line(5,3){180}}%          %double bond 4-5
+\else \if\member e%
+  \put(482,0){\line(-5,3){180}}%        %double bond 1-5
+\fi\fi\fi\fi\fi\fi}%
+%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\ifx\@memberb\@yl\else
+\ifcase\@tmpa%0 omit
+ \or \put(532,0){\@pyrana}% subst. on 1
+ \or \put(412,-200){\@pyranb}% subst. on 2
+ \or \put(120,-200){\@pyranbb}% subst. on 3
+ \or \put(0,0){\@pyranc}% subst. on 4
+\fi%end of ifcase
+\fi\fi%
+}\end{picture}}%               %end of \furanose macro
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% The command |\ylfuranoseposition| is to obtain the shift values 
+% |\@ylii| and |\@yli| which are used for shifting the standard 
+% point of a substituent. 
+% \changes{v1.02}{1998/10/23}{New commands for setting substituents}
+%
+% \begin{macro}{\ylfuranoseposition}
+%    \begin{macrocode}
+\def\ylfuranoseposition#1{%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#1\do{%
+\if@@ylsw\else
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax
+\expandafter\threech@r\@membera{}{}\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpa%0 omit
+ \or\gdef\@ylii{-532}\gdef\@yli{0}\global\@ylswtrue% subst. on 1
+ \or\gdef\@ylii{-412}\gdef\@yli{200}\global\@ylswtrue% subst. on 2
+ \or\gdef\@ylii{-120}\gdef\@yli{200}\global\@ylswtrue% subst. on 3
+ \or\gdef\@ylii{0}\gdef\@yli{0}\global\@ylswtrue% subst. on 4
+\fi%end of ifcase
+\fi\fi\fi}}%
+%</hcycle>
+%    \end{macrocode}
+% \end{macro}
+%
+% \Finale
+%
+\endinput
+

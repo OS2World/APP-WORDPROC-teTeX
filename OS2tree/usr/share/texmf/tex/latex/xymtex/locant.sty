@@ -1,0 +1,107 @@
+%%
+%% This is file `locant.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% locant.dtx  (with options: `locant')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 1996 by Shinsaku Fujita
+%% 
+%% This file is part of the XyMTeX system.
+%% =======================================
+%% 
+%% Released on August 16, 1996
+%% 
+%% Copyright (C) 1996 by Shinsaku Fujita, all rights reserved.
+%% This style file is created for drawing chemical structural formulas
+%% This style file is to be contained in the ``xymtex'' directory which
+%% is an input directory for TeX.
+%% 
+%% Copying of this file is authorized only if either
+%% 
+%%  (1) you make absolutely no changes to your copy, including name and
+%%      directory name
+%%  (2) if you do make changes,
+%%      (a) you name it something other than the names included in the
+%%          ``xymtex'' directory and
+%%      (b) you acknowledge the original name.
+%%  This restriction ensures that all standard styles are identical.
+%% 
+%% =======================================
+%% 
+%% This file contains several codes modified from latex.tex (LaTeX2.09)
+%% and from latex.ltx (a LaTeX2e), the reused parts of which are subject to
+%% Copyright 1994 the LaTeX3 project and the individual authors (For further
+%% copyright information see the file legal.txt of the LaTeX2e standard
+%% distribution, and any other copyright indicated in this file.)
+%% 
+%% File: locant.dtx
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+\typeout{XyMTeX for Drawing Chemical Structural Formulas. Version 1.01}
+\typeout{       -- Released August 16, 1996 by Shinsaku Fujita}
+\def\j@urnalname{locant}
+\def\versi@ndate{August 16, 1996}
+\def\versi@nno{ver1.01}
+\def\copyrighth@lder{SF} % Shinsaku Fujita
+\typeout{XyMTeX Macro File `\j@urnalname' (\versi@nno) <\versi@ndate>%
+\space[\copyrighth@lder]}
+\def\bdloocant#1#2#3#4#5#6{%
+\begin{picture}(800,880)(-\shiftii,-\shifti)
+\putratom{90}{360}{#1}%
+\putratom{200}{180}{#2}%
+\putratom{90}{-20}{#3}%
+\putlatom{-90}{360}{#6}%
+\putlatom{-200}{180}{#5}%
+\putlatom{-90}{-20}{#4}%
+\end{picture}}%
+\def\bdlocant{\bdloocant{a}{b}{c}{d}{e}{f}}
+\def\sxloocant#1#2#3#4#5#6{%
+\begin{picture}(800,880)(-\shiftii,-\shifti)%
+\putratom{-10}{340}{\scriptsize #1}%
+\putlatom{150}{260}{\scriptsize #2}%
+\putlatom{150}{110}{\scriptsize #3}%
+\putratom{-10}{40}{\scriptsize #4}%
+\putratom{-150}{110}{\scriptsize #5}%
+\putratom{-150}{260}{\scriptsize #6}%
+\end{picture}}%
+\def\sxlocant{\sxloocant{1}{2}{3}{4}{5}{6}}
+\def\bdloocnth#1#2#3#4#5#6{%
+\begin{picture}(880,800)(-\shifti,-\shiftii)%
+\putlatom{10}{80}{#1}%
+\putratom{180}{210}{#2}%
+\putratom{380}{80}{#3}%
+\putratom{380}{-120}{#4}%
+\putratom{180}{-260}{#5}%
+\putlatom{10}{-120}{#6}%
+\end{picture}}%
+\def\bdlocnth{\bdloocnth{a}{b}{c}{d}{e}{f}}
+\def\sxloocnth#1#2#3#4#5#6{%
+\begin{picture}(880,800)(-\shifti,-\shiftii)%
+\putratom{40}{-20}{\scriptsize #1}%
+\putratom{110}{100}{\scriptsize #2}%
+\putlatom{290}{100}{\scriptsize #3}%
+\putlatom{380}{-20}{\scriptsize #4}%
+\putratom{110}{-140}{\scriptsize #6}%
+\putlatom{290}{-140}{\scriptsize #5}%
+\end{picture}}%
+\def\sxlocnth{\sxloocnth{1}{2}{3}{4}{5}{6}}
+\endinput
+%%
+%% End of file `locant.sty'.

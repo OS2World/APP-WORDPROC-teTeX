@@ -1,0 +1,3628 @@
+diff -PurB -X x-os2unix.dat tetex-src-3.0/configure tetex-src-3.0-os2/configure
+--- tetex-src-3.0/configure	Wed Feb  1 00:29:36 2006
++++ tetex-src-3.0-os2/configure	Sun Mar  6 03:33:00 2005
+@@ -4311,7 +4311,7 @@
+ s%\]%\\&%g
+ s%\$%$$%g
+ EOF
+-DEFS=`sed -f conftest.defs confdefs.h | tr '\012\015' '  '|tr -d '\r' `
++DEFS=`sed -f conftest.defs confdefs.h | tr '\012\015' '  '|tr -d '\r' |tr -d '\r' `
+ rm -f conftest.defs
+ 
+ 
+diff -PurB -X x-os2unix.dat tetex-src-3.0/libs/configure tetex-src-3.0-os2/libs/configure
+--- tetex-src-3.0/libs/configure	Wed Feb  1 00:29:36 2006
++++ tetex-src-3.0-os2/libs/configure	Sun Mar  6 03:32:58 2005
+@@ -2472,7 +2472,7 @@
+ s%\]%\\&%g
+ s%\$%$$%g
+ EOF
+-DEFS=`sed -f conftest.defs confdefs.h | tr '\012\015' '  '|tr -d '\r' `
++DEFS=`sed -f conftest.defs confdefs.h | tr '\012\015' '  '|tr -d '\r' |tr -d '\r' `
+ rm -f conftest.defs
+ 
+ 
+diff -PurB -X x-os2unix.dat tetex-src-3.0/libs/xpdf/fofi/Makefile tetex-src-3.0-os2/libs/xpdf/fofi/Makefile
+--- tetex-src-3.0/libs/xpdf/fofi/Makefile	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/libs/xpdf/fofi/Makefile	Sun Jun 12 00:12:14 2005
+@@ -0,0 +1,96 @@
++# Generated automatically from Makefile.in by configure.
++#---------------------------------------------------------------
++#  OS/2 - emx/gcc basic definitions
++#  You may change "lib = lib " and "obj = obj" lines. 
++lib = a
++obj = o
++ifeq ($(omf),on)
++	lib = lib
++	obj = obj
++	AR  = emxomfar
++%.lib: %.a
++	emxomf $<
++endif
++#---------------------------------------------------------------
++#========================================================================
++#
++# fofi library Makefile
++#
++# Copyright 1996 Derek B. Noonburg
++#
++#========================================================================
++
++srcdir = /SRC/tetex-src-3.0-os2/libs/xpdf/fofi
++VPATH = /SRC/tetex-src-3.0-os2/libs/xpdf/fofi
++
++kpathsea_include_dir = -I../../../texk -I$(srcdir)/../../../texk
++ALLCXXFLAGS = $(CXXFLAGS) -DHAVE_CONFIG_H -I.. -I$(srcdir)/.. -I../goo -I$(srcdir)/../goo -I. -I$(srcdir) $(kpathsea_include_dir)
++CXXFLAGS = -D__EMX__ -DOS2 -Zmtd -D__ST_MT_ERRNO__ -O2 -funsigned-char
++CC = gcc
++EXEEXT=@EXEEXT@
++OBJEXT=@OBJEXT@
++ifeq ($(OBJEXT),obj)
++	CC += -Zomf
++else
++ifeq ($(obj),obj)
++	CC += -Zomf
++endif
++endif
++
++CXX = gcc
++ifeq ($(OBJEXT),obj)
++	CXX += -Zomf
++else
++ifeq ($(obj),obj)
++	CXX += -Zomf
++endif
++endif
++
++CFLAGS =  -D__EMX__ -DOS2 -Zmtd -D__ST_MT_ERRNO__  -O2 -funsigned-char
++
++# library.mk -- stuff only useful for libraries.
++AR = ar
++ARFLAGS = rc
++RANLIB = echo
++# End of library.mk.
++
++
++#------------------------------------------------------------------------
++
++.SUFFIXES:
++.SUFFIXES: .cc .c .$(obj)
++
++.cc.$(obj):
++	$(CXX) $(ALLCXXFLAGS) -c $<
++
++FOFI_OBJS = FoFiBase.$(obj) FoFiEncodings.$(obj) FoFiTrueType.$(obj) FoFiType1.$(obj) FoFiType1C.$(obj)
++
++libfofi.$(lib): $(FOFI_OBJS)
++	rm -f $@
++	$(AR) $(ARFLAGS) $@ $(FOFI_OBJS)
++	$(RANLIB) $@
++
++#------------------------------------------------------------------------
++
++mostlyclean clean:
++	rm -f $(FOFI_OBJS) libfofi.$(lib)
++	rm -f Makefile.bak
++
++distclean maintainer-clean extraclean: clean
++	rm -f Makefile
++
++#------------------------------------------------------------------------
++
++depend:
++	($(CXX) $(ALLCXXFLAGS) -MM $(srcdir)/*.cc; \
++	 $(CC) $(ALLCFLAGS) -MM $(srcdir)/*.c) \
++	   | sed 's|$(srcdir)|$$(srcdir)|' > $(srcdir)/depend.mk
++
++$(srcdir)/FoFiBase.o: FoFiBase.cc ../goo/gmem.h FoFiBase.h ../goo/gtypes.h
++$(srcdir)/FoFiEncodings.o: FoFiEncodings.cc FoFiEncodings.h ../goo/gtypes.h
++$(srcdir)/FoFiTrueType.o: FoFiTrueType.cc ../goo/gtypes.h ../goo/gmem.h \
++ ../goo/GString.h ../goo/GHash.h FoFiTrueType.h FoFiBase.h
++$(srcdir)/FoFiType1.o: FoFiType1.cc ../goo/gmem.h FoFiEncodings.h \
++ ../goo/gtypes.h FoFiType1.h FoFiBase.h
++$(srcdir)/FoFiType1C.o: FoFiType1C.cc ../goo/gmem.h ../goo/GString.h \
++ FoFiEncodings.h ../goo/gtypes.h FoFiType1C.h FoFiBase.h
+diff -PurB -X x-os2unix.dat tetex-src-3.0/libs/xpdf/goo/Makefile tetex-src-3.0-os2/libs/xpdf/goo/Makefile
+--- tetex-src-3.0/libs/xpdf/goo/Makefile	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/libs/xpdf/goo/Makefile	Sun Jun 12 00:12:12 2005
+@@ -0,0 +1,115 @@
++# Generated automatically from Makefile.in by configure.
++#---------------------------------------------------------------
++#  OS/2 - emx/gcc basic definitions
++#  You may change "lib = lib " and "obj = obj" lines. 
++lib = a
++obj = o
++ifeq ($(omf),on)
++	lib = lib
++	obj = obj
++	AR  = emxomfar
++%.lib: %.a
++	emxomf $<
++endif
++#---------------------------------------------------------------
++#========================================================================
++#
++# Goo library Makefile
++#
++# Copyright 1996 Derek B. Noonburg
++#
++#========================================================================
++
++srcdir = /SRC/tetex-src-3.0-os2/libs/xpdf/goo
++VPATH = /SRC/tetex-src-3.0-os2/libs/xpdf/goo
++
++kpathsea_include_dir = -I../../../texk -I$(srcdir)/../../../texk
++ALLCFLAGS = $(CFLAGS) -DHAVE_CONFIG_H -I.. -I$(srcdir)/.. -I. -I$(srcdir) $(kpathsea_include_dir)
++ALLCXXFLAGS = $(CXXFLAGS) -DHAVE_CONFIG_H -I.. -I$(srcdir)/.. -I. -I$(srcdir) $(kpathsea_include_dir)
++CXXFLAGS = -D__EMX__ -DOS2 -Zmtd -D__ST_MT_ERRNO__ -O2 -funsigned-char
++CC = gcc
++EXEEXT=@EXEEXT@
++OBJEXT=@OBJEXT@
++ifeq ($(OBJEXT),obj)
++	CC += -Zomf
++else
++ifeq ($(obj),obj)
++	CC += -Zomf
++endif
++endif
++
++CXX = gcc
++ifeq ($(OBJEXT),obj)
++	CXX += -Zomf
++else
++ifeq ($(obj),obj)
++	CXX += -Zomf
++endif
++endif
++
++CFLAGS =  -D__EMX__ -DOS2 -Zmtd -D__ST_MT_ERRNO__  -O2 -funsigned-char
++
++# library.mk -- stuff only useful for libraries.
++AR = ar
++ARFLAGS = rc
++RANLIB = echo
++# End of library.mk.
++
++
++#------------------------------------------------------------------------
++
++.SUFFIXES:
++.SUFFIXES: .cc .c .$(obj)
++
++.cc.$(obj):
++	$(CXX) $(ALLCXXFLAGS) -c $<
++%.$(obj): %.c
++	$(CC) $(ALLCFLAGS) -c $<
++
++#------------------------------------------------------------------------
++
++CXX_SRC = \
++	$(srcdir)/GHash.cc \
++	$(srcdir)/GList.cc \
++	$(srcdir)/GString.cc \
++	$(srcdir)/gmempp.cc \
++	$(srcdir)/gfile.cc
++
++C_SRC = \
++	$(srcdir)/gmem.c \
++	$(srcdir)/parseargs.c
++
++#------------------------------------------------------------------------
++
++GOO_CXX_OBJS = GHash.$(obj) GList.$(obj) GString.$(obj) gmempp.$(obj) gfile.$(obj)
++GOO_C_OBJS = gmem.$(obj) parseargs.$(obj)
++GOO_OBJS = $(GOO_CXX_OBJS) $(GOO_C_OBJS)
++
++libGoo.$(lib): $(GOO_OBJS)
++	rm -f $@
++	$(AR) $(ARFLAGS) $@ $(GOO_OBJS)
++	$(RANLIB) $@
++
++#------------------------------------------------------------------------
++
++mostlyclean clean:
++	rm -f $(GOO_OBJS) libGoo.$(lib)
++	rm -f Makefile.bak
++
++distclean maintainer-clean extraclean: clean
++	rm -f Makefile
++
++#------------------------------------------------------------------------
++
++depend:
++	($(CXX) $(ALLCXXFLAGS) -MM $(srcdir)/*.cc; \
++	 $(CC) $(ALLCFLAGS) -MM $(srcdir)/*.c) \
++	   | sed 's|$(srcdir)|$$(srcdir)|' > $(srcdir)/depend.mk
++
++$(srcdir)/Hash.o: GHash.cc gmem.h GString.h GHash.h gtypes.h
++$(srcdir)/List.o: GList.cc gmem.h GList.h gtypes.h
++$(srcdir)/String.o: GString.cc gtypes.h GString.h
++$(srcdir)/file.o: gfile.cc GString.h gfile.h gtypes.h
++$(srcdir)/mempp.o: gmempp.cc gmem.h
++$(srcdir)/mem.o: gmem.c gmem.h
++$(srcdir)/arseargs.o: parseargs.c parseargs.h gtypes.h
+diff -PurB -X x-os2unix.dat tetex-src-3.0/libs/xpdf/xpdf/Makefile tetex-src-3.0-os2/libs/xpdf/xpdf/Makefile
+--- tetex-src-3.0/libs/xpdf/xpdf/Makefile	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/libs/xpdf/xpdf/Makefile	Sun Jun 12 00:12:10 2005
+@@ -0,0 +1,154 @@
++# Generated automatically from Makefile.in by configure.
++#========================================================================
++#
++# Xpdf Makefile
++#
++# Copyright 1996 Derek B. Noonburg
++#
++# Heavily modified for pdftex by Thomas Esser, 1998, 1999
++#
++# $Id: //depot/Build/source.development/TeX/libs/xpdf/xpdf/Makefile.in#25 $
++#========================================================================
++
++VPATH = /SRC/tetex-src-3.0-os2/libs/xpdf/xpdf
++srcdir = /SRC/tetex-src-3.0-os2/libs/xpdf/xpdf
++
++goodir = $(srcdir)/../goo
++fofidir=$(srcdir)/../fofi
++
++CXXFLAGS = -D__EMX__ -DOS2 -Zmtd -D__ST_MT_ERRNO__ -O2 -funsigned-char
++CXX = gcc
++ALLCXXFLAGS = $(CXXFLAGS) -DHAVE_CONFIG_H $(XCFLAGS) -I.. -I$(srcdir)/.. -I$(goodir) -I$(fofidir) -I. -I$(srcdir) \
++	-DPDF_PARSER_ONLY
++
++# library.mk -- stuff only useful for libraries.
++AR = ar
++ARFLAGS = rc
++RANLIB = echo
++# End of library.mk.
++
++.SUFFIXES:
++.SUFFIXES: .cc .o
++.cc.o:
++	$(CXX) $(ALLCXXFLAGS) -c $<
++
++#------------------------------------------------------------------------
++
++PDFTOEPDF_OBJS = \
++	Array.o BuiltinFont.o BuiltinFontTables.o CMap.o \
++	Catalog.o CharCodeToUnicode.o Decrypt.o Dict.o Error.o \
++	FontEncodingTables.o Gfx.o GfxFont.o GfxState.o \
++	GlobalParams.o JArithmeticDecoder.o JBIG2Stream.o JPXStream.o Lexer.o Link.o \
++	NameToCharCode.o Object.o OutputDev.o Outline.o PDFDoc.o Page.o \
++	Parser.o PDFDocEncoding.o Stream.o UnicodeMap.o XRef.o Function.o \
++	PSTokenizer.o
++
++libxpdf.a: $(PDFTOEPDF_OBJS)
++	rm -f $@
++	$(AR) $(ARFLAGS) $@ $(PDFTOEPDF_OBJS)
++	$(RANLIB) $@
++
++#------------------------------------------------------------------------
++
++mostlyclean clean:
++	rm -f $(PDFTOEPDF_OBJS) libxpdf.a
++	rm -f Makefile.bak
++
++distclean maintainer-clean extraclean: clean
++	rm -f Makefile c-auto.h
++
++#------------------------------------------------------------------------
++
++depend:
++	$(CXX) $(ALLCXXFLAGS) -MM $(srcdir)/*.cc \
++	  | sed 's|$(srcdir)|$$(srcdir)|' > $(srcdir)/depend.mk
++
++#------------------------------------------------------------------------
++
++$(srcdir)/Array.o: Array.cc ../goo/gmem.h Object.h ../goo/gtypes.h \
++ ../goo/GString.h Array.h Dict.h Stream.h
++$(srcdir)/BuiltinFont.o: BuiltinFont.cc ../goo/gmem.h FontEncodingTables.h \
++ BuiltinFont.h ../goo/gtypes.h
++$(srcdir)/BuiltinFontTables.o: BuiltinFontTables.cc FontEncodingTables.h \
++ BuiltinFontTables.h BuiltinFont.h ../goo/gtypes.h
++$(srcdir)/CMap.o: CMap.cc ../goo/gmem.h ../goo/gfile.h ../goo/gtypes.h \
++ ../goo/GString.h Error.h config.h GlobalParams.h CharTypes.h \
++ PSTokenizer.h CMap.h
++$(srcdir)/Catalog.o: Catalog.cc ../goo/gmem.h Object.h ../goo/gtypes.h \
++ ../goo/GString.h Array.h Dict.h Stream.h XRef.h Page.h Error.h \
++ config.h Link.h Catalog.h
++$(srcdir)/CharCodeToUnicode.o: CharCodeToUnicode.cc ../goo/gmem.h ../goo/gfile.h \
++ ../goo/gtypes.h ../goo/GString.h Error.h config.h GlobalParams.h \
++ CharTypes.h PSTokenizer.h CharCodeToUnicode.h
++$(srcdir)/Decrypt.o: Decrypt.cc ../goo/gmem.h Decrypt.h ../goo/gtypes.h \
++ ../goo/GString.h
++$(srcdir)/Dict.o: Dict.cc ../goo/gmem.h Object.h ../goo/gtypes.h \
++ ../goo/GString.h Array.h Dict.h Stream.h XRef.h
++$(srcdir)/Error.o: Error.cc GlobalParams.h ../goo/gtypes.h CharTypes.h Error.h \
++ config.h
++$(srcdir)/FontEncodingTables.o: FontEncodingTables.cc FontEncodingTables.h
++$(srcdir)/Function.o: Function.cc ../goo/gmem.h Object.h ../goo/gtypes.h \
++ ../goo/GString.h Array.h Dict.h Stream.h Error.h config.h Function.h
++$(srcdir)/Gfx.o: Gfx.cc ../goo/gmem.h GlobalParams.h ../goo/gtypes.h CharTypes.h \
++ Object.h ../goo/GString.h Array.h Dict.h Stream.h Lexer.h Parser.h \
++ GfxFont.h GfxState.h Function.h OutputDev.h Page.h Error.h config.h \
++ Gfx.h
++$(srcdir)/GfxFont.o: GfxFont.cc ../goo/gmem.h Error.h config.h Object.h \
++ ../goo/gtypes.h ../goo/GString.h Array.h Dict.h Stream.h \
++ GlobalParams.h CharTypes.h CMap.h CharCodeToUnicode.h \
++ FontEncodingTables.h BuiltinFontTables.h BuiltinFont.h \
++ ../fofi/FoFiType1.h ../fofi/FoFiBase.h ../fofi/FoFiType1C.h \
++ ../fofi/FoFiTrueType.h GfxFont.h
++$(srcdir)/GfxState.o: GfxState.cc ../goo/gmem.h Error.h config.h Object.h \
++ ../goo/gtypes.h ../goo/GString.h Array.h Dict.h Stream.h Page.h \
++ GfxState.h Function.h
++$(srcdir)/GlobalParams.o: GlobalParams.cc ../goo/gmem.h ../goo/GString.h \
++ ../goo/GList.h ../goo/gtypes.h ../goo/GHash.h ../goo/gfile.h Error.h \
++ config.h NameToCharCode.h CharTypes.h CharCodeToUnicode.h \
++ UnicodeMap.h CMap.h BuiltinFontTables.h BuiltinFont.h \
++ FontEncodingTables.h GlobalParams.h NameToUnicodeTable.h \
++ UnicodeMapTables.h UTF8.h
++$(srcdir)/JArithmeticDecoder.o: JArithmeticDecoder.cc Object.h ../goo/gtypes.h \
++ ../goo/gmem.h ../goo/GString.h Array.h Dict.h Stream.h \
++ JArithmeticDecoder.h
++$(srcdir)/JBIG2Stream.o: JBIG2Stream.cc ../goo/GList.h ../goo/gtypes.h Error.h \
++ config.h JArithmeticDecoder.h JBIG2Stream.h Object.h ../goo/gmem.h \
++ ../goo/GString.h Array.h Dict.h Stream.h Stream-CCITT.h
++$(srcdir)/JPXStream.o: JPXStream.cc ../goo/gmem.h Error.h config.h \
++ JArithmeticDecoder.h ../goo/gtypes.h JPXStream.h Object.h \
++ ../goo/GString.h Array.h Dict.h Stream.h
++$(srcdir)/Lexer.o: Lexer.cc Lexer.h Object.h ../goo/gtypes.h ../goo/gmem.h \
++ ../goo/GString.h Array.h Dict.h Stream.h Error.h config.h
++$(srcdir)/Link.o: Link.cc ../goo/gmem.h ../goo/GString.h Error.h config.h \
++ Object.h ../goo/gtypes.h Array.h Dict.h Stream.h Link.h
++$(srcdir)/NameToCharCode.o: NameToCharCode.cc ../goo/gmem.h NameToCharCode.h \
++ CharTypes.h
++$(srcdir)/Object.o: Object.cc Object.h ../goo/gtypes.h ../goo/gmem.h \
++ ../goo/GString.h Array.h Dict.h Stream.h Error.h config.h XRef.h
++$(srcdir)/Outline.o: Outline.cc ../goo/gmem.h ../goo/GString.h ../goo/GList.h \
++ ../goo/gtypes.h Link.h Object.h Array.h Dict.h Stream.h \
++ PDFDocEncoding.h CharTypes.h Outline.h
++$(srcdir)/OutputDev.o: OutputDev.cc Object.h ../goo/gtypes.h ../goo/gmem.h \
++ ../goo/GString.h Array.h Dict.h Stream.h GfxState.h Function.h \
++ OutputDev.h CharTypes.h
++$(srcdir)/PDFDoc.o: PDFDoc.cc ../goo/GString.h config.h GlobalParams.h \
++ ../goo/gtypes.h CharTypes.h Page.h Object.h ../goo/gmem.h Array.h \
++ Dict.h Stream.h Catalog.h XRef.h Link.h OutputDev.h Error.h \
++ ErrorCodes.h Lexer.h Parser.h Outline.h PDFDoc.h
++$(srcdir)/PDFDocEncoding.o: PDFDocEncoding.cc PDFDocEncoding.h CharTypes.h
++$(srcdir)/PSTokenizer.o: PSTokenizer.cc PSTokenizer.h ../goo/gtypes.h
++$(srcdir)/Page.o: Page.cc GlobalParams.h ../goo/gtypes.h CharTypes.h Object.h \
++ ../goo/gmem.h ../goo/GString.h Array.h Dict.h Stream.h XRef.h Link.h \
++ OutputDev.h Error.h config.h Page.h
++$(srcdir)/Parser.o: Parser.cc Object.h ../goo/gtypes.h ../goo/gmem.h \
++ ../goo/GString.h Array.h Dict.h Stream.h Parser.h Lexer.h XRef.h \
++ Error.h config.h Decrypt.h
++$(srcdir)/Stream.o: Stream.cc ../goo/gmem.h ../goo/gfile.h ../goo/gtypes.h \
++ config.h Error.h Object.h ../goo/GString.h Array.h Dict.h Stream.h \
++ Decrypt.h JBIG2Stream.h JPXStream.h Stream-CCITT.h
++$(srcdir)/UnicodeMap.o: UnicodeMap.cc ../goo/gmem.h ../goo/gfile.h \
++ ../goo/gtypes.h ../goo/GString.h ../goo/GList.h Error.h config.h \
++ GlobalParams.h CharTypes.h UnicodeMap.h
++$(srcdir)/XRef.o: XRef.cc ../goo/gmem.h Object.h ../goo/gtypes.h \
++ ../goo/GString.h Array.h Dict.h Stream.h Lexer.h Parser.h Decrypt.h \
++ Error.h config.h ErrorCodes.h XRef.h
+diff -PurB -X x-os2unix.dat tetex-src-3.0/os2configure_make.cmd tetex-src-3.0-os2/os2configure_make.cmd
+--- tetex-src-3.0/os2configure_make.cmd	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/os2configure_make.cmd	Sun Mar  6 03:32:58 2005
+@@ -0,0 +1,143 @@
++extproc sh
++#!sh
++if [ ! -s texk/kpathsea/texmf.in ] ; then
++   cp texk/kpathsea/texmf.in-teTeX texk/kpathsea/texmf.in
++fi
++#
++#     --with-system-zlib \
++#     --with-system-ncurses \
++#     --with-ncurses-include=g:/emx/include/ncurses
++
++if [ ! -f Makefile ] ; then
++    configure --prefix=/usr\
++     --datadir=/usr/share\
++     --infodir=/usr/share/info\
++     --mandir=/usr/share/man\
++     --with-x11\
++     --disable-multiplatform\
++     --x-includes=${X11ROOT}/XFree86/include\
++     --x-libraries=${X11ROOT}/XFree86/lib
++
++#     --with-xdvi-x-toolkit=xaw3d
++
++
++else
++	echo "Now make main programs"
++	make
++fi
++if [ -f ./texk/web2c/tex.exe ] ; then
++	if [ -d ./texk/web2c/ptex-src-3.1.8 ]; then
++		if [ ! -f ./texk/web2c/ptex-src-3.1.8/Makefile.os2 ] ; then
++			cd ./texk/web2c/ptex-src-3.1.8/ && \
++			        make -f Makefile.os2 texmf=$TEXMF
++		fi
++	fi
++fi
++#
++##without,enable options
++#  --without-texinfo       do not build the texinfo package
++#  --without-dialog        do not build the dialog package
++#  --without-t1utils       do not build the t1utils package
++#  --without-lcdf-typetools    do not build the lcdf-typetools package
++#  --without-psutils       do not build the psutils package
++#  --without-texi2html       do not build the texi2html package
++#  --disable-multiplatform     put executables in bin instead of bin/PLATFORM
++#  --without-bibtex8          do not build the bibtex8 package
++#  --without-cjkutils         do not build the cjkutils package
++#  --without-detex            do not build the detex package
++#  --without-dtl              do not build the dtl package
++#  --without-dvi2tty          do not build the dvi2tty package
++#  --without-dvidvi           do not build the dvidvi package
++#  --without-dviljk           do not build the dviljk package
++#  --without-dvipdfm          do not build the dvipdfm package
++#  --without-dvipng           do not build the dvipng package
++#  --without-dvipsk           do not build the dvipsk package
++#  --without-gsftopk          do not build the gsftopk package
++#  --without-lacheck          do not build the lacheck package
++#  --without-makeindexk       do not build the makeindexk package
++#  --without-musixflx         do not build the musixflx package
++#  --without-odvipsk          do not build the odvipsk package
++#  --without-oxdvik           do not build the oxdvik package
++#  --without-ps2pkm           do not build the ps2pkm package
++#  --without-seetexk          do not build the seetexk package
++#  --without-tetex            do not build the tetex package
++#  --without-tex4htk          do not build the tex4htk package
++#  --without-texlive          do not build the texlive package
++#  --without-ttf2pk           do not build the ttf2pk package
++#  --without-tth              do not build the tth package
++#  --without-xdvik            do not build the xdvik package
++#  --with-x-toolkit=KIT    OBSOLETE: use --with-mf-x-toolkit and/or
++#                          --with-xdvi-x-toolkit instead.
++#  --enable-maintainer-mode enable make rules and dependencies not useful
++#                           (and sometimes confusing) to the casual installer
++#  --without-mktexmf-default    do not run mktexmf if MF source missing
++#  --without-mktexpk-default    do not run mktexpk if PK font missing
++#  --without-mktextfm-default   do not run mktextfm if TFM file missing
++#  --without-mkocp-default      do not run mkocp if OCP file missing
++#  --without-mkofm-default      do not run mkofm if OFM file missing
++#  --without-mktexfmt-default   do not run mktexfmt if format file missing
++#  --with-mktextex-default      run mktextex if TeX source missing
++#  --without-etex             don't compile and install e-TeX
++#  --without-omega            don't compile and install Omega
++#  --without-eomega            don't compile and install e-Omega
++#  --without-pdftex           don't compile and install pdfTeX
++#  --without-pdfetex          don't compile and install pdfeTeX
++#  --without-pdfxtex          don't compile and install pdfxTeX
++#  --without-cxx-runtime-hack do not link C++ runtime statically
++#  --with-editor=CMD       invoke CMD from the e option [vi +%d %s]
++#  --enable-ipc            enable TeX's --ipc option, i.e., pipe to a program
++#  --enable-auto-core      cause TeX&MF to dump core given a certain filename
++#  --disable-dump-share    make fmt/base/mem files architecture-dependent
++#  --disable-fmtutil       do not use fmtutil for build dumps
++#  --without-mf-nowin      do not build a separate non-windows-capable METAFONT
++#  --with-epsfwin          include EPSF pseudo-window support
++#  --with-hp2627win        include HP 2627 window support in Metafont
++#  --with-mftalkwin        include mftalk (generic server) window support
++#  --with-nextwin          include NeXT window support
++#  --with-regiswin         include Regis window support
++#  --with-suntoolswin      include old Suntools window support (this is not X)
++#  --with-tektronixwin     include Tektronix window support
++#  --with-unitermwin       include Uniterm window support
++#  --with-x11win           same as --with-x
++#  --with-x11              same as --with-x
++#  --with-mf-x-toolkit    Use X toolkit for mf.
++#  --with-ps=PS            Use PostScript (PS=no/yes/gs/dps/news, default gs)
++#  --disable-grey          Disable greyscale anti-aliasing for shrunken bitmaps
++#
++#  --disable-color         Disable support for color specials
++#  --disable-t1lib         Do not use T1lib (direct rendering of Type1 fonts)
++#  --enable-gf             Enable gf format pixel files (in addition to pk)
++#  --disable-a4            Set default paper size to letter and default unit to inch
++#  --enable-magick         Use ImageMagick to load/render image files.
++#                          EXPERIMENTAL - DO NOT USE!
++#  --with-xdvi-x-toolkit=KIT
++#			  Use toolkit KIT for xdvi (KIT=motif/xaw/xaw3d/neXtaw).
++#			  If no --with-xdvi-x-toolkit option is used, use Motif
++#                          if available, else Xaw.
++#  --with-system-ncurses   check for installed ncurses
++#  --with-ncurses-libdir=DIR
++#                          Specify directory where the ncurses library resides.
++#  --with-ncurses-include=DIR
++#                          Specify the ncurses header files location.
++#  --with-system-pnglib       use installed pnglib library
++#  --with-pnglib-libdir=DIR
++#                          Specify directory where the png library (libpng.a) resides.
++#  --with-pnglib-include=DIR
++#                          Specify the pnglib header files location.
++#  --with-system-t1lib	  Use installed T1lib
++#  --with-t1lib-libdir=DIR
++#                          Specify the location of T1lib library files (libt1.a)
++#  --with-t1lib-include=DIR
++#                          Specify the location of T1lib header files
++#  --with-system-zlib         use installed zlib library
++#  --with-zlib-libdir=DIR
++#                          Specify directory where the zlib.a resides.
++#  --with-zlib-include=DIR
++#                          Specify the zlib header files location.
++#  --with-system-gd         use installed gd library
++#  --with-gd-libdir=DIR
++#                          Specify directory where the gd library resides.
++#  --with-gd-include=DIR
++#                          Specify the gd header files location.
++#
++#EOF
+diff -PurB -X x-os2unix.dat tetex-src-3.0/os2install.cmd tetex-src-3.0-os2/os2install.cmd
+--- tetex-src-3.0/os2install.cmd	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/os2install.cmd	Mon Jan 17 23:58:22 2005
+@@ -0,0 +1,83 @@
++extproc sh.exe
++#
++if [ -z "$1" ] ; then
++  echo "Usage:os2install [unixroot|x:/foo/bar|[a-z]:] [do]\n"
++  echo "\n"
++  echo "  Second argument must be 'do' if really do install\n"
++  echo "<a> os2install unixroot do"
++  echo "   if UNIXROOT env. var. is set files will be installed \n"
++  echo "     in UNIXROOT/usr/{bin,etc,lib,include,share/{man,info,lib}}..\n"
++  echo "<b> os2install DRIVE_NAME do [NOTE: two letters from 'a:' to 'z:']\n"
++  echo "     if DRIVE_NAME is specified, target drive is set as DRIVE_NAME\n"
++  echo "<b> os2install DIR_NAME do\n"
++  echo "     if DIR_NAME is specified, target directory is set as DIR_NAME\n"
++  echo "\n"
++fi
++dest_dir=
++drive=
++UNIXROOT=
++_destdir=no
++inc_dir=/emx/include
++lib_dir=/emx/lib
++#
++if [ -n "$1" ] ; then
++  case "$1" in
++    unixroot)
++      UNIXROOT=$1
++      ;;
++    [A-Za-z]:/*)
++      drive=$1
++      ;;
++    [A-Za-z]:)
++      UNIXROOT=$1
++      drive=$1
++      ;;
++  esac
++  shift
++fi
++
++
++if find . -iname Makefile |xargs grep DESTDIR >nul ; then
++  _destdir=yes
++fi
++echo "_destdir=$_destdir" 
++if [ ${_destdir} = "yes" ]  ; then
++  echo "DESTDIR is supported in this source tree"
++  if [ -n "$UNIXROOT" ]; then
++    dest_dir="${UNIXROOT}"
++    drive=
++  else
++    if [ -n "$drive" ] ; then
++      dest_dir=$drive
++    else
++      if [ -n "$C_INCLUDE_PATH" ] ; then
++        dest_dir=`echo "$C_INCLUDE_PATH" | sed -n -e 's@^\([a-zA-Z]:\).*$@\1@p'`
++      fi
++    fi
++  fi
++else
++  if [ -n "$drive" ] ; then
++      lib_dir=${drive}/usr/lib
++      inc_dir=${drive}/usr/include
++  else
++    if [ -n "$C_INCLUDE_PATH" ] ; then
++      drive=`echo "$C_INCLUDE_PATH" | sed -n -e 's@^\([a-zA-Z]:\).*$@\1@p'`
++      lib_dir=${LIBRARY_PATH:-${drive}/emx/lib}
++      inc_dir=${C_INCLUDE_PATH:-${drive}/emx/include}
++    fi
++  fi
++echo "DESTDIR is not supported in this source tree"
++fi
++	echo "\n@ dest_dir=$dest_dir"
++	echo "@ lib_dir=$lib_dir"
++	echo "@ inc_dir=$inc_dir"
++	echo "@ drive=$drive\n"
++	echo "@ make install $* ...."
++echo make install MAKE=make $* DESTDIR=$dest_dir  prefix=${drive}/usr bindir=${drive}/usr/bin    libdir=${lib_dir}    includedir=${inc_dir}    mandir=${drive}/usr/share/man    infodir=${drive}/usr/share/info    datadir=${drive}/usr/share    localedir=${drive}/usr/share/locale    htmldir=${drive}/usr/share/doc/`pwd | sed -e "s@^.*/\([^/]\+\)-os2.*@\1@"`
++if [ ! "$1" = "do" ] ; then
++ exit 0
++else
++  shift
++fi
++
++make install MAKE=make $* DESTDIR=$dest_dir  prefix=${drive}/usr bindir=${drive}/usr/bin    libdir=${lib_dir}    includedir=${inc_dir}    mandir=${drive}/usr/share/man    infodir=${drive}/usr/share/info    datadir=${drive}/usr/share    localedir=${drive}/usr/share/locale    htmldir=${drive}/usr/share/doc/`pwd | sed -e "s@^.*/\([^/]\+\)-os2.*@\1@"` 2>&1 |tee log
+diff -PurB -X x-os2unix.dat tetex-src-3.0/selfautofix tetex-src-3.0-os2/selfautofix
+--- tetex-src-3.0/selfautofix	Wed Feb  1 00:31:32 2006
++++ tetex-src-3.0-os2/selfautofix	Sun Mar  6 03:32:58 2005
+@@ -2,10 +2,11 @@
+ 
+ # selfautofix: change absolute paths in texmf.cnf to $SELFAUTO references.
+ # Copyright: 1998, Thomas Esser. Public domain.
+-
++PATH=`cmd.exe /c "echo %PATH%" | sed -e 's@\\\\@/@g'`
++PATH_SEPARATOR=';'
+ bindir=$1
+ web2c=$2
+-
++echo $web2c
+ test -f "$web2c"/texmf.cnf || exit 0
+ grep 'original texmf.cnf --' "$web2c"/texmf.cnf >/dev/null 2>&1 || exit 0
+ 
+@@ -24,7 +25,7 @@
+ 
+ cat >>$sedfile <<eof
+ /^%/!s%:%;%g
+-/^[ 	]*TEXMFCNF[ =]/s%;%:%g
++/^[ 	]*TEXMFCNF[ =]/s%:%;%g
+ eof
+ 
+ sed  -f $sedfile texmf.cnf >texmf.cnf.$$
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/configure tetex-src-3.0-os2/texk/configure
+--- tetex-src-3.0/texk/configure	Wed Feb  1 00:29:40 2006
++++ tetex-src-3.0-os2/texk/configure	Sun Mar  6 03:32:58 2005
+@@ -4725,8 +4725,8 @@
+     hardcode_libdir_flag_spec='-L$libdir'
+     hardcode_minus_L=yes
+     allow_undefined_flag=unsupported
+-    archive_cmds='$echo "LIBRARY $libname INITINSTANCE" > $output_objdir/$libname.def~$echo "DESCRIPTION \"$libname\"" >> $output_objdir/$libname.def~$echo DATA >> $output_objdir/$libname.def~$echo " SINGLE NONSHARED" >> $output_objdir/$libname.def~$echo EXPORTS >> $output_objdir/$libname.def~emxexp $libobjs >> $output_objdir/$libname.def~$CC -Zdll $emx_add_flag  -Zcrtdll -o $lib $libobjs $deplibs $compiler_flags $output_objdir/$libname.def'
+-    old_archive_from_new_cmds='emximp -o $output_objdir/$libname.a  $output_objdir/$libname.def~ emximp -o $output_objdir/$libname.lib  $output_objdir/$libname.def'
++    archive_cmds='$echo "LIBRARY $libname INITINSTANCE" > $output_objdir/$libname.def~$echo "DESCRIPTION \"$libname\"" >> $output_objdir/$libname.def~$echo DATA >> $output_objdir/$libname.def~$echo " SINGLE NONSHARED" >> $output_objdir/$libname.def~$echo EXPORTS >> $output_objdir/$libname.def~emxexp $libobjs >> $output_objdir/$libname.def~$CC -Zdll $emx_add_flag  $emx_add_flag  -Zcrtdll -o $lib $libobjs $deplibs $compiler_flags $output_objdir/$libname.def'
++    old_archive_from_new_cmds='emximp -o $output_objdir/$libname.a   $output_objdir/$libname.def~ emximp -o $output_objdir/$libname.lib  $output_objdir/$libname.def~ emximp -o $output_objdir/$libname.lib   $output_objdir/$libname.def~ emximp -o $output_objdir/$libname.lib  $output_objdir/$libname.def'
+     ;;
+ 
+   osf3*)
+@@ -5288,7 +5288,7 @@
+ os2*)
+   libname_spec='$name'
+   need_lib_prefix=no
+-  library_names_spec='$libname.dll $libname.$emx_libext'
++  library_names_spec='$libname.dll $lib.$emx_libextme.$emx_libext'
+   dynamic_linker='OS/2 ld.exe'
+   shlibpath_var=LIBPATH
+   ;;
+@@ -6699,7 +6699,7 @@
+ s%\]%\\&%g
+ s%\$%$$%g
+ EOF
+-DEFS=`sed -f conftest.defs confdefs.h | tr '\012\015' '  '|tr -d '\r' `
++DEFS=`sed -f conftest.defs confdefs.h | tr '\012\015' '  '|tr -d '\r' |tr -d '\r' `
+ rm -f conftest.defs
+ 
+ 
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/configure tetex-src-3.0-os2/texk/kpathsea/configure
+--- tetex-src-3.0/texk/kpathsea/configure	Wed Feb  1 00:29:44 2006
++++ tetex-src-3.0-os2/texk/kpathsea/configure	Sun Mar  6 03:32:58 2005
+@@ -3696,8 +3696,8 @@
+     hardcode_libdir_flag_spec='-L$libdir'
+     hardcode_minus_L=yes
+     allow_undefined_flag=unsupported
+-    archive_cmds='$echo "LIBRARY $libname INITINSTANCE" > $output_objdir/$libname.def~$echo "DESCRIPTION \"$libname\"" >> $output_objdir/$libname.def~$echo DATA >> $output_objdir/$libname.def~$echo " SINGLE NONSHARED" >> $output_objdir/$libname.def~$echo EXPORTS >> $output_objdir/$libname.def~emxexp $libobjs >> $output_objdir/$libname.def~$CC -Zdll $emx_add_flag  -Zcrtdll -o $lib $libobjs $deplibs $compiler_flags $output_objdir/$libname.def'
+-    old_archive_from_new_cmds='emximp -o $output_objdir/$libname.a  $output_objdir/$libname.def~ emximp -o $output_objdir/$libname.lib  $output_objdir/$libname.def'
++    archive_cmds='$echo "LIBRARY $libname INITINSTANCE" > $output_objdir/$libname.def~$echo "DESCRIPTION \"$libname\"" >> $output_objdir/$libname.def~$echo DATA >> $output_objdir/$libname.def~$echo " SINGLE NONSHARED" >> $output_objdir/$libname.def~$echo EXPORTS >> $output_objdir/$libname.def~emxexp $libobjs >> $output_objdir/$libname.def~$CC -Zdll $emx_add_flag  $emx_add_flag  -Zcrtdll -o $lib $libobjs $deplibs $compiler_flags $output_objdir/$libname.def'
++    old_archive_from_new_cmds='emximp -o $output_objdir/$libname.a   $output_objdir/$libname.def~ emximp -o $output_objdir/$libname.lib  $output_objdir/$libname.def~ emximp -o $output_objdir/$libname.lib   $output_objdir/$libname.def~ emximp -o $output_objdir/$libname.lib  $output_objdir/$libname.def'
+     ;;
+ 
+   osf3*)
+@@ -4259,7 +4259,7 @@
+ os2*)
+   libname_spec='$name'
+   need_lib_prefix=no
+-  library_names_spec='$libname.dll $libname.$emx_libext'
++  library_names_spec='$libname.dll $lib.$emx_libextme.$emx_libext'
+   dynamic_linker='OS/2 ld.exe'
+   shlibpath_var=LIBPATH
+   ;;
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/Makefile.os2 tetex-src-3.0-os2/texk/kpathsea/Makefile.os2
+--- tetex-src-3.0/texk/kpathsea/Makefile.os2	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/texk/kpathsea/Makefile.os2	Sun Mar  6 03:32:58 2005
+@@ -0,0 +1,101 @@
++#########################################################################
++# Makefile.dll to make kpath354.dll
++#                      Jun Sawataishi <jsawa@attglobal.net>
++#                                               31-Dec-2004
++#########################################################################
++#
++# all you have to do is set `emx_drive' according to your environment
++emx_drive	= g:
++
++
++os2_dll_dir = $(emx_drive)/emx/dll
++os2_lib_dir = $(emx_drive)/emx/lib
++os2_include_dir = $(emx_drive)/emx/include
++install_headers = *.h
++
++
++
++default: all
++O=.obj
++VPATH=.;
++
++SHELL=sh
++XCFLAGS= -Zomf  -O2  -Zmtd -DOS2   -D__EMX__ \
++	 -Zsysv-signals -fno-strength-reduce -I..
++CC=gcc
++
++# defs
++# @@ make-subÇÕéQè∆ÇµÇ»Ç¢ÇÊÇ§Ç…ÇµÇƒÇ¢Ç‹Ç∑
++##     include ../make-sub
++
++# Target
++DLLNAME=kpath354
++DLFLAGS= -Zcrtdll -Zdll  -Zomf -Zmtd -Zbin-files
++LFLAGS= -Zcrtdll -Zmtd -Zomf -Zbin-files
++AR=emxomfar
++RANLIB=emxomfar s
++lib_dir = .libs
++
++all: $(DLLNAME).dll $(lib_dir)/kpathsea.a $(lib_dir)/kpathsea.lib
++
++clean::
++	-$(RM)  $(DLLNAME).dll 
++veryclean:: clean
++	-$(RM)  $(DLLNAME).dll
++distclean:: veryclean
++	-$(RM)  $(DLLNAME).dll
++
++# Font drivers
++ALL_OBJ  = \
++tex-file.obj absolute.obj atou.obj cnf.obj concat.obj concat3.obj \
++concatn.obj db.obj debug.obj dir.obj elt-dirs.obj expand.obj extend-fname.obj \
++file-p.obj find-suffix.obj fn.obj fontmap.obj getopt.obj getopt1.obj hash.obj \
++kdefault.obj line.obj magstep.obj make-suffix.obj path-elt.obj \
++pathsearch.obj proginit.obj progname.obj readable.obj rm-suffix.obj \
++str-list.obj str-llist.obj tex-glyph.obj tex-hush.obj tex-make.obj \
++tilde.obj truncate.obj uppercasify.obj variable.obj version.obj xbasename.obj \
++xcalloc.obj xdirname.obj xfopen.obj xfseek.obj xftell.obj xgetcwd.obj xmalloc.obj \
++xopendir.obj xputenv.obj xrealloc.obj xstat.obj xstrdup.obj strcasecmp.obj
++
++%.obj: %.o
++	emxomf -o $@ $<
++
++# kpathsea
++kpathsea.def: $(ALL_OBJ)
++	echo LIBRARY kpath354 INITINSTANCE TERMINSTANCE > $@
++	echo DESCRIPTION \'kpathsea 3.5.4\' >> $@
++	echo DATA >> $@
++	echo MULTIPLE NONSHARED >> $@
++	echo STACKSIZE 65536 >> $@
++	echo EXPORTS >> $@
++	emxexp -u  -o $(ALL_OBJ) >> $@
++
++kpathsea: $(lib_dir)/kpathsea.lib $(lib_dir)/kpathsea.a
++
++$(lib_dir)/kpathsea.lib: kpathsea.def 
++		emximp -o $@ kpathsea.def
++
++$(lib_dir)/kpathsea.a:  kpathsea.def
++		emximp -o $@ kpathsea.def
++	
++#	$(AR) rc $@ $(ALL_OBJ)
++#	$(RANLIB) $@
++	
++$(DLLNAME).dll: kpathsea.def $(ALL_OBJ)
++	$(CC) kpathsea.def -o $@ $(ALL_OBJ) $(DLFLAGS)
++	cp.exe -uvp $(DLLNAME).dll ../web2c/
++	cp.exe -uvp $(DLLNAME).dll ../web2c/web2c/
++	if [ -f ../web2c/ptex-src-3.1.8 ] ; then  cp.exe -uvp $(DLLNAME).dll ../web2c/ptex-src-3.1.8/ ; fi
++
++install: $(lib_dir)/kpathsea.lib $(lib_dir)/kpathsea.lib $(DLLNAME).dll
++	cp.exe -vp $(lib_dir)/kpathsea.lib $(os2_lib_dir)/
++	cp.exe -vp $(lib_dir)/kpathsea.a $(os2_lib_dir)/
++	cp.exe -vp $(DLLNAME).dll $(os2_dll_dir)/
++	cp.exe -vp $(install_headers) $(os2_include_dir)/
++
++
++
++
++
++
++
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/mktex.cnf tetex-src-3.0-os2/texk/kpathsea/mktex.cnf
+--- tetex-src-3.0/texk/kpathsea/mktex.cnf	Thu Mar  5 02:51:14 1998
++++ tetex-src-3.0-os2/texk/kpathsea/mktex.cnf	Sun Mar  6 03:32:58 2005
+@@ -13,3 +13,8 @@
+ # : ${MODE=ljfour}
+ # : ${BDPI=600}
+ # : ${ps_to_pk=gsftopk}
++#jsawa: OS/2 ported gsftopk is not available
++ : ${ps_to_pk=ps2pk}
++ : ${MT_FEATURES=appendonlydir:dosnames:strip:}
++#EOF
++
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/mktex.opt tetex-src-3.0-os2/texk/kpathsea/mktex.opt
+--- tetex-src-3.0/texk/kpathsea/mktex.opt	Sat Jan 22 04:17:00 2005
++++ tetex-src-3.0-os2/texk/kpathsea/mktex.opt	Sun Mar  6 03:32:58 2005
+@@ -27,11 +27,16 @@
+ # directories in path lists whereas Unix uses `:'.  Make an exception for
+ # Cygwin, which pretends to be UNIX.
+ # Create a variable that holds the right character to be used by the scripts.
+-DOSISH=no
+-case `uname -s` in
+-  CYGWIN*|Cygwin*|cygwin*) ;;
+-  *) if test -n "$COMSPEC" || test -n "$ComSpec"; then DOSISH=yes; fi
+-esac
++#
++#jsawa: for OS/2
++#     `pwd' in ksh, sh, or bash may produce `/foo/bar' instead of `x:/foo/bar'
++#      so we'd like to use `pwd.exe' (GNU sh-utils). 
++DOSISH=yes
++#@DOSISH=yes
++#@case `uname -s` in
++#@  CYGWIN*|Cygwin*|cygwin*) ;;
++#@  *) if test -n "$COMSPEC" || test -n "$ComSpec"; then DOSISH=yes; fi
++#@esac
+ if test "$DOSISH" = "no"; then SEP=':'; else SEP=';';fi
+ 
+ # TEMPDIR needs to be unique to each process because of the possibility of two
+@@ -48,7 +53,7 @@
+ 
+ # We will change search paths to include $KPSE_DOT. This is necessary
+ # since we cd to $TEMPDIR.
+-: ${KPSE_DOT=`pwd`}; export KPSE_DOT
++: ${KPSE_DOT=`pwd.exe`}; export KPSE_DOT
+ 
+ # Clean up on normal or abnormal exit.
+ # The "cd /" is for MS-DOS and MS-Windows, where there is a separate
+@@ -106,7 +111,9 @@
+ : ${BDPI=600}
+ : ${DPI=600}
+ : ${MAG=1.0}
+-: ${ps_to_pk=gsftopk} # some prefer ps2pk
++: ${ps_to_pk=ps2pk} # some prefer ps2pk
++#jsawa
++#@: ${ps_to_pk=gsftopk} # some prefer ps2pk
+ 
+ # Allow fonts to be read and written (especially in case we make
+ # directories) by everyone.
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/mktexdir tetex-src-3.0-os2/texk/kpathsea/mktexdir
+--- tetex-src-3.0/texk/kpathsea/mktexdir	Wed Feb  1 00:31:36 2006
++++ tetex-src-3.0-os2/texk/kpathsea/mktexdir	Sun Mar  6 03:32:58 2005
+@@ -28,23 +28,24 @@
+ 
+ errstatus=0
+ 
++cd "$KPSE_DOT"
+ for file
+ do
+-   case $file in
+-     /*) cd /;;
+-     *) cd $KPSE_DOT;;
+-   esac
+-   OLDIFS=$IFS; IFS=/; set fnord `echo "./$file"`; IFS=$OLDIFS; shift
++   cd "$KPSE_DOT"
++#@jsawa   set fnord `echo ":$file" | \
++#@     sed -ne 's/^:\//#/;s/^:-/.\/-/;s/^://;s/\// /g;s/^#/\//;p'`
++   set fnord `echo "$file" | \
++     sed -ne 's,//,/,g;s,^/,:,;s,:/,::,;s,/, ,g;s,::,:/,;s,^:,/,;p'`
++   shift
+ 
+    pathcomp=
+-   for d
+-   do
+-     test -z "$d" && continue
++   for d in ${1+"$@"} ; do
+      pathcomp="$pathcomp$d"
+ 
+-     if test ! -d "./$pathcomp"; then
+-        mkdir "./$pathcomp" || { errstatus=$?; break; }
+-        chmod `kpsestat ${MT_APPEND_MASK} "$pathcomp"/..` "./$pathcomp"
++     if test ! -d "$pathcomp"; then
++#@        mkdir "$pathcomp" || errstatus=$?
++        mkdir.exe -p "$pathcomp" || errstatus=$?
++        chmod `kpsestat ${MT_APPEND_MASK} "$pathcomp"/..` "$pathcomp"
+      fi
+ 
+      pathcomp="$pathcomp/"
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/mktexlsr tetex-src-3.0-os2/texk/kpathsea/mktexlsr
+--- tetex-src-3.0/texk/kpathsea/mktexlsr	Wed Feb  1 00:31:38 2006
++++ tetex-src-3.0-os2/texk/kpathsea/mktexlsr	Sun Mar  6 03:32:58 2005
+@@ -26,11 +26,13 @@
+ # directories in path lists whereas Unix uses `:'.  Make an exception for
+ # Cygwin, which pretends to be UNIX.
+ # Create a variable that holds the right character to be used by the scripts.
+-DOSISH=no
+-case `uname -s` in
+-  CYGWIN*|Cygwin*|cygwin*) ;;
+-  *) if test -n "$COMSPEC" || test -n "$ComSpec"; then DOSISH=yes; fi
+-esac
++#jsawa: for OS/2 DOSISH=yes
++DOSISH=yes
++#@DOSISH=no
++#@case `uname -s` in
++#@  CYGWIN*|Cygwin*|cygwin*) ;;
++#@  *) if test -n "$COMSPEC" || test -n "$ComSpec"; then DOSISH=yes; fi
++#@esac
+ if test "$DOSISH" = "no"; then SEP=':'; else SEP=';';fi
+ 
+ 
+@@ -41,10 +43,10 @@
+ case $dirname in
+   "") # Do nothing
+       ;;
+-  /* | [A-z]:/*) # Absolute name
++  /* | [A-Za-z]:/*) # Absolute name
+       PATH="$dirname$SEP$PATH" ;;
+    *)  # Relative name
+-      PATH="`pwd`/$dirname$SEP$PATH" ;;
++      PATH="`pwd.exe`/$dirname$SEP$PATH" ;;
+ esac
+ 
+ # A copy of some stuff from mktex.opt, so we can run in the presence of
+@@ -67,21 +69,24 @@
+ trap 'cd / ; test -z "$db_dir_tmp" || rm -rf "$db_dir_tmp"; exit' 0 1 2 3 7 13 15
+ 
+ # Get list of directories from $TEXMFDBS; eliminate duplicates.
+-test $# = 0 && {
+-  OIFS=$IFS
+-  IFS='
+-'
+-  set x `kpsewhich --show-path=ls-R | tr : '
+-' | sort | uniq`; shift
+-  IFS=$OIFS
+-}
++#jsawa
++#test $# = 0 && {
++#  OIFS=$IFS
++#  IFS='
++#'
++#  set x `kpsewhich --show-path=ls-R | tr : '
++#' | sort | uniq`; shift
++#  IFS=$OIFS
++#}
++OIFS=$IFS; IFS=$SEP; set x `kpsewhich --show-path=ls-R 2>/dev/null`; shift; IFS=$OIFS
+ 
+ for TEXMFLS_R in "$@"; do
+   # Prepend cwd if the directory was relative.
+   case "$TEXMFLS_R" in
+   "") continue ;;  # Strictly speaking, it is an error if this case is taken.
+   /* | [A-z]:/*) ;;
+-  *)  TEXMFLS_R="`pwd`/$TEXMFLS_R"
++  *)  TEXMFLS_R="`pwd.exe`/$TEXMFLS_R"
++#jsawa  *)  TEXMFLS_R="`pwd`/$TEXMFLS_R"
+   esac
+   # Allow for ls-R and ls-r to exist.  But create ls-R if we're working
+   # from scratch.
+@@ -97,7 +102,7 @@
+   db_readlink=`kpsereadlink "$TEXMFLS_R/ls-R" 2>/dev/null` || true
+   case "$db_readlink" in
+   "") ;;
+-  /* | [A-z]:/*) db_file="$db_readlink" ;;
++  /* | [A-Za-z]:/*) db_file="$db_readlink" ;;
+   *)  db_file="$TEXMFLS_R/$db_readlink"
+   esac
+   db_dir=`echo "$db_file" | sed 's%/[^/][^/]*$%%'` # can't rely on dirname
+@@ -106,14 +111,8 @@
+   test -w "$db_dir" || { echo "$progname: $db_dir: directory not writable. Skipping..." >&2; continue; }
+ 
+   if test ! -f "$db_file"; then
+-    cp /dev/null "$db_file"
+-    # Use same permissions as parent directory, minus x,s, or t bits.
+-    chmod `kpsestat -xst "$db_dir"` "$db_file"
+-  elif test -s "$db_file" \
+-       && test "x`sed '1s/$//;1q' \"$db_file\"`" != "x$ls_R_magic" \
+-       && test "x`sed '1s/$//;1q' \"$db_file\"`" != "x$old_ls_R_magic"; then
+-    echo "$progname: $db_file lacks magic string. Skipping..." >&2
+-    continue
++#jsawa    cp /dev/null "$db_file"
++    touch "$db_file"
+   fi
+ 
+   # Skip if we cannot write the file:
+@@ -125,7 +124,8 @@
+   db_file_tmp="$db_dir_tmp/lsR$$.tmp"
+   rm -f "$db_file_tmp"
+ 
+-  tty -s && echo "$progname: Updating $db_file... " >&2
++#  tty -s && echo "$progname: Updating $db_file... "
++  echo "$progname: Updating $db_file... " >&2
+   echo "$ls_R_magic" >"$db_file_tmp"
+ 
+   # The main task. We put ./: in the output, so top-level files can be
+@@ -134,9 +134,8 @@
+   # removes . and .. from the list.  Note that using colons in directory
+   # names results in nothing but grief.
+   echo "./:" >>"$db_file_tmp"
+-  (cd "$TEXMFLS_R" && \ls -LRa 2>/dev/null) |
++  (cd "$TEXMFLS_R" && ls -LRa 2>/dev/null) |
+     sed '/^$/{n;s%^\./%%;s%^%./%;}; /^\.$/d; /^\.\.$/d; /^[\.\/]*lsR[0-9]*\.tmp:*$/d' >>"$db_file_tmp"
+-
+   # To be really safe, a loop.
+   until PERMS=`kpsestat = "$db_file"`; do sleep 1; done
+   chmod $PERMS "$db_file_tmp"
+@@ -144,5 +143,6 @@
+   mv "$db_file_tmp" "$db_file"
+   rm -rf "$db_dir_tmp"
+ done
+-tty -s && echo "$progname: Done." >&2
++# tty -s && echo "$progname: Done." >&2
++  echo "$progname: Done." >&2
+ exit 0
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/mktexnam tetex-src-3.0-os2/texk/kpathsea/mktexnam
+--- tetex-src-3.0/texk/kpathsea/mktexnam	Wed Feb  1 00:31:38 2006
++++ tetex-src-3.0-os2/texk/kpathsea/mktexnam	Sun Mar  6 03:32:58 2005
+@@ -190,7 +190,7 @@
+ 
+ case "$DEST" in
+   "") ;;
+-  /* | [A-z]:/*) # Absolute, explicit destdir => use it.
++  /* | [A-Za-z]:/*) # Absolute, explicit destdir => use it.
+       MT_PKDESTDIR=$DEST
+       MT_TFMDESTDIR=$DEST
+       MT_MFDESTDIR=$DEST
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/mktexpk tetex-src-3.0-os2/texk/kpathsea/mktexpk
+--- tetex-src-3.0/texk/kpathsea/mktexpk	Wed Feb  1 00:31:38 2006
++++ tetex-src-3.0-os2/texk/kpathsea/mktexpk	Sun Mar  6 03:32:58 2005
+@@ -72,7 +72,7 @@
+ # Where do potential driver files belong?
+ case "$MT_FEATURES" in
+   *nomfdrivers*)
+-     : ${MT_MFDESTDIR=`pwd`}
++     : ${MT_MFDESTDIR=`pwd.exe`}
+      export MT_MFDESTDIR;;
+ esac
+ 
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/mktextfm tetex-src-3.0-os2/texk/kpathsea/mktextfm
+--- tetex-src-3.0/texk/kpathsea/mktextfm	Wed Feb  1 00:31:38 2006
++++ tetex-src-3.0-os2/texk/kpathsea/mktextfm	Sun Mar  6 03:32:58 2005
+@@ -40,7 +40,7 @@
+ # Where do potential mf driver files go?
+ case "$MT_FEATURES" in
+   *nomfdrivers*)
+-     : ${MT_MFDESTDIR=`pwd`}
++     : ${MT_MFDESTDIR=`pwd.exe`}
+      export MT_MFDESTDIR;;
+ esac
+ 
+@@ -142,7 +142,7 @@
+     || cp $PKNAME "$PKDESTDIR/pk$$.tmp" || exit 1
+   cd "$PKDESTDIR" || exit 1
+   if test -f $PKNAME; then
+-    rm -f pk$$.tmp
++    rm -fr pk$$.tmp
+   else
+     chmod `kpsestat -xst,go-w .` pk$$.tmp
+     mv pk$$.tmp $PKNAME
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/mktexupd tetex-src-3.0-os2/texk/kpathsea/mktexupd
+--- tetex-src-3.0/texk/kpathsea/mktexupd	Wed Feb  1 00:31:38 2006
++++ tetex-src-3.0-os2/texk/kpathsea/mktexupd	Sun Mar  6 03:32:58 2005
+@@ -3,7 +3,7 @@
+ # 
+ # te@dbs.uni-hannover.de and kb@mail.tug.org. Public domain.
+ 
+-version='$Id: mktexupd,v 1.20 2004/12/19 12:41:13 olaf Exp $'
++version='$Id: mktexupd,v 1.19 2004/04/24 15:19:04 olaf Exp $'
+ usage="Usage: $0 DIR FILE.
+   Update the ls-R file with an entry for FILE in DIR."
+ mt_min_args=2
+@@ -38,7 +38,7 @@
+ db_file_lc="$TEXMFLS_R/ls-r"
+ 
+ test ! -f "$db_file" && test -f "$db_file_lc" && db_file="$db_file_lc"
+-test -f "$db_file" || { mktexlsr "$TEXMFLS_R"; exit; }
++test -f "$db_file" || mktexlsr "$TEXMFLS_R"
+ test -w "$db_file" || { echo "$0: $db_file unwritable." >&2; exit 1; }
+ 
+ test "x`sed '1s/$//;1q' \"$db_file\"`" = "x$ls_R_magic" \
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/tetex/a2ping tetex-src-3.0-os2/texk/tetex/a2ping
+--- tetex-src-3.0/texk/tetex/a2ping	Wed Feb  1 00:31:40 2006
++++ tetex-src-3.0-os2/texk/tetex/a2ping	Sun Mar  6 03:32:58 2005
+@@ -385,7 +385,8 @@
+ my $title = "$program $Htex::a2ping::VERSION, $filedate -- $copyright\n";
+ 
+ ### ghostscript command name
+-my($quote,$GS)=("'","gs");
++###my($quote,$GS)=("'","gs");
++my($quote,$GS)=("'","gsos2");
+ ($quote,$GS) = ("\"","gswin32c") if $^O eq 'MSWin32' or $^O =~ /cygwin/i;
+ 
+ # --- help functions
+@@ -2297,7 +2298,7 @@
+ 
+ =head1 AUTHORS
+ 
+-The author of B<a2ping> is SzabÛ PÈter <F<pts@fazekas.hu>>.
++The author of B<a2ping> is SzabÚ˛PÈÙer <F<pts@fazekas.hu>>.
+ 
+ B<a2ping> is inspired by and historically based on the B<epstopdf> Perl
+ script modified by Thomas Esser, Sept. 1998, but his modifications have
+@@ -2334,7 +2335,7 @@
+  * Newline before grestore for the case that there is no
+    whitespace at the end of the eps file.
+ 
+-=head2 2003/02/02 (SzabÛ PÈter)
++=head2 2003/02/02 (SzabÚ˛PÈÙer)
+ 
+  * option --below
+  * removes DOS EPSF binary junk correctly
+@@ -2347,7 +2348,7 @@
+  * can convert PDF to EPS (by calling pdftops(1)) and PDF to PDF
+  * emulates work for PDF input
+ 
+-=head2 2003/04/16 (SzabÛ PÈter)
++=head2 2003/04/16 (SzabÚ˛PÈÙer)
+ 
+  * added PS and sam2p support, renamed to a2ping
+  * sam2p and pdftops if $InputFilename eq '-';
+@@ -2357,7 +2358,7 @@
+  * removes ^L (form feed) from end of EPS file
+  * -x=-c:rle to add sam2p options
+ 
+-=head2 2003/04/26 (SzabÛ PÈter)
++=head2 2003/04/26 (SzabÚ˛PÈÙer)
+ 
+  * omit the unnecessary setpagedevice calls when creating normal eps
+  * --noverbose --nocompress supported differently
+@@ -2374,7 +2375,7 @@
+    setpagedevice. Precedence for other inputs: --PageSize, setpagedevice,
+    %%*BoundingBox
+ 
+-=head2 2003/09/25 (SzabÛ PÈter)
++=head2 2003/09/25 (SzabÚ˛PÈÙer)
+ 
+  * --bboxfrom=adsc: %%BoundingBox overrides -sDEVICE=bbox
+  * improved bbox discovery
+@@ -2384,11 +2385,11 @@
+  * consistent bbox, --PageSize, /PageSize handling
+  * consistent --Resolution and --Duplex handling
+ 
+-=head2 2003/12/02 (SzabÛ PÈter)
++=head2 2003/12/02 (SzabÚ˛PÈÙer)
+ 
+  * --bboxfrom=compute-gs option to fix PS -> EPS bbox (gs -sDEVICE=bbox), tuzv.eps
+ 
+-=head2 2004/02/10 v2.77 (SzabÛ PÈter)
++=head2 2004/02/10 v2.77 (SzabÚ˛PÈÙer)
+ 
+  * the compute-pipe routine is now run unless --bboxfrom=guess with EPS
+  * added --gsextra=
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/tetex/configure tetex-src-3.0-os2/texk/tetex/configure
+--- tetex-src-3.0/texk/tetex/configure	Wed Feb  1 00:29:48 2006
++++ tetex-src-3.0-os2/texk/tetex/configure	Sun Mar  6 03:32:58 2005
+@@ -1183,7 +1183,7 @@
+ s%\]%\\&%g
+ s%\$%$$%g
+ EOF
+-DEFS=`sed -f conftest.defs confdefs.h | tr '\012\015' '  '|tr -d '\r' `
++DEFS=`sed -f conftest.defs confdefs.h | tr '\012\015' '  '|tr -d '\r' |tr -d '\r' `
+ rm -f conftest.defs
+ 
+ 
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/tetex/e2pall tetex-src-3.0-os2/texk/tetex/e2pall
+--- tetex-src-3.0/texk/tetex/e2pall	Wed Feb  1 00:31:40 2006
++++ tetex-src-3.0-os2/texk/tetex/e2pall	Sun Mar  6 03:32:58 2005
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env perl
++#!env.exe perl
+ 
+ # Author: Jody Klymak <jklymak@apl.washington.edu>, publisted by a posting
+ #   to the pdftex mailinglist.
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/tetex/epstopdf tetex-src-3.0-os2/texk/tetex/epstopdf
+--- tetex-src-3.0/texk/tetex/epstopdf	Wed Feb  1 00:31:40 2006
++++ tetex-src-3.0-os2/texk/tetex/epstopdf	Sun Mar  6 03:32:58 2005
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env perl
++#!env.exe perl
+ 
+ # Copyright 1998-2001 by Sebastian Rahtz et al.
+ # epstopdf is free software; you can redistribute it and/or modify
+@@ -67,7 +67,8 @@
+ my $title = "\U$program\E $fileversion, $filedate - $copyright\n";
+ 
+ ### ghostscript command name
+-my $GS = "gs";
++#my $GS = "gs";
++my $GS = "gsos2";
+ $GS = "gswin32c" if $^O eq 'MSWin32';
+ 
+ if ($IsWin32) {
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/tetex/fmtutil tetex-src-3.0-os2/texk/tetex/fmtutil
+--- tetex-src-3.0/texk/tetex/fmtutil	Wed Feb  1 00:31:40 2006
++++ tetex-src-3.0-os2/texk/tetex/fmtutil	Sun Mar  6 03:32:58 2005
+@@ -511,14 +511,14 @@
+   test -d "$destdir" || abort "format directory \`$destdir' does not exist"
+   test -w "$destdir" || abort "format directory \`$destdir' is not writable"
+ 
+-  thisdir=`pwd`
++  thisdir=`pwd.exe`
+ 
+-  : ${KPSE_DOT=$thisdir}
+-  export KPSE_DOT
++#  : ${KPSE_DOT=$thisdir}
++#jsawa  export KPSE_DOT
+ 
+   # due to KPSE_DOT, we don't search the current directory, so include
+   # it explicitly for formats that \write and later on \read
+-  TEXINPUTS="$tmpdir:$TEXINPUTS"; export TEXINPUTS
++  TEXINPUTS="$tmpdir;$TEXINPUTS"; export TEXINPUTS
+ 
+   setupTmpDir
+   cd "$tmpdir" || {
+@@ -528,11 +528,11 @@
+ 
+   # make local paths absolute:
+   case "$destdir" in
+-    /*) ;;
++    /*|[A-Za-z]:/*) ;;
+     *)  destdir="$thisdir/$destdir";;
+   esac
+   case "$cnf_file" in
+-    /*) ;;
++    /*|[A-Za-z]:/*) ;;
+     *)  cnf_file="$thisdir/$cnf_file";;
+   esac
+ 
+@@ -695,7 +695,7 @@
+   # run in a subshell to get a local effect of TEXPOOL manipulation:
+   (
+     # If necessary, set TEXPOOL. Use absolute path, because of KPSE_DOT.
+-    $localpool && { TEXPOOL="`pwd`:$TEXPOOL"; export TEXPOOL; }
++    $localpool && { TEXPOOL="`pwd.exe`;$TEXPOOL"; export TEXPOOL; }
+     verbose $engine -ini $tcxflag $jobswitch $prgswitch $texargs
+   ) </dev/null
+ 
+@@ -810,7 +810,7 @@
+   hyphenfile=$1
+ 
+   case $hyphenfile in
+-    /*)
++    /*|[A-Za-z]:*)
+       :
+       ;;
+     ./*)
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/tetex/texconfig tetex-src-3.0-os2/texk/tetex/texconfig
+--- tetex-src-3.0/texk/tetex/texconfig	Wed Feb  1 00:31:42 2006
++++ tetex-src-3.0-os2/texk/tetex/texconfig	Sun Mar  6 03:32:58 2005
+@@ -2,7 +2,8 @@
+ 
+ # TeX-Config version 3.0
+ # Thomas Esser, te@dbs.uni-hannover.de. Public domain.
+-
++# for OS/2
++PATH=`cmd.exe /c "echo %PATH%" | sed  's@\\\\@/@g'`
+ # invoke the right shell:
+ 
+ test -f /bin/ksh && test -z "$RUNNING_KSH" \
+@@ -48,8 +49,8 @@
+   case $FMT in
+     "") 
+       FMT=fmt
+-      test ! -x /bin/fmt && test ! -f /usr/bin/fmt &&
+-        { test -x /bin/adjust || test -x /usr/bin/adjust; } && FMT=adjust
++#      test ! -x /bin/fmt && test ! -f /usr/bin/fmt &&
++#        { test -x /bin/adjust || test -x /usr/bin/adjust; } && FMT=adjust
+       ;;
+     *)
+       return
+@@ -129,17 +130,35 @@
+     esac
+   done
+ }
+-
++checkForBinary()
++{
++  cfbBinary=$1
++    echo $1
++    if type $cfbBinary 1>nul 2>&1  ; then found=true ; fi
++    if type $cfbBinary.cmd 1>nul 2>&1  ; then found=true ; fi
++    if type $cfbBinary.exe 1>nul 2>&1  ; then found=true ; fi
++    x=`type $* 1>nul 2>&1|  sed -e 's@^.* @@' -e 's@\\\\@/@g' -e 's@\\.$@@'`
++    if [ -n "$x" ] ; then
++      grep '^\(#!\|[ \t]*extproc\)' "$x">nul 2>&1
++      found=true
++    else
++      found=false
++    fi
++  case $found in
++    true) (exit 0); return 0;;
++    false) (exit 1); return 1;;
++  esac
++}
+ ###############################################################################
+ # checkForBinary(prog)
+ #   echo full path of prog
+ ###############################################################################
+-checkForBinary()
++checkForBinary__()
+ {
+   cfbBinary=$1
+ 
+   OLDIFS=$IFS
+-  IFS=:
++  IFS=";"
+   set x `echo "$PATH" | sed 's/^:/.:/; s/:$/:./; s/::/:.:/g'`; shift
+   found=false
+   for pathElem
+@@ -179,6 +198,9 @@
+ ###############################################################################
+ runDialog()
+ {
++  #jsawa
++  DIALOG_TERMINFO=$TERMINFO
++  DIALOG_TERM=$TERM
+   test -z "$NO_CLEAR" && tty -s && clear
+   case "$DIALOG_PROG" in
+     "")
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/tetex/texconfig-dialog tetex-src-3.0-os2/texk/tetex/texconfig-dialog
+--- tetex-src-3.0/texk/tetex/texconfig-dialog	Wed Feb  1 00:31:42 2006
++++ tetex-src-3.0-os2/texk/tetex/texconfig-dialog	Sun Mar  6 03:32:58 2005
+@@ -2,6 +2,20 @@
+ 
+ # TeX-Config version 3.0
+ # Thomas Esser, te@dbs.uni-hannover.de. Public domain.
++#jsawa for OS/2
++DIALOG_PROG=tcdialog
++#DIALOG_PROG=dialog
++#SCR_SIZE=`scrsize 2>nul | sed -e 's@^\([0-9][0-9]*\) \([0-9][0-9]*\)$@\2 \1@'`
++LINES=`scrsize 2>nul | sed -e 's@^\([0-9][0-9]*\) \([0-9][0-9]*\)$@\2@'`
++LNIES=$((LINES--))
++COLS=`scrsize 2>nul | sed -e 's@^\([0-9][0-9]*\) \([0-9][0-9]*\)$@\1@'`
++if [ -z $LINES ] ; then
++   LINES=23
++fi
++if [ -z $COLS ] ; then
++   COLS= 80
++fi
++SCR_SIZE="$LINES $COLS"
+ 
+ # invoke the right shell:
+ 
+@@ -139,9 +153,9 @@
+       ;;
+     reset)
+       test -n "$NO_CLEAR" && return
+-      reset 2>/dev/null
+-      stty sane 2>/dev/null
+-      reset 2>/dev/null
++#      reset 2>/dev/null
++#      stty sane 2>/dev/null
++#      reset 2>/dev/null
+       termCtl clear
+       ;;
+     readln)
+@@ -179,7 +193,7 @@
+ a file. You can look at this file using "LOG". If cursor keys make
+ trouble, you may have more luck with +/- and TAB.
+ " \
+-      23 80 14 \
++      $SCR_SIZE 14 \
+       EXIT      'exit' \
+       PAPER     'default paper: A4 or letter (us)' \
+       MODE      'default metafont mode and resolution' \
+@@ -241,7 +255,7 @@
+ Chosse a mode to be used when metafont generates font bitmaps. The resolution is the most important point, but there might
+ be differences between modes of the same resolution. See the comments in the file modes.mf for more details.
+ \"" \
+-      23 80 14 \
++      $SCR_SIZE 14 \
+       `texconfig mode-list` 2>"$tmpmenu"
+ }
+ 
+@@ -286,7 +300,7 @@
+ printing system to convert PostScript to a format that your printer can
+ handle. Maybe, you can use GhostScript to do the conversion (if your
+ printer is supported)." \
+-      23 80 9 \
++      $SCR_SIZE 9 \
+       RETURN	'back to the main menu' \
+       DEST      'define default destination of the generated Postscript' \
+       MODE      'change metafont mode/resolution' \
+@@ -309,7 +323,7 @@
+ In general, you need a command like 'lpr' or 'lpr -Pfoo'.
+ 
+ NOTE: If you just press return, printing will be disabled and the output saved to a file by default.
+-" 23 80 2>"$tmpmenu"
++" $SCR_SIZE 2>"$tmpmenu"
+         if test $? = 0; then
+           menuDvipsAns=`cat "$tmpmenu"`
+           case $menuDvipsAns in
+@@ -335,7 +349,7 @@
+         ;;
+       OFFSET)
+         runDialog --inputbox "Enter a dimension pair (a rightwards offset and a downwards
+-offset), e.g. 2mm,-0.5in (right 2mm and up .5in):" 23 80 2>"$tmpmenu"; menuDvipsAns=`cat "$tmpmenu"`
++offset), e.g. 2mm,-0.5in (right 2mm and up .5in):" $SCR_SIZE 2>"$tmpmenu"; menuDvipsAns=`cat "$tmpmenu"`
+         case $menuDvipsAns in
+           "") : ;;
+           *)
+@@ -347,7 +361,7 @@
+       PAPER)
+         eval runDialog \
+           --menu \'\\n\\nChoose the default papersize definition for dvips.\\n\\n\' \
+-          23 80 8 `texconfig dvips paper-list` \
++          $SCR_SIZE 8 `texconfig dvips paper-list` \
+           2>"$tmpmenu"
+         paper=`cat "$tmpmenu"`
+         if test -n "$paper"; then
+@@ -359,7 +373,7 @@
+         menuDvipsDest=ps
+         ;;
+       CHANGE)
+-        runDialog --inputbox "Printer name (for future settings of DEST / MODE / OFFSET)" 23 80 2>"$tmpmenu"
++        runDialog --inputbox "Printer name (for future settings of DEST / MODE / OFFSET)" $SCR_SIZE 2>"$tmpmenu"
+         menuDvipsAns=`cat $tmpmenu`
+         case $menuDvipsAns in
+           "") : ;;
+@@ -367,7 +381,7 @@
+         esac
+         ;;
+       ADD)
+-        runDialog --inputbox "Printer name (for printer to add)" 23 80 2>"$tmpmenu"
++        runDialog --inputbox "Printer name (for printer to add)" $SCR_SIZE 2>"$tmpmenu"
+         menuDvipsAns=`cat $tmpmenu`
+         case $menuDvipsAns in
+           "") : ;;
+@@ -378,7 +392,7 @@
+         esac
+         ;;
+       DEL)
+-        runDialog --inputbox "Printer name (for printer to delete)" 23 80 2>"$tmpmenu"
++        runDialog --inputbox "Printer name (for printer to delete)" $SCR_SIZE 2>"$tmpmenu"
+         menuDvipsAns=`cat $tmpmenu`
+         case $menuDvipsAns in
+           "") : ;;
+@@ -398,7 +412,7 @@
+     --menu "
+ Select your default paper format.
+ " \
+-    23 80 14 \
++    $SCR_SIZE 14 \
+     RETURN 'return to the main menu' \
+     A4	'ISO A4 (210x297mm)' \
+     LETTER 'US (8.5x11in)' 2>"$tmpmenu"
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/tetex/texdoc tetex-src-3.0-os2/texk/tetex/texdoc
+--- tetex-src-3.0/texk/tetex/texdoc	Wed Feb  1 00:31:42 2006
++++ tetex-src-3.0-os2/texk/tetex/texdoc	Sun Mar  6 03:32:58 2005
+@@ -89,10 +89,12 @@
+         extlist='.pdf .ps .txt .dvi .html'
+ 	;;
+   *)
+-	: ${TEXDOCVIEW_dvi='(xdvi %s) &'}
+-	: ${TEXDOCVIEW_pdf='(acroread %s) &'}
+-	: ${TEXDOCVIEW_ps='(gv %s) &'}
+-	: ${TEXDOCVIEW_html='mozilla -remote openURL'"'(%s)'"' 2>/dev/null || mozilla %s &'}
++	: ${TEXDOCVIEW_dvi=' dvi2tty.exe %s &'}
++	: ${TEXDOCVIEW_pdf='(I:/GSVIEW/GVPM.EXE %s )&'}
++	: ${TEXDOCVIEW_ps='(I:/GSVIEW/GVPM.EXE %s )&'}
++	: ${TEXDOCVIEW_html='(netscape.exe %s )&'}
++	: ${TEXDOCVIEW_txt="${PAGER-more} %s"}
++	: ${TEXDOCVIEW_doc="${PAGER-more} %s"}
+ 	: ${TEXDOCVIEW_txt="${PAGER-more} %s"}
+ 	: ${TEXDOCVIEW_="${PAGER-more} %s"} # no extension, default to pager
+         extlist='.dvi .dvi.gz .dvi.bz2 .pdf .pdf.gz .pdf.bz2 .ps .ps.gz .ps.bz2 .txt .txt.gz .txt.bz2 .html'
+@@ -138,7 +140,9 @@
+ do
+   case $mode in
+     search)
+-      find `kpsewhich --expand-path='$TEXMF/doc' | tr : ' '` -type f -print |
++#jsawa      find `kpsewhich --expand-path='$TEXMF/doc' | tr : ' '` -type f -print |
++#
++      find `kpsewhich --expand-path='$TEXMF/doc'` -type f -print |
+         egrep $name
+       continue
+       ;;
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/tetex/texdoctk tetex-src-3.0-os2/texk/tetex/texdoctk
+--- tetex-src-3.0/texk/tetex/texdoctk	Wed Feb  1 00:31:42 2006
++++ tetex-src-3.0-os2/texk/tetex/texdoctk	Sun Mar  6 03:32:58 2005
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env perl
++#!env.exe perl
+ # We started with a hack provided by Thomas Esser. This expression replaces
+ # the unix specific line \type {#!/usr/local/bin/perl -w}.
+ ###############################################################################
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/tetex/texexec tetex-src-3.0-os2/texk/tetex/texexec
+--- tetex-src-3.0/texk/tetex/texexec	Wed Feb  1 00:31:42 2006
++++ tetex-src-3.0-os2/texk/tetex/texexec	Sun Mar  6 03:32:58 2005
+@@ -13,7 +13,8 @@
+ # hack around a bug in zsh:
+ test -n "${ZSH_VERSION+set}" && alias -g '${1+"$@"}'='"$@"'
+ 
+-what=`echo $0 | sed 's@.*/@@'`
++# jsawa what=`echo $0 | sed 's@.*/@@'`
++what=`echo $0 | sed 's@^.*[/\\]\([^\./\\]\+\).*$@\1@'`
+ 
+ p=`kpsewhich -format=texmfscripts $what.pl`
+ { test -n "$p" && test -f "$p"; } \
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/tetex/texlinks tetex-src-3.0-os2/texk/tetex/texlinks
+--- tetex-src-3.0/texk/tetex/texlinks	Wed Feb  1 00:31:44 2006
++++ tetex-src-3.0-os2/texk/tetex/texlinks	Sun Mar  6 03:32:58 2005
+@@ -100,11 +100,21 @@
+ # search a binary along $PATH:
+ check_for_binary()
+ {
+-  testbin=$1
+-  set x `echo "$PATH" | sed 's/^:/.:/; s/:$/:./; s/::/:.:/g; s/:/ /g'`; shift
+-  for i
++  testbin=$1.exe
++#jsawa  
++#set x `echo "$PATH" | sed 's/^:/.:/; s/:$/:./; s/::/:.:/g; s/:/ /g'`; shift
++#  for i
++#  do
++#    if [ -x "$i/$testbin" ]; then
++#      echo "$i/$testbin"
++#      return 0
++#    fi
++#  done
++
++  for i in "$PATH"
+   do
+-    if [ -x "$i/$testbin" ]; then
++      echo "$i/$testbin"
++    if [ -f "$i/$testbin" ]; then
+       echo "$i/$testbin"
+       return 0
+     fi
+@@ -174,7 +184,7 @@
+             ;;
+         esac
+       else
+-        verbose_do ln -s "$dest" "$src"
++        verbose_do cp -vp "$dest" "$src"
+       fi
+       ;;
+    esac
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/tetex/updmap tetex-src-3.0-os2/texk/tetex/updmap
+--- tetex-src-3.0/texk/tetex/updmap	Wed Feb  1 00:31:44 2006
++++ tetex-src-3.0-os2/texk/tetex/updmap	Sun Mar  6 03:32:58 2005
+@@ -156,6 +156,15 @@
+ }
+ 
+ ###############################################################################
++# os2_ln()
++#   simulate `ln -s '            Jun Sawataishi<jsawa@attglobal.net>
++###############################################################################
++os2_ln() {
++  d=`dirname $2`
++  cp -uvp $d/$1 $2
++}
++
++###############################################################################
+ # verboseMsg(msg)
+ #   print `msg' to stderr is $verbose is true
+ ###############################################################################
+@@ -219,22 +228,22 @@
+ {
+   rm -f "$dvipsoutputdir/psfonts.map"
+   if test "x$dvipsPreferOutline" = xtrue; then
+-    ln -s psfonts_t1.map "$dvipsoutputdir/psfonts.map"
++    os2_ln  psfonts_t1.map "$dvipsoutputdir/psfonts.map"
+   else
+-    ln -s psfonts_pk.map "$dvipsoutputdir/psfonts.map"
++    os2_ln  psfonts_pk.map "$dvipsoutputdir/psfonts.map"
+   fi
+ 
+   rm -f "$pdftexoutputdir/pdftex.map"
+   if test "x$pdftexDownloadBase14" = xtrue; then
+-    ln -s pdftex_dl14.map "$pdftexoutputdir/pdftex.map"
++    os2_ln  pdftex_dl14.map "$pdftexoutputdir/pdftex.map"
+   else
+-    ln -s pdftex_ndl14.map "$pdftexoutputdir/pdftex.map"
++    os2_ln  pdftex_ndl14.map "$pdftexoutputdir/pdftex.map"
+   fi
+   rm -f "$dvipdfmoutputdir/dvipdfm.map"
+   if test "x$dvipdfmDownloadBase14" = xtrue; then
+-    ln -s dvipdfm_dl14.map "$dvipdfmoutputdir/dvipdfm.map"
++    os2_ln  dvipdfm_dl14.map "$dvipdfmoutputdir/dvipdfm.map"
+   else
+-    ln -s dvipdfm_ndl14.map "$dvipdfmoutputdir/dvipdfm.map"
++    os2_ln  dvipdfm_ndl14.map "$dvipdfmoutputdir/dvipdfm.map"
+   fi
+ }
+ 
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/xdvik/os2configure.cmd tetex-src-3.0-os2/texk/xdvik/os2configure.cmd
+--- tetex-src-3.0/texk/xdvik/os2configure.cmd	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/texk/xdvik/os2configure.cmd	Sun Mar  6 03:32:58 2005
+@@ -0,0 +1,15 @@
++extproc sh
++#!sh
++    configure \
++     --prefix=/usr\
++     --datadir=/usr/share\
++     --infodir=/usr/share/info\
++     --mandir=/usr/share/man\
++     --with-x11\
++     --disable-multiplatform\
++     --x-includes=${X11ROOT}/XFree86/include\
++     --x-libraries=${X11ROOT}/XFree86/lib
++
++#     --with-xdvi-x-toolkit=xaw3d
++#
++#EOF
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texi2html/configure tetex-src-3.0-os2/utils/texi2html/configure
+--- tetex-src-3.0/utils/texi2html/configure	Wed Feb  1 00:29:50 2006
++++ tetex-src-3.0-os2/utils/texi2html/configure	Sun Mar  6 03:32:58 2005
+@@ -2056,7 +2056,7 @@
+ # platform that uses two characters for line-breaks (e.g., DOS), tr
+ # would break.
+ ac_LF_and_DOT=`echo; echo .`
+-DEFS=`sed -n -f confdef2opt.sed confdefs.h | tr "$ac_LF_and_DOT" ' .'|tr -d '\r' `
++DEFS=`sed -n -f confdef2opt.sed confdefs.h | tr "$ac_LF_and_DOT" ' .'|tr -d '\r' |tr -d '\r' `
+ rm -f confdef2opt.sed
+ 
+ 
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texi2html/doc/texi2html.html tetex-src-3.0-os2/utils/texi2html/doc/texi2html.html
+--- tetex-src-3.0/utils/texi2html/doc/texi2html.html	Fri Feb  4 10:52:12 2005
++++ tetex-src-3.0-os2/utils/texi2html/doc/texi2html.html	Sun Mar  6 03:48:22 2005
+@@ -34,7 +34,7 @@
+ permission notice may be stated in a translation approved
+ by the Free Software Foundation.
+ -->
+-<!-- Created on February, 3 2005 by texi2html 1.76 -->
++<!-- Created on March, 6 2005 by texi2html 1.76 -->
+ <!--
+ Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+             Karl Berry  <karl@freefriends.org>
+@@ -5961,7 +5961,7 @@
+ </tr></table>
+ <h1>About This Document</h1>
+ <p>
+-  This document was generated by <em>Derek R. Price</em> on <em>February, 3 2005</em> using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
++  This document was generated on <i>March, 6 2005</i> using <a href="http://texi2html.cvshome.org/"><i>texi2html 1.76</i></a>.
+ </p>
+ <p>
+   The buttons in the navigation panels have the following meaning:
+@@ -6063,7 +6063,7 @@
+ <hr size="1">
+ <p>
+  <font size="-1">
+-  This document was generated by <em>Derek R. Price</em> on <em>February, 3 2005</em> using <a href="http://texi2html.cvshome.org/"><em>texi2html 1.76</em></a>.
++  This document was generated on <i>March, 6 2005</i> using <a href="http://texi2html.cvshome.org/"><i>texi2html 1.76</i></a>.
+  </font>
+  <br>
+ 
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texi2html/i18n/de.old tetex-src-3.0-os2/utils/texi2html/i18n/de.old
+--- tetex-src-3.0/utils/texi2html/i18n/de.old	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/utils/texi2html/i18n/de.old	Fri Feb  4 09:21:00 2005
+@@ -0,0 +1,114 @@
++$LANGUAGES->{'de'} = {
++                       '  The buttons in the navigation panels have the following meaning:' => '',
++                       '  where the @strong{ Example } assumes that the current position is at @strong{ Subsubsection One-Two-Three } of a document of the following structure:' => '',
++                       ' Up ' => '',
++                       '%{acronym_like} (%{explanation})' => '',
++                       '%{month}, %{day} %{year}' => '',
++                       '%{name} of %{class}' => '',
++                       '%{name} on %{class}' => '',
++                       '%{node_file_href}' => '',
++                       '%{node_file_href} @cite{%{book}}' => '',
++                       '%{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       '%{reference_name}' => '',
++                       '%{style} %{number}' => '',
++                       '%{style}: %{caption_first_line}' => '',
++                       '%{style}: %{shortcaption_first_line}' => '',
++                       '@b{%{quotation_arg}:} ' => '',
++                       '@cite{%{book}}' => '',
++                       'About This Document' => '@"Uber dieses Dokument',
++                       'April' => 'April',
++                       'August' => 'August',
++                       'Button' => '',
++                       'Contents' => '',
++                       'Current Position' => '',
++                       'December' => 'Dezember',
++                       'February' => 'Februar',
++                       'Footnotes' => 'Fu@ss{}noten',
++                       'From 1.2.3 go to' => '',
++                       'Go to' => '',
++                       'Index' => 'Index',
++                       'Index Entry' => '',
++                       'January' => 'Januar',
++                       'July' => 'Juli',
++                       'Jump to' => '',
++                       'June' => 'Juni',
++                       'March' => 'M@"arz',
++                       'May' => 'Mai',
++                       'Menu:' => '',
++                       'Name' => '',
++                       'Next' => '',
++                       'November' => 'November',
++                       'October' => 'Oktober',
++                       'Overview' => '',
++                       'Overview:' => '',
++                       'Prev' => '',
++                       'Section' => '',
++                       'Section One' => '',
++                       'See %{node_file_href}' => '',
++                       'See %{node_file_href} @cite{%{book}}' => '',
++                       'See %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'See %{reference_name}' => '',
++                       'See @cite{%{book}}' => '',
++                       'See section %{reference_name}' => '',
++                       'See section `%{section}\' in @cite{%{book}}' => '',
++                       'September' => 'September',
++                       'Short Table of Contents' => 'Kurzes Inhaltsverzeichniss',
++                       'Subsection One-Four' => '',
++                       'Subsection One-One' => '',
++                       'Subsection One-Three' => '',
++                       'Subsection One-Two' => '',
++                       'Subsubsection One-Two-Four' => '',
++                       'Subsubsection One-Two-One' => '',
++                       'Subsubsection One-Two-Three' => '',
++                       'Subsubsection One-Two-Two' => '',
++                       'T2H_today' => '',
++                       'Table of Contents' => 'Inhaltsverzeichniss',
++                       'This document was generated by @emph{%{user}} on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated by @emph{%{user}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated on @i{%{date}} using @uref{%{program_homepage}, @i{%{program}}}.' => '',
++                       'This document was generated using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'Top' => '',
++                       'Untitled Document' => '',
++                       'about (help)' => '',
++                       'beginning of this chapter or previous chapter' => '',
++                       'by @emph{%{user}}' => '',
++                       'by @emph{%{user}} on @emph{%{date}}' => '',
++                       'cover (top) of document' => '',
++                       'current' => '',
++                       'current section' => '',
++                       'first section in reading order' => '',
++                       'following node' => '',
++                       'index' => '',
++                       'last section in reading order' => '',
++                       'next chapter' => '',
++                       'next node' => '',
++                       'next section in reading order' => '',
++                       'next section on same level' => '',
++                       'node following in node reading order' => '',
++                       'node up' => '',
++                       'on @emph{%{date}}' => '',
++                       'previous node' => '',
++                       'previous section in reading order' => '',
++                       'previous section on same level' => '',
++                       'section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{node_file_href}' => '',
++                       'see %{node_file_href} @cite{%{book}}' => '',
++                       'see %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{reference_name}' => '',
++                       'see @cite{%{book}}' => '',
++                       'see section %{reference_name}' => '',
++                       'see section `%{section}\' in @cite{%{book}}' => '',
++                       'short table of contents' => '',
++                       'table of contents' => '',
++                       'unknown' => '',
++                       'up node' => '',
++                       'up section' => ''
++                     };
++
++$T2H_OBSOLETE_STRINGS->{'de'} = {
++                                  'See' => 'Siehe',
++                                  'section' => 'Abschnitt',
++                                  'see' => 'siehe'
++                                };
++
++
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texi2html/i18n/en tetex-src-3.0-os2/utils/texi2html/i18n/en
+--- tetex-src-3.0/utils/texi2html/i18n/en	Fri Feb  4 09:21:00 2005
++++ tetex-src-3.0-os2/utils/texi2html/i18n/en	Sun Mar  6 03:48:02 2005
+@@ -105,6 +105,3 @@
+                        'up section' => ''
+                      };
+ 
+-$T2H_OBSOLETE_STRINGS->{'en'} = {};
+-
+-
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texi2html/i18n/en.old tetex-src-3.0-os2/utils/texi2html/i18n/en.old
+--- tetex-src-3.0/utils/texi2html/i18n/en.old	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/utils/texi2html/i18n/en.old	Fri Feb  4 09:21:00 2005
+@@ -0,0 +1,110 @@
++$LANGUAGES->{'en'} = {
++                       '  The buttons in the navigation panels have the following meaning:' => '',
++                       '  where the @strong{ Example } assumes that the current position is at @strong{ Subsubsection One-Two-Three } of a document of the following structure:' => '',
++                       ' Up ' => '',
++                       '%{acronym_like} (%{explanation})' => '',
++                       '%{month}, %{day} %{year}' => '',
++                       '%{name} of %{class}' => '',
++                       '%{name} on %{class}' => '',
++                       '%{node_file_href}' => '',
++                       '%{node_file_href} @cite{%{book}}' => '',
++                       '%{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       '%{reference_name}' => '',
++                       '%{style} %{number}' => '',
++                       '%{style}: %{caption_first_line}' => '',
++                       '%{style}: %{shortcaption_first_line}' => '',
++                       '@b{%{quotation_arg}:} ' => '',
++                       '@cite{%{book}}' => '',
++                       'About This Document' => '',
++                       'April' => '',
++                       'August' => '',
++                       'Button' => '',
++                       'Contents' => '',
++                       'Current Position' => '',
++                       'December' => '',
++                       'February' => '',
++                       'Footnotes' => '',
++                       'From 1.2.3 go to' => '',
++                       'Go to' => '',
++                       'Index' => '',
++                       'Index Entry' => '',
++                       'January' => '',
++                       'July' => '',
++                       'Jump to' => '',
++                       'June' => '',
++                       'March' => '',
++                       'May' => '',
++                       'Menu:' => '',
++                       'Name' => '',
++                       'Next' => '',
++                       'November' => '',
++                       'October' => '',
++                       'Overview' => '',
++                       'Overview:' => '',
++                       'Prev' => '',
++                       'Section' => '',
++                       'Section One' => '',
++                       'See %{node_file_href}' => '',
++                       'See %{node_file_href} @cite{%{book}}' => '',
++                       'See %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'See %{reference_name}' => '',
++                       'See @cite{%{book}}' => '',
++                       'See section %{reference_name}' => '',
++                       'See section `%{section}\' in @cite{%{book}}' => '',
++                       'September' => '',
++                       'Short Table of Contents' => '',
++                       'Subsection One-Four' => '',
++                       'Subsection One-One' => '',
++                       'Subsection One-Three' => '',
++                       'Subsection One-Two' => '',
++                       'Subsubsection One-Two-Four' => '',
++                       'Subsubsection One-Two-One' => '',
++                       'Subsubsection One-Two-Three' => '',
++                       'Subsubsection One-Two-Two' => '',
++                       'T2H_today' => '%s, %d %d',
++                       'Table of Contents' => '',
++                       'This document was generated by @emph{%{user}} on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated by @emph{%{user}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated on @i{%{date}} using @uref{%{program_homepage}, @i{%{program}}}.' => '',
++                       'This document was generated using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'Top' => '',
++                       'Untitled Document' => '',
++                       'about (help)' => '',
++                       'beginning of this chapter or previous chapter' => '',
++                       'by @emph{%{user}}' => '',
++                       'by @emph{%{user}} on @emph{%{date}}' => '',
++                       'cover (top) of document' => '',
++                       'current' => '',
++                       'current section' => '',
++                       'first section in reading order' => '',
++                       'following node' => '',
++                       'index' => '',
++                       'last section in reading order' => '',
++                       'next chapter' => '',
++                       'next node' => '',
++                       'next section in reading order' => '',
++                       'next section on same level' => '',
++                       'node following in node reading order' => '',
++                       'node up' => '',
++                       'on @emph{%{date}}' => '',
++                       'previous node' => '',
++                       'previous section in reading order' => '',
++                       'previous section on same level' => '',
++                       'section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{node_file_href}' => '',
++                       'see %{node_file_href} @cite{%{book}}' => '',
++                       'see %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{reference_name}' => '',
++                       'see @cite{%{book}}' => '',
++                       'see section %{reference_name}' => '',
++                       'see section `%{section}\' in @cite{%{book}}' => '',
++                       'short table of contents' => '',
++                       'table of contents' => '',
++                       'unknown' => '',
++                       'up node' => '',
++                       'up section' => ''
++                     };
++
++$T2H_OBSOLETE_STRINGS->{'en'} = {};
++
++
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texi2html/i18n/es.old tetex-src-3.0-os2/utils/texi2html/i18n/es.old
+--- tetex-src-3.0/utils/texi2html/i18n/es.old	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/utils/texi2html/i18n/es.old	Fri Feb  4 09:21:00 2005
+@@ -0,0 +1,114 @@
++$LANGUAGES->{'es'} = {
++                       '  The buttons in the navigation panels have the following meaning:' => '',
++                       '  where the @strong{ Example } assumes that the current position is at @strong{ Subsubsection One-Two-Three } of a document of the following structure:' => '',
++                       ' Up ' => '',
++                       '%{acronym_like} (%{explanation})' => '',
++                       '%{month}, %{day} %{year}' => '',
++                       '%{name} of %{class}' => '',
++                       '%{name} on %{class}' => '',
++                       '%{node_file_href}' => '',
++                       '%{node_file_href} @cite{%{book}}' => '',
++                       '%{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       '%{reference_name}' => '',
++                       '%{style} %{number}' => '',
++                       '%{style}: %{caption_first_line}' => '',
++                       '%{style}: %{shortcaption_first_line}' => '',
++                       '@b{%{quotation_arg}:} ' => '',
++                       '@cite{%{book}}' => '',
++                       'About This Document' => '',
++                       'April' => 'abril',
++                       'August' => 'agosto',
++                       'Button' => '',
++                       'Contents' => '',
++                       'Current Position' => '',
++                       'December' => 'diciembre',
++                       'February' => 'febrero',
++                       'Footnotes' => '',
++                       'From 1.2.3 go to' => '',
++                       'Go to' => '',
++                       'Index' => 'Index',
++                       'Index Entry' => '',
++                       'January' => 'enero',
++                       'July' => 'julio',
++                       'Jump to' => '',
++                       'June' => 'junio',
++                       'March' => 'marzo',
++                       'May' => 'mayo',
++                       'Menu:' => '',
++                       'Name' => '',
++                       'Next' => '',
++                       'November' => 'noviembre',
++                       'October' => 'octubre',
++                       'Overview' => '',
++                       'Overview:' => '',
++                       'Prev' => '',
++                       'Section' => '',
++                       'Section One' => '',
++                       'See %{node_file_href}' => '',
++                       'See %{node_file_href} @cite{%{book}}' => '',
++                       'See %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'See %{reference_name}' => '',
++                       'See @cite{%{book}}' => '',
++                       'See section %{reference_name}' => '',
++                       'See section `%{section}\' in @cite{%{book}}' => '',
++                       'September' => 'septiembre',
++                       'Short Table of Contents' => 'Resumen del Contenido',
++                       'Subsection One-Four' => '',
++                       'Subsection One-One' => '',
++                       'Subsection One-Three' => '',
++                       'Subsection One-Two' => '',
++                       'Subsubsection One-Two-Four' => '',
++                       'Subsubsection One-Two-One' => '',
++                       'Subsubsection One-Two-Three' => '',
++                       'Subsubsection One-Two-Two' => '',
++                       'T2H_today' => '',
++                       'Table of Contents' => '@\'{@dotless{I}}ndice General',
++                       'This document was generated by @emph{%{user}} on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated by @emph{%{user}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated on @i{%{date}} using @uref{%{program_homepage}, @i{%{program}}}.' => '',
++                       'This document was generated using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'Top' => '',
++                       'Untitled Document' => '',
++                       'about (help)' => '',
++                       'beginning of this chapter or previous chapter' => '',
++                       'by @emph{%{user}}' => '',
++                       'by @emph{%{user}} on @emph{%{date}}' => '',
++                       'cover (top) of document' => '',
++                       'current' => '',
++                       'current section' => '',
++                       'first section in reading order' => '',
++                       'following node' => '',
++                       'index' => '',
++                       'last section in reading order' => '',
++                       'next chapter' => '',
++                       'next node' => '',
++                       'next section in reading order' => '',
++                       'next section on same level' => '',
++                       'node following in node reading order' => '',
++                       'node up' => '',
++                       'on @emph{%{date}}' => '',
++                       'previous node' => '',
++                       'previous section in reading order' => '',
++                       'previous section on same level' => '',
++                       'section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{node_file_href}' => '',
++                       'see %{node_file_href} @cite{%{book}}' => '',
++                       'see %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{reference_name}' => '',
++                       'see @cite{%{book}}' => '',
++                       'see section %{reference_name}' => '',
++                       'see section `%{section}\' in @cite{%{book}}' => '',
++                       'short table of contents' => '',
++                       'table of contents' => '',
++                       'unknown' => '',
++                       'up node' => '',
++                       'up section' => ''
++                     };
++
++$T2H_OBSOLETE_STRINGS->{'es'} = {
++                                  'See' => 'V@\'ease',
++                                  'section' => 'secci@\'on',
++                                  'see' => 'v@\'ase'
++                                };
++
++
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texi2html/i18n/fr.old tetex-src-3.0-os2/utils/texi2html/i18n/fr.old
+--- tetex-src-3.0/utils/texi2html/i18n/fr.old	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/utils/texi2html/i18n/fr.old	Fri Feb  4 09:21:00 2005
+@@ -0,0 +1,139 @@
++$LANGUAGES->{'fr'} = {
++                       '  The buttons in the navigation panels have the following meaning:' => '  Les boutons de navigation ont la signification suivante :',
++                       '  where the @strong{ Example } assumes that the current position is at @strong{ Subsubsection One-Two-Three } of a document of the following structure:' => '  Dans cet exemple on est @`a @strong{ Sous section un-deux-trois } dans un document dont la structure est :',
++                       ' Up ' => 'Plus haut',
++                       '%{acronym_like} (%{explanation})' => '',
++                       '%{month}, %{day} %{year}' => 'le %{day} %{month} %{year}',
++                       '%{name} of %{class}' => '%{name} de %{class}',
++                       '%{name} on %{class}' => '%{name} de %{class}',
++                       '%{node_file_href}' => '',
++                       '%{node_file_href} @cite{%{book}}' => '',
++                       '%{node_file_href} section `%{section}\' in @cite{%{book}}' => '%{node_file_href} section `%{section}\' dans @cite{%{book}}',
++                       '%{reference_name}' => '',
++                       '%{style} %{number}' => '',
++                       '%{style}: %{caption_first_line}' => '',
++                       '%{style}: %{shortcaption_first_line}' => '',
++                       '@b{%{quotation_arg}:} ' => '',
++                       '@cite{%{book}}' => '',
++                       'About This Document' => 'A propos de ce document',
++                       'April' => 'Avril',
++                       'August' => 'Ao@^ut',
++                       'Button' => 'Bouton',
++                       'Contents' => 'Table des mati@`eres',
++                       'Current Position' => 'Position',
++                       'December' => 'D@\'ecembre',
++                       'February' => 'F@\'evrier',
++                       'Footnotes' => 'Notes de bas de page',
++                       'From 1.2.3 go to' => 'Depuis 1.2.3 aller @`a',
++                       'Go to' => 'Aller @`a',
++                       'Index' => 'Index',
++                       'Index Entry' => 'Entr@\'ee d\'index',
++                       'January' => 'Janvier',
++                       'July' => 'Juillet',
++                       'Jump to' => 'Aller @`a',
++                       'June' => 'Juin',
++                       'March' => 'Mars',
++                       'May' => 'Mai',
++                       'Menu:' => 'Menu@ :',
++                       'Name' => 'Nom',
++                       'Next' => 'Suivant',
++                       'November' => 'Novembre',
++                       'October' => 'Octobre',
++                       'Overview' => 'Vue d\'ensemble',
++                       'Overview:' => 'Vue d\'ensemble@ :',
++                       'Prev' => 'Pr@\'ec@\'edent',
++                       'Section' => '',
++                       'Section One' => 'Section un',
++                       'See %{node_file_href}' => 'Voir %{node_file_href}',
++                       'See %{node_file_href} @cite{%{book}}' => 'Voir %{node_file_href} @cite{%{book}}',
++                       'See %{node_file_href} section `%{section}\' in @cite{%{book}}' => 'Voir %{node_file_href} section `%{section}\' dans @cite{%{book}}',
++                       'See %{reference_name}' => 'Voir %{reference_name}',
++                       'See @cite{%{book}}' => 'Voir @cite{%{book}}',
++                       'See section %{reference_name}' => 'Voir la section %{reference_name}',
++                       'See section `%{section}\' in @cite{%{book}}' => 'Voir la section `%{section}\' dans @cite{%{book}}',
++                       'September' => 'Septembre',
++                       'Short Table of Contents' => 'R@\'esum@\'e du contenu',
++                       'Subsection One-Four' => 'Sous section un-quatre',
++                       'Subsection One-One' => 'Sous section un-un',
++                       'Subsection One-Three' => 'Sous section un-trois',
++                       'Subsection One-Two' => 'Sous section un-deux',
++                       'Subsubsection One-Two-Four' => 'Sous sous section un-deux-quatre',
++                       'Subsubsection One-Two-One' => 'Sous sous section un-deux-un',
++                       'Subsubsection One-Two-Three' => 'Sous sous section un-deux-trois',
++                       'Subsubsection One-Two-Two' => 'Sous sous section un-deux-deux',
++                       'T2H_today' => 'le %2$d %1$s %3$d',
++                       'Table of Contents' => 'Table des mati@`eres',
++                       'This document was generated by @emph{%{user}} on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => 'Ce document a @\'et@\'e g@\'en@\'er@\'e par @emph{%{user}} @emph{%{date}} en utilisant @uref{%{program_homepage}, @emph{%{program}}}.',
++                       'This document was generated by @emph{%{user}} using @uref{%{program_homepage}, @emph{%{program}}}.' => 'Ce document a @\'et@\'e g@\'en@\'er@\'e par @emph{%{user}} en utilisant @uref{%{program_homepage}, @emph{%{program}}}.',
++                       'This document was generated on @i{%{date}} using @uref{%{program_homepage}, @i{%{program}}}.' => '',
++                       'This document was generated using @uref{%{program_homepage}, @emph{%{program}}}.' => 'Ce document a @\'et@\'e g@\'en@\'er@\'e en utilisant @uref{%{program_homepage}, @emph{%{program}}}.',
++                       'Top' => '',
++                       'Untitled Document' => 'Document sans titre',
++                       'about (help)' => '@`a propos (page d\'aide)',
++                       'beginning of this chapter or previous chapter' => 'd@\'ebut de ce chapitre ou chapitre pr@\'ec@\'edent',
++                       'by @emph{%{user}}' => 'par @emph{%{user}}',
++                       'by @emph{%{user}} on @emph{%{date}}' => 'par @emph{%{user}} @emph{%{date}}',
++                       'cover (top) of document' => 'couverture (top) du document',
++                       'current' => 'courante',
++                       'current section' => 'section actuelle',
++                       'first section in reading order' => 'premi@`e section dans l\'ordre de lecture',
++                       'following node' => 'node suivant',
++                       'index' => 'index',
++                       'last section in reading order' => 'derni@`ere section dans l\'ordre de lecture',
++                       'next chapter' => 'chapitre suivant',
++                       'next node' => 'node suivant',
++                       'next section in reading order' => 'section suivante dans l\'ordre de lecture',
++                       'next section on same level' => 'section suivante au m@^eme niveau',
++                       'node following in node reading order' => 'node suivant dans l\'ordre des nodes',
++                       'node up' => 'node au dessus',
++                       'on @emph{%{date}}' => '@emph{%{date}}',
++                       'previous node' => 'node pr@\'ec@\'edent',
++                       'previous section in reading order' => 'section pr@\'ec@\'edente dans l\'ordre de lecture',
++                       'previous section on same level' => 'section pr@\'ec@\'edente au m@^eme niveau',
++                       'section `%{section}\' in @cite{%{book}}' => 'section `%{section}\' dans @cite{%{book}}',
++                       'see %{node_file_href}' => 'voir %{node_file_href}',
++                       'see %{node_file_href} @cite{%{book}}' => 'voir %{node_file_href} @cite{%{book}}',
++                       'see %{node_file_href} section `%{section}\' in @cite{%{book}}' => 'voir %{node_file_href} section `%{section}\' dans @cite{%{book}}',
++                       'see %{reference_name}' => 'voir %{reference_name}',
++                       'see @cite{%{book}}' => 'voir @cite{%{book}}',
++                       'see section %{reference_name}' => 'voir la section %{reference_name}',
++                       'see section `%{section}\' in @cite{%{book}}' => 'voir la section `%{section}\' dans @cite{{book}}',
++                       'short table of contents' => 'table des mati@`eres r@\'esum@\'ee',
++                       'table of contents' => 'table des mati@`eres',
++                       'unknown' => 'inconnu',
++                       'up node' => 'node au dessus',
++                       'up section' => 'section sup@\'erieure'
++                     };
++
++$T2H_OBSOLETE_STRINGS->{'fr'} = {
++                                  '  This document was generated %{who_and_when_generated} using %{program_homepage_href}.' => '  Ce document a &eacute;t&eacute; g&eacute;n&eacute;r&eacute; %{who_and_when_generated} en utilisant %{program_homepage_href}.',
++                                  '  where the <strong> Example </strong> assumes that the current position is at <strong> Subsubsection One-Two-Three </strong> of a document of the following structure:' => '  Dans cet exemple on est &agrave; <strong> Sous section un-deux-trois </strong> dans un document dont la structure est :',
++                                  '%{node_file_href} section `%{section}\' in <cite>%{book}</cite>' => '%{node_file_href} section `%{section}\' dans <cite>%{book}</cite>',
++                                  'See' => 'Voir',
++                                  'See %{node_file_href} <cite>%{book}</cite>' => 'Voir %{node_file_href} <cite>%{book}</cite>',
++                                  'See %{node_file_href} section `%{section}\' in <cite>%{book}</cite>' => 'Voir %{node_file_href} section `%{section}\' dans <cite>%{book}</cite>',
++                                  'See <cite>%{book}</cite>' => 'Voir <cite>%{book}</cite>',
++                                  'See section `%{section}\' in <cite>%{book}</cite>' => 'Voir la section `%{section}\' dans <cite>%{book}</cite>',
++                                  'This document was generated by <i>%{user}</i> on <i>%{date}</i> using %{program_homepage_href}.' => 'Ce document a &eacute;t&eacute; g&eacute;n&eacute;r&eacute; par <i>%{user}</i> <i>%{date}</i> en utilisant %{program_homepage_href}.',
++                                  'This document was generated by <i>%{user}</i> using %{program_homepage_href}.' => 'Ce document a &eacute;t&eacute; g&eacute;n&eacute;r&eacute; par <i>%{user}</i> en utilisant %{program_homepage_href}.',
++                                  'This document was generated by @emph{%{user}} on @emph{%{date}} using %{program_homepage_href}.' => 'Ce document a @\'et@\'e g@\'en@\'er@\'e par @emph{%{user}} @emph{%{date}} en utilisant %{program_homepage_href}.',
++                                  'This document was generated by @emph{%{user}} using %{program_homepage_href}.' => 'Ce document a @\'et@\'e g@\'en@\'er@\'e par @emph{%{user}} en utilisant %{program_homepage_href}.',
++                                  'This document was generated on <i>%{date}</i> using %{program_homepage_href}.' => 'Ce document a &eacute;t&eacute; g&eacute;n&eacute;r&eacute; <i>%{date}</i> en utilisant %{program_homepage_href}.',
++                                  'This document was generated on @emph{%{date}} using %{program_homepage_href}.' => 'Ce document a @\'et@\'e g@\'en@\'er@\'e @emph{%{date}} en utilisant %{program_homepage_href}.',
++                                  'This document was generated on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => 'Ce document a @\'et@\'e g@\'en@\'er@\'e @emph{%{date}} en utilisant @uref{%{program_homepage}, @emph{%{program}}}.',
++                                  'This document was generated using %{program_homepage_href}.' => 'Ce document a @\'et@\'e g@\'en@\'er@\'e en utilisant %{program_homepage_href}.',
++                                  'about (this page)' => 'a propos (cette page)',
++                                  'by <i>%{user}</i>' => 'par <i>%{user}</i>',
++                                  'by <i>%{user}</i> on <i>%{date}</i>' => 'par <i>%{user}</i> <i>%{date}</i>',
++                                  'concept index' => 'index',
++                                  'on <i>%{date}</i>' => '<i>%{date}</i>',
++                                  'section' => 'section',
++                                  'section `%{section}\' in <cite>%{book}</cite>' => 'section `%{section}\' dans <cite>%{book}</cite>',
++                                  'see' => 'voir',
++                                  'see %{node_file_href} <cite>%{book}</cite>' => 'voir %{node_file_href} <cite>%{book}</cite>',
++                                  'see %{node_file_href} section `%{section}\' in <cite>%{book}</cite>' => 'voir %{node_file_href} section `%{section}\' dans <cite>%{book}</cite>',
++                                  'see <cite>%{book}</cite>' => 'voir <cite>%{book}</cite>',
++                                  'see section `%{section}\' in <cite>%{book}</cite>' => 'voir la section `%{section}\' dans <cite>%{book}</cite>'
++                                };
++
++
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texi2html/i18n/nl.old tetex-src-3.0-os2/utils/texi2html/i18n/nl.old
+--- tetex-src-3.0/utils/texi2html/i18n/nl.old	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/utils/texi2html/i18n/nl.old	Fri Feb  4 09:21:00 2005
+@@ -0,0 +1,114 @@
++$LANGUAGES->{'nl'} = {
++                       '  The buttons in the navigation panels have the following meaning:' => '',
++                       '  where the @strong{ Example } assumes that the current position is at @strong{ Subsubsection One-Two-Three } of a document of the following structure:' => '',
++                       ' Up ' => '',
++                       '%{acronym_like} (%{explanation})' => '',
++                       '%{month}, %{day} %{year}' => '',
++                       '%{name} of %{class}' => '',
++                       '%{name} on %{class}' => '',
++                       '%{node_file_href}' => '',
++                       '%{node_file_href} @cite{%{book}}' => '',
++                       '%{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       '%{reference_name}' => '',
++                       '%{style} %{number}' => '',
++                       '%{style}: %{caption_first_line}' => '',
++                       '%{style}: %{shortcaption_first_line}' => '',
++                       '@b{%{quotation_arg}:} ' => '',
++                       '@cite{%{book}}' => '',
++                       'About This Document' => 'No translation available!',
++                       'April' => 'April',
++                       'August' => 'Augustus',
++                       'Button' => '',
++                       'Contents' => '',
++                       'Current Position' => '',
++                       'December' => 'December',
++                       'February' => 'Februari',
++                       'Footnotes' => 'No translation available!',
++                       'From 1.2.3 go to' => '',
++                       'Go to' => '',
++                       'Index' => 'Index',
++                       'Index Entry' => '',
++                       'January' => 'Januari',
++                       'July' => 'Juli',
++                       'Jump to' => '',
++                       'June' => 'Juni',
++                       'March' => 'Maart',
++                       'May' => 'Mei',
++                       'Menu:' => '',
++                       'Name' => '',
++                       'Next' => '',
++                       'November' => 'November',
++                       'October' => 'Oktober',
++                       'Overview' => '',
++                       'Overview:' => '',
++                       'Prev' => '',
++                       'Section' => '',
++                       'Section One' => '',
++                       'See %{node_file_href}' => '',
++                       'See %{node_file_href} @cite{%{book}}' => '',
++                       'See %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'See %{reference_name}' => '',
++                       'See @cite{%{book}}' => '',
++                       'See section %{reference_name}' => '',
++                       'See section `%{section}\' in @cite{%{book}}' => '',
++                       'September' => 'September',
++                       'Short Table of Contents' => 'Korte inhoudsopgave',
++                       'Subsection One-Four' => '',
++                       'Subsection One-One' => '',
++                       'Subsection One-Three' => '',
++                       'Subsection One-Two' => '',
++                       'Subsubsection One-Two-Four' => '',
++                       'Subsubsection One-Two-One' => '',
++                       'Subsubsection One-Two-Three' => '',
++                       'Subsubsection One-Two-Two' => '',
++                       'T2H_today' => '',
++                       'Table of Contents' => 'Inhoudsopgave',
++                       'This document was generated by @emph{%{user}} on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated by @emph{%{user}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated on @i{%{date}} using @uref{%{program_homepage}, @i{%{program}}}.' => '',
++                       'This document was generated using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'Top' => '',
++                       'Untitled Document' => '',
++                       'about (help)' => '',
++                       'beginning of this chapter or previous chapter' => '',
++                       'by @emph{%{user}}' => '',
++                       'by @emph{%{user}} on @emph{%{date}}' => '',
++                       'cover (top) of document' => '',
++                       'current' => '',
++                       'current section' => '',
++                       'first section in reading order' => '',
++                       'following node' => '',
++                       'index' => '',
++                       'last section in reading order' => '',
++                       'next chapter' => '',
++                       'next node' => '',
++                       'next section in reading order' => '',
++                       'next section on same level' => '',
++                       'node following in node reading order' => '',
++                       'node up' => '',
++                       'on @emph{%{date}}' => '',
++                       'previous node' => '',
++                       'previous section in reading order' => '',
++                       'previous section on same level' => '',
++                       'section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{node_file_href}' => '',
++                       'see %{node_file_href} @cite{%{book}}' => '',
++                       'see %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{reference_name}' => '',
++                       'see @cite{%{book}}' => '',
++                       'see section %{reference_name}' => '',
++                       'see section `%{section}\' in @cite{%{book}}' => '',
++                       'short table of contents' => '',
++                       'table of contents' => '',
++                       'unknown' => '',
++                       'up node' => '',
++                       'up section' => ''
++                     };
++
++$T2H_OBSOLETE_STRINGS->{'nl'} = {
++                                  'See' => 'Zie',
++                                  'section' => 'sectie',
++                                  'see' => 'zie'
++                                };
++
++
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texi2html/i18n/no.old tetex-src-3.0-os2/utils/texi2html/i18n/no.old
+--- tetex-src-3.0/utils/texi2html/i18n/no.old	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/utils/texi2html/i18n/no.old	Fri Feb  4 09:21:00 2005
+@@ -0,0 +1,114 @@
++$LANGUAGES->{'no'} = {
++                       '  The buttons in the navigation panels have the following meaning:' => '',
++                       '  where the @strong{ Example } assumes that the current position is at @strong{ Subsubsection One-Two-Three } of a document of the following structure:' => '',
++                       ' Up ' => '',
++                       '%{acronym_like} (%{explanation})' => '',
++                       '%{month}, %{day} %{year}' => '',
++                       '%{name} of %{class}' => '',
++                       '%{name} on %{class}' => '',
++                       '%{node_file_href}' => '',
++                       '%{node_file_href} @cite{%{book}}' => '',
++                       '%{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       '%{reference_name}' => '',
++                       '%{style} %{number}' => '',
++                       '%{style}: %{caption_first_line}' => '',
++                       '%{style}: %{shortcaption_first_line}' => '',
++                       '@b{%{quotation_arg}:} ' => '',
++                       '@cite{%{book}}' => '',
++                       'About This Document' => 'No translation available!',
++                       'April' => 'april',
++                       'August' => 'august',
++                       'Button' => '',
++                       'Contents' => '',
++                       'Current Position' => '',
++                       'December' => 'desember',
++                       'February' => 'februar',
++                       'Footnotes' => 'No translation available!',
++                       'From 1.2.3 go to' => '',
++                       'Go to' => '',
++                       'Index' => 'Indeks',
++                       'Index Entry' => '',
++                       'January' => 'januar',
++                       'July' => 'juli',
++                       'Jump to' => '',
++                       'June' => 'juni',
++                       'March' => 'mars',
++                       'May' => 'mai',
++                       'Menu:' => '',
++                       'Name' => '',
++                       'Next' => '',
++                       'November' => 'november',
++                       'October' => 'oktober',
++                       'Overview' => '',
++                       'Overview:' => '',
++                       'Prev' => '',
++                       'Section' => '',
++                       'Section One' => '',
++                       'See %{node_file_href}' => '',
++                       'See %{node_file_href} @cite{%{book}}' => '',
++                       'See %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'See %{reference_name}' => '',
++                       'See @cite{%{book}}' => '',
++                       'See section %{reference_name}' => '',
++                       'See section `%{section}\' in @cite{%{book}}' => '',
++                       'September' => 'september',
++                       'Short Table of Contents' => 'Kort innholdsfortegnelse',
++                       'Subsection One-Four' => '',
++                       'Subsection One-One' => '',
++                       'Subsection One-Three' => '',
++                       'Subsection One-Two' => '',
++                       'Subsubsection One-Two-Four' => '',
++                       'Subsubsection One-Two-One' => '',
++                       'Subsubsection One-Two-Three' => '',
++                       'Subsubsection One-Two-Two' => '',
++                       'T2H_today' => '',
++                       'Table of Contents' => 'Innholdsfortegnelse',
++                       'This document was generated by @emph{%{user}} on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated by @emph{%{user}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated on @i{%{date}} using @uref{%{program_homepage}, @i{%{program}}}.' => '',
++                       'This document was generated using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'Top' => '',
++                       'Untitled Document' => '',
++                       'about (help)' => '',
++                       'beginning of this chapter or previous chapter' => '',
++                       'by @emph{%{user}}' => '',
++                       'by @emph{%{user}} on @emph{%{date}}' => '',
++                       'cover (top) of document' => '',
++                       'current' => '',
++                       'current section' => '',
++                       'first section in reading order' => '',
++                       'following node' => '',
++                       'index' => '',
++                       'last section in reading order' => '',
++                       'next chapter' => '',
++                       'next node' => '',
++                       'next section in reading order' => '',
++                       'next section on same level' => '',
++                       'node following in node reading order' => '',
++                       'node up' => '',
++                       'on @emph{%{date}}' => '',
++                       'previous node' => '',
++                       'previous section in reading order' => '',
++                       'previous section on same level' => '',
++                       'section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{node_file_href}' => '',
++                       'see %{node_file_href} @cite{%{book}}' => '',
++                       'see %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{reference_name}' => '',
++                       'see @cite{%{book}}' => '',
++                       'see section %{reference_name}' => '',
++                       'see section `%{section}\' in @cite{%{book}}' => '',
++                       'short table of contents' => '',
++                       'table of contents' => '',
++                       'unknown' => '',
++                       'up node' => '',
++                       'up section' => ''
++                     };
++
++$T2H_OBSOLETE_STRINGS->{'no'} = {
++                                  'See' => 'Se',
++                                  'section' => 'avsnitt',
++                                  'see' => 'se'
++                                };
++
++
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texi2html/i18n/pt.old tetex-src-3.0-os2/utils/texi2html/i18n/pt.old
+--- tetex-src-3.0/utils/texi2html/i18n/pt.old	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/utils/texi2html/i18n/pt.old	Fri Feb  4 09:21:00 2005
+@@ -0,0 +1,114 @@
++$LANGUAGES->{'pt'} = {
++                       '  The buttons in the navigation panels have the following meaning:' => '',
++                       '  where the @strong{ Example } assumes that the current position is at @strong{ Subsubsection One-Two-Three } of a document of the following structure:' => '',
++                       ' Up ' => '',
++                       '%{acronym_like} (%{explanation})' => '',
++                       '%{month}, %{day} %{year}' => '',
++                       '%{name} of %{class}' => '',
++                       '%{name} on %{class}' => '',
++                       '%{node_file_href}' => '',
++                       '%{node_file_href} @cite{%{book}}' => '',
++                       '%{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       '%{reference_name}' => '',
++                       '%{style} %{number}' => '',
++                       '%{style}: %{caption_first_line}' => '',
++                       '%{style}: %{shortcaption_first_line}' => '',
++                       '@b{%{quotation_arg}:} ' => '',
++                       '@cite{%{book}}' => '',
++                       'About This Document' => '',
++                       'April' => 'Abril',
++                       'August' => 'Agosto',
++                       'Button' => '',
++                       'Contents' => '',
++                       'Current Position' => '',
++                       'December' => 'Dezembro',
++                       'February' => 'Fevereiro',
++                       'Footnotes' => '',
++                       'From 1.2.3 go to' => '',
++                       'Go to' => '',
++                       'Index' => '@\'Indice',
++                       'Index Entry' => '',
++                       'January' => 'Janeiro',
++                       'July' => 'Julho',
++                       'Jump to' => '',
++                       'June' => 'Junho',
++                       'March' => 'Mar@,{c}o',
++                       'May' => 'Maio',
++                       'Menu:' => '',
++                       'Name' => '',
++                       'Next' => '',
++                       'November' => 'Novembro',
++                       'October' => 'Outubro',
++                       'Overview' => '',
++                       'Overview:' => '',
++                       'Prev' => '',
++                       'Section' => '',
++                       'Section One' => '',
++                       'See %{node_file_href}' => '',
++                       'See %{node_file_href} @cite{%{book}}' => '',
++                       'See %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'See %{reference_name}' => '',
++                       'See @cite{%{book}}' => '',
++                       'See section %{reference_name}' => '',
++                       'See section `%{section}\' in @cite{%{book}}' => '',
++                       'September' => 'Setembro',
++                       'Short Table of Contents' => 'Breve Sum@\'ario',
++                       'Subsection One-Four' => '',
++                       'Subsection One-One' => '',
++                       'Subsection One-Three' => '',
++                       'Subsection One-Two' => '',
++                       'Subsubsection One-Two-Four' => '',
++                       'Subsubsection One-Two-One' => '',
++                       'Subsubsection One-Two-Three' => '',
++                       'Subsubsection One-Two-Two' => '',
++                       'T2H_today' => '',
++                       'Table of Contents' => 'Sum@\'ario',
++                       'This document was generated by @emph{%{user}} on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated by @emph{%{user}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated on @i{%{date}} using @uref{%{program_homepage}, @i{%{program}}}.' => '',
++                       'This document was generated using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'Top' => '',
++                       'Untitled Document' => '',
++                       'about (help)' => '',
++                       'beginning of this chapter or previous chapter' => '',
++                       'by @emph{%{user}}' => '',
++                       'by @emph{%{user}} on @emph{%{date}}' => '',
++                       'cover (top) of document' => '',
++                       'current' => '',
++                       'current section' => '',
++                       'first section in reading order' => '',
++                       'following node' => '',
++                       'index' => '',
++                       'last section in reading order' => '',
++                       'next chapter' => '',
++                       'next node' => '',
++                       'next section in reading order' => '',
++                       'next section on same level' => '',
++                       'node following in node reading order' => '',
++                       'node up' => '',
++                       'on @emph{%{date}}' => '',
++                       'previous node' => '',
++                       'previous section in reading order' => '',
++                       'previous section on same level' => '',
++                       'section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{node_file_href}' => '',
++                       'see %{node_file_href} @cite{%{book}}' => '',
++                       'see %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{reference_name}' => '',
++                       'see @cite{%{book}}' => '',
++                       'see section %{reference_name}' => '',
++                       'see section `%{section}\' in @cite{%{book}}' => '',
++                       'short table of contents' => '',
++                       'table of contents' => '',
++                       'unknown' => '',
++                       'up node' => '',
++                       'up section' => ''
++                     };
++
++$T2H_OBSOLETE_STRINGS->{'pt'} = {
++                                  'See' => 'Veja',
++                                  'section' => 'Se@,{c}@~ao',
++                                  'see' => 'veja'
++                                };
++
++
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texi2html/missing-texi2html tetex-src-3.0-os2/utils/texi2html/missing-texi2html
+--- tetex-src-3.0/utils/texi2html/missing-texi2html	Wed Feb  1 00:32:00 2006
++++ tetex-src-3.0-os2/utils/texi2html/missing-texi2html	Sun Mar  6 03:33:00 2005
+@@ -1,4 +1,4 @@
+-#! sh
++#! /bin/sh
+ # Common stub for a few missing GNU programs while installing.
+ # Copyright 1996, 1997, 1999, 2000 Free Software Foundation, Inc.
+ # Originally by Fran,cois Pinard <pinard@iro.umontreal.ca>, 1996.
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texi2html/translations.pl tetex-src-3.0-os2/utils/texi2html/translations.pl
+--- tetex-src-3.0/utils/texi2html/translations.pl	Fri Feb  4 09:21:00 2005
++++ tetex-src-3.0-os2/utils/texi2html/translations.pl	Sun Mar  6 03:48:02 2005
+@@ -112,6 +112,113 @@
+                                 };
+ 
+ 
++$LANGUAGES->{'en'} = {
++                       '  The buttons in the navigation panels have the following meaning:' => '',
++                       '  where the @strong{ Example } assumes that the current position is at @strong{ Subsubsection One-Two-Three } of a document of the following structure:' => '',
++                       ' Up ' => '',
++                       '%{acronym_like} (%{explanation})' => '',
++                       '%{month}, %{day} %{year}' => '',
++                       '%{name} of %{class}' => '',
++                       '%{name} on %{class}' => '',
++                       '%{node_file_href}' => '',
++                       '%{node_file_href} @cite{%{book}}' => '',
++                       '%{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       '%{reference_name}' => '',
++                       '%{style} %{number}' => '',
++                       '%{style}: %{caption_first_line}' => '',
++                       '%{style}: %{shortcaption_first_line}' => '',
++                       '@b{%{quotation_arg}:} ' => '',
++                       '@cite{%{book}}' => '',
++                       'About This Document' => '',
++                       'April' => '',
++                       'August' => '',
++                       'Button' => '',
++                       'Contents' => '',
++                       'Current Position' => '',
++                       'December' => '',
++                       'February' => '',
++                       'Footnotes' => '',
++                       'From 1.2.3 go to' => '',
++                       'Go to' => '',
++                       'Index' => '',
++                       'Index Entry' => '',
++                       'January' => '',
++                       'July' => '',
++                       'Jump to' => '',
++                       'June' => '',
++                       'March' => '',
++                       'May' => '',
++                       'Menu:' => '',
++                       'Name' => '',
++                       'Next' => '',
++                       'November' => '',
++                       'October' => '',
++                       'Overview' => '',
++                       'Overview:' => '',
++                       'Prev' => '',
++                       'Section' => '',
++                       'Section One' => '',
++                       'See %{node_file_href}' => '',
++                       'See %{node_file_href} @cite{%{book}}' => '',
++                       'See %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'See %{reference_name}' => '',
++                       'See @cite{%{book}}' => '',
++                       'See section %{reference_name}' => '',
++                       'See section `%{section}\' in @cite{%{book}}' => '',
++                       'September' => '',
++                       'Short Table of Contents' => '',
++                       'Subsection One-Four' => '',
++                       'Subsection One-One' => '',
++                       'Subsection One-Three' => '',
++                       'Subsection One-Two' => '',
++                       'Subsubsection One-Two-Four' => '',
++                       'Subsubsection One-Two-One' => '',
++                       'Subsubsection One-Two-Three' => '',
++                       'Subsubsection One-Two-Two' => '',
++                       'T2H_today' => '%s, %d %d',
++                       'Table of Contents' => '',
++                       'This document was generated by @emph{%{user}} on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated by @emph{%{user}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated on @i{%{date}} using @uref{%{program_homepage}, @i{%{program}}}.' => '',
++                       'This document was generated using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'Top' => '',
++                       'Untitled Document' => '',
++                       'about (help)' => '',
++                       'beginning of this chapter or previous chapter' => '',
++                       'by @emph{%{user}}' => '',
++                       'by @emph{%{user}} on @emph{%{date}}' => '',
++                       'cover (top) of document' => '',
++                       'current' => '',
++                       'current section' => '',
++                       'first section in reading order' => '',
++                       'following node' => '',
++                       'index' => '',
++                       'last section in reading order' => '',
++                       'next chapter' => '',
++                       'next node' => '',
++                       'next section in reading order' => '',
++                       'next section on same level' => '',
++                       'node following in node reading order' => '',
++                       'node up' => '',
++                       'on @emph{%{date}}' => '',
++                       'previous node' => '',
++                       'previous section in reading order' => '',
++                       'previous section on same level' => '',
++                       'section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{node_file_href}' => '',
++                       'see %{node_file_href} @cite{%{book}}' => '',
++                       'see %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{reference_name}' => '',
++                       'see @cite{%{book}}' => '',
++                       'see section %{reference_name}' => '',
++                       'see section `%{section}\' in @cite{%{book}}' => '',
++                       'short table of contents' => '',
++                       'table of contents' => '',
++                       'unknown' => '',
++                       'up node' => '',
++                       'up section' => ''
++                     };
++
+ $LANGUAGES->{'es'} = {
+                        '  The buttons in the navigation panels have the following meaning:' => '',
+                        '  where the @strong{ Example } assumes that the current position is at @strong{ Subsubsection One-Two-Three } of a document of the following structure:' => '',
+@@ -705,115 +812,5 @@
+                                   'section' => 'Se@,{c}@~ao',
+                                   'see' => 'veja'
+                                 };
+-
+-
+-$LANGUAGES->{'en'} = {
+-                       '  The buttons in the navigation panels have the following meaning:' => '',
+-                       '  where the @strong{ Example } assumes that the current position is at @strong{ Subsubsection One-Two-Three } of a document of the following structure:' => '',
+-                       ' Up ' => '',
+-                       '%{acronym_like} (%{explanation})' => '',
+-                       '%{month}, %{day} %{year}' => '',
+-                       '%{name} of %{class}' => '',
+-                       '%{name} on %{class}' => '',
+-                       '%{node_file_href}' => '',
+-                       '%{node_file_href} @cite{%{book}}' => '',
+-                       '%{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
+-                       '%{reference_name}' => '',
+-                       '%{style} %{number}' => '',
+-                       '%{style}: %{caption_first_line}' => '',
+-                       '%{style}: %{shortcaption_first_line}' => '',
+-                       '@b{%{quotation_arg}:} ' => '',
+-                       '@cite{%{book}}' => '',
+-                       'About This Document' => '',
+-                       'April' => '',
+-                       'August' => '',
+-                       'Button' => '',
+-                       'Contents' => '',
+-                       'Current Position' => '',
+-                       'December' => '',
+-                       'February' => '',
+-                       'Footnotes' => '',
+-                       'From 1.2.3 go to' => '',
+-                       'Go to' => '',
+-                       'Index' => '',
+-                       'Index Entry' => '',
+-                       'January' => '',
+-                       'July' => '',
+-                       'Jump to' => '',
+-                       'June' => '',
+-                       'March' => '',
+-                       'May' => '',
+-                       'Menu:' => '',
+-                       'Name' => '',
+-                       'Next' => '',
+-                       'November' => '',
+-                       'October' => '',
+-                       'Overview' => '',
+-                       'Overview:' => '',
+-                       'Prev' => '',
+-                       'Section' => '',
+-                       'Section One' => '',
+-                       'See %{node_file_href}' => '',
+-                       'See %{node_file_href} @cite{%{book}}' => '',
+-                       'See %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
+-                       'See %{reference_name}' => '',
+-                       'See @cite{%{book}}' => '',
+-                       'See section %{reference_name}' => '',
+-                       'See section `%{section}\' in @cite{%{book}}' => '',
+-                       'September' => '',
+-                       'Short Table of Contents' => '',
+-                       'Subsection One-Four' => '',
+-                       'Subsection One-One' => '',
+-                       'Subsection One-Three' => '',
+-                       'Subsection One-Two' => '',
+-                       'Subsubsection One-Two-Four' => '',
+-                       'Subsubsection One-Two-One' => '',
+-                       'Subsubsection One-Two-Three' => '',
+-                       'Subsubsection One-Two-Two' => '',
+-                       'T2H_today' => '%s, %d %d',
+-                       'Table of Contents' => '',
+-                       'This document was generated by @emph{%{user}} on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
+-                       'This document was generated by @emph{%{user}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
+-                       'This document was generated on @i{%{date}} using @uref{%{program_homepage}, @i{%{program}}}.' => '',
+-                       'This document was generated using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
+-                       'Top' => '',
+-                       'Untitled Document' => '',
+-                       'about (help)' => '',
+-                       'beginning of this chapter or previous chapter' => '',
+-                       'by @emph{%{user}}' => '',
+-                       'by @emph{%{user}} on @emph{%{date}}' => '',
+-                       'cover (top) of document' => '',
+-                       'current' => '',
+-                       'current section' => '',
+-                       'first section in reading order' => '',
+-                       'following node' => '',
+-                       'index' => '',
+-                       'last section in reading order' => '',
+-                       'next chapter' => '',
+-                       'next node' => '',
+-                       'next section in reading order' => '',
+-                       'next section on same level' => '',
+-                       'node following in node reading order' => '',
+-                       'node up' => '',
+-                       'on @emph{%{date}}' => '',
+-                       'previous node' => '',
+-                       'previous section in reading order' => '',
+-                       'previous section on same level' => '',
+-                       'section `%{section}\' in @cite{%{book}}' => '',
+-                       'see %{node_file_href}' => '',
+-                       'see %{node_file_href} @cite{%{book}}' => '',
+-                       'see %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
+-                       'see %{reference_name}' => '',
+-                       'see @cite{%{book}}' => '',
+-                       'see section %{reference_name}' => '',
+-                       'see section `%{section}\' in @cite{%{book}}' => '',
+-                       'short table of contents' => '',
+-                       'table of contents' => '',
+-                       'unknown' => '',
+-                       'up node' => '',
+-                       'up section' => ''
+-                     };
+-
+-$T2H_OBSOLETE_STRINGS->{'en'} = {};
+ 
+ 
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texi2html/translations.pl.old tetex-src-3.0-os2/utils/texi2html/translations.pl.old
+--- tetex-src-3.0/utils/texi2html/translations.pl.old	Thu Jan  1 00:00:00 1970
++++ tetex-src-3.0-os2/utils/texi2html/translations.pl.old	Fri Feb  4 09:21:00 2005
+@@ -0,0 +1,819 @@
++$LANGUAGES->{'de'} = {
++                       '  The buttons in the navigation panels have the following meaning:' => '',
++                       '  where the @strong{ Example } assumes that the current position is at @strong{ Subsubsection One-Two-Three } of a document of the following structure:' => '',
++                       ' Up ' => '',
++                       '%{acronym_like} (%{explanation})' => '',
++                       '%{month}, %{day} %{year}' => '',
++                       '%{name} of %{class}' => '',
++                       '%{name} on %{class}' => '',
++                       '%{node_file_href}' => '',
++                       '%{node_file_href} @cite{%{book}}' => '',
++                       '%{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       '%{reference_name}' => '',
++                       '%{style} %{number}' => '',
++                       '%{style}: %{caption_first_line}' => '',
++                       '%{style}: %{shortcaption_first_line}' => '',
++                       '@b{%{quotation_arg}:} ' => '',
++                       '@cite{%{book}}' => '',
++                       'About This Document' => '@"Uber dieses Dokument',
++                       'April' => 'April',
++                       'August' => 'August',
++                       'Button' => '',
++                       'Contents' => '',
++                       'Current Position' => '',
++                       'December' => 'Dezember',
++                       'February' => 'Februar',
++                       'Footnotes' => 'Fu@ss{}noten',
++                       'From 1.2.3 go to' => '',
++                       'Go to' => '',
++                       'Index' => 'Index',
++                       'Index Entry' => '',
++                       'January' => 'Januar',
++                       'July' => 'Juli',
++                       'Jump to' => '',
++                       'June' => 'Juni',
++                       'March' => 'M@"arz',
++                       'May' => 'Mai',
++                       'Menu:' => '',
++                       'Name' => '',
++                       'Next' => '',
++                       'November' => 'November',
++                       'October' => 'Oktober',
++                       'Overview' => '',
++                       'Overview:' => '',
++                       'Prev' => '',
++                       'Section' => '',
++                       'Section One' => '',
++                       'See %{node_file_href}' => '',
++                       'See %{node_file_href} @cite{%{book}}' => '',
++                       'See %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'See %{reference_name}' => '',
++                       'See @cite{%{book}}' => '',
++                       'See section %{reference_name}' => '',
++                       'See section `%{section}\' in @cite{%{book}}' => '',
++                       'September' => 'September',
++                       'Short Table of Contents' => 'Kurzes Inhaltsverzeichniss',
++                       'Subsection One-Four' => '',
++                       'Subsection One-One' => '',
++                       'Subsection One-Three' => '',
++                       'Subsection One-Two' => '',
++                       'Subsubsection One-Two-Four' => '',
++                       'Subsubsection One-Two-One' => '',
++                       'Subsubsection One-Two-Three' => '',
++                       'Subsubsection One-Two-Two' => '',
++                       'T2H_today' => '',
++                       'Table of Contents' => 'Inhaltsverzeichniss',
++                       'This document was generated by @emph{%{user}} on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated by @emph{%{user}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated on @i{%{date}} using @uref{%{program_homepage}, @i{%{program}}}.' => '',
++                       'This document was generated using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'Top' => '',
++                       'Untitled Document' => '',
++                       'about (help)' => '',
++                       'beginning of this chapter or previous chapter' => '',
++                       'by @emph{%{user}}' => '',
++                       'by @emph{%{user}} on @emph{%{date}}' => '',
++                       'cover (top) of document' => '',
++                       'current' => '',
++                       'current section' => '',
++                       'first section in reading order' => '',
++                       'following node' => '',
++                       'index' => '',
++                       'last section in reading order' => '',
++                       'next chapter' => '',
++                       'next node' => '',
++                       'next section in reading order' => '',
++                       'next section on same level' => '',
++                       'node following in node reading order' => '',
++                       'node up' => '',
++                       'on @emph{%{date}}' => '',
++                       'previous node' => '',
++                       'previous section in reading order' => '',
++                       'previous section on same level' => '',
++                       'section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{node_file_href}' => '',
++                       'see %{node_file_href} @cite{%{book}}' => '',
++                       'see %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{reference_name}' => '',
++                       'see @cite{%{book}}' => '',
++                       'see section %{reference_name}' => '',
++                       'see section `%{section}\' in @cite{%{book}}' => '',
++                       'short table of contents' => '',
++                       'table of contents' => '',
++                       'unknown' => '',
++                       'up node' => '',
++                       'up section' => ''
++                     };
++
++$T2H_OBSOLETE_STRINGS->{'de'} = {
++                                  'See' => 'Siehe',
++                                  'section' => 'Abschnitt',
++                                  'see' => 'siehe'
++                                };
++
++
++$LANGUAGES->{'es'} = {
++                       '  The buttons in the navigation panels have the following meaning:' => '',
++                       '  where the @strong{ Example } assumes that the current position is at @strong{ Subsubsection One-Two-Three } of a document of the following structure:' => '',
++                       ' Up ' => '',
++                       '%{acronym_like} (%{explanation})' => '',
++                       '%{month}, %{day} %{year}' => '',
++                       '%{name} of %{class}' => '',
++                       '%{name} on %{class}' => '',
++                       '%{node_file_href}' => '',
++                       '%{node_file_href} @cite{%{book}}' => '',
++                       '%{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       '%{reference_name}' => '',
++                       '%{style} %{number}' => '',
++                       '%{style}: %{caption_first_line}' => '',
++                       '%{style}: %{shortcaption_first_line}' => '',
++                       '@b{%{quotation_arg}:} ' => '',
++                       '@cite{%{book}}' => '',
++                       'About This Document' => '',
++                       'April' => 'abril',
++                       'August' => 'agosto',
++                       'Button' => '',
++                       'Contents' => '',
++                       'Current Position' => '',
++                       'December' => 'diciembre',
++                       'February' => 'febrero',
++                       'Footnotes' => '',
++                       'From 1.2.3 go to' => '',
++                       'Go to' => '',
++                       'Index' => 'Index',
++                       'Index Entry' => '',
++                       'January' => 'enero',
++                       'July' => 'julio',
++                       'Jump to' => '',
++                       'June' => 'junio',
++                       'March' => 'marzo',
++                       'May' => 'mayo',
++                       'Menu:' => '',
++                       'Name' => '',
++                       'Next' => '',
++                       'November' => 'noviembre',
++                       'October' => 'octubre',
++                       'Overview' => '',
++                       'Overview:' => '',
++                       'Prev' => '',
++                       'Section' => '',
++                       'Section One' => '',
++                       'See %{node_file_href}' => '',
++                       'See %{node_file_href} @cite{%{book}}' => '',
++                       'See %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'See %{reference_name}' => '',
++                       'See @cite{%{book}}' => '',
++                       'See section %{reference_name}' => '',
++                       'See section `%{section}\' in @cite{%{book}}' => '',
++                       'September' => 'septiembre',
++                       'Short Table of Contents' => 'Resumen del Contenido',
++                       'Subsection One-Four' => '',
++                       'Subsection One-One' => '',
++                       'Subsection One-Three' => '',
++                       'Subsection One-Two' => '',
++                       'Subsubsection One-Two-Four' => '',
++                       'Subsubsection One-Two-One' => '',
++                       'Subsubsection One-Two-Three' => '',
++                       'Subsubsection One-Two-Two' => '',
++                       'T2H_today' => '',
++                       'Table of Contents' => '@\'{@dotless{I}}ndice General',
++                       'This document was generated by @emph{%{user}} on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated by @emph{%{user}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated on @i{%{date}} using @uref{%{program_homepage}, @i{%{program}}}.' => '',
++                       'This document was generated using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'Top' => '',
++                       'Untitled Document' => '',
++                       'about (help)' => '',
++                       'beginning of this chapter or previous chapter' => '',
++                       'by @emph{%{user}}' => '',
++                       'by @emph{%{user}} on @emph{%{date}}' => '',
++                       'cover (top) of document' => '',
++                       'current' => '',
++                       'current section' => '',
++                       'first section in reading order' => '',
++                       'following node' => '',
++                       'index' => '',
++                       'last section in reading order' => '',
++                       'next chapter' => '',
++                       'next node' => '',
++                       'next section in reading order' => '',
++                       'next section on same level' => '',
++                       'node following in node reading order' => '',
++                       'node up' => '',
++                       'on @emph{%{date}}' => '',
++                       'previous node' => '',
++                       'previous section in reading order' => '',
++                       'previous section on same level' => '',
++                       'section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{node_file_href}' => '',
++                       'see %{node_file_href} @cite{%{book}}' => '',
++                       'see %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{reference_name}' => '',
++                       'see @cite{%{book}}' => '',
++                       'see section %{reference_name}' => '',
++                       'see section `%{section}\' in @cite{%{book}}' => '',
++                       'short table of contents' => '',
++                       'table of contents' => '',
++                       'unknown' => '',
++                       'up node' => '',
++                       'up section' => ''
++                     };
++
++$T2H_OBSOLETE_STRINGS->{'es'} = {
++                                  'See' => 'V@\'ease',
++                                  'section' => 'secci@\'on',
++                                  'see' => 'v@\'ase'
++                                };
++
++
++$LANGUAGES->{'fr'} = {
++                       '  The buttons in the navigation panels have the following meaning:' => '  Les boutons de navigation ont la signification suivante :',
++                       '  where the @strong{ Example } assumes that the current position is at @strong{ Subsubsection One-Two-Three } of a document of the following structure:' => '  Dans cet exemple on est @`a @strong{ Sous section un-deux-trois } dans un document dont la structure est :',
++                       ' Up ' => 'Plus haut',
++                       '%{acronym_like} (%{explanation})' => '',
++                       '%{month}, %{day} %{year}' => 'le %{day} %{month} %{year}',
++                       '%{name} of %{class}' => '%{name} de %{class}',
++                       '%{name} on %{class}' => '%{name} de %{class}',
++                       '%{node_file_href}' => '',
++                       '%{node_file_href} @cite{%{book}}' => '',
++                       '%{node_file_href} section `%{section}\' in @cite{%{book}}' => '%{node_file_href} section `%{section}\' dans @cite{%{book}}',
++                       '%{reference_name}' => '',
++                       '%{style} %{number}' => '',
++                       '%{style}: %{caption_first_line}' => '',
++                       '%{style}: %{shortcaption_first_line}' => '',
++                       '@b{%{quotation_arg}:} ' => '',
++                       '@cite{%{book}}' => '',
++                       'About This Document' => 'A propos de ce document',
++                       'April' => 'Avril',
++                       'August' => 'Ao@^ut',
++                       'Button' => 'Bouton',
++                       'Contents' => 'Table des mati@`eres',
++                       'Current Position' => 'Position',
++                       'December' => 'D@\'ecembre',
++                       'February' => 'F@\'evrier',
++                       'Footnotes' => 'Notes de bas de page',
++                       'From 1.2.3 go to' => 'Depuis 1.2.3 aller @`a',
++                       'Go to' => 'Aller @`a',
++                       'Index' => 'Index',
++                       'Index Entry' => 'Entr@\'ee d\'index',
++                       'January' => 'Janvier',
++                       'July' => 'Juillet',
++                       'Jump to' => 'Aller @`a',
++                       'June' => 'Juin',
++                       'March' => 'Mars',
++                       'May' => 'Mai',
++                       'Menu:' => 'Menu@ :',
++                       'Name' => 'Nom',
++                       'Next' => 'Suivant',
++                       'November' => 'Novembre',
++                       'October' => 'Octobre',
++                       'Overview' => 'Vue d\'ensemble',
++                       'Overview:' => 'Vue d\'ensemble@ :',
++                       'Prev' => 'Pr@\'ec@\'edent',
++                       'Section' => '',
++                       'Section One' => 'Section un',
++                       'See %{node_file_href}' => 'Voir %{node_file_href}',
++                       'See %{node_file_href} @cite{%{book}}' => 'Voir %{node_file_href} @cite{%{book}}',
++                       'See %{node_file_href} section `%{section}\' in @cite{%{book}}' => 'Voir %{node_file_href} section `%{section}\' dans @cite{%{book}}',
++                       'See %{reference_name}' => 'Voir %{reference_name}',
++                       'See @cite{%{book}}' => 'Voir @cite{%{book}}',
++                       'See section %{reference_name}' => 'Voir la section %{reference_name}',
++                       'See section `%{section}\' in @cite{%{book}}' => 'Voir la section `%{section}\' dans @cite{%{book}}',
++                       'September' => 'Septembre',
++                       'Short Table of Contents' => 'R@\'esum@\'e du contenu',
++                       'Subsection One-Four' => 'Sous section un-quatre',
++                       'Subsection One-One' => 'Sous section un-un',
++                       'Subsection One-Three' => 'Sous section un-trois',
++                       'Subsection One-Two' => 'Sous section un-deux',
++                       'Subsubsection One-Two-Four' => 'Sous sous section un-deux-quatre',
++                       'Subsubsection One-Two-One' => 'Sous sous section un-deux-un',
++                       'Subsubsection One-Two-Three' => 'Sous sous section un-deux-trois',
++                       'Subsubsection One-Two-Two' => 'Sous sous section un-deux-deux',
++                       'T2H_today' => 'le %2$d %1$s %3$d',
++                       'Table of Contents' => 'Table des mati@`eres',
++                       'This document was generated by @emph{%{user}} on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => 'Ce document a @\'et@\'e g@\'en@\'er@\'e par @emph{%{user}} @emph{%{date}} en utilisant @uref{%{program_homepage}, @emph{%{program}}}.',
++                       'This document was generated by @emph{%{user}} using @uref{%{program_homepage}, @emph{%{program}}}.' => 'Ce document a @\'et@\'e g@\'en@\'er@\'e par @emph{%{user}} en utilisant @uref{%{program_homepage}, @emph{%{program}}}.',
++                       'This document was generated on @i{%{date}} using @uref{%{program_homepage}, @i{%{program}}}.' => '',
++                       'This document was generated using @uref{%{program_homepage}, @emph{%{program}}}.' => 'Ce document a @\'et@\'e g@\'en@\'er@\'e en utilisant @uref{%{program_homepage}, @emph{%{program}}}.',
++                       'Top' => '',
++                       'Untitled Document' => 'Document sans titre',
++                       'about (help)' => '@`a propos (page d\'aide)',
++                       'beginning of this chapter or previous chapter' => 'd@\'ebut de ce chapitre ou chapitre pr@\'ec@\'edent',
++                       'by @emph{%{user}}' => 'par @emph{%{user}}',
++                       'by @emph{%{user}} on @emph{%{date}}' => 'par @emph{%{user}} @emph{%{date}}',
++                       'cover (top) of document' => 'couverture (top) du document',
++                       'current' => 'courante',
++                       'current section' => 'section actuelle',
++                       'first section in reading order' => 'premi@`e section dans l\'ordre de lecture',
++                       'following node' => 'node suivant',
++                       'index' => 'index',
++                       'last section in reading order' => 'derni@`ere section dans l\'ordre de lecture',
++                       'next chapter' => 'chapitre suivant',
++                       'next node' => 'node suivant',
++                       'next section in reading order' => 'section suivante dans l\'ordre de lecture',
++                       'next section on same level' => 'section suivante au m@^eme niveau',
++                       'node following in node reading order' => 'node suivant dans l\'ordre des nodes',
++                       'node up' => 'node au dessus',
++                       'on @emph{%{date}}' => '@emph{%{date}}',
++                       'previous node' => 'node pr@\'ec@\'edent',
++                       'previous section in reading order' => 'section pr@\'ec@\'edente dans l\'ordre de lecture',
++                       'previous section on same level' => 'section pr@\'ec@\'edente au m@^eme niveau',
++                       'section `%{section}\' in @cite{%{book}}' => 'section `%{section}\' dans @cite{%{book}}',
++                       'see %{node_file_href}' => 'voir %{node_file_href}',
++                       'see %{node_file_href} @cite{%{book}}' => 'voir %{node_file_href} @cite{%{book}}',
++                       'see %{node_file_href} section `%{section}\' in @cite{%{book}}' => 'voir %{node_file_href} section `%{section}\' dans @cite{%{book}}',
++                       'see %{reference_name}' => 'voir %{reference_name}',
++                       'see @cite{%{book}}' => 'voir @cite{%{book}}',
++                       'see section %{reference_name}' => 'voir la section %{reference_name}',
++                       'see section `%{section}\' in @cite{%{book}}' => 'voir la section `%{section}\' dans @cite{{book}}',
++                       'short table of contents' => 'table des mati@`eres r@\'esum@\'ee',
++                       'table of contents' => 'table des mati@`eres',
++                       'unknown' => 'inconnu',
++                       'up node' => 'node au dessus',
++                       'up section' => 'section sup@\'erieure'
++                     };
++
++$T2H_OBSOLETE_STRINGS->{'fr'} = {
++                                  '  This document was generated %{who_and_when_generated} using %{program_homepage_href}.' => '  Ce document a &eacute;t&eacute; g&eacute;n&eacute;r&eacute; %{who_and_when_generated} en utilisant %{program_homepage_href}.',
++                                  '  where the <strong> Example </strong> assumes that the current position is at <strong> Subsubsection One-Two-Three </strong> of a document of the following structure:' => '  Dans cet exemple on est &agrave; <strong> Sous section un-deux-trois </strong> dans un document dont la structure est :',
++                                  '%{node_file_href} section `%{section}\' in <cite>%{book}</cite>' => '%{node_file_href} section `%{section}\' dans <cite>%{book}</cite>',
++                                  'See' => 'Voir',
++                                  'See %{node_file_href} <cite>%{book}</cite>' => 'Voir %{node_file_href} <cite>%{book}</cite>',
++                                  'See %{node_file_href} section `%{section}\' in <cite>%{book}</cite>' => 'Voir %{node_file_href} section `%{section}\' dans <cite>%{book}</cite>',
++                                  'See <cite>%{book}</cite>' => 'Voir <cite>%{book}</cite>',
++                                  'See section `%{section}\' in <cite>%{book}</cite>' => 'Voir la section `%{section}\' dans <cite>%{book}</cite>',
++                                  'This document was generated by <i>%{user}</i> on <i>%{date}</i> using %{program_homepage_href}.' => 'Ce document a &eacute;t&eacute; g&eacute;n&eacute;r&eacute; par <i>%{user}</i> <i>%{date}</i> en utilisant %{program_homepage_href}.',
++                                  'This document was generated by <i>%{user}</i> using %{program_homepage_href}.' => 'Ce document a &eacute;t&eacute; g&eacute;n&eacute;r&eacute; par <i>%{user}</i> en utilisant %{program_homepage_href}.',
++                                  'This document was generated by @emph{%{user}} on @emph{%{date}} using %{program_homepage_href}.' => 'Ce document a @\'et@\'e g@\'en@\'er@\'e par @emph{%{user}} @emph{%{date}} en utilisant %{program_homepage_href}.',
++                                  'This document was generated by @emph{%{user}} using %{program_homepage_href}.' => 'Ce document a @\'et@\'e g@\'en@\'er@\'e par @emph{%{user}} en utilisant %{program_homepage_href}.',
++                                  'This document was generated on <i>%{date}</i> using %{program_homepage_href}.' => 'Ce document a &eacute;t&eacute; g&eacute;n&eacute;r&eacute; <i>%{date}</i> en utilisant %{program_homepage_href}.',
++                                  'This document was generated on @emph{%{date}} using %{program_homepage_href}.' => 'Ce document a @\'et@\'e g@\'en@\'er@\'e @emph{%{date}} en utilisant %{program_homepage_href}.',
++                                  'This document was generated on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => 'Ce document a @\'et@\'e g@\'en@\'er@\'e @emph{%{date}} en utilisant @uref{%{program_homepage}, @emph{%{program}}}.',
++                                  'This document was generated using %{program_homepage_href}.' => 'Ce document a @\'et@\'e g@\'en@\'er@\'e en utilisant %{program_homepage_href}.',
++                                  'about (this page)' => 'a propos (cette page)',
++                                  'by <i>%{user}</i>' => 'par <i>%{user}</i>',
++                                  'by <i>%{user}</i> on <i>%{date}</i>' => 'par <i>%{user}</i> <i>%{date}</i>',
++                                  'concept index' => 'index',
++                                  'on <i>%{date}</i>' => '<i>%{date}</i>',
++                                  'section' => 'section',
++                                  'section `%{section}\' in <cite>%{book}</cite>' => 'section `%{section}\' dans <cite>%{book}</cite>',
++                                  'see' => 'voir',
++                                  'see %{node_file_href} <cite>%{book}</cite>' => 'voir %{node_file_href} <cite>%{book}</cite>',
++                                  'see %{node_file_href} section `%{section}\' in <cite>%{book}</cite>' => 'voir %{node_file_href} section `%{section}\' dans <cite>%{book}</cite>',
++                                  'see <cite>%{book}</cite>' => 'voir <cite>%{book}</cite>',
++                                  'see section `%{section}\' in <cite>%{book}</cite>' => 'voir la section `%{section}\' dans <cite>%{book}</cite>'
++                                };
++
++
++$LANGUAGES->{'nl'} = {
++                       '  The buttons in the navigation panels have the following meaning:' => '',
++                       '  where the @strong{ Example } assumes that the current position is at @strong{ Subsubsection One-Two-Three } of a document of the following structure:' => '',
++                       ' Up ' => '',
++                       '%{acronym_like} (%{explanation})' => '',
++                       '%{month}, %{day} %{year}' => '',
++                       '%{name} of %{class}' => '',
++                       '%{name} on %{class}' => '',
++                       '%{node_file_href}' => '',
++                       '%{node_file_href} @cite{%{book}}' => '',
++                       '%{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       '%{reference_name}' => '',
++                       '%{style} %{number}' => '',
++                       '%{style}: %{caption_first_line}' => '',
++                       '%{style}: %{shortcaption_first_line}' => '',
++                       '@b{%{quotation_arg}:} ' => '',
++                       '@cite{%{book}}' => '',
++                       'About This Document' => 'No translation available!',
++                       'April' => 'April',
++                       'August' => 'Augustus',
++                       'Button' => '',
++                       'Contents' => '',
++                       'Current Position' => '',
++                       'December' => 'December',
++                       'February' => 'Februari',
++                       'Footnotes' => 'No translation available!',
++                       'From 1.2.3 go to' => '',
++                       'Go to' => '',
++                       'Index' => 'Index',
++                       'Index Entry' => '',
++                       'January' => 'Januari',
++                       'July' => 'Juli',
++                       'Jump to' => '',
++                       'June' => 'Juni',
++                       'March' => 'Maart',
++                       'May' => 'Mei',
++                       'Menu:' => '',
++                       'Name' => '',
++                       'Next' => '',
++                       'November' => 'November',
++                       'October' => 'Oktober',
++                       'Overview' => '',
++                       'Overview:' => '',
++                       'Prev' => '',
++                       'Section' => '',
++                       'Section One' => '',
++                       'See %{node_file_href}' => '',
++                       'See %{node_file_href} @cite{%{book}}' => '',
++                       'See %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'See %{reference_name}' => '',
++                       'See @cite{%{book}}' => '',
++                       'See section %{reference_name}' => '',
++                       'See section `%{section}\' in @cite{%{book}}' => '',
++                       'September' => 'September',
++                       'Short Table of Contents' => 'Korte inhoudsopgave',
++                       'Subsection One-Four' => '',
++                       'Subsection One-One' => '',
++                       'Subsection One-Three' => '',
++                       'Subsection One-Two' => '',
++                       'Subsubsection One-Two-Four' => '',
++                       'Subsubsection One-Two-One' => '',
++                       'Subsubsection One-Two-Three' => '',
++                       'Subsubsection One-Two-Two' => '',
++                       'T2H_today' => '',
++                       'Table of Contents' => 'Inhoudsopgave',
++                       'This document was generated by @emph{%{user}} on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated by @emph{%{user}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated on @i{%{date}} using @uref{%{program_homepage}, @i{%{program}}}.' => '',
++                       'This document was generated using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'Top' => '',
++                       'Untitled Document' => '',
++                       'about (help)' => '',
++                       'beginning of this chapter or previous chapter' => '',
++                       'by @emph{%{user}}' => '',
++                       'by @emph{%{user}} on @emph{%{date}}' => '',
++                       'cover (top) of document' => '',
++                       'current' => '',
++                       'current section' => '',
++                       'first section in reading order' => '',
++                       'following node' => '',
++                       'index' => '',
++                       'last section in reading order' => '',
++                       'next chapter' => '',
++                       'next node' => '',
++                       'next section in reading order' => '',
++                       'next section on same level' => '',
++                       'node following in node reading order' => '',
++                       'node up' => '',
++                       'on @emph{%{date}}' => '',
++                       'previous node' => '',
++                       'previous section in reading order' => '',
++                       'previous section on same level' => '',
++                       'section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{node_file_href}' => '',
++                       'see %{node_file_href} @cite{%{book}}' => '',
++                       'see %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{reference_name}' => '',
++                       'see @cite{%{book}}' => '',
++                       'see section %{reference_name}' => '',
++                       'see section `%{section}\' in @cite{%{book}}' => '',
++                       'short table of contents' => '',
++                       'table of contents' => '',
++                       'unknown' => '',
++                       'up node' => '',
++                       'up section' => ''
++                     };
++
++$T2H_OBSOLETE_STRINGS->{'nl'} = {
++                                  'See' => 'Zie',
++                                  'section' => 'sectie',
++                                  'see' => 'zie'
++                                };
++
++
++$LANGUAGES->{'no'} = {
++                       '  The buttons in the navigation panels have the following meaning:' => '',
++                       '  where the @strong{ Example } assumes that the current position is at @strong{ Subsubsection One-Two-Three } of a document of the following structure:' => '',
++                       ' Up ' => '',
++                       '%{acronym_like} (%{explanation})' => '',
++                       '%{month}, %{day} %{year}' => '',
++                       '%{name} of %{class}' => '',
++                       '%{name} on %{class}' => '',
++                       '%{node_file_href}' => '',
++                       '%{node_file_href} @cite{%{book}}' => '',
++                       '%{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       '%{reference_name}' => '',
++                       '%{style} %{number}' => '',
++                       '%{style}: %{caption_first_line}' => '',
++                       '%{style}: %{shortcaption_first_line}' => '',
++                       '@b{%{quotation_arg}:} ' => '',
++                       '@cite{%{book}}' => '',
++                       'About This Document' => 'No translation available!',
++                       'April' => 'april',
++                       'August' => 'august',
++                       'Button' => '',
++                       'Contents' => '',
++                       'Current Position' => '',
++                       'December' => 'desember',
++                       'February' => 'februar',
++                       'Footnotes' => 'No translation available!',
++                       'From 1.2.3 go to' => '',
++                       'Go to' => '',
++                       'Index' => 'Indeks',
++                       'Index Entry' => '',
++                       'January' => 'januar',
++                       'July' => 'juli',
++                       'Jump to' => '',
++                       'June' => 'juni',
++                       'March' => 'mars',
++                       'May' => 'mai',
++                       'Menu:' => '',
++                       'Name' => '',
++                       'Next' => '',
++                       'November' => 'november',
++                       'October' => 'oktober',
++                       'Overview' => '',
++                       'Overview:' => '',
++                       'Prev' => '',
++                       'Section' => '',
++                       'Section One' => '',
++                       'See %{node_file_href}' => '',
++                       'See %{node_file_href} @cite{%{book}}' => '',
++                       'See %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'See %{reference_name}' => '',
++                       'See @cite{%{book}}' => '',
++                       'See section %{reference_name}' => '',
++                       'See section `%{section}\' in @cite{%{book}}' => '',
++                       'September' => 'september',
++                       'Short Table of Contents' => 'Kort innholdsfortegnelse',
++                       'Subsection One-Four' => '',
++                       'Subsection One-One' => '',
++                       'Subsection One-Three' => '',
++                       'Subsection One-Two' => '',
++                       'Subsubsection One-Two-Four' => '',
++                       'Subsubsection One-Two-One' => '',
++                       'Subsubsection One-Two-Three' => '',
++                       'Subsubsection One-Two-Two' => '',
++                       'T2H_today' => '',
++                       'Table of Contents' => 'Innholdsfortegnelse',
++                       'This document was generated by @emph{%{user}} on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated by @emph{%{user}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated on @i{%{date}} using @uref{%{program_homepage}, @i{%{program}}}.' => '',
++                       'This document was generated using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'Top' => '',
++                       'Untitled Document' => '',
++                       'about (help)' => '',
++                       'beginning of this chapter or previous chapter' => '',
++                       'by @emph{%{user}}' => '',
++                       'by @emph{%{user}} on @emph{%{date}}' => '',
++                       'cover (top) of document' => '',
++                       'current' => '',
++                       'current section' => '',
++                       'first section in reading order' => '',
++                       'following node' => '',
++                       'index' => '',
++                       'last section in reading order' => '',
++                       'next chapter' => '',
++                       'next node' => '',
++                       'next section in reading order' => '',
++                       'next section on same level' => '',
++                       'node following in node reading order' => '',
++                       'node up' => '',
++                       'on @emph{%{date}}' => '',
++                       'previous node' => '',
++                       'previous section in reading order' => '',
++                       'previous section on same level' => '',
++                       'section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{node_file_href}' => '',
++                       'see %{node_file_href} @cite{%{book}}' => '',
++                       'see %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{reference_name}' => '',
++                       'see @cite{%{book}}' => '',
++                       'see section %{reference_name}' => '',
++                       'see section `%{section}\' in @cite{%{book}}' => '',
++                       'short table of contents' => '',
++                       'table of contents' => '',
++                       'unknown' => '',
++                       'up node' => '',
++                       'up section' => ''
++                     };
++
++$T2H_OBSOLETE_STRINGS->{'no'} = {
++                                  'See' => 'Se',
++                                  'section' => 'avsnitt',
++                                  'see' => 'se'
++                                };
++
++
++$LANGUAGES->{'pt'} = {
++                       '  The buttons in the navigation panels have the following meaning:' => '',
++                       '  where the @strong{ Example } assumes that the current position is at @strong{ Subsubsection One-Two-Three } of a document of the following structure:' => '',
++                       ' Up ' => '',
++                       '%{acronym_like} (%{explanation})' => '',
++                       '%{month}, %{day} %{year}' => '',
++                       '%{name} of %{class}' => '',
++                       '%{name} on %{class}' => '',
++                       '%{node_file_href}' => '',
++                       '%{node_file_href} @cite{%{book}}' => '',
++                       '%{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       '%{reference_name}' => '',
++                       '%{style} %{number}' => '',
++                       '%{style}: %{caption_first_line}' => '',
++                       '%{style}: %{shortcaption_first_line}' => '',
++                       '@b{%{quotation_arg}:} ' => '',
++                       '@cite{%{book}}' => '',
++                       'About This Document' => '',
++                       'April' => 'Abril',
++                       'August' => 'Agosto',
++                       'Button' => '',
++                       'Contents' => '',
++                       'Current Position' => '',
++                       'December' => 'Dezembro',
++                       'February' => 'Fevereiro',
++                       'Footnotes' => '',
++                       'From 1.2.3 go to' => '',
++                       'Go to' => '',
++                       'Index' => '@\'Indice',
++                       'Index Entry' => '',
++                       'January' => 'Janeiro',
++                       'July' => 'Julho',
++                       'Jump to' => '',
++                       'June' => 'Junho',
++                       'March' => 'Mar@,{c}o',
++                       'May' => 'Maio',
++                       'Menu:' => '',
++                       'Name' => '',
++                       'Next' => '',
++                       'November' => 'Novembro',
++                       'October' => 'Outubro',
++                       'Overview' => '',
++                       'Overview:' => '',
++                       'Prev' => '',
++                       'Section' => '',
++                       'Section One' => '',
++                       'See %{node_file_href}' => '',
++                       'See %{node_file_href} @cite{%{book}}' => '',
++                       'See %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'See %{reference_name}' => '',
++                       'See @cite{%{book}}' => '',
++                       'See section %{reference_name}' => '',
++                       'See section `%{section}\' in @cite{%{book}}' => '',
++                       'September' => 'Setembro',
++                       'Short Table of Contents' => 'Breve Sum@\'ario',
++                       'Subsection One-Four' => '',
++                       'Subsection One-One' => '',
++                       'Subsection One-Three' => '',
++                       'Subsection One-Two' => '',
++                       'Subsubsection One-Two-Four' => '',
++                       'Subsubsection One-Two-One' => '',
++                       'Subsubsection One-Two-Three' => '',
++                       'Subsubsection One-Two-Two' => '',
++                       'T2H_today' => '',
++                       'Table of Contents' => 'Sum@\'ario',
++                       'This document was generated by @emph{%{user}} on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated by @emph{%{user}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated on @i{%{date}} using @uref{%{program_homepage}, @i{%{program}}}.' => '',
++                       'This document was generated using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'Top' => '',
++                       'Untitled Document' => '',
++                       'about (help)' => '',
++                       'beginning of this chapter or previous chapter' => '',
++                       'by @emph{%{user}}' => '',
++                       'by @emph{%{user}} on @emph{%{date}}' => '',
++                       'cover (top) of document' => '',
++                       'current' => '',
++                       'current section' => '',
++                       'first section in reading order' => '',
++                       'following node' => '',
++                       'index' => '',
++                       'last section in reading order' => '',
++                       'next chapter' => '',
++                       'next node' => '',
++                       'next section in reading order' => '',
++                       'next section on same level' => '',
++                       'node following in node reading order' => '',
++                       'node up' => '',
++                       'on @emph{%{date}}' => '',
++                       'previous node' => '',
++                       'previous section in reading order' => '',
++                       'previous section on same level' => '',
++                       'section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{node_file_href}' => '',
++                       'see %{node_file_href} @cite{%{book}}' => '',
++                       'see %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{reference_name}' => '',
++                       'see @cite{%{book}}' => '',
++                       'see section %{reference_name}' => '',
++                       'see section `%{section}\' in @cite{%{book}}' => '',
++                       'short table of contents' => '',
++                       'table of contents' => '',
++                       'unknown' => '',
++                       'up node' => '',
++                       'up section' => ''
++                     };
++
++$T2H_OBSOLETE_STRINGS->{'pt'} = {
++                                  'See' => 'Veja',
++                                  'section' => 'Se@,{c}@~ao',
++                                  'see' => 'veja'
++                                };
++
++
++$LANGUAGES->{'en'} = {
++                       '  The buttons in the navigation panels have the following meaning:' => '',
++                       '  where the @strong{ Example } assumes that the current position is at @strong{ Subsubsection One-Two-Three } of a document of the following structure:' => '',
++                       ' Up ' => '',
++                       '%{acronym_like} (%{explanation})' => '',
++                       '%{month}, %{day} %{year}' => '',
++                       '%{name} of %{class}' => '',
++                       '%{name} on %{class}' => '',
++                       '%{node_file_href}' => '',
++                       '%{node_file_href} @cite{%{book}}' => '',
++                       '%{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       '%{reference_name}' => '',
++                       '%{style} %{number}' => '',
++                       '%{style}: %{caption_first_line}' => '',
++                       '%{style}: %{shortcaption_first_line}' => '',
++                       '@b{%{quotation_arg}:} ' => '',
++                       '@cite{%{book}}' => '',
++                       'About This Document' => '',
++                       'April' => '',
++                       'August' => '',
++                       'Button' => '',
++                       'Contents' => '',
++                       'Current Position' => '',
++                       'December' => '',
++                       'February' => '',
++                       'Footnotes' => '',
++                       'From 1.2.3 go to' => '',
++                       'Go to' => '',
++                       'Index' => '',
++                       'Index Entry' => '',
++                       'January' => '',
++                       'July' => '',
++                       'Jump to' => '',
++                       'June' => '',
++                       'March' => '',
++                       'May' => '',
++                       'Menu:' => '',
++                       'Name' => '',
++                       'Next' => '',
++                       'November' => '',
++                       'October' => '',
++                       'Overview' => '',
++                       'Overview:' => '',
++                       'Prev' => '',
++                       'Section' => '',
++                       'Section One' => '',
++                       'See %{node_file_href}' => '',
++                       'See %{node_file_href} @cite{%{book}}' => '',
++                       'See %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'See %{reference_name}' => '',
++                       'See @cite{%{book}}' => '',
++                       'See section %{reference_name}' => '',
++                       'See section `%{section}\' in @cite{%{book}}' => '',
++                       'September' => '',
++                       'Short Table of Contents' => '',
++                       'Subsection One-Four' => '',
++                       'Subsection One-One' => '',
++                       'Subsection One-Three' => '',
++                       'Subsection One-Two' => '',
++                       'Subsubsection One-Two-Four' => '',
++                       'Subsubsection One-Two-One' => '',
++                       'Subsubsection One-Two-Three' => '',
++                       'Subsubsection One-Two-Two' => '',
++                       'T2H_today' => '%s, %d %d',
++                       'Table of Contents' => '',
++                       'This document was generated by @emph{%{user}} on @emph{%{date}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated by @emph{%{user}} using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'This document was generated on @i{%{date}} using @uref{%{program_homepage}, @i{%{program}}}.' => '',
++                       'This document was generated using @uref{%{program_homepage}, @emph{%{program}}}.' => '',
++                       'Top' => '',
++                       'Untitled Document' => '',
++                       'about (help)' => '',
++                       'beginning of this chapter or previous chapter' => '',
++                       'by @emph{%{user}}' => '',
++                       'by @emph{%{user}} on @emph{%{date}}' => '',
++                       'cover (top) of document' => '',
++                       'current' => '',
++                       'current section' => '',
++                       'first section in reading order' => '',
++                       'following node' => '',
++                       'index' => '',
++                       'last section in reading order' => '',
++                       'next chapter' => '',
++                       'next node' => '',
++                       'next section in reading order' => '',
++                       'next section on same level' => '',
++                       'node following in node reading order' => '',
++                       'node up' => '',
++                       'on @emph{%{date}}' => '',
++                       'previous node' => '',
++                       'previous section in reading order' => '',
++                       'previous section on same level' => '',
++                       'section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{node_file_href}' => '',
++                       'see %{node_file_href} @cite{%{book}}' => '',
++                       'see %{node_file_href} section `%{section}\' in @cite{%{book}}' => '',
++                       'see %{reference_name}' => '',
++                       'see @cite{%{book}}' => '',
++                       'see section %{reference_name}' => '',
++                       'see section `%{section}\' in @cite{%{book}}' => '',
++                       'short table of contents' => '',
++                       'table of contents' => '',
++                       'unknown' => '',
++                       'up node' => '',
++                       'up section' => ''
++                     };
++
++$T2H_OBSOLETE_STRINGS->{'en'} = {};
++
++
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/util/texi2dvi tetex-src-3.0-os2/utils/texinfo/util/texi2dvi
+--- tetex-src-3.0/utils/texinfo/util/texi2dvi	Wed Feb  1 00:32:16 2006
++++ tetex-src-3.0-os2/utils/texinfo/util/texi2dvi	Sun Mar  6 03:33:00 2005
+@@ -122,7 +122,28 @@
+ 
+ # return true if program $1 is somewhere in PATH, else false.
+ #
+-findprog ()
++#jsawa__
++#
++# emulation of "test -x"
++#    When `foo'(shell script), `foo.cmd', or `foo.exe' exists in
++#    PATH directory, "test -x" returns true.
++#
++findprog () {
++    if [ -f "$1" ] ; then return ; fi
++    if type $1.cmd 1>nul 2>&1  ; then  return ; fi
++    if type $1.exe 1>nul 2>&1  ; then  return ; fi
++    x=`type $* 1>nul 2>&1|  sed -e 's@^.* @@' -e 's@\\\\@/@g' -e 's@\\.$@@'`
++    if [ -n "$x" ] ; then
++      grep '^\(#!\|[ \t]*extproc\)' "$x">nul 2>&1
++    else
++      return 1
++    fi
++}
++
++# return true if program $1 is somewhere in PATH, else false.
++#
++
++findprog__ ()
+ {
+   foundprog=false
+ 

@@ -1,0 +1,3075 @@
+%%
+%% This is file `methylen.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% methylen.dtx  (with options: `methylen')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright 1998 by Shinsaku Fujita
+%% 
+%% This file is part of the XyMTeX system.
+%% =======================================
+%% 
+%% Version 1.02 Released on October 31, 1996 (private version)
+%% Version 2.00 Released on December 25, 1998
+%% 
+%% Copyright (C) 1998 by Shinsaku Fujita, all rights reserved.
+%% This style file is created for drawing chemical structural formulas
+%% This style file is to be contained in the ``xymtex'' directory which
+%% is an input directory for TeX.
+%% 
+%% Copying of this file is authorized only if either
+%% 
+%%  (1) you make absolutely no changes to your copy, including name and
+%%      directory name
+%%  (2) if you do make changes,
+%%      (a) you name it something other than the names included in the
+%%          ``xymtex'' directory and
+%%      (b) you acknowledge the original name.
+%%  This restriction ensures that all standard styles are identical.
+%% 
+%% =======================================
+%% 
+%% This file contains several codes modified from latex.tex (LaTeX2.09)
+%% and from latex.ltx (a LaTeX2e), the reused parts of which are subject to
+%% Copyright 1994 the LaTeX3 project and the individual authors (For further
+%% copyright information see the file legal.txt of the LaTeX2e standard
+%% distribution, and any other copyright indicated in this file.)
+%% 
+%% File: methylen.dtx
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+\typeout{XyMTeX for Drawing Chemical Structural Formulas. Version 2.00}
+\typeout{       -- Released December 25, 1998 by Shinsaku Fujita}
+\def\j@urnalname{methylen}
+\def\versi@ndate{December 25, 1998}
+\def\versi@nno{ver2.00}
+\def\copyrighth@lder{SF} % Shinsaku Fujita
+\typeout{XyMTeX Macro File `\j@urnalname' (\versi@nno) <\versi@ndate>%
+\space[\copyrighth@lder]}
+\@ifundefined{setsixringv}{\input chemstr.sty\relax}{}
+\@ifundefined{Westbond}{\input aliphat.sty\relax}{}
+\@ifundefined{bzdrv}{\input carom.sty\relax}{}
+\@ifundefined{hbonde}{\input hetaromh.sty\relax}{}
+\unitlength=0.1pt
+\newif\if@wrongbdWa \@wrongbdWafalse
+\newif\if@wrongbdWd \@wrongbdWdfalse
+\newif\if@wrongbdWaL \@wrongbdWaLfalse
+\newif\if@wrongbdWdL \@wrongbdWdLfalse
+\def\@methsubsta{%
+\if@aclip% %clipping
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \put(0,436){\line(0,1){110}}%      % single bond at 1
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+    \else\if\@tmpc B%(B) beta
+      \yl@xdiff=-36\relax
+      \yl@ydiff=-27\relax
+           \putlatom{-42}{563}{\@memberb}%    % left type
+           {%
+           \thicklines%
+           \put(-18,436){\line(-3,5){60}}%    % single bond at 1
+           }%
+    \else\if\@tmpc A%(A) alpha
+      \yl@xdiff=37\relax
+      \yl@ydiff=-27\relax
+           \putratom{41}{563}{\@memberb}%     % right type
+       \@ifundefined{dottedline}{%
+           \put(18,436){\line(3,5){60}}%      % single bond at 1
+           }{{\thicklines%
+              \dottedline{20}(18,436)(72,526)}}%
+    \else\if\@tmpc b%(b) beta
+      \yl@xdiff=-36\relax
+      \yl@ydiff=-27\relax
+           \putlatom{-42}{563}{\@memberb}%    % left type
+           \put(-18,436){\line(-3,5){60}}%    % single bond at 1
+    \else\if\@tmpc a%(a) alpha
+      \yl@xdiff=37\relax
+      \yl@ydiff=-27\relax
+           \putratom{41}{563}{\@memberb}%     % right type
+           \put(18,436){\line(3,5){60}}%      % single bond at 1
+    \fi\fi\fi\fi\fi%
+   \else\if\@tmpb D%double bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+           \put(-12,436){\line(0,1){110}}%    % double bond at 1
+           \put(12,436){\line(0,1){110}}%     % double bond at 1
+   \else\if\@tmpb B%beta single bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+           {%
+           \thicklines%
+           \put(0,436){\line(0,1){110}}%      % single bond at 1
+           }%
+   \else\if\@tmpb A%alpha single bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+           \@ifundefined{dottedline}{%
+             \put(0,436){\line(0,1){110}}%    % single bond at 1
+           }{{\thicklines%
+              \dottedline{20}(0,436)(0,546)}}%
+   \else\if\@tmpb W%beta single bond
+      \yl@xdiff=-10\relax
+      \yl@ydiff=46\relax
+      \if@wrongbdWa
+        \XyMTeXWarning{Wrong Bond-Modifier (W)}%
+      \fi
+           \putratom{150}{276}{\@memberb}%   % left or right type
+           \put(40,382){\line(5,-3){100}}%      % single bond at 1
+   \else%
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+           \put(0,436){\line(0,1){110}}%      % single bond at 1
+   \fi\fi\fi\fi\fi%
+\else% % no clipping
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \put(0,406){\line(0,1){140}}%      % single bond at 1
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+    \else\if\@tmpc B%(B) beta
+      \yl@xdiff=-30\relax
+      \yl@ydiff=-37\relax
+           \putlatom{-42}{563}{\@memberb}%    % left type
+           {%
+           \thicklines%
+           \put(0,406){\line(-3,5){72}}%      % single bond at 1
+           }%
+    \else\if\@tmpc A%(A) alpha
+      \yl@xdiff=31\relax
+      \yl@ydiff=-37\relax
+           \putratom{41}{563}{\@memberb}%     % right type
+       \@ifundefined{dottedline}{%
+           \put(0,406){\line(3,5){72}}%       % single bond at 1
+           }{{\thicklines%
+              \dottedline{20}(0,406)(72,526)}}%
+    \else\if\@tmpc b%(b) beta
+      \yl@xdiff=-30\relax
+      \yl@ydiff=-37\relax
+           \putlatom{-42}{563}{\@memberb}%    % left type
+           \put(0,406){\line(-3,5){72}}%      % single bond at 1
+    \else\if\@tmpc a%(a) alpha
+      \yl@xdiff=31\relax
+      \yl@ydiff=-37\relax
+           \putratom{41}{563}{\@memberb}%     % right type
+           \put(0,406){\line(3,5){72}}%       % single bond at 1
+    \fi\fi\fi\fi\fi%
+   \else\if\@tmpb D%double bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+           \put(-12,406){\line(0,1){140}}%    % double bond at 1
+           \put(12,406){\line(0,1){140}}%     % double bond at 1
+   \else\if\@tmpb B%beta single bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+           {%
+           \thicklines%
+           \put(0,406){\line(0,1){140}}%      % single bond at 1
+           }%
+   \else\if\@tmpb A%alpha single bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+           \@ifundefined{dottedline}{%
+             \put(0,406){\line(0,1){140}}%    % single bond at 1
+           }{{\thicklines%
+              \dottedline{20}(0,406)(0,546)}}%
+   \else\if\@tmpb W%beta single bond
+      \yl@xdiff=-10\relax
+      \yl@ydiff=58\relax
+      \if@wrongbdWa
+        \XyMTeXWarning{Wrong Bond-Modifier (W)}%
+      \fi
+           \putratom{130}{276}{\@memberb}%   % left or right type
+           \put(0,406){\line(5,-3){120}}%      % single bond at 1
+   \else%
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+           \put(0,406){\line(0,1){140}}%      % single bond at 1
+   \fi\fi\fi\fi\fi%
+ \fi}%
+\def\@methsubstd{%
+\if@clip %clipping
+    \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+            \put(0,-30){\line(0,-1){110}}%    % single bond at 4
+    \else\if\@tmpc B%(B) beta
+      \yl@xdiff=-36\relax
+      \yl@ydiff=100\relax
+           \putlatom{-42}{-230}{\@memberb}%   % left type
+           {%
+           \thicklines%
+           \put(-18,-30){\line(-3,-5){60}}%   % single bond at 4
+           }%
+    \else\if\@tmpc A%(A) alpha
+      \yl@xdiff=37\relax
+      \yl@ydiff=100\relax
+           \putratom{41}{-230}{\@memberb}%    % right type
+       \@ifundefined{dottedline}{%
+           \put(18,-30){\line(3,-5){60}}%     % single bond at 4
+           }{{\thicklines%
+              \dottedline{20}(18,-30)(72,-120)}}%
+    \else\if\@tmpc b%(b) beta
+      \yl@xdiff=-36\relax
+      \yl@ydiff=100\relax
+           \putlatom{-42}{-230}{\@memberb}%   % left type
+           \put(-18,-30){\line(-3,-5){60}}%   % single bond at 4
+    \else\if\@tmpc a%(a) alpha
+      \yl@xdiff=37\relax
+      \yl@ydiff=100\relax
+           \putratom{41}{-230}{\@memberb}%    % right type
+           \put(18,-30){\line(3,-5){60}}%     % single bond at 4
+    \fi\fi\fi\fi\fi%
+   \else\if\@tmpb D%double bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+           \put(-12,-30){\line(0,-1){110}}%   % double bond at 4
+           \put(12,-30){\line(0,-1){110}}%    % double bond at 4
+   \else\if\@tmpb B%beta single bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+           {%
+           \thicklines%
+           \put(0,-30){\line(0,-1){110}}%    % single bond at 4
+           }%
+   \else\if\@tmpb A%alpha single bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+       \@ifundefined{dottedline}{%
+           \put(0,-30){\line(0,-1){110}}%     % single bond at 4
+           }{{\thicklines%
+              \dottedline{20}(0,-30)(0,-140)}}%
+   \else\if\@tmpb W%beta single bond
+      \yl@xdiff=-10\relax
+      \yl@ydiff=30\relax
+           \putlratom{150}{54}{\@memberb}%  % left or right type
+           \put(40,24){\line(5,3){100}}%    % single bond at 4
+      \if@wrongbdWd
+        \XyMTeXWarning{Wrong Bond-Modifier (W)}%
+      \fi
+   \else%
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+           \put(0,-30){\line(0,-1){110}}%     % single bond at 4
+   \fi\fi\fi\fi\fi%
+ \else% no clipping
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+            \put(0,0){\line(0,-1){140}}%      % single bond at 4
+    \else\if\@tmpc B%(B) beta
+      \yl@xdiff=-30\relax
+      \yl@ydiff=110\relax
+           \putlatom{-42}{-230}{\@memberb}%   % left type
+           {%
+           \thicklines%
+           \put(0,0){\line(-3,-5){72}}%       % single bond at 4
+           }%
+    \else\if\@tmpc A%(A) alpha
+      \yl@xdiff=31\relax
+      \yl@ydiff=110\relax
+           \putratom{41}{-230}{\@memberb}%    % right type
+       \@ifundefined{dottedline}{%
+           \put(0,0){\line(3,-5){72}}%        % single bond at 4
+           }{{\thicklines%
+              \dottedline{20}(0,0)(72,-120)}}%
+    \else\if\@tmpc b%(b) beta
+      \yl@xdiff=-30\relax
+      \yl@ydiff=110\relax
+           \putlatom{-42}{-230}{\@memberb}%   % left type
+           \put(0,0){\line(-3,-5){72}}%       % single bond at 4
+    \else\if\@tmpc a%(a) alpha
+      \yl@xdiff=31\relax
+      \yl@ydiff=110\relax
+           \putratom{41}{-230}{\@memberb}%    % right type
+           \put(0,0){\line(3,-5){72}}%        % single bond at 4
+    \fi\fi\fi\fi\fi%
+   \else\if\@tmpb D%double bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+           \put(-12,0){\line(0,-1){140}}%     % double bond at 4
+           \put(12,0){\line(0,-1){140}}%      % double bond at 4
+   \else\if\@tmpb B%beta single bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+           {%
+           \thicklines%
+           \put(0,0){\line(0,-1){140}}%       % single bond at 4
+           }%
+   \else\if\@tmpb A%alpha single bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+       \@ifundefined{dottedline}{%
+           \put(0,0){\line(0,-1){140}}%      % single bond at 4
+           }{{\thicklines%
+              \dottedline{20}(0,0)(0,-140)}}%
+   \else\if\@tmpb W%beta single bond
+      \yl@xdiff=-10\relax
+      \yl@ydiff=30\relax
+           \putlratom{150}{54}{\@memberb}%  % left or right type
+           \put(0,0){\line(5,3){140}}%    % single bond at 4
+      \if@wrongbdWd
+        \XyMTeXWarning{Wrong Bond-Modifier (W)}%
+      \fi
+   \else%
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+           \put(0,0){\line(0,-1){140}}%       % single bond at 4
+   \fi\fi\fi\fi\fi%
+ \fi}%
+\def\@methsubstdL{%
+\if@clip %clipping
+    \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+            \put(0,-30){\line(0,-1){110}}%    % single bond at 4
+    \else\if\@tmpc B%(B) beta
+      \yl@xdiff=-36\relax
+      \yl@ydiff=100\relax
+           \putlatom{-42}{-230}{\@memberb}%   % left type
+           {%
+           \thicklines%
+           \put(-18,-30){\line(-3,-5){60}}%   % single bond at 4
+           }%
+    \else\if\@tmpc A%(A) alpha
+      \yl@xdiff=37\relax
+      \yl@ydiff=100\relax
+           \putratom{41}{-230}{\@memberb}%    % right type
+       \@ifundefined{dottedline}{%
+           \put(18,-30){\line(3,-5){60}}%     % single bond at 4
+           }{{\thicklines%
+              \dottedline{20}(18,-30)(72,-120)}}%
+    \else\if\@tmpc b%(b) beta
+      \yl@xdiff=-36\relax
+      \yl@ydiff=100\relax
+           \putlatom{-42}{-230}{\@memberb}%   % left type
+           \put(-18,-30){\line(-3,-5){60}}%   % single bond at 4
+    \else\if\@tmpc a%(a) alpha
+      \yl@xdiff=37\relax
+      \yl@ydiff=100\relax
+           \putratom{41}{-230}{\@memberb}%    % right type
+           \put(18,-30){\line(3,-5){60}}%     % single bond at 4
+    \fi\fi\fi\fi\fi%
+   \else\if\@tmpb D%double bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+           \put(-12,-30){\line(0,-1){110}}%   % double bond at 4
+           \put(12,-30){\line(0,-1){110}}%    % double bond at 4
+   \else\if\@tmpb B%beta single bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+           {%
+           \thicklines%
+           \put(0,-30){\line(0,-1){110}}%    % single bond at 4
+           }%
+   \else\if\@tmpb A%alpha single bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+       \@ifundefined{dottedline}{%
+           \put(0,-30){\line(0,-1){110}}%     % single bond at 4
+           }{{\thicklines%
+              \dottedline{20}(0,-30)(0,-140)}}%
+   \else\if\@tmpb W%beta single bond
+      \yl@xdiff=10\relax
+      \yl@ydiff=30\relax
+           \putlatom{-150}{54}{\@memberb}%  % lefttype
+           \put(-40,24){\line(-5,3){100}}%    % single bond at 4
+      \if@wrongbdWdL
+        \XyMTeXWarning{Wrong Bond-Modifier (W)}%
+      \fi
+   \else%
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+           \put(0,-30){\line(0,-1){110}}%     % single bond at 4
+   \fi\fi\fi\fi\fi%
+ \else% no clipping
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+            \put(0,0){\line(0,-1){140}}%      % single bond at 4
+    \else\if\@tmpc B%(B) beta
+      \yl@xdiff=-30\relax
+      \yl@ydiff=110\relax
+           \putlatom{-42}{-230}{\@memberb}%   % left type
+           {%
+           \thicklines%
+           \put(0,0){\line(-3,-5){72}}%       % single bond at 4
+           }%
+    \else\if\@tmpc A%(A) alpha
+      \yl@xdiff=31\relax
+      \yl@ydiff=110\relax
+           \putratom{41}{-230}{\@memberb}%    % right type
+       \@ifundefined{dottedline}{%
+           \put(0,0){\line(3,-5){72}}%        % single bond at 4
+           }{{\thicklines%
+              \dottedline{20}(0,0)(72,-120)}}%
+    \else\if\@tmpc b%(b) beta
+      \yl@xdiff=-30\relax
+      \yl@ydiff=110\relax
+           \putlatom{-42}{-230}{\@memberb}%   % left type
+           \put(0,0){\line(-3,-5){72}}%       % single bond at 4
+    \else\if\@tmpc a%(a) alpha
+      \yl@xdiff=31\relax
+      \yl@ydiff=110\relax
+           \putratom{41}{-230}{\@memberb}%    % right type
+           \put(0,0){\line(3,-5){72}}%        % single bond at 4
+    \fi\fi\fi\fi\fi%
+   \else\if\@tmpb D%double bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+           \put(-12,0){\line(0,-1){140}}%     % double bond at 4
+           \put(12,0){\line(0,-1){140}}%      % double bond at 4
+   \else\if\@tmpb B%beta single bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+           {%
+           \thicklines%
+           \put(0,0){\line(0,-1){140}}%       % single bond at 4
+           }%
+   \else\if\@tmpb A%alpha single bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+       \@ifundefined{dottedline}{%
+           \put(0,0){\line(0,-1){140}}%      % single bond at 4
+           }{{\thicklines%
+              \dottedline{20}(0,0)(0,-140)}}%
+   \else\if\@tmpb W%beta single bond
+      \yl@xdiff=10\relax
+      \yl@ydiff=30\relax
+           \putlatom{-150}{54}{\@memberb}%  % left type
+           \put(0,0){\line(-5,3){140}}%    % single bond at 4
+      \if@wrongbdWdL
+        \XyMTeXWarning{Wrong Bond-Modifier (W)}%
+      \fi
+   \else%
+      \yl@xdiff=31\relax
+      \yl@ydiff=90\relax
+           \putlratom{-31}{-230}{\@memberb}%  % left or right type
+           \put(0,0){\line(0,-1){140}}%       % single bond at 4
+   \fi\fi\fi\fi\fi%
+ \fi}%
+\def\@methsubstaL{%
+\if@aclip% %clipping
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \put(0,436){\line(0,1){110}}%      % single bond at 1
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+    \else\if\@tmpc B%(B) beta
+      \yl@xdiff=-36\relax
+      \yl@ydiff=-27\relax
+           \putlatom{-42}{563}{\@memberb}%    % left type
+           {%
+           \thicklines%
+           \put(-18,436){\line(-3,5){60}}%    % single bond at 1
+           }%
+    \else\if\@tmpc A%(A) alpha
+      \yl@xdiff=37\relax
+      \yl@ydiff=-27\relax
+           \putratom{41}{563}{\@memberb}%     % right type
+       \@ifundefined{dottedline}{%
+           \put(18,436){\line(3,5){60}}%      % single bond at 1
+           }{{\thicklines%
+              \dottedline{20}(18,436)(72,526)}}%
+    \else\if\@tmpc b%(b) beta
+      \yl@xdiff=-36\relax
+      \yl@ydiff=-27\relax
+           \putlatom{-42}{563}{\@memberb}%    % left type
+           \put(-18,436){\line(-3,5){60}}%    % single bond at 1
+    \else\if\@tmpc a%(a) alpha
+      \yl@xdiff=37\relax
+      \yl@ydiff=-27\relax
+           \putratom{41}{563}{\@memberb}%     % right type
+           \put(18,436){\line(3,5){60}}%      % single bond at 1
+    \fi\fi\fi\fi\fi%
+   \else\if\@tmpb D%double bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+           \put(-12,436){\line(0,1){110}}%    % double bond at 1
+           \put(12,436){\line(0,1){110}}%     % double bond at 1
+   \else\if\@tmpb B%beta single bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+           {%
+           \thicklines%
+           \put(0,436){\line(0,1){110}}%      % single bond at 1
+           }%
+   \else\if\@tmpb A%alpha single bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+           \@ifundefined{dottedline}{%
+             \put(0,436){\line(0,1){110}}%    % single bond at 1
+           }{{\thicklines%
+              \dottedline{20}(0,436)(0,546)}}%
+   \else\if\@tmpb W%beta single bond
+      \yl@xdiff=10\relax
+      \yl@ydiff=46\relax
+           \putlatom{-150}{276}{\@memberb}%   % left type
+           \put(-40,382){\line(-5,-3){100}}%      % single bond at 1
+      \if@wrongbdWaL
+        \XyMTeXWarning{Wrong Bond-Modifier (W)}%
+      \fi
+   \else%
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+           \put(0,436){\line(0,1){110}}%      % single bond at 1
+   \fi\fi\fi\fi\fi%
+\else% % no clipping
+   \if\@tmpb S%single bond
+    \ifx\@tmpc\empty%
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \put(0,406){\line(0,1){140}}%      % single bond at 1
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+    \else\if\@tmpc B%(B) beta
+      \yl@xdiff=-30\relax
+      \yl@ydiff=-37\relax
+           \putlatom{-42}{563}{\@memberb}%    % left type
+           {%
+           \thicklines%
+           \put(0,406){\line(-3,5){72}}%      % single bond at 1
+           }%
+    \else\if\@tmpc A%(A) alpha
+      \yl@xdiff=31\relax
+      \yl@ydiff=-37\relax
+           \putratom{41}{563}{\@memberb}%     % right type
+       \@ifundefined{dottedline}{%
+           \put(0,406){\line(3,5){72}}%       % single bond at 1
+           }{{\thicklines%
+              \dottedline{20}(0,406)(72,526)}}%
+    \else\if\@tmpc b%(b) beta
+      \yl@xdiff=-30\relax
+      \yl@ydiff=-37\relax
+           \putlatom{-42}{563}{\@memberb}%    % left type
+           \put(0,406){\line(-3,5){72}}%      % single bond at 1
+    \else\if\@tmpc a%(a) alpha
+      \yl@xdiff=31\relax
+      \yl@ydiff=-37\relax
+           \putratom{41}{563}{\@memberb}%     % right type
+           \put(0,406){\line(3,5){72}}%       % single bond at 1
+    \fi\fi\fi\fi\fi%
+   \else\if\@tmpb D%double bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+           \put(-12,406){\line(0,1){140}}%    % double bond at 1
+           \put(12,406){\line(0,1){140}}%     % double bond at 1
+   \else\if\@tmpb B%beta single bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+           {%
+           \thicklines%
+           \put(0,406){\line(0,1){140}}%      % single bond at 1
+           }%
+   \else\if\@tmpb A%alpha single bond
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+           \@ifundefined{dottedline}{%
+             \put(0,406){\line(0,1){140}}%    % single bond at 1
+           }{{\thicklines%
+              \dottedline{20}(0,406)(0,546)}}%
+   \else\if\@tmpb W%beta single bond
+      \yl@xdiff=10\relax
+      \yl@ydiff=58\relax
+           \putlatom{-130}{276}{\@memberb}%   % left type
+           \put(0,406){\line(-5,-3){120}}%      % single bond at 1
+      \if@wrongbdWaL
+        \XyMTeXWarning{Wrong Bond-Modifier (W)}%
+      \fi
+   \else%
+      \yl@xdiff=31\relax
+      \yl@ydiff=-17\relax
+           \putlratom{-31}{563}{\@memberb}%   % left or right type
+           \put(0,406){\line(0,1){140}}%      % single bond at 1
+   \fi\fi\fi\fi\fi%
+ \fi}%
+\def\SKbondB{%
+  \ifx\bbb\empty%
+    \ifx\ccc\empty%
+     \put(0,406){\line(5,-3){171}}%        %bond 1-2
+    \else%
+     \put(0,406){\line(5,-3){136}}%        %bond 1-2
+    \fi%
+   \else%
+    \ifx\ccc\empty%
+     \put(35,385){\line(5,-3){136}}%       %bond 1-2
+    \else%
+     \put(35,385){\line(5,-3){100}}%       %bond 1-2
+    \fi%
+   \fi}%
+\def\SKbondA{%
+  \ifx\bbb\empty%
+    \ifx\aaa\empty%
+     \put(0,406){\line(-5,-3){171}}%       %bond 1-6
+    \else%
+     \put(0,406){\line(-5,-3){136}}%       %bond 1-6
+    \fi%
+   \else%
+    \ifx\aaa\empty%
+     \put(-35,385){\line(-5,-3){136}}%     %bond 1-6
+    \else%
+     \put(-35,385){\line(-5,-3){100}}%     %bond 1-6
+    \fi%
+   \fi}%
+\def\SKbondBi{%
+ \begin{picture}(0,0)(0,0)
+  \ifx\bbb\empty%
+    \ifx\ccc\empty%
+     \put(0,0){\line(5,3){171}}%           %bond 4-3
+    \else%
+     \put(0,0){\line(5,3){136}}%           %bond 4-3
+    \fi%
+  \else%
+    \ifx\ccc\empty%
+     \put(35,21){\line(5,3){138}}%         %bond 4-3
+    \else%
+     \put(35,21){\line(5,3){100}}%         %bond 4-3
+    \fi%
+  \fi\end{picture}}%
+\def\SKbondAi{%
+ \begin{picture}(0,0)(0,0)
+  \ifx\bbb\empty%
+    \ifx\aaa\empty%
+     \put(0,0){\line(-5,3){171}}%          %bond 4-5
+    \else%
+     \put(0,0){\line(-5,3){136}}%          %bond 4-5
+    \fi%
+  \else%
+    \ifx\aaa\empty%
+     \put(-35,21){\line(-5,3){138}}%       %bond 4-5
+    \else%
+     \put(-35,21){\line(-5,3){100}}%        %bond 4-5
+    \fi%
+  \fi\end{picture}}%
+\def\bondB{%
+  \ifx\bbb\empty%
+   \ifx\ccc\empty%
+    \put(6,364){\line(5,-3){126}}%         %double bond 1-2
+   \else%
+    \put(6,364){\line(5,-3){100}}%         %double bond 1-2
+   \fi%
+  \else%
+   \ifx\ccc\empty%
+    \put(35,340){\line(5,-3){100}}%        %double bond 1-2
+   \else%
+    \put(35,352){\line(5,-3){100}}%        %double bond 1-2
+   \fi%                                    % line <1OO not available
+  \fi%
+ }%
+\def\bondBB{%
+  \ifx\bbb\empty%
+   \ifx\ccc\empty%
+    \put(42,420){\line(5,-3){126}}%         %double bond 1-2
+   \else%
+    \put(42,420){\line(5,-3){100}}%         %double bond 1-2
+   \fi%
+  \else%
+   \ifx\ccc\empty%
+    \put(52,412){\line(5,-3){110}}%        %double bond 1-2
+   \else%
+    \put(52,412){\line(5,-3){100}}%        %double bond 1-2
+   \fi%                                    % line <1OO not available
+  \fi%
+ }%
+\def\bondA{%
+  \ifx\bbb\empty%
+   \ifx\aaa\empty%
+    \put(-6,364){\line(-5,-3){126}}%        %double bond 1-6
+   \else%
+    \put(-6,364){\line(-5,-3){100}}%        %double bond 1-6
+   \fi%
+  \else%
+   \ifx\aaa\empty%
+    \put(-35,340){\line(-5,-3){100}}%       %double bond 1-6
+   \else%
+    \put(-35,352){\line(-5,-3){100}}%       %double bond 1-6
+   \fi%                                     % line <1OO not available
+  \fi%
+}%
+\def\bondAA{%
+  \ifx\bbb\empty%
+   \ifx\aaa\empty%
+    \put(-42,420){\line(-5,-3){126}}%        %double bond 1-6
+   \else%
+    \put(-42,420){\line(-5,-3){100}}%        %double bond 1-6
+   \fi%
+  \else%
+   \ifx\aaa\empty%
+    \put(-52,412){\line(-5,-3){100}}%       %double bond 1-6
+   \else%
+    \put(-52,412){\line(-5,-3){100}}%       %double bond 1-6
+   \fi%                                     % line <1OO not available
+  \fi%
+}%
+ \def\bondBi{%
+  \ifx\bbb\empty%
+   \ifx\ccc\empty%
+    \put(6,42){\line(5,3){126}}           %double bond 4-3
+   \else%
+    \put(6,42){\line(5,3){100}}           %double bond 4-3
+   \fi%
+  \else%
+   \ifx\ccc\empty%
+    \put(35,66){\line(5,3){100}}%          %double bond 4-3
+   \else%
+    \put(35,60){\line(5,3){100}}%          %double bond 4-3
+   \fi%                                    % line <1OO not available
+  \fi%
+}%
+ \def\bondBBi{%
+  \ifx\bbb\empty%
+   \ifx\ccc\empty%
+    \put(42,-14){\line(5,3){126}}%        %double bond 1-6
+   \else%
+    \put(30,-14){\line(5,3){100}}%        %double bond 1-6
+   \fi%
+  \else%
+   \ifx\ccc\empty%
+    \put(52,0){\line(5,3){100}}%       %double bond 1-6
+   \else%
+    \put(52,0){\line(5,3){100}}%        %double bond 4-5
+   \fi%                                    % line <1OO not available
+  \fi%
+}%
+
+ \def\bondAi{%
+  \ifx\bbb\empty%
+   \ifx\aaa\empty%
+    \put(-6,42){\line(-5,3){126}}%         %double bond 4-5
+   \else%
+    \put(-6,42){\line(-5,3){100}}%         %double bond 4-5
+   \fi%
+  \else%
+   \ifx\aaa\empty%
+    \put(-35,66){\line(-5,3){100}}%        %double bond 4-5
+   \else%
+    \put(-35,60){\line(-5,3){100}}%        %double bond 4-5
+   \fi%                                    % line <1OO not available
+  \fi%
+ }%
+ \def\bondAAi{%
+  \ifx\bbb\empty%
+   \ifx\aaa\empty%
+    \put(-42,-14){\line(-5,3){126}}%        %double bond 1-6
+   \else%
+    \put(-42,-14){\line(-5,3){100}}%        %double bond 1-6
+   \fi%
+  \else%
+   \ifx\aaa\empty%
+    \put(-52,6){\line(-5,3){100}}%       %double bond 1-6
+   \else%
+    \put(-52,0){\line(-5,3){100}}%        %double bond 4-5
+   \fi%                                    % line <1OO not available
+  \fi%
+ }%
+\newif\if@adoublebond \@adoublebondfalse
+\newif\if@bdoublebond \@bdoublebondfalse
+\newif\if@Adoublebond \@Adoublebondfalse
+\newif\if@Bdoublebond \@Bdoublebondfalse
+\def\reset@double{%
+\@adoublebondfalse\@bdoublebondfalse
+\@Adoublebondfalse\@Bdoublebondfalse}
+\newif\if@linterchainsw \@linterchainswfalse
+\newif\if@rinterchainsw \@rinterchainswfalse
+\def\reset@interchainsw{\@linterchainswfalse\@rinterchainswfalse}
+\def\@@trimethylene#1#2#3#4{%
+\leavevmode
+\iniatom\iniflag%initialize
+\test@vrtx@trimethy{#1}{#4}%
+\begin{picture}(450,480)(0,0)
+  \put(171,-303){\SKbondB}% bond between 1 and 2
+  \put(171,-303){\SKbondA}% bond between 1 and 6
+\if@adoublebond\relax\put(171,-303){\bondA}\fi
+\if@bdoublebond\relax\put(171,-303){\bondB}\fi
+\if@Adoublebond\relax\put(171,-303){\bondAA}\fi
+\if@Bdoublebond\relax\put(171,-303){\bondBB}\fi
+\test@termcnt=#3\relax
+\set@hetatom@methyl{#1}{#4}{0}{4}{0}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\@tmpaa=\@tmpa \advance\@tmpaa by#4\relax
+\ifx\@memberb\@yl\else
+\ifcase\@tmpaa%0 omit
+\or
+ \ifcase#3
+   {\if@aclip \@cliptrue \else \@clipfalse\fi
+   \put(0,0){\@methsubstdL}}%
+  \or\relax
+  \or
+   {\if@aclip \@cliptrue \else \@clipfalse\fi
+   \put(0,0){\@methsubstdL}}%
+ \fi
+\or
+{\if@bclip \@acliptrue \else \@aclipfalse\fi
+  \put(171,-303){\@methsubsta}}
+\or
+ \ifcase#3
+  {\if@cclip \@cliptrue\else \@clipfalse\fi
+  \put(342,0){\@methsubstd}}%
+ \or
+  {\if@cclip \@cliptrue\else \@clipfalse\fi
+  \put(342,0){\@methsubstd}}%
+ \or\relax
+ \fi
+\fi%end of ifcase
+\fi\fi
+}%
+\end{picture}}% end of \@@trimethylene
+\def\test@vrtx@trimethy#1#2{%
+\@forsemicol\member:=#1\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\twoch@r\@membera{}%
+\@tmpaa=\@tmpa \advance\@tmpaa by#2\relax
+\ifcase\@tmpaa%
+ \or \if\@tmpb s\relax \xdef\aaa{}\else\if\@tmpb h\relax
+     \xdef\aaa{@}\else\xdef\aaa{@}\fi\fi
+ \or \if\@tmpb s\relax \xdef\bbb{}\else\if\@tmpb h\relax
+     \xdef\bbb{@}\else\xdef\bbb{@}\fi\fi
+ \or \if\@tmpb s\relax \xdef\ccc{}\else\if\@tmpb h\relax
+     \xdef\ccc{@}\else\xdef\ccc{@}\fi\fi
+\fi\fi}}
+\def\yltrimethyleneposition#1#2#3#4{%
+\@forsemicol\member:=#1\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\twoch@r\@membera{}%
+\@tmpaa=\@tmpa \advance\@tmpaa by#4\relax
+\ifcase\@tmpaa%
+ \or \def\aaa{@}%\def\aaa{\@memberb}%
+ \or \def\bbb{@}%\def\bbb{\@memberb}%
+ \or \def\ccc{@}%\def\ccc{\@memberb}%
+\fi\fi}%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#2\do{\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\@tmpaa=\@tmpa \advance\@tmpaa by#4\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpaa%0 omit
+\or
+ \ifcase#3
+   \ifx\aaa\empty
+    \gdef\@ylii{0}\gdef\@yli{0}\global\@ylswtrue% subst. on 1
+   \else
+    \if@linterchainsw%interchain position
+     \gdef\@ylii{0}\gdef\@yli{40}\global\@ylswtrue% subst. on 1
+    \else% terminal position
+     \gdef\@ylii{40}\gdef\@yli{-24}\global\@ylswtrue% subst. on 1
+    \fi
+   \fi
+  \or\relax
+  \or
+   \ifx\aaa\empty
+    \gdef\@ylii{0}\gdef\@yli{0}\global\@ylswtrue% subst. on 1
+   \else
+    \if@linterchainsw%interchain position
+     \gdef\@ylii{0}\gdef\@yli{40}\global\@ylswtrue% subst. on 1
+    \else% terminal position
+     \gdef\@ylii{40}\gdef\@yli{-24}\global\@ylswtrue% subst. on 1
+    \fi
+   \fi
+ \fi
+\or
+   \ifx\bbb\empty
+    \gdef\@ylii{-171}\gdef\@yli{-103}\global\@ylswtrue% subst. on 2
+   \else
+    \gdef\@ylii{-171}\gdef\@yli{-133}\global\@ylswtrue% subst. on 2
+   \fi
+\or
+ \ifcase#3
+   \ifx\ccc\empty
+    \gdef\@ylii{-342}\gdef\@yli{0}\global\@ylswtrue% subst. on 3
+   \else
+    \if@rinterchainsw%interchain position
+     \gdef\@ylii{-342}\gdef\@yli{40}\global\@ylswtrue% subst. on 3
+    \else
+     \gdef\@ylii{-382}\gdef\@yli{-24}\global\@ylswtrue% subst. on 3
+    \fi
+   \fi
+ \or
+   \ifx\ccc\empty
+    \gdef\@ylii{-342}\gdef\@yli{0}\global\@ylswtrue% subst. on 3
+   \else
+    \if@rinterchainsw%interchain position
+     \gdef\@ylii{-342}\gdef\@yli{40}\global\@ylswtrue% subst. on 3
+    \else
+     \gdef\@ylii{-382}\gdef\@yli{-24}\global\@ylswtrue% subst. on 3
+    \fi
+   \fi
+ \or\relax
+ \fi
+\fi%end of ifcase
+\fi}}% end of \yltrimethyleneposition
+\newcount\test@termcnt
+\def\set@hetatom@methyl#1#2#3#4#5{%
+\@forsemicol\member:=#1\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\twoCH@R\@membera//%
+\ifnum#5 < 0\relax%
+\@tmpaa=-\@tmpa\relax \advance\@tmpaa by#2\relax%
+\else\@tmpaa=\@tmpa\relax \advance\@tmpaa by#2\relax \fi
+\ifnum\@tmpaa >#3\relax%
+\ifnum\@tmpaa <#4\relax%
+\ifcase\@tmpaa%
+\or%position 1 <--- position 6 of set@hetatom@sixv
+ \ifnum\test@termcnt=1\else%not terminal point (left)
+  \if\@tmpb h\relax%
+     \@acliptrue%
+     \putlatom{0}{30}{\@memberb}%  % right type
+   \else\if\@tmpb s\relax%
+     \@aclipfalse%
+     \putlatom{0}{0}{\@memberb}%  % right type
+   \else\if\@tmpb a\relax%omit fused position
+   \else
+     \@acliptrue%
+     \putlatom{36}{-23}{\@memberb}% % left type
+   \fi\fi\fi
+  \fi
+\or%position 2 <--- position 1 of set@hetatom@sixv
+  \if\@tmpb h\relax%
+     \@bcliptrue%
+     \putratom{171}{53}{\@memberb}%  % right type
+   \else\if\@tmpb s\relax%
+     \@bclipfalse%
+     \putratom{171}{103}{\@memberb}%  % right type
+   \else\if\@tmpb a\relax%omit fused position
+   \else
+     \@bcliptrue%
+     \putratom{140}{65}{\@memberb}%  % right type
+   \fi\fi\fi
+\or%position 3 <--- position 2 of set@hetatom@sixv
+ \ifnum\test@termcnt=2\else%not terminal point (right)
+  \if\@tmpb h\relax
+     \@ccliptrue%
+     \putratom{330}{30}{\@memberb}%  % right type
+   \else\if\@tmpb s\relax
+     \@cclipfalse%
+     \putratom{346}{0}{\@memberb}%  % right type
+   \else\if\@tmpb a\relax%omit fused position
+   \else
+     \@ccliptrue%
+     \putratom{306}{-23}{\@memberb}%  % right type
+   \fi\fi\fi
+  \fi
+\fi% end of ifcase
+\fi\fi\fi}}% end of the macro \set@hetatom@methyl
+\def\trimethylene{%
+\@ifnextchar[{\@trimethylene[@}{\@trimethylene[]}}
+\def\@trimethylene[#1]#2#3{%
+\iniflag\iniatom%
+\@reset@ylsw%
+\reset@interchainsw%
+\yltrimethyleneposition{#2}{#3}{0}{0}%
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(450,480)(-50,-180)
+  \iforigpt \put(-50,-180){\circle*{50}}%
+           \put(0,0){\circle{50}}%
+   \typeout{command `trimethylene' origin: %
+    (0,0) ---> (50,180)}\fi%
+\fi
+\reset@double%
+\@tfor\member:=#1\do{%
+\if\member a\relax
+\@adoublebondtrue
+\else\if\member b\relax
+\@bdoublebondtrue
+\else\if\member A\relax
+\@Adoublebondtrue
+\else\if\member B\relax
+\@Bdoublebondtrue
+\else
+  \expandafter\twoCH@@R\member//%
+    \set@fusion@trimeth
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdfalse
+   \put(0,0){\@@trimethylene{#2}{#3}{0}{0}}%
+\end{picture}}% end of \trimethylene \@trimethylene
+\def\set@fusion@trimeth{%
+\if\@@tmpa a\relax%
+        \putlratom{0}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{a}%
+      \else\if\@@tmpa A\relax%
+        \putlratom{171}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{A}%
+      \else\if\@@tmpa b\relax%
+        \putlratom{171}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{b}%
+      \else\if\@@tmpa B\relax%
+        \putlratom{342}{0}{\@@tmpb}%    % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{B}%
+   \fi\fi\fi\fi
+}% end of the macro \set@fusion@trimeth
+\def\@@trimethylenei#1#2#3#4{%
+\leavevmode
+\iniatom\iniflag%initialize
+\test@vrtx@trimethy{#1}{#4}%
+\begin{picture}(450,480)(0,0)
+  \put(171,0){\SKbondAi}% bond between 1 and 2
+  \put(171,0){\SKbondBi}% bond between 2 and 3
+\if@adoublebond\relax\put(171,0){\bondAi}\fi
+\if@bdoublebond\relax\put(171,0){\bondBi}\fi
+\if@Adoublebond\relax\put(171,0){\bondAAi}\fi
+\if@Bdoublebond\relax\put(171,0){\bondBBi}\fi
+\test@termcnt=#3\relax
+\set@hetatom@methyli{#1}{#4}{0}{4}{0}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\@tmpaa=\@tmpa \advance\@tmpaa by#4\relax
+\ifx\@memberb\@yl\else
+\ifcase\@tmpaa%0 omit
+\or
+ \ifcase#3
+   \put(0,-303){\@methsubstaL}%
+  \or\relax
+  \or
+   \put(0,-303){\@methsubstaL}%
+ \fi
+\or
+{\if@bclip \@cliptrue \else \@clipfalse\fi
+  \put(171,0){\@methsubstd}}%
+\or
+ \ifcase#3
+  {\if@cclip \@acliptrue\else \@aclipfalse\fi
+  \put(342,-303){\@methsubsta}}%
+ \or
+  {\if@cclip \@acliptrue\else \@aclipfalse\fi
+  \put(342,-303){\@methsubsta}}%
+ \or\relax
+ \fi
+\fi%end of ifcase
+\fi\fi
+}%
+\end{picture}}% end of \@@trimethylenei
+\def\yltrimethyleneiposition#1#2#3#4{%
+\@forsemicol\member:=#1\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\twoCH@R\@membera//%
+\@tmpaa=\@tmpa \advance\@tmpaa by#4\relax
+\ifcase\@tmpaa%
+ \or \def\aaa{@}%\def\aaa{\@memberb}%
+ \or \def\bbb{@}%\def\bbb{\@memberb}%
+ \or \def\ccc{@}%\def\ccc{\@memberb}%
+\fi%
+\fi}%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#2\do{\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\@tmpaa=\@tmpa \advance\@tmpaa by#4\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpaa%0 omit
+\or%%%%%%position 1
+ \ifcase#3
+   \ifx\aaa\empty
+%%    \gdef\@ylii{0}\gdef\@yli{0}\global\@ylswtrue% subst. on 1
+    \gdef\@ylii{0}\gdef\@yli{-103}\global\@ylswtrue% subst. on 1
+   \else
+    \if@linterchainsw%interchain position
+     \gdef\@ylii{0}\gdef\@yli{-133}\global\@ylswtrue% subst. on 1
+    \else% terminal position
+%%     \gdef\@ylii{40}\gdef\@yli{-24}\global\@ylswtrue% subst. on 1
+     \gdef\@ylii{40}\gdef\@yli{-79}\global\@ylswtrue% subst. on 1
+    \fi
+   \fi
+  \or\relax
+  \or
+   \ifx\aaa\empty
+%%    \gdef\@ylii{0}\gdef\@yli{0}\global\@ylswtrue% subst. on 1
+    \gdef\@ylii{0}\gdef\@yli{-103}\global\@ylswtrue% subst. on 1
+   \else
+    \if@linterchainsw%interchain position
+     \gdef\@ylii{0}\gdef\@yli{-133}\global\@ylswtrue% subst. on 1
+    \else% terminal position
+%%     \gdef\@ylii{40}\gdef\@yli{-24}\global\@ylswtrue% subst. on 1
+     \gdef\@ylii{40}\gdef\@yli{-79}\global\@ylswtrue% subst. on 1
+    \fi
+   \fi
+ \fi
+\or%%%%%%%%position 2
+   \ifx\bbb\empty
+%%    \gdef\@ylii{-171}\gdef\@yli{-103}\global\@ylswtrue% subst. on 2
+    \gdef\@ylii{-171}\gdef\@yli{0}\global\@ylswtrue% subst. on 2
+   \else
+%%    \gdef\@ylii{-171}\gdef\@yli{-133}\global\@ylswtrue% subst. on 2
+    \gdef\@ylii{-171}\gdef\@yli{50}\global\@ylswtrue% subst. on 2
+   \fi
+\or%%%%%%%%position 3
+ \ifcase#3
+   \ifx\ccc\empty
+%%    \gdef\@ylii{-342}\gdef\@yli{0}\global\@ylswtrue% subst. on 3
+    \gdef\@ylii{-342}\gdef\@yli{-103}\global\@ylswtrue% subst. on 3
+   \else
+    \if@rinterchainsw%interchain position
+%%     \gdef\@ylii{-342}\gdef\@yli{40}\global\@ylswtrue% subst. on 3
+     \gdef\@ylii{-342}\gdef\@yli{-133}\global\@ylswtrue% subst. on 3
+    \else
+%%     \gdef\@ylii{-382}\gdef\@yli{-24}\global\@ylswtrue% subst. on 3
+     \gdef\@ylii{-382}\gdef\@yli{-79}\global\@ylswtrue% subst. on 3
+    \fi
+   \fi
+ \or
+   \ifx\ccc\empty
+    \gdef\@ylii{-342}\gdef\@yli{-103}\global\@ylswtrue% subst. on 3
+   \else
+    \if@rinterchainsw%interchain position
+     \gdef\@ylii{-342}\gdef\@yli{-133}\global\@ylswtrue% subst. on 3
+    \else
+     \gdef\@ylii{-382}\gdef\@yli{-79}\global\@ylswtrue% subst. on 3
+    \fi
+   \fi
+ \or\relax
+ \fi
+\fi%end of ifcase
+\fi}}% end of \yltrimethyleneiposition
+\def\set@hetatom@methyli#1#2#3#4#5{%
+\@forsemicol\member:=#1\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\twoch@r\@membera{}%
+\ifnum#5 < 0\relax%
+\@tmpaa=-\@tmpa\relax \advance\@tmpaa by#2\relax%
+\else\@tmpaa=\@tmpa\relax \advance\@tmpaa by#2\relax \fi
+\ifnum\@tmpaa >#3\relax%
+\ifnum\@tmpaa <#4\relax%
+\ifcase\@tmpaa%
+\or%position 1 <-- \set@hetatom@sixv position 5
+ \ifnum\test@termcnt=1\else%not terminal point (left)
+  \if\@tmpb h\relax
+     \@acliptrue%
+     \putlatom{0}{70}{\@memberb}%  % right type
+   \else\if\@tmpb s\relax
+     \@aclipfalse%
+     \putlatom{0}{103}{\@memberb}%  % right type
+   \else\if\@tmpb a\relax%omit fused position
+   \else
+     \@acliptrue%
+     \putlatom{36}{65}{\@memberb}%  % left type
+   \fi\fi\fi
+ \fi
+\or%position 2 <-- \set@hetatom@sixv position 4
+  \if\@tmpb h\relax
+     \@bcliptrue%
+     \putratom{171}{50}{\@memberb}%  % right type
+   \else\if\@tmpb s\relax
+     \@bclipfalse%
+     \putratom{171}{0}{\@memberb}%  % right type
+   \else\if\@tmpb a\relax%omit fused position
+   \else
+     \@bcliptrue%
+     \putratom{140}{-23}{\@memberb}%  % right type
+   \fi\fi\fi
+\or%position 3 <-- \set@hetatom@sixv position 3
+ \ifnum\test@termcnt=2\else%not terminal point (right)
+  \if\@tmpb h\relax
+     \@ccliptrue%
+     \putratom{342}{70}{\@memberb}%  % right type
+   \else\if\@tmpb s\relax
+     \@cclipfalse%
+     \putratom{342}{103}{\@memberb}%  % right type
+   \else\if\@tmpb a\relax%omit fused position
+   \else
+     \@ccliptrue%
+     \putratom{306}{65}{\@memberb}%   % right type
+   \fi\fi\fi
+  \fi
+\fi% end of ifcase
+\fi\fi\fi}}% end of the macro \set@hetatom@methyli
+\def\trimethylenei{%
+\@ifnextchar[{\@trimethylenei[@}{\@trimethylenei[]}}
+\def\@trimethylenei[#1]#2#3{%
+\iniflag\iniatom%
+\@reset@ylsw%
+\reset@interchainsw%
+\yltrimethyleneiposition{#2}{#3}{0}{0}%
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(450,480)(-50,-180)
+  \iforigpt \put(-50,-180){\circle*{50}}%
+           \put(0,0){\circle{50}}%
+   \typeout{command `trimethylene' origin: %
+    (0,0) ---> (50,180)}\fi%
+\fi
+\reset@double%
+\@tfor\member:=#1\do{%
+\if\member a\relax
+\@adoublebondtrue
+\else\if\member b\relax
+\@bdoublebondtrue
+\else\if\member A\relax
+\@Adoublebondtrue
+\else\if\member B\relax
+\@Bdoublebondtrue
+\else
+  \expandafter\twoCH@@R\member//%
+    \set@fusion@trimethi
+\fi\fi\fi\fi}%
+\@wrongbdWafalse
+\@wrongbdWdtrue
+   \put(0,0){\@@trimethylenei{#2}{#3}{0}{0}}%
+\end{picture}}% end of \trimethylenei
+\def\set@fusion@trimethi{%
+\if\@@tmpa a\relax%
+        \putlratom{0}{103}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{a}%
+      \else\if\@@tmpa A\relax%
+        \putlratom{171}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{A}%
+      \else\if\@@tmpa b\relax%
+        \putlratom{171}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{b}%
+      \else\if\@@tmpa B\relax%
+        \putlratom{342}{103}{\@@tmpb}%    % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{B}%
+   \fi\fi\fi\fi
+}% end of the macro \set@fusion@trimethi
+\def\@@dimethylene#1#2#3#4{%
+\leavevmode
+\iniatom\iniflag%initialize
+\test@vrtx@dimethy{#1}{#4}%
+\begin{picture}(250,480)(0,0)
+  \put(171,-303){\SKbondA}% bond between 1 and 2
+\if@adoublebond
+ \put(171,-303){\bondA}%upper side double bond
+\else\if@Adoublebond
+ \put(171,-303){\bondAA}%lower side double bond
+\fi\fi%
+\test@termcnt=#3\relax
+\set@hetatom@methyl{#1}{#4}{0}{3}{0}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\@tmpaa=\@tmpa \advance\@tmpaa by#4\relax
+\ifx\@memberb\@yl\else
+\ifcase\@tmpaa%0 omit
+\or
+ \ifcase#3
+   {\if@aclip \@cliptrue \else \@clipfalse\fi
+   \put(0,0){\@methsubstdL}}%
+  \or\relax
+  \or
+   {\if@aclip \@cliptrue \else \@clipfalse\fi
+   \put(0,0){\@methsubstdL}}%
+ \fi
+\or
+ \ifcase#3
+  {\if@bclip \@acliptrue \else \@aclipfalse\fi
+   \put(171,-303){\@methsubsta}}
+ \or
+  {\if@bclip \@acliptrue \else \@aclipfalse\fi
+   \put(171,-303){\@methsubsta}}
+ \or\relax
+ \fi
+\fi%end of ifcase
+\fi\fi%
+}%
+\end{picture}}% end of \@@dimethylene
+\def\test@vrtx@dimethy#1#2{%
+\@forsemicol\member:=#1\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\twoch@r\@membera{}%
+\@tmpaa=\@tmpa \advance\@tmpaa by#2\relax
+\ifcase\@tmpaa%
+ \or \if\@tmpb s\relax \xdef\aaa{}\else\if\@tmpb h\relax
+     \xdef\aaa{@}\else\xdef\aaa{@}\fi\fi
+ \or \if\@tmpb s\relax \xdef\bbb{}\else\if\@tmpb h\relax
+     \xdef\bbb{@}\else\xdef\bbb{@}\fi\fi
+\fi\fi}}
+\def\yldimethyleneposition#1#2#3#4{%
+\@forsemicol\member:=#1\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\twoch@r\@membera{}%
+\@tmpaa=\@tmpa \advance\@tmpaa by#4\relax
+\ifcase\@tmpaa%
+ \or \def\aaa{\@memberb}%
+ \or \def\bbb{\@memberb}%
+\fi\fi}%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\@tmpaa=\@tmpa \advance\@tmpaa by#4\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpaa%0 omit
+\or
+ \ifcase#3
+   \ifx\aaa\empty
+    \gdef\@ylii{0}\gdef\@yli{0}\global\@ylswtrue% subst. on 1
+   \else
+    \if@linterchainsw%interchain position
+     \gdef\@ylii{0}\gdef\@yli{40}\global\@ylswtrue% subst. on 1
+    \else%terminal position
+     \gdef\@ylii{40}\gdef\@yli{-24}\global\@ylswtrue% subst. on 1
+    \fi
+   \fi
+  \or\relax
+  \or
+   \ifx\aaa\empty
+    \gdef\@ylii{0}\gdef\@yli{0}\global\@ylswtrue% subst. on 1
+   \else
+    \if@linterchainsw%interchain position
+     \gdef\@ylii{0}\gdef\@yli{40}\global\@ylswtrue% subst. on 1
+    \else%terminal position
+     \gdef\@ylii{40}\gdef\@yli{-24}\global\@ylswtrue% subst. on 1
+    \fi
+   \fi
+ \fi
+\or
+ \ifcase#3
+   \ifx\bbb\empty
+    \gdef\@ylii{-171}\gdef\@yli{-103}\global\@ylswtrue% subst. on 2
+   \else
+    \if@rinterchainsw%interchain position
+     \gdef\@ylii{-171}\gdef\@yli{-133}\global\@ylswtrue% subst. on 2
+    \else%terminal position
+     \gdef\@ylii{-211}\gdef\@yli{-93}\global\@ylswtrue% subst. on 2
+    \fi
+   \fi
+  \or
+   \ifx\bbb\empty
+    \gdef\@ylii{-171}\gdef\@yli{-103}\global\@ylswtrue% subst. on 2
+   \else
+    \if@rinterchainsw%interchain position
+     \gdef\@ylii{-171}\gdef\@yli{-133}\global\@ylswtrue% subst. on 2
+    \else%terminal position
+     \gdef\@ylii{-211}\gdef\@yli{-93}\global\@ylswtrue% subst. on 2
+    \fi
+   \fi
+  \or \relax
+  \fi
+\fi%end of ifcase
+\fi\fi}}% end of \yldimethyleneposition
+\def\dimethylene{%
+\@ifnextchar[{\@dimethylene[@}{\@dimethylene[]}}
+\def\@dimethylene[#1]#2#3{%
+\iniflag\iniatom%
+\@reset@ylsw%
+\reset@interchainsw%
+\yldimethyleneposition{#2}{#3}{0}{0}%
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(250,480)(-50,-180)
+  \iforigpt \put(-50,-180){\circle*{50}}%
+           \put(0,0){\circle{50}}%
+   \typeout{command `dimethylene' origin: %
+    (0,0) ---> (50,180)}\fi%
+\fi
+\reset@double%
+\@tfor\member:=#1\do{%
+\if\member a\relax
+\@adoublebondtrue
+\else\if\member A\relax
+\@Adoublebondtrue
+\else
+  \expandafter\twoCH@@R\member//%
+    \set@fusion@dimeth
+\fi\fi}%
+\@wrongbdWafalse
+\@wrongbdWdfalse
+   \put(0,0){\@@dimethylene{#2}{#3}{0}{0}}%
+\end{picture}}% end of \dimethylene
+\def\set@fusion@dimeth{%
+\if\@@tmpa a\relax%
+        \putlratom{0}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{a}%
+ \else\if\@@tmpa A\relax%
+        \putlratom{171}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{A}%
+ \fi\fi
+}% end of the macro \set@fusion@dimeth
+\def\@@dimethylenei#1#2#3#4{%
+\leavevmode
+\iniatom\iniflag%initialize
+\test@vrtx@dimethy{#1}{#4}%
+\begin{picture}(250,480)(0,0)
+  \put(171,0){\SKbondAi}% bond between 1 and 2
+\if@adoublebond
+ \put(171,0){\bondAi}%upper side double bond
+\else\if@Adoublebond
+ \put(171,0){\bondAAi}%lower side double bond
+\fi\fi%
+\test@termcnt=#3\relax
+\set@hetatom@methyli{#1}{#4}{0}{3}{0}%
+\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\@tmpaa=\@tmpa \advance\@tmpaa by#4\relax
+\ifx\@memberb\@yl\else
+\ifcase\@tmpaa%0 omit
+\or
+ \ifcase#3
+   \put(0,-303){\@methsubstaL}%
+  \or\relax
+  \or
+   \put(0,-303){\@methsubstaL}%
+ \fi
+\or
+ \ifcase#3
+  {\if@bclip \@cliptrue \else \@clipfalse\fi
+   \put(171,0){\@methsubstd}}
+ \or
+  {\if@bclip \@cliptrue \else \@clipfalse\fi
+   \put(171,0){\@methsubstd}}
+ \or\relax
+ \fi
+\fi%end of ifcase
+\fi\fi%
+}%
+\end{picture}}% end of \@@dimethylenei
+\def\yldimethyleneiposition#1#2#3#4{%
+\@forsemicol\member:=#1\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\twoch@r\@membera{}%
+\@tmpaa=\@tmpa \advance\@tmpaa by#4\relax
+\ifcase\@tmpaa%
+ \or \def\aaa{\@memberb}%
+ \or \def\bbb{\@memberb}%
+\fi\fi}%
+\@@ylswfalse%%%\@reset@ylsw
+\@forsemicol\member:=#2\do{\expandafter\@m@mb@r\member;\relax%
+\expandafter\threech@r\@membera{}{}%
+\@tmpaa=\@tmpa \advance\@tmpaa by#4\relax
+\ifx\@memberb\@yl\relax\@@ylswtrue\else\@@ylswfalse\fi
+\if@@ylsw
+\ifcase\@tmpaa%0 omit
+\or%%%%%%%%position 1
+ \ifcase#3
+   \ifx\aaa\empty
+    \gdef\@ylii{0}\gdef\@yli{-103}\global\@ylswtrue% subst. on 1
+   \else
+    \if@linterchainsw%interchain position
+     \gdef\@ylii{0}\gdef\@yli{-133}\global\@ylswtrue% subst. on 1
+    \else%terminal position
+     \gdef\@ylii{40}\gdef\@yli{-79}\global\@ylswtrue% subst. on 1
+    \fi
+   \fi
+  \or\relax
+  \or
+   \ifx\aaa\empty
+    \gdef\@ylii{0}\gdef\@yli{-103}\global\@ylswtrue% subst. on 1
+   \else
+    \if@linterchainsw%interchain position
+     \gdef\@ylii{0}\gdef\@yli{-133}\global\@ylswtrue% subst. on 1
+    \else%terminal position
+     \gdef\@ylii{40}\gdef\@yli{-79}\global\@ylswtrue% subst. on 1
+    \fi
+   \fi
+ \fi
+\or%%%%%%%%position 2
+ \ifcase#3
+   \ifx\bbb\empty
+    \gdef\@ylii{-171}\gdef\@yli{0}\global\@ylswtrue% subst. on 2
+   \else
+    \if@rinterchainsw%interchain position
+     \gdef\@ylii{-171}\gdef\@yli{33}\global\@ylswtrue% subst. on 2
+    \else%terminal position
+ %    \gdef\@ylii{-211}\gdef\@yli{-93}\global\@ylswtrue% subst. on 2
+     \gdef\@ylii{-211}\gdef\@yli{-10}\global\@ylswtrue% subst. on 2
+    \fi
+   \fi
+  \or
+   \ifx\bbb\empty
+    \gdef\@ylii{-171}\gdef\@yli{0}\global\@ylswtrue% subst. on 2
+   \else
+    \if@rinterchainsw%interchain position
+     \gdef\@ylii{-171}\gdef\@yli{33}\global\@ylswtrue% subst. on 2
+    \else%terminal position
+     \gdef\@ylii{-211}\gdef\@yli{-10}\global\@ylswtrue% subst. on 2
+    \fi
+   \fi
+  \or \relax
+  \fi
+\fi%end of ifcase
+\fi}}% end of \yldimethyleneiposition
+\def\dimethylenei{%
+\@ifnextchar[{\@dimethylenei[@}{\@dimethylenei[]}}
+\def\@dimethylenei[#1]#2#3{%
+\iniflag\iniatom%
+\@reset@ylsw%
+\reset@interchainsw%
+\yldimethyleneiposition{#2}{#3}{0}{0}%
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(250,480)(-50,-180)
+  \iforigpt \put(-50,-180){\circle*{50}}%
+           \put(0,0){\circle{50}}%
+   \typeout{command `dimethylene' origin: %
+    (0,0) ---> (50,180)}\fi%
+\fi
+\reset@double%
+\@tfor\member:=#1\do{%
+\if\member a\relax
+\@adoublebondtrue
+\else\if\member A\relax
+\@Adoublebondtrue
+\else
+  \expandafter\twoCH@@R\member//%
+    \set@fusion@dimethi
+\fi\fi}%
+\@wrongbdWafalse
+\@wrongbdWdfalse
+   \put(0,0){\@@dimethylenei{#2}{#3}{0}{0}}%
+\end{picture}}% end of \dimethylenei
+\def\set@fusion@dimethi{%
+\if\@@tmpa a\relax%
+        \putlratom{0}{103}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{a}%
+   \else\if\@@tmpa A\relax%
+        \putlratom{171}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{A}%
+\fi\fi
+}% end of the macro \set@fusion@dimethi
+\def\tetramethylene{%
+\@ifnextchar[{\@tetramethylene[@}{\@tetramethylene[]}}
+\def\@tetramethylene[#1]#2#3{%
+\iniflag\iniatom%
+\@reset@ylsw%
+{\@linterchainswfalse%
+\@rinterchainswtrue%
+\yltrimethyleneposition{#2}{#3}{0}{0}}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\else
+{\@rinterchainswfalse%
+\@linterchainswtrue%
+\yldimethyleneposition{#2}{#3}{1}{-2}}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-342}\def\@@yli{0}\fi\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(900,480)(-200,-180)
+  \iforigpt \put(-200,-180){\circle*{50}}%
+           \put(0,0){\circle{50}}%
+   \typeout{command `tetramethylene' origin: %
+    (0,0) ---> (200,180)}\fi%
+\fi
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member a\relax
+\@adoublebondtrue
+\else\if\member b\relax
+\@bdoublebondtrue
+\else\if\member A\relax
+\@Adoublebondtrue
+\else\if\member B\relax
+\@Bdoublebondtrue
+\else\if\member c\relax%dummy
+\else\if\member C\relax%dummy
+\else
+  \expandafter\twoCH@@R\member//%
+    \set@fusion@tetrameth
+\fi\fi
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(0,0){\@@trimethylene{#2}{#3}{0}{0}}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member c\relax
+\@adoublebondtrue
+\else\if\member C\relax
+\@Adoublebondtrue
+\fi\fi}%
+\@wrongbdWafalse
+\@wrongbdWdtrue
+\put(342,0){\@@dimethylene{#2}{#3}{1}{-2}}}%
+\end{picture}}% end of \tetramethylene
+\def\set@fusion@tetrameth{%
+\if\@@tmpa a\relax%
+        \putlratom{0}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{a}%
+      \else\if\@@tmpa A\relax%
+        \putlratom{171}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{A}%
+      \else\if\@@tmpa b\relax%
+        \putlratom{171}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{b}%
+      \else\if\@@tmpa B\relax%
+        \putlratom{342}{0}{\@@tmpb}%    % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{B}%
+      \else\if\@@tmpa c\relax%
+        \putlratom{342}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{c}%
+      \else\if\@@tmpa C\relax%
+        \putlratom{513}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{C}%
+   \fi\fi
+   \fi\fi\fi\fi
+}% end of the macro \set@fusion@tetrameth
+\def\tetramethylenei{%
+\@ifnextchar[{\@tetramethylenei[@}{\@tetramethylenei[]}}
+\def\@tetramethylenei[#1]#2#3{%
+\iniflag\iniatom%
+\@reset@ylsw%
+{\@linterchainswfalse%
+\@rinterchainswtrue%
+\yltrimethyleneiposition{#2}{#3}{0}{0}}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\else
+{\@rinterchainswfalse%
+\@linterchainswtrue%
+\yldimethyleneiposition{#2}{#3}{1}{-2}}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-342}\def\@@yli{0}\fi\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(900,480)(-200,-180)
+  \iforigpt \put(-200,-180){\circle*{50}}%
+           \put(0,0){\circle{50}}%
+   \typeout{command `tetramethylene' origin: %
+    (0,0) ---> (200,180)}\fi%
+\fi
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member a\relax
+\@adoublebondtrue
+\else\if\member b\relax
+\@bdoublebondtrue
+\else\if\member A\relax
+\@Adoublebondtrue
+\else\if\member B\relax
+\@Bdoublebondtrue
+\else\if\member c\relax%dummy
+\else\if\member C\relax%dummy
+\else
+  \expandafter\twoCH@@R\member//%
+    \set@fusion@tetramethi
+\fi\fi
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(0,0){\@@trimethylenei{#2}{#3}{0}{0}}}
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member c\relax
+\@adoublebondtrue
+\else\if\member C\relax
+\@Adoublebondtrue
+\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdfalse
+\put(342,0){\@@dimethylenei{#2}{#3}{1}{-2}}}
+\end{picture}}%end of \tetramethylenei
+\def\set@fusion@tetramethi{%
+\if\@@tmpa a\relax%
+        \putlratom{0}{103}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{a}%
+      \else\if\@@tmpa A\relax%
+        \putlratom{171}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{A}%
+      \else\if\@@tmpa b\relax%
+        \putlratom{171}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{b}%
+      \else\if\@@tmpa B\relax%
+        \putlratom{342}{103}{\@@tmpb}%    % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{B}%
+      \else\if\@@tmpa c\relax%
+        \putlratom{342}{103}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{c}%
+      \else\if\@@tmpa C\relax%
+        \putlratom{513}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{C}%
+   \fi\fi
+   \fi\fi\fi\fi
+}% end of the macro \set@fusion@tetramethi
+\def\tetramethylenecup{%
+\@ifnextchar[{\@tetramethylenecup[@}{\@tetramethylenecup[]}}
+\def\@tetramethylenecup[#1]#2#3{%
+\iniflag\iniatom%
+\@reset@ylsw%
+{\@linterchainswfalse%
+\@rinterchainswtrue%
+\yldimethyleneiposition{#2}{#3}{0}{0}}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\else
+{\@rinterchainswfalse%
+\@linterchainswtrue%
+\yldimethyleneposition{#2}{#3}{0}{-2}}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-371}\def\@@yli{0}\fi\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff
+\else
+\begin{picture}(900,480)(-200,-180)
+  \iforigpt \put(-200,-180){\circle*{50}}%
+           \put(0,0){\circle{50}}%
+   \typeout{command `tetramethylenecup' origin: %
+    (0,0) ---> (200,180)}\fi%
+\fi%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member a\relax
+\@adoublebondtrue
+\else\if\member A\relax
+\@Adoublebondtrue
+\else\if\member b\relax%dummy
+\else\if\member B\relax%dummy
+\else\if\member c\relax%dummy
+\else\if\member C\relax%dummy
+\else
+  \expandafter\twoCH@@R\member//%
+    \set@fusion@tetracup% for all bonds
+\fi\fi\fi\fi
+\fi\fi}%
+\@wrongbdWafalse
+\@wrongbdWdtrue
+\put(0,0){\@@dimethylenei{#2}{#3}{0}{0}}}%
+{\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\twoch@r\@membera{}%
+\ifcase\@tmpa%
+ \or \relax%
+ \or \if\@tmpb s\relax\else\if\@tmpb h\relax
+     \xdef\fff{@}\xdef\bbb{@}\else
+     \xdef\fff{@}\xdef\bbb{@}\fi\fi
+ \or \if\@tmpb s\relax\else\if\@tmpb h\relax
+     \xdef\eee{@}\xdef\ccc{@}\else
+     \xdef\eee{@}\xdef\ccc{@}\fi\fi
+\fi\fi}%
+\put(68,171){\hskbonde}%
+\reset@double%
+\@tfor\member:=#1\do{%
+ \if\member b\relax
+ \@bdoublebondtrue
+ \put(68,171){\hbonde}%
+ \else\if\member B\relax
+ \@bdoublebondtrue
+ \put(68,-171){\hbondb}%
+ \fi\fi}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member c\relax
+\@adoublebondtrue
+\else\if\member C\relax
+\@Adoublebondtrue
+\else\if\member d\relax
+\@bdoublebondtrue
+\else\if\member D\relax
+\@Bdoublebondtrue
+\fi\fi\fi\fi}%
+ \@wrongbdWafalse
+ \@wrongbdWdLtrue
+\put(371,0){\@@dimethylene{#2}{#3}{0}{-2}}}%
+\end{picture}}% end of \tetramethylenecup
+\def\set@fusion@tetracup{%
+\if\@@tmpa a\relax%
+        \putlratom{0}{103}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{a}%
+      \else\if\@@tmpa A\relax%
+        \putlratom{171}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{A}%
+      \else\if\@@tmpa b\relax%
+        \putlratom{171}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{-200}{0}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{b}%
+      \else\if\@@tmpa B\relax%
+        \putlratom{371}{0}{\@@tmpb}%    % bond fused
+        \FuseWarning{200}{0}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{B}%
+      \else\if\@@tmpa c\relax%
+        \putlratom{371}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{c}%
+      \else\if\@@tmpa C\relax%
+        \putlratom{542}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{C}%
+   \fi\fi
+   \fi\fi\fi\fi
+}% end of the macro \set@fusion@tetracup
+\def\tetramethylenecap{%
+\@ifnextchar[{\@tetramethylenecap[@}{\@tetramethylenecap[]}}
+\def\@tetramethylenecap[#1]#2#3{%
+\iniflag\iniatom%
+\@reset@ylsw%
+{\@linterchainswfalse%
+\@rinterchainswtrue%
+\yldimethyleneposition{#2}{#3}{0}{0}}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\else
+{\@rinterchainswfalse%
+\@linterchainswtrue%
+\yldimethyleneiposition{#2}{#3}{0}{-2}}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-371}\def\@@yli{0}\fi\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(900,480)(-200,-180)
+  \iforigpt \put(-200,-180){\circle*{50}}%
+           \put(0,0){\circle{50}}%
+   \typeout{command `tetramethylenecap' origin: %
+    (0,0) ---> (50,180)}\fi%
+\fi%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member a\relax
+\@adoublebondtrue
+\else\if\member A\relax
+\@Adoublebondtrue
+\else\if\member b\relax%dummy
+\else\if\member B\relax%dummy
+\else\if\member c\relax%dummy
+\else\if\member C\relax%dummy
+\else
+  \expandafter\twoCH@@R\member//%
+    \set@fusion@tetracap% for all bonds
+\fi\fi\fi\fi
+\fi\fi}%
+\@wrongbdWatrue
+\put(0,0){\@@dimethylene{#2}{#3}{0}{0}}}%
+{\@forsemicol\member:=#2\do{%
+\ifx\member\empty\else
+\expandafter\@m@mb@r\member;\relax%
+\expandafter\twoch@r\@membera{}%
+\ifcase\@tmpa%
+ \or \relax%
+ \or \if\@tmpb s\relax\else\if\@tmpb h\relax
+     \xdef\fff{@}\xdef\bbb{@}\else
+     \xdef\fff{@}\xdef\bbb{@}\fi\fi
+ \or \if\@tmpb s\relax\else\if\@tmpb h\relax
+     \xdef\eee{@}\xdef\ccc{@}\else
+     \xdef\eee{@}\xdef\ccc{@}\fi\fi
+\fi\fi}%
+\put(68,-68){\hskbondb}%
+\reset@double%
+\@tfor\member:=#1\do{%
+ \if\member b\relax
+ \@bdoublebondtrue
+ \put(68,-68){\hbondb}%
+ \else\if\member B\relax
+ \@bdoublebondtrue
+ \put(68,274){\hbonde}%
+ \fi\fi}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member c\relax
+\@adoublebondtrue
+\else\if\member C\relax
+\@Adoublebondtrue
+\else\if\member d\relax
+\@bdoublebondtrue
+\else\if\member D\relax
+\@Bdoublebondtrue
+\fi\fi\fi\fi}%
+ \@wrongbdWaLtrue
+\put(371,0){\@@dimethylenei{#2}{#3}{0}{-2}}}%
+\end{picture}}% end of \tetramethylenecap
+\def\set@fusion@tetracap{%
+\if\@@tmpa a\relax%
+        \putlratom{0}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{a}%
+      \else\if\@@tmpa A\relax%
+        \putlratom{171}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{A}%
+      \else\if\@@tmpa b\relax%
+        \putlratom{171}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{-200}{0}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{b}%
+      \else\if\@@tmpa B\relax%
+        \putlratom{371}{103}{\@@tmpb}%    % bond fused
+        \FuseWarning{200}{0}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{B}%
+      \else\if\@@tmpa c\relax%
+        \putlratom{371}{103}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{c}%
+      \else\if\@@tmpa C\relax%
+        \putlratom{542}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{C}%
+   \fi\fi
+   \fi\fi\fi\fi
+}% end of the macro \set@fusion@tetracap
+\def\pentamethylene{%
+\@ifnextchar[{\@pentamethylene[@}{\@pentamethylene[]}}
+\def\@pentamethylene[#1]#2#3{%
+\iniflag\iniatom%
+\@reset@ylsw%
+{\@linterchainswfalse%
+\@rinterchainswtrue%
+\yltrimethyleneposition{#2}{#3}{0}{0}}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\else
+{\@rinterchainswfalse%
+\@linterchainswtrue%
+\yltrimethyleneposition{#2}{#3}{1}{-2}}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-342}\def\@@yli{0}\fi\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(1100,480)(-200,-180)
+  \iforigpt \put(-200,-180){\circle*{50}}%
+           \put(0,0){\circle{50}}%
+   \typeout{command `pentamethylene' origin: %
+    (0,0) ---> (200,180)}\fi%
+\fi%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member a\relax
+\@adoublebondtrue
+\else\if\member b\relax
+\@bdoublebondtrue
+\else\if\member A\relax
+\@Adoublebondtrue
+\else\if\member B\relax
+\@Bdoublebondtrue
+\else\if\member c\relax%dummy
+\else\if\member C\relax%dummy
+\else\if\member d\relax%dummy
+\else\if\member D\relax%dummy
+\else
+  \expandafter\twoCH@@R\member//%
+    \set@fusion@pentameth% for all bonds
+\fi\fi\fi\fi
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(0,0){\@@trimethylene{#2}{#3}{0}{0}}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member c\relax
+\@adoublebondtrue
+\else\if\member d\relax
+\@bdoublebondtrue
+\else\if\member C\relax
+\@Adoublebondtrue
+\else\if\member D\relax
+\@Bdoublebondtrue
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdfalse
+\put(342,0){\@@trimethylene{#2}{#3}{1}{-2}}}%
+\end{picture}}% end of \pentamethylene
+\def\set@fusion@pentameth{%
+\if\@@tmpa a\relax%
+        \putlratom{0}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{a}%
+      \else\if\@@tmpa A\relax%
+        \putlratom{171}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{A}%
+      \else\if\@@tmpa b\relax%
+        \putlratom{171}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{b}%
+      \else\if\@@tmpa B\relax%
+        \putlratom{342}{0}{\@@tmpb}%    % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{B}%
+      \else\if\@@tmpa c\relax%
+        \putlratom{342}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{c}%
+      \else\if\@@tmpa C\relax%
+        \putlratom{513}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{C}%
+      \else\if\@@tmpa d\relax%
+        \putlratom{513}{103}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{d}%
+      \else\if\@@tmpa D\relax%
+        \putlratom{684}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{D}%
+   \fi\fi\fi\fi
+   \fi\fi\fi\fi
+}% end of the macro \set@fusion@pentameth
+\def\pentamethylenei{%
+\@ifnextchar[{\@pentamethylenei[@}{\@pentamethylenei[]}}
+\def\@pentamethylenei[#1]#2#3{%
+\iniflag\iniatom%
+\@reset@ylsw%
+{\@linterchainswfalse%
+\@rinterchainswtrue%
+\yltrimethyleneiposition{#2}{#3}{0}{0}}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\else
+{\@rinterchainswfalse%
+\@linterchainswtrue%
+\yltrimethyleneiposition{#2}{#3}{1}{-2}}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-342}\def\@@yli{0}\fi\fi
+\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(1100,480)(-200,-180)
+  \iforigpt \put(-200,-180){\circle*{50}}%
+           \put(0,0){\circle{50}}%
+   \typeout{command `pentamethylene' origin: %
+    (0,0) ---> (200,180)}\fi%
+\fi%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member a\relax
+\@adoublebondtrue
+\else\if\member b\relax
+\@bdoublebondtrue
+\else\if\member A\relax
+\@Adoublebondtrue
+\else\if\member B\relax
+\@Bdoublebondtrue
+\else\if\member c\relax%dummy
+\else\if\member C\relax%dummy
+\else\if\member d\relax%dummy
+\else\if\member D\relax%dummy
+\else
+  \expandafter\twoCH@@R\member//%
+    \set@fusion@pentamethi% for all bonds
+\fi\fi\fi\fi
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(0,0){\@@trimethylenei{#2}{#3}{0}{0}}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member c\relax
+\@adoublebondtrue
+\else\if\member d\relax
+\@bdoublebondtrue
+\else\if\member C\relax
+\@Adoublebondtrue
+\else\if\member D\relax
+\@Bdoublebondtrue
+\fi\fi\fi\fi}%
+\@wrongbdWafalse
+\@wrongbdWdtrue
+\put(342,0){\@@trimethylenei{#2}{#3}{1}{-2}}}
+\end{picture}}% end of \pentamethylenei
+\def\set@fusion@pentamethi{%
+\if\@@tmpa a\relax%
+        \putlratom{0}{103}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{a}%
+      \else\if\@@tmpa A\relax%
+        \putlratom{171}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{A}%
+      \else\if\@@tmpa b\relax%
+        \putlratom{171}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{b}%
+      \else\if\@@tmpa B\relax%
+        \putlratom{342}{103}{\@@tmpb}%    % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{B}%
+      \else\if\@@tmpa c\relax%
+        \putlratom{342}{103}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{c}%
+      \else\if\@@tmpa C\relax%
+        \putlratom{513}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{C}%
+      \else\if\@@tmpa d\relax%
+        \putlratom{513}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{d}%
+      \else\if\@@tmpa D\relax%
+        \putlratom{684}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{D}%
+   \fi\fi\fi\fi
+   \fi\fi\fi\fi
+}% end of the macro \set@fusion@pentamethi
+\newif\if@normorinvsw \@normorinvswfalse
+\def\set@normaldirection{%
+\@normorinvswfalse
+\let\@yltrinormorinv=\yltrimethyleneposition
+\let\@yldinormorinv=\yldimethyleneposition
+\let\@@trinormorinv=\@@trimethylene
+\let\@@dinormorinv=\@@dimethylene}
+\def\set@inversedirection{%
+\@normorinvswtrue
+\let\@yltrinormorinv=\yltrimethyleneiposition
+\let\@yldinormorinv=\yldimethyleneiposition
+\let\@@trinormorinv=\@@trimethylenei
+\let\@@dinormorinv=\@@dimethylenei}
+\def\hexamethylene{%
+\@ifnextchar[{\set@normaldirection\@hexamethylene[@}{%
+\set@normaldirection\@hexamethylene[]}}
+\def\hexamethylenei{%
+\@ifnextchar[{\set@inversedirection\@hexamethylene[@}{%
+\set@inversedirection\@hexamethylene[]}}
+\def\@hexamethylene[#1]#2#3{%
+\iniflag\iniatom%
+\@reset@ylsw%
+{\@linterchainswfalse%
+\@rinterchainswtrue%
+\@yltrinormorinv{#2}{#3}{0}{0}}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\else
+{\@rinterchainswtrue%
+\@linterchainswtrue%
+\@yltrinormorinv{#2}{#3}{1}{-2}}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-342}\def\@@yli{0}\fi
+\else
+{\@rinterchainswfalse%
+\@linterchainswtrue%
+\@yldinormorinv{#2}{#3}{1}{-4}}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-684}\def\@@yli{0}\fi\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(1100,480)(-200,-180)
+  \iforigpt \put(-200,-180){\circle*{50}}%
+           \put(0,0){\circle{50}}%
+   \typeout{command `hexamethylene' origin: %
+    (0,0) ---> (200,180)}\fi%
+\fi%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member a\relax
+\@adoublebondtrue
+\else\if\member b\relax
+\@bdoublebondtrue
+\else\if\member A\relax
+\@Adoublebondtrue
+\else\if\member B\relax
+\@Bdoublebondtrue
+\else\if\member c\relax%dummy
+\else\if\member C\relax%dummy
+\else\if\member d\relax%dummy
+\else\if\member D\relax%dummy
+\else\if\member e\relax%dummy
+\else\if\member E\relax%dummy
+\else
+  \expandafter\twoCH@@R\member//%
+    \set@fusion@hexameth% for all bonds
+\fi\fi\fi\fi\fi\fi
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(0,0){\@@trinormorinv{#2}{#3}{0}{0}}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member c\relax
+\@adoublebondtrue
+\else\if\member d\relax
+\@bdoublebondtrue
+\else\if\member C\relax
+\@Adoublebondtrue
+\else\if\member D\relax
+\@Bdoublebondtrue
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(342,0){\@@trinormorinv{#2}{#3}{1}{-2}}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member e\relax
+\@adoublebondtrue
+\else\if\member E\relax
+\@Adoublebondtrue
+\fi\fi}%
+\if@normorinvsw% inverse
+ \@wrongbdWatrue
+ \@wrongbdWdfalse
+\else% normal
+ \@wrongbdWafalse
+ \@wrongbdWdtrue
+\fi
+\put(684,0){\@@dinormorinv{#2}{#3}{1}{-4}}}%
+\end{picture}}% end of \@hexamethylene
+\def\set@fusion@hexameth{%
+\if@normorinvsw
+  \if\@@tmpa e\relax%
+        \putlratom{684}{103}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{e}%
+      \else\if\@@tmpa E\relax%
+        \putlratom{855}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{E}%
+      \else
+        \set@fusion@pentamethi
+  \fi\fi
+\else
+  \if\@@tmpa e\relax%
+        \putlratom{684}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{e}%
+      \else\if\@@tmpa E\relax%
+        \putlratom{855}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{E}%
+      \else
+        \set@fusion@pentameth
+  \fi\fi
+\fi
+}% end of the macro \set@fusion@hexameth
+\def\heptamethylene{%
+\@ifnextchar[{\set@normaldirection\@heptamethylene[@}{%
+\set@normaldirection\@heptamethylene[]}}
+\def\heptamethylenei{%
+\@ifnextchar[{\set@inversedirection\@heptamethylene[@}{%
+\set@inversedirection\@heptamethylene[]}}
+\def\@heptamethylene[#1]#2#3{%
+\iniflag\iniatom%
+\@reset@ylsw%
+{\@linterchainswfalse%
+\@rinterchainswtrue%
+\@yltrinormorinv{#2}{#3}{0}{0}}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\else
+{\@rinterchainswtrue%
+\@linterchainswtrue%
+\@yltrinormorinv{#2}{#3}{1}{-2}}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-342}\def\@@yli{0}\fi
+\else
+{\@rinterchainswfalse%
+\@linterchainswtrue%
+\@yltrinormorinv{#2}{#3}{1}{-4}}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-684}\def\@@yli{0}\fi\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(1450,480)(-200,-180)
+  \iforigpt \put(-200,-180){\circle*{50}}%
+           \put(0,0){\circle{50}}%
+   \typeout{command `heptamethylene' origin: %
+    (0,0) ---> (200,180)}\fi%
+\fi%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member a\relax
+\@adoublebondtrue
+\else\if\member b\relax
+\@bdoublebondtrue
+\else\if\member A\relax
+\@Adoublebondtrue
+\else\if\member B\relax
+\@Bdoublebondtrue
+\else\if\member c\relax%dummy
+\else\if\member C\relax%dummy
+\else\if\member d\relax%dummy
+\else\if\member D\relax%dummy
+\else\if\member e\relax%dummy
+\else\if\member E\relax%dummy
+\else\if\member f\relax%dummy
+\else\if\member F\relax%dummy
+\else
+  \expandafter\twoCH@@R\member//%
+    \set@fusion@heptameth% for all bonds
+\fi\fi\fi\fi\fi\fi\fi\fi
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(0,0){\@@trinormorinv{#2}{#3}{0}{0}}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member c\relax
+\@adoublebondtrue
+\else\if\member d\relax
+\@bdoublebondtrue
+\else\if\member C\relax
+\@Adoublebondtrue
+\else\if\member D\relax
+\@Bdoublebondtrue
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(342,0){\@@trinormorinv{#2}{#3}{1}{-2}}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member e\relax
+\@adoublebondtrue
+\else\if\member E\relax
+\@Adoublebondtrue
+\else\if\member f\relax
+\@bdoublebondtrue
+\else\if\member F\relax
+\@Bdoublebondtrue
+\fi\fi\fi\fi}%
+\if@normorinvsw% inverse
+\@wrongbdWafalse
+\@wrongbdWdtrue
+\else%normal
+\@wrongbdWatrue
+\@wrongbdWdfalse
+\fi
+\put(684,0){\@@trinormorinv{#2}{#3}{1}{-4}}}%
+\end{picture}}% end of \@heptamethylene
+\def\set@fusion@heptameth{%
+\if@normorinvsw
+  \if\@@tmpa e\relax%
+        \putlratom{684}{103}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{e}%
+      \else\if\@@tmpa E\relax%
+        \putlratom{855}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{E}%
+      \else\if\@@tmpa f\relax%
+        \putlratom{855}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{f}%
+      \else\if\@@tmpa F\relax%
+        \putlratom{1027}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{F}%
+      \else
+        \set@fusion@pentamethi
+  \fi\fi\fi\fi
+\else
+  \if\@@tmpa e\relax%
+        \putlratom{684}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{e}%
+      \else\if\@@tmpa E\relax%
+        \putlratom{855}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{E}%
+      \else\if\@@tmpa f\relax%
+        \putlratom{855}{103}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{f}%
+      \else\if\@@tmpa F\relax%
+        \putlratom{1027}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{F}%
+      \else
+        \set@fusion@pentameth
+  \fi\fi\fi\fi
+\fi
+}% end of the macro \set@fusion@heptameth
+\def\octamethylene{%
+\@ifnextchar[{\set@normaldirection\@octamethylene[@}{%
+\set@normaldirection\@octamethylene[]}}
+\def\octamethylenei{%
+\@ifnextchar[{\set@inversedirection\@octamethylene[@}{%
+\set@inversedirection\@octamethylene[]}}
+\def\@octamethylene[#1]#2#3{%
+\iniflag\iniatom%
+\@reset@ylsw%
+{\@linterchainswfalse%
+\@rinterchainswtrue%
+\@yltrinormorinv{#2}{#3}{0}{0}}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\else
+{\@rinterchainswtrue%
+\@linterchainswtrue%
+\@yltrinormorinv{#2}{#3}{1}{-2}}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-342}\def\@@yli{0}\fi
+\else
+{\@rinterchainswtrue%
+\@linterchainswtrue%
+\@yltrinormorinv{#2}{#3}{1}{-4}}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-684}\def\@@yli{0}\fi
+\else
+{\@rinterchainswfalse%
+\@linterchainswtrue%
+\@yldinormorinv{#2}{#3}{1}{-6}}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-1026}\def\@@yli{0}\fi\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(1620,480)(-200,-180)
+  \iforigpt \put(-200,-180){\circle*{50}}%
+           \put(0,0){\circle{50}}%
+   \typeout{command `octamethylene' origin: %
+    (0,0) ---> (200,180)}\fi%
+\fi%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member a\relax
+\@adoublebondtrue
+\else\if\member b\relax
+\@bdoublebondtrue
+\else\if\member A\relax
+\@Adoublebondtrue
+\else\if\member B\relax
+\@Bdoublebondtrue
+\else\if\member c\relax%dummy
+\else\if\member C\relax%dummy
+\else\if\member d\relax%dummy
+\else\if\member D\relax%dummy
+\else\if\member e\relax%dummy
+\else\if\member E\relax%dummy
+\else\if\member f\relax%dummy
+\else\if\member F\relax%dummy
+\else\if\member g\relax%dummy
+\else\if\member G\relax%dummy
+\else
+  \expandafter\twoCH@@R\member//%
+    \set@fusion@octameth% for all bonds
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(0,0){\@@trinormorinv{#2}{#3}{0}{0}}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member c\relax
+\@adoublebondtrue
+\else\if\member d\relax
+\@bdoublebondtrue
+\else\if\member C\relax
+\@Adoublebondtrue
+\else\if\member D\relax
+\@Bdoublebondtrue
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(342,0){\@@trinormorinv{#2}{#3}{1}{-2}}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member e\relax
+\@adoublebondtrue
+\else\if\member E\relax
+\@Adoublebondtrue
+\else\if\member f\relax
+\@bdoublebondtrue
+\else\if\member F\relax
+\@Bdoublebondtrue
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(684,0){\@@trinormorinv{#2}{#3}{1}{-4}}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member g\relax
+\@adoublebondtrue
+\else\if\member G\relax
+\@Adoublebondtrue
+\fi\fi}%
+\if@normorinvsw% inverse
+\@wrongbdWatrue
+\@wrongbdWdfalse
+\else% normal
+\@wrongbdWafalse
+\@wrongbdWdtrue
+\fi
+\put(1026,0){\@@dinormorinv{#2}{#3}{1}{-6}}}%
+\end{picture}}% end of \@octamethylene
+\def\set@fusion@octameth{%
+\if@normorinvsw
+  \if\@@tmpa e\relax%
+        \putlratom{684}{103}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{e}%
+      \else\if\@@tmpa E\relax%
+        \putlratom{855}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{E}%
+      \else\if\@@tmpa f\relax%
+        \putlratom{855}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{f}%
+      \else\if\@@tmpa F\relax%
+        \putlratom{1027}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{F}%
+      \else\if\@@tmpa g\relax%
+        \putlratom{1027}{103}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{g}%
+      \else\if\@@tmpa G\relax%
+        \putlratom{1198}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{G}%
+      \else
+        \set@fusion@pentamethi
+  \fi\fi\fi\fi\fi\fi
+\else
+  \if\@@tmpa e\relax%
+        \putlratom{684}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{e}%
+      \else\if\@@tmpa E\relax%
+        \putlratom{855}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{E}%
+      \else\if\@@tmpa f\relax%
+        \putlratom{855}{103}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{f}%
+      \else\if\@@tmpa F\relax%
+        \putlratom{1027}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{F}%
+      \else\if\@@tmpa g\relax%
+        \putlratom{1027}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{g}%
+      \else\if\@@tmpa G\relax%
+        \putlratom{1198}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{G}%
+      \else
+        \set@fusion@pentameth
+  \fi\fi\fi\fi\fi\fi
+\fi
+}% end of the macro \set@fusion@octameth
+\def\nonamethylene{%
+\@ifnextchar[{\set@normaldirection\@nonamethylene[@}{%
+\set@normaldirection\@nonamethylene[]}}
+
+\def\nonamethylenei{%
+\@ifnextchar[{\set@inversedirection\@nonamethylene[@}{%
+\set@inversedirection\@nonamethylene[]}}
+\def\@nonamethylene[#1]#2#3{%
+\iniflag\iniatom%
+\@reset@ylsw%
+{\@linterchainswfalse%
+\@rinterchainswtrue%
+\@yltrinormorinv{#2}{#3}{0}{0}}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\else
+{\@rinterchainswtrue%
+\@linterchainswtrue%
+\@yltrinormorinv{#2}{#3}{1}{-2}}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-342}\def\@@yli{0}\fi
+\else
+{\@rinterchainswtrue%
+\@linterchainswtrue%
+\@yltrinormorinv{#2}{#3}{1}{-4}}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-684}\def\@@yli{0}\fi
+\else
+{\@rinterchainswfalse%
+\@linterchainswtrue%
+\@yltrinormorinv{#2}{#3}{1}{-6}}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-1026}\def\@@yli{0}\fi\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(1790,480)(-200,-180)
+  \iforigpt \put(-200,-180){\circle*{50}}%
+           \put(0,0){\circle{50}}%
+   \typeout{command `nonamethylene' origin: %
+    (0,0) ---> (200,180)}\fi%
+\fi%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member a\relax
+\@adoublebondtrue
+\else\if\member b\relax
+\@bdoublebondtrue
+\else\if\member A\relax
+\@Adoublebondtrue
+\else\if\member B\relax
+\@Bdoublebondtrue
+\else\if\member c\relax%dummy
+\else\if\member C\relax%dummy
+\else\if\member d\relax%dummy
+\else\if\member D\relax%dummy
+\else\if\member e\relax%dummy
+\else\if\member E\relax%dummy
+\else\if\member f\relax%dummy
+\else\if\member F\relax%dummy
+\else\if\member g\relax%dummy
+\else\if\member G\relax%dummy
+\else\if\member h\relax%dummy
+\else\if\member H\relax%dummy
+\else
+  \expandafter\twoCH@@R\member//%
+    \set@fusion@nonameth% for all bonds
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(0,0){\@@trinormorinv{#2}{#3}{0}{0}}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member c\relax
+\@adoublebondtrue
+\else\if\member d\relax
+\@bdoublebondtrue
+\else\if\member C\relax
+\@Adoublebondtrue
+\else\if\member D\relax
+\@Bdoublebondtrue
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(342,0){\@@trinormorinv{#2}{#3}{1}{-2}}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member e\relax
+\@adoublebondtrue
+\else\if\member E\relax
+\@Adoublebondtrue
+\else\if\member f\relax
+\@bdoublebondtrue
+\else\if\member F\relax
+\@Bdoublebondtrue
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(684,0){\@@trinormorinv{#2}{#3}{1}{-4}}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member g\relax
+\@adoublebondtrue
+\else\if\member G\relax
+\@Adoublebondtrue
+\else\if\member h\relax
+\@bdoublebondtrue
+\else\if\member H\relax
+\@Bdoublebondtrue
+\fi\fi\fi\fi}%
+\if@normorinvsw% inverse
+\@wrongbdWafalse
+\@wrongbdWdtrue
+\else% normal
+\@wrongbdWatrue
+\@wrongbdWdfalse
+\fi
+\put(1026,0){\@@trinormorinv{#2}{#3}{1}{-6}}}%
+\end{picture}}% end of \@nonamethylene
+\def\set@fusion@nonameth{%
+\if@normorinvsw
+ \if\@@tmpa h\relax%
+        \putlratom{1198}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{h}%
+      \else\if\@@tmpa H\relax%
+        \putlratom{1369}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{H}%
+      \else
+        \set@fusion@octameth
+  \fi\fi
+\else
+ \if\@@tmpa h\relax%
+        \putlratom{1198}{103}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{h}%
+      \else\if\@@tmpa H\relax%
+        \putlratom{1369}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{H}%
+      \else
+        \set@fusion@octameth
+  \fi\fi
+\fi
+}% end of the macro \set@fusion@nonameth
+\def\decamethylene{%
+\@ifnextchar[{\set@normaldirection\@decamethylene[@}{%
+\set@normaldirection\@decamethylene[]}}
+\def\decamethylenei{%
+\@ifnextchar[{\set@inversedirection\@decamethylene[@}{%
+\set@inversedirection\@decamethylene[]}}
+\def\@decamethylene[#1]#2#3{%
+\iniflag\iniatom%
+\@reset@ylsw%
+{\@linterchainswfalse%
+\@rinterchainswtrue%
+\@yltrinormorinv{#2}{#3}{0}{0}}%
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{0}\def\@@yli{0}\fi
+\else
+{\@rinterchainswtrue%
+\@linterchainswtrue%
+\@yltrinormorinv{#2}{#3}{1}{-2}}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-342}\def\@@yli{0}\fi
+\else
+{\@rinterchainswtrue%
+\@linterchainswtrue%
+\@yltrinormorinv{#2}{#3}{1}{-4}}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-684}\def\@@yli{0}\fi
+\else
+{\@rinterchainswtrue%
+\@linterchainswtrue%
+\@yltrinormorinv{#2}{#3}{1}{-6}}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-1026}\def\@@yli{0}\fi
+\else
+{\@rinterchainswfalse%
+\@linterchainswtrue%
+\@yldinormorinv{#2}{#3}{1}{-8}}%
+\fi
+\if@ylsw \ifx\@@ylii\empty
+\def\@@ylii{-1368}\def\@@yli{0}\fi\fi
+\if@ylsw
+ \yl@shiftii=\@ylii
+ \yl@shifti=\@yli
+ \advance\yl@shiftii\@@ylii
+ \advance\yl@shifti\@@yli
+ \advance\yl@shiftii\yl@xdiff
+ \advance\yl@shifti\yl@ydiff
+ \begin{picture}(0,0)(-\yl@shiftii,-\yl@shifti)
+ \reset@yl@xydiff%1999/1/6 by S. Fujita
+\else
+\begin{picture}(1960,480)(-200,-180)
+  \iforigpt \put(-200,-180){\circle*{50}}%
+           \put(0,0){\circle{50}}%
+   \typeout{command `decamethylene' origin: %
+    (0,0) ---> (200,180)}\fi%
+\fi%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member a\relax
+\@adoublebondtrue
+\else\if\member b\relax
+\@bdoublebondtrue
+\else\if\member A\relax
+\@Adoublebondtrue
+\else\if\member B\relax
+\@Bdoublebondtrue
+\else\if\member c\relax%dummy
+\else\if\member C\relax%dummy
+\else\if\member d\relax%dummy
+\else\if\member D\relax%dummy
+\else\if\member e\relax%dummy
+\else\if\member E\relax%dummy
+\else\if\member f\relax%dummy
+\else\if\member F\relax%dummy
+\else\if\member g\relax%dummy
+\else\if\member G\relax%dummy
+\else\if\member h\relax%dummy
+\else\if\member H\relax%dummy
+\else\if\member i\relax%dummy
+\else\if\member I\relax%dummy
+\else
+  \expandafter\twoCH@@R\member//%
+    \set@fusion@decameth% for all bonds
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(0,0){\@@trinormorinv{#2}{#3}{0}{0}}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member c\relax
+\@adoublebondtrue
+\else\if\member d\relax
+\@bdoublebondtrue
+\else\if\member C\relax
+\@Adoublebondtrue
+\else\if\member D\relax
+\@Bdoublebondtrue
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(342,0){\@@trinormorinv{#2}{#3}{1}{-2}}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member e\relax
+\@adoublebondtrue
+\else\if\member E\relax
+\@Adoublebondtrue
+\else\if\member f\relax
+\@bdoublebondtrue
+\else\if\member F\relax
+\@Bdoublebondtrue
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(684,0){\@@trinormorinv{#2}{#3}{1}{-4}}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member g\relax
+\@adoublebondtrue
+\else\if\member G\relax
+\@Adoublebondtrue
+\else\if\member h\relax
+\@bdoublebondtrue
+\else\if\member H\relax
+\@Bdoublebondtrue
+\fi\fi\fi\fi}%
+\@wrongbdWatrue
+\@wrongbdWdtrue
+\put(1026,0){\@@trinormorinv{#2}{#3}{1}{-6}}}%
+{\reset@double%
+\@tfor\member:=#1\do{%
+\if\member i\relax
+\@adoublebondtrue
+\else\if\member I\relax
+\@Adoublebondtrue
+\fi\fi}%
+\if@normorinvsw% inverse
+\@wrongbdWatrue
+\@wrongbdWdfalse
+\else% normal
+\@wrongbdWafalse
+\@wrongbdWdtrue
+\fi
+\put(1368,0){\@@dinormorinv{#2}{#3}{1}{-8}}}%
+\end{picture}}% end \@decamethylene
+\def\set@fusion@decameth{%
+\if@normorinvsw
+ \if\@@tmpa h\relax%
+        \putlratom{1198}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{h}%
+      \else\if\@@tmpa H\relax%
+        \putlratom{1369}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{H}%
+      \else\if\@@tmpa i\relax%
+        \putlratom{1369}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{i}%
+      \else\if\@@tmpa I\relax%
+        \putlratom{1540}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{I}%
+      \else
+        \set@fusion@octameth
+  \fi\fi\fi\fi
+\else
+ \if\@@tmpa h\relax%
+        \putlratom{1198}{103}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{h}%
+      \else\if\@@tmpa H\relax%
+        \putlratom{1369}{0}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{H}%
+      \else\if\@@tmpa i\relax%
+        \putlratom{1369}{0}{\@@tmpb}%     % bond fused
+        \FuseWarning{-171}{-103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{i}%
+      \else\if\@@tmpa I\relax%
+        \putlratom{1540}{103}{\@@tmpb}%       % bond fused
+        \FuseWarning{171}{103}%
+          {\fuseAx}{\fuseAy}{\fuseBx}{\fuseBy}{I}%
+      \else
+        \set@fusion@octameth
+  \fi\fi\fi\fi
+\fi%
+}% end of the macro \set@fusion@decameth
+\endinput
+%%
+%% End of file `methylen.sty'.

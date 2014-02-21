@@ -1,0 +1,22 @@
+#!sh
+if [ -z $1 ] ; then
+  echo "$0 makes FOO.exe for FOO scripts"
+  echo "   $0 DIRECTORY "
+  exit 0
+fi
+if [ -d $1 ] ; then
+  EXEEXE=` type exe.exe | sed -e 's@^.* @@' -e 's@\\\\@/@g'`
+  grep -l '^#!' `\
+  find  $1  ! -name '*.exe' -a ! -name '*.cmd'  -exec file '{}' \; |\
+   grep -w text | cut -d " " -f1 | sed "s/:$//"` > $1/__tmp1.tmp
+   echo "EXEEXE=${EXEEXE}" > $1/__tmp2.tmp
+   sed 's/^\(.*\)$/if [ ! -f \1.exe ] ; then cp ${EXEEXE} \1.exe ; fi /' \
+           $1/__tmp1.tmp >> $1/__tmp2.tmp
+   if [ -f $1/__tmp2.tmp ] ; then
+     echo "\n Now execute temporary script"
+     cat $1/__tmp2.tmp
+   fi
+   sh.exe $1/__tmp2.tmp
+   if [ -f $1/__tmp1.tmp ] ; then rm $1/__tmp1.tmp ; fi
+   if [ -f $1/__tmp2.tmp ] ; then rm $1/__tmp2.tmp ; fi
+fi

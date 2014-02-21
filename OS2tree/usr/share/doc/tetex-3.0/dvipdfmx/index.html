@@ -1,0 +1,595 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+<base href="http://project.ktug.or.kr/dvipdfmx/">
+<title>The DVIPDFMx Project</title>
+<meta name="Author"   content="The DVIPDFMx Project Team">
+<meta name="Keywords" content="DVIPDFMx, dvipdfm, DVI, PDF, TeX, Chinese, Japanese, Korean, CJK">
+<meta name="Description" content="DVIPDFMx - a DVI to PDF converter">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<link rel="stylesheet" title="Normal style" href="style.css" type="text/css" media="screen">
+<!--[if IE]>
+<link rel="stylesheet" title="IE style" href="style_ie.css" type="text/css" media="screen">
+<![endif]-->
+</head>
+
+<body lang="en">
+
+<div class="menu" title="Navigation Menu">
+<p><a class="link" href="#top" title="top">Top</a></p>
+<p><a class="link" href="#new" title="Recent News">News</a></p>
+<p><a class="link" href="#source" title="How to obtain DVIPDFMx">Obtain...</a></p>
+<p><a class="link" href="#feature"  title="Features">Features</a></p>
+<p><a class="link" href="#example"  title="Example PDF files">Examples</a></p>
+<p><a class="link" href="#resource" title="Resources">Resources</a></p>
+</div>
+
+
+<div class="content">
+<h1><a name="top">THE DVIPDFM<i>x</i> PROJECT</a></h1>
+
+<p class="abstract">
+The <em>DVIPDFMx</em> (formerly <em>dvipdfm-cjk</em>) project provides an eXtended version of
+the <em><a class="link" title="Go To dvipdfm Development Homepage" href="http://gaspra.kettering.edu/dvipdfm/">dvipdfm</a></em>,
+a <abbr title="Device Independent">DVI</abbr> format to
+<abbr title="Portable Document Format">PDF</abbr> translator
+developed by Mark A. Wicks. The primary goal of this project is to support multi-byte character
+encodings and large character sets for East Asian languages by
+<abbr title="Character Identifier">CID</abbr>-keyed font technology.
+The secondary goal is to support as many features as
+<em><a class="link" title="Go To pdfTeX Development Homepage" href="http://www.tug.org/applications/pdftex/">pdfTeX</a></em>
+developed by Han The Thanh.
+This project is a combined work of the <em>dvipdfm-jpn</em> project
+by Shunsaku Hirata and its modified one, <em>dvipdfm-kor</em>, by Jin-Hwan Cho.
+</p>
+
+<h2><a name="new">What's New</a></h2>
+
+<p>
+Recent changes:
+</p>
+
+<ul>
+ <li><div class="item">Important Note on Jan 10, 2005</div>
+      <div class="description">
+      A critical bug was fixed, which caused critical error while using subfont scheme, e.g., CJK-LaTeX or HLaTeX. We encourage the users to recompile the source in the <a class="link" href="http://cvs.ktug.or.kr/viewcvs/dvipdfmx/">CVS repository</a> (with the tag DVIPDFMX-20040912). For MiKTeX 2.4 users, see the Binary Packages / MiKTeX section in <a class="link" href="#source">Obtain...</a>.
+      </div>
+ </li>
+ <li><div class="item">Font Support</div>
+      <div class="description">
+      PostScript Type 1 font is converted to
+      <abbr title="Compact Font Format">CFF</abbr> for better compression.
+      Ordinary <abbr>CFF</abbr> OpenType font is supported too.
+      Supported font formats are: PK, Type 1, TrueType, OpenType(CFF),
+      and OpenType(CFF CID).
+      </div>
+ </li>
+ <li><div class="item">Graphics and Image Support</div>
+      <div class="description">
+      A little enhancement on <abbr>PDF</abbr> inclusion.
+      Improved <abbr title="Portable Network Graphics">PNG</abbr> support;
+      alpha channel and <code>tRNS</code> chunk is fully supported.
+      Indexed-color is no longer converted to 24-bit
+      <abbr title="Red Green Blue">RGB</abbr>.
+      Experimental embedded
+      <abbr title="International Color Consortium">ICC</abbr> profile
+      support for <abbr title="Joint Photographic Experts Group">JPEG</abbr>
+      and <abbr>PNG</abbr> format images. BMP image format is supported.
+      Bug fixes on <code>TPIC</code> support.
+      </div>
+ </li>
+ <li><div class="item">Unicode Support</div>
+     <div class="description">
+     A new encoding keyword "unicode" can be specified in fontmap
+     file for TrueType and Type1 font.
+     TrueType font must have Windows UCS2 (format 4) or UCS4 (format
+     12) cmap subtable. Glyph list file (PS glyph name to Unicode
+     mapping) is required for Type1 font support.
+     Automatic creation and embedding of ToUnicode CMap is available
+     for Type 1, TrueType, and OpenType(CFF) font.
+     </div>
+ </li>
+</ul>
+
+<h2><a name="source">Obtaining DVIPDFMx</a></h2>
+
+<p class="abstract">
+The DVIPDFM<i>x</i> project does not offer pre-compiled binary packages.
+See, section "Binary Packages" for obtaining binary packages.
+</p>
+
+<h3>Source Code</h3>
+
+<p>
+You can obtain current snapshot from
+<a class="link" href="http://project.ktug.or.kr/dvipdfmx/snapshot/">http://project.ktug.or.kr/dvipdfmx/snapshot/</a>.
+</p>
+
+<p>
+An anonymous access to the
+<a class="link" href="http://cvs.ktug.or.kr/viewcvs/dvipdfmx/"><abbr title="Concurrent Version System">CVS</abbr> repository</a>
+is also available.
+You can update your local copy of DVIPDFMx source code with the following commands:
+</p>
+
+<pre title="Instruction On Anonymous CVS Access">
+cvs -d:pserver:anonymous@cvs.ktug.or.kr:/home/cvsroot login
+cvs -d:pserver:anonymous@cvs.ktug.or.kr:/home/cvsroot co dvipdfmx
+</pre>
+
+<p>
+When prompted for a password for <code>anonymous</code>, simply press the <kbd>Enter</kbd> key.
+</p>
+
+<p>
+To compile DVIPDFMx, you need, at least, the kpathsea library.
+Kpathsea library version heigher than 3.3 is recommended.
+In addition to this, the
+<a class="link" title="Go To Zlib Homepage" href="http://www.gzip.org/zlib/">zlib</a>
+library is required for compression support.
+Both zlib and
+<a class="link" title="Go To Libpng Homepage" href="http://www.libpng.org/pub/png/libpng.html">libpng</a>
+library is required for <abbr>PNG</abbr> image inclusion.
+Dvipdfmx optionally support <code>libpaper</code> library for handling paper sizes.
+Please read <a class="link" href="README">README file</a> for more details.
+</p>
+
+<h3>Binary Packages</h3>
+
+<h4>FreeBSD and Linux</h4>
+
+<p>
+DVIPDFMx is available from the FreeBSD ports/package collection.
+</p>
+
+<h4>Microsoft Windows</h4>
+
+<ul>
+ <li><div class="item"><a class="link" href="http://www.fsci.fuk.kindai.ac.jp/kakuto/win32-ptex/">W32TeX</a></div>
+      <div class="description">
+      A TeX implementation based on Web2c, maintained by Akira Kakuto.
+      It includes pTeX and many localized version of TeX related programs
+      especially useful for Japanese typesetting.
+      </div>
+      </li>
+ <li><div class="item"><a class="link" href="http://www.miktex.org">MiKTeX</a></div>
+      <div class="description">
+      An up-to-date implementation of TeX and related programs for MS-Windows
+      by Christian Schenk. [Cabinet binary packages:
+      <a class="link" href="http://project.ktug.or.kr/dvipdfmx/snapshot/miktex/2.2/miktex-dvipdfmx.cab">miktex-dvipdfmx.cab for MiKTeX 2.2</a> (20030313),
+      <a class="link" href="http://project.ktug.or.kr/dvipdfmx/snapshot/miktex/2.3/miktex-dvipdfmx.cab">miktex-dvipdfmx.cab for MiKTeX 2.3</a> (20031110)].
+      <p></p>
+      <b>Important Note for MiKTeX 2.4 Users:</b> DVIPDFMx in the MiKTeX 2.4 distribution does not work smoothly because of several reasons. We encourage the users to update as follows:
+      <p></p>
+      1. Change the executable file <abbr>C:\texmf\miktex\bin\dvipdfmx.exe</abbr> to <a class="link" href="http://project.ktug.or.kr/dvipdfmx/snapshot/miktex/2.4/dvipdfmx.exe">dvipdfmx.exe for MiKTeX 2.4</a> (20040912 bug fixed on Jan 10, 2005).
+      <p></p>
+      2. Change the configuration file <abbr>C:\texmf\miktex\config\miktex.ini</abbr> to <a class="link" href="http://project.ktug.or.kr/dvipdfmx/snapshot/miktex/2.4/miktex.ini">miktex.ini for MiKTeX 2.4</a> (modified ttf2pk and ttf2tfm sections).
+      <p></p>
+      3. Put <a clas="link" href="http://partners.adobe.com/public/developer/en/opentype/glyphlist.txt">Adobe Glyph List 2.0</a> (Sep 20, 2002) in the directory C:\texmf\dvipdfm\CMap.
+      <p></p>
+      4. Extract the zip file <a clas="link" href="http://project.ktug.or.kr/dvipdfmx/snapshot/miktex/2.4/ttf2pk.zip">ttf2pk directory for MiKTeX 2.4</a> (complete collection of SFD files for ttf2pk, ttf2tfm, and DVIPDFMx) into the directory C:\texmf.
+      </div>
+      </li>
+<!--
+ <li><div class="item"><a class="link" href="http://project.ktug.or.kr/miktex-ktug/">MiKTeX-KTUG</a></div>
+      <div class="description">
+      The <a class="link" href="http://www.ktug.or.kr"><abbr title="Korean TeX Users Group">KTUG</abbr></a>
+      distribution of modified version of
+      <a class="link" title="Go To MiKTeX Development Homepage" href="http://www.miktex.org">MiKTeX</a> 2.2 and 2.3.
+      </div>
+      </li>
+-->
+</ul>
+
+<h4>MacOS X</h4>
+<p>
+See, <a class="link" href="http://www.r.dendai.ac.jp/kiriki/tex/">pTeX package for MacOSX</a> (in Japanese)
+for Japanese environment.
+</p>
+
+<h2><a name="feature">Features</a></h2>
+
+<p class="abstract">
+Most features/enhancement added to dvipdfm in DVIPDFMx is related to multi-byte encoding/font
+support, especially <abbr title="Chinese Japanese Korean">CJK</abbr>.
+</p>
+
+<h3>Compatible TeX Packages</h3>
+
+<p>
+In addtion to TeX/LaTeX, the following TeX variants and TeX/LaTeX packages are supported:
+</p>
+
+<ul>
+ <li><div class="item"><a class="link" href="http://www.ascii.co.jp/pb/ptex/">ASCII pTeX</a></div>
+      <div class="description">
+      Full support available including vertical writing extension.
+      </div>
+      </li>
+ <li><div class="item"><a class="link" title="Go To CJK-LaTeX Development Homepage" href="http://cjk.ffii.org/">CJK-LaTeX package</a></div>
+      <div class="description">
+      DVIPDFMx requires <abbr title="Subfont Definition">SFD</abbr> files to remap multiple single-byte
+      fonts back to the original double-byte fonts.
+      </div>
+      </li>
+ <li><div class="item"><a class="link" title="Go To ConTeXt Development Homepage" href="http://www.pragma-ade.com/">ConTeXt</a></div>
+      <div class="description">
+      The ConTeXt driver file <a class="link" href="contrib/context/spec-dpx.tex">spec-dpx.tex</a>
+      for DVIPDFMx is contained in the
+      <a class="link" href="http://www.pragma-ade.com/beta.htm">beta version of ConTeXt</a>
+      since December 4, 2002.
+      Choose <code>dvipdfmx</code> as output option.
+      </div>
+      </li>
+ <li><div class="item"><a class="link" href="http://ftp.ktug.or.kr/mirrors/HLaTeX/hlatex.html">HLaTeX package</a></div>
+      <div class="description">
+      Same as the CJK-LaTeX support, requires <abbr>SFD</abbr> files.
+      </div>
+      </li>
+ <li><div class="item"><a class="link" href="ftp://ftp.math.s.chiba-u.ac.jp/tex/">NTT jTeX</a></div>
+      <div class="description">
+      Support for NTT jTeX is not tested well.
+      NTT jTeX output can be supported with virtual-font package
+      <a class="link" href="ftp://akagi.ms.u-tokyo.ac.jp/pub/TeX/win32/vf-n2bk.tar.gz">vf-n2bk.tar.gz</a>
+      distributed by Akira Kakuto or <abbr>SFD</abbr> files.
+      </div>
+      </li>
+ <li><div class="item"><a class="link" title="Go To Omega Development Homepage" href="http://omega.cse.unsw.edu.au:8080/">Omega</a> [Broken Link?]</div>
+      </li>
+</ul>
+
+<h3>Supported Font Format</h3>
+
+<p>
+The following font formats are supported:
+</p>
+
+<ul>
+ <li><div class="item">PostScript Type 1</div>
+      <div class="description">
+      PostScript Type 1 font is embedded as subset font in
+      <code>Type 1C</code> (<abbr title="Compact Font Format">CFF</abbr>)
+      format. (Multiple-Master is not supported)
+      </div>
+      </li>
+ <li><div class="item">OpenType</div>
+      <div class="description">
+      All features supported in Type 1 font are available for
+      OpenType/<abbr>CFF</abbr> (OpenType font with PostScript outline
+      data). <abbr>CID</abbr>-keyed font is also supported.
+      Ordinary OpenType/<abbr>CFF</abbr> fonts are treated like a Type 1
+      font.
+      </div>
+      </li>
+ <li><div class="item">TrueType</div>
+      <div class="description">
+      TrueType fonts can be embedded either as a
+      <code>CIDFontType</code> 2 <abbr>CID</abbr>-Keyed font or
+      a TrueType (simple) font.
+      </div>
+      </li>
+</ul>
+
+<p>
+Dvipdfmx works better with PostScript flavored fonts, and it sometimes requires
+additional support files for TrueType font.
+</p>
+
+<h3>PDF Encryption</h3>
+
+<p>
+Encrypted <abbr>PDF</abbr> files can be generated if the <code>-S</code>
+option is given. The key bits (40-128 bits) and the permission flags are
+specified either in the configuration file <code>dvipdfmx.cfg</code> or
+with command line options <code>-K</code> (for key bits)
+and <code>-P</code> (for permission flags).
+</p>
+
+<h3>Graphics Support</h3>
+
+<p>
+Changes from the original dvipdfm:
+</p>
+
+<ul>
+ <li>Full <abbr>PNG</abbr> transparency support and indexed-color image support (without
+      converting to <abbr title="Red Green Blue">RGB</abbr>).</li>
+ <li><abbr>CJK</abbr> support for <code>MetaPost</code> PostScript inclusion.</li>
+</ul>
+
+
+<h2><a name="example">Examples</a></h2>
+
+<p class="abstract">
+Some of example <abbr>PDF</abbr> presented in this section contains embedded
+<abbr>CJK</abbr> TrueType fonts. You need a <abbr>PDF</abbr> viewer supporting PDF version 1.3.
+For examples,
+<a class="link" href="http://www.cs.wisc.edu/~ghost/doc/AFPL/">AFPL Ghostscript</a> 7.x or 8.x,
+<a class="link" href="http://www.cs.wisc.edu/~ghost/doc/gnu/">GNU Ghstscript</a> 6.x or 7.x,
+<a class="link" href="http://www.adobe.com/products/acrobat/readermain.html">Adobe Acrobat Reader</a>
+4, 5, or 6, or <a class="link" href="http://www.foolabs.com/xpdf/">Xpdf</a> 2.x.
+</p>
+
+<h3>ConTeXt</h3>
+
+<p>
+Most of examples are contributed by Lei Wang.
+</p>
+
+<ul>
+ <li><div class="item">Chinese Zodiac</div>
+      <div class="description">
+      Nice example by Lei Wang. Chinese zodiac and it's explanation:
+      <a class="link" href="sample/context/zodiac.pdf">zodiac.pdf</a>.
+      [NOTE: This document will be opened in fullscreen mode. Please press <kbd>ESC</kbd> key
+      to show menu bar in Adobe Acrobat Reader]
+      </div>
+ <li><div class="item">Examples contributed by Lei Wang</div>
+      <div class="description">
+      ConTeXt examples with Chinese (<code>GBK</code> encoding is used in source files).
+      TrueType font embedded in <abbr>PDF</abbr>.
+      Bookmarks
+      [<a class="link" href="sample/context/bookmark.pdf">PDF (bookmark.pdf)</a>,
+       <a class="link" href="sample/context/bookmark.tex">TeX (bookmark.tex)</a>],
+      PDF Interaction
+      [<a class="link" href="sample/context/help-test.pdf">PDF (help-test.pdf)</a>,
+       <a class="link" href="sample/context/help-test.tex">TeX (help-test.tex)</a>],
+      and MetaPost graphics
+      [<a class="link" href="sample/context/mp-test.pdf">PDF (mp-test.pdf)</a>,
+       <a class="link" href="sample/context/mp-test.tar.gz">source archive (mp-test.tar.gz)</a>].
+      </div>
+      </li>
+ <li><div class="item">Other ConTeXt Examples</div>
+      <div class="description">
+      Page Size Changes
+      [<a class="link" href="sample/context/papersize.pdf">PDF (papersize.pdf)</a>,
+       <a class="link" href="sample/context/papersize.tex">TeX (papersize.tex)</a>]
+      and Color Shading Example 
+      [<a class="link" href="sample/context/color-shading.pdf">PDF (color-shading.pdf)</a>,
+       <a class="link" href="sample/context/color-shading.tex">TeX (color-shading.tex)</a>].
+      </div>
+      </li>
+</ul>
+
+<h3>Omega/Lambda</h3>
+
+<ul>
+ <li><div class="item"><a class="link" href="sample/omega/gentium.pdf">Gentium</a></div>
+      <div class="description">
+      The Gentium TrueType font is embedded as a <abbr>CID</abbr>-keyed font.
+      Lambda source file and <abbr title="Omega Font Metric">OFM</abbr>s for Gentium:
+      <a class="link" href="sample/omega/lambda-example1.zip">lambda-example1.zip</a>.
+      It requires antomega, hyperref, and color packages.
+      </div>
+      </li>
+ <li><div class="item"><a class="link" href="sample/omega/overt.pdf">Pseudo-Vertical Typesetting</a></div>
+      <div class="description">
+      Pseudo-vertical typesetting using Omega and dvipdfmx.
+      You must have Japanese font installed to view this document (no embedded font).
+      Source files:
+      <a class="link" href="sample/omega/lambda-example2.zip">lambda-example2.zip</a>.
+      It requires Omega-J available from Akira Kakuto's W32TeX or omega-japanese package by
+      Vincent Zoonekynd.
+      </div>
+      </li>
+</ul>
+
+
+<h3>CJK-LaTeX Package</h3>
+
+<ul>
+ <li><div class="item"><a class="link" href="sample/cjk-latex/hunmin.pdf">HunMinJeongEum</a></div>
+      <div class="description">
+      UTF8 encoding. TrueType font embedded, 88K bytes. Contributed by Kangsoo Kim.
+      </div>
+      </li>
+ <li><div class="item"><a class="link" href="sample/cjk-latex/kwandong.pdf">KwanDongByeolGok</a></div>
+      <div class="description">
+      UTF8 encoding. TrueType embedded, 257K bytes.
+      </div>
+      </li>
+ <li><div class="item">CJK mixed text typesetted with CJK</div>
+      <div class="description">
+      GB, Big5, JIS, SJIS, KS encodings are used in the
+      <a class="link" href="sample/cjk-latex/cjkmix2.tar.gz">source (cjkmix2.tar.gz)</a>.
+      PDF output
+      <a class="link" title="Example With Embedded Fonts" href="sample/cjk-latex/cjkmix2-embed.pdf">with embedded TrueType</a>
+      (80K bytes) and
+      <a class="link" title="Example Without Embedded Fonts" href="sample/cjk-latex/cjkmix2-noembed.pdf">without embedded font</a>
+      (9K bytes).
+      MS-Windows TrueType fonts <code>simsun.ttc</code>, <code>mingliu.ttc</code>,
+      <code>msmincho.ttc</code>, and <code>batang.ttc</code> are used.
+      </div>
+      </li>
+<li><div class="item"><a class="link" href="sample/cjk-latex/unicode.pdf">UTF8 text with several languages mixed</a></div>
+      <div class="description">
+      UTF8 encoding was used in the source. Bitstream Cyberbit TrueType font is embedded, 43K bytes.
+      </div>
+      </li>
+</ul>
+
+<h3>ASCII pTeX</h3>
+
+<ul>
+ <li><div class="item"><a class="link" href="sample/ptex/dpxgrfx.pdf">dpxgrfx</a></div>
+      <div class="description">
+      A short document on using graphics in dvipdfmx. 107K bytes.
+      </div>
+      </li>
+ <li><div class="item"><a class="link" href="sample/ptex/LiPo.pdf">Li Po</a></div>
+      <div class="description">
+      A Japanese translation of Chinese classics by Li Po.
+      Examples found at
+      <a class="link" href="http://imt.chem.kit.ac.jp/fujita/fujitas/fujitae.html">Shinsaku Fujita's Home Page</a>.
+      (the author of XyMTeX)
+      TrueType font embedded, 46K bytes.
+      </div>
+      </li>
+</ul>
+
+
+<h3>HLaTeX Package</h3>
+
+<ul>
+<li><div class="item"><a class="link" href="sample/hlatex/msfonts-kor.pdf">Korean MS-Windows TrueType Fonts</a></div>
+     <div class="description">
+     KS encoding was used in the source. TrueType (no embedded font) with stylistic variants, 19K bytes.
+     You need MS-Windows Korean TrueType fonts, <code>batang.ttc</code> and <code>gulim.ttc</code>.
+     </div>
+     </li>
+ <li><div class="item"><a class="link" href="http://www.ktug.or.kr/doc/lshort-kr/lshort-kr-sandol.pdf">The Not So Short Introduction to LaTeX2e (Korean)</a></div>
+     <div class="description">
+     KS encoding. TrueType embedded, 1.1M bytes.
+     Contributed by the lshort-kr project team.
+     </div>
+     </li>
+</ul>
+
+<h2><a name="resource">Resources</a></h2>
+
+<p class="abstract">
+This section contains documents related to DVIPDFMx, some useful information for
+typesetting <abbr>CJK</abbr> text with TeX, and a small list of freely available fonts, etc...
+</p>
+
+<h3>DVIPDFM<i>x</i> Documents</h3>
+
+<p>
+There are no <abbr title="Hyper Text Markup Language">HTML</abbr> or <abbr>PDF</abbr> manulas for DVIPDFMx.
+</p>
+
+<ul>
+ <li><div class="item"><a class="link" href="doc/tug2003.pdf">DVIPDFM<i>x</i>, an eXtension of DVIPDFM</a></div>
+      <div class="description">Presentation given at the TUG 2003 conference.</div>
+      </li>
+ <li><a class="link" href="README">README file</a> and
+      <a class="link" href="ChangeLog">ChangeLog file</a>.
+      </li>
+</ul>
+
+<h3>CJK and TeX Information</h3>
+
+<p>
+The <a class="link" href="http://www.praxagora.com/lunde/cjk_inf.html"><code>CJK.INF</code></a> by
+Ken Lunde provide detailed information on <abbr>CJK</abbr> character sets and encodings.
+<a class="link" href="http://www.geocities.com/fontboard/cjk/">CJK Quick Start</a>
+contains shareware/freeware information for reading or writing <abbr>CJK</abbr> text in English Windows.
+</p>
+
+<p>
+If you want to consult others about typesetting <abbr>CJK</abbr> text with TeX, please visit 
+</p>
+
+<ul>
+ <li><div class="item"><a class="link" href="http://oku.edu.mie-u.ac.jp/~okumura/texfaq/">Japanese TeX FAQ</a></div>
+      <div class="description">
+      A page maintained by Haruhiko Okumura. (In Japanese)
+      </div>
+      </li>
+ <li><div class="item"><a class="link" href="http://www.ktug.or.kr">KTUG</a></div>
+      <div class="description">Korean TeX Users Group. (In Korean)</div>
+      </li>
+</ul>
+
+<p>
+There is a mailing list for CJK package users which can be
+found at <a class="link" href="http://cjk.ffii.org">http://cjk.ffii.org</a>.
+</p>
+
+<h3>CJK/Unicode Font</h3>
+
+<p>
+Many CJK/Unicode fonts are freely available in various formats and
+in a variety of qualities.
+</p>
+
+<ul>
+ <li><div class="item"><a class="link" href="http://www.adobe.com/products/acrobat/acrrasianfontpack.html">Adobe Acrobat Reader - Asian font packs</a></div>
+      <div class="description">
+      Several OpenType <abbr>CID</abbr>-keyed fonts are freely available from Adobe
+      <strong>for use with Adobe Acrobat Reader</strong>.
+      It also contains several CMap resources for standard CJK encodings and useful ToUnicode CMaps.
+      In the recent version of asian font pack, no san-serif font...
+      </div>
+      </li>
+ <li><div class="item">
+     <a class="link" href="http://www.microsoft.com/windows/ie/downloads/recommended/ime/default.asp">Microsoft Global Input Method Editors...</a>
+     </div>
+      <div class="description">
+      ... Further Enhance East Asian Text Input:<!-- long title :( -->
+      Add-on packages for Microsoft Global <abbr title="Input Method Editor">IME</abbr>.
+      You can find TrueType fonts as a part of additional language packs
+      <strong>for use with Microsoft Windows OS</strong>.
+      <code>MS&nbsp;Hei</code> and <code>MS&nbsp;Song</code> (Simplified Chinese),
+      <code>MingLiu</code> (Traditional Chinese),
+      <code>GulimChe</code> (Korean), and <code>MS&nbsp;Gothic</code> (Japanese) are available.
+      </div>
+      </li>
+ <li><div class="item"><a class="link" href="http://www.alanwood.net/unicode/">Alan Wood's Unicode Resources</a></div>
+     <div class="description">
+     <!-- &mdash; -->
+     - Unicode and Multilingual Support in HTML, Fonts, Web Browsers and Other Applications.
+     List of Unicode TrueType/OpenType fonts available for various platforms, along with
+     Unicode ranges covered by each font.
+     </div>
+      </li>
+ <li><div class="item">Arphic TrueType and Wang TrueType Font</div>
+      <div class="description">
+      Several Chinese TrueType fonts can be found from
+      <a class="link" href="ftp://freebsd.sinica.edu.tw/pub/keith/">ftp://freebsd.sinica.edu.tw/pub/keith/</a>.
+      </div>
+      </li>
+ <li><div class="item">Korean AsiaSoft Fonts</div>
+      <div class="description">
+      Available from <a class="link" href="http://asiasoft.co.kr">AsiaSoft Co. Ltd.</a>. (in Korean)
+      </div>
+      </li>
+ <li><div class="item">Gentium - a typeface for the nations</div>
+      <div class="description">
+      Available from <a class="link" href="http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&amp;item_id=Gentium">SIL international</a>.
+      <cite title="Cited from Gentium Homepage...">
+      Gentium is a typeface family designed to enable the diverse ethnic groups around the world who use
+      the Latin script to produce readable, high-quality publications. It supports a wide range of
+      Latin-based alphabets and includes glyphs that correspond to all the Latin ranges of Unicode.
+      </cite>
+      </div>
+      </li>
+</ul>
+
+
+<h3>Specifications</h3>
+
+<p>
+Useful documents and resources for developers.
+</p>
+
+<ul>
+ <li><div class="item"><a class="link" href="http://partners.adobe.com/asn/techresources.jsp">Adobe Solutions Network | Product and Technical Resources</a></div>
+     <div class="description">
+     Resources for Developers, Print Service Providers, and others interested in making the most of
+     Adobe products and technologies.
+     </div>
+      </li>
+<li><div class="item"><a class="link" href="http://www.microsoft.com/typography/otspec/default.htm">OpenType specification</a></div>
+      <div class="description">
+      OpenType&trade; Specification from Microsoft Corporation.
+      </div>
+      </li>
+</ul>
+
+<p>
+DVI standard is available from <code>CTAN:dviware/driv-standard</code>.
+</p>
+
+<div class="footer">
+Copyright &copy; 2002-2005, The DVIPDFMx Project Team &lt;<a class="link" href="mailto:dvipdfmx@project.ktug.or.kr">dvipdfmx@project.ktug.or.kr</a>&gt;<br>
+<a class="link" href="mailto:chofchof@ktug.or.kr">Jin-Hwan Cho</a> and Shunsaku Hirata,
+Last modified on January 10, 2005.
+<a href="http://validator.w3.org/check/referer"><img class="logo" src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01!" height="31" width="88"></a>
+</div>
+
+</div>
+<!-- class content -->
+
+</body>
+</html>

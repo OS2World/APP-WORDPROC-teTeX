@@ -1,0 +1,49 @@
+\def\batchfile{fusering.ins}
+\input docstrip.tex
+\preamble
+
+This is a generated file.
+
+Copyright 1998 by Shinsaku Fujita
+
+This file is part of the XyMTeX system.
+=======================================
+
+Version 1.02 Released on October 31, 1998 (private version)
+Version 2.00 Released on December 25, 1998 
+
+Copyright (C) 1998 by Shinsaku Fujita, all rights reserved.
+This style file is created for drawing chemical structural formulas 
+This style file is to be contained in the ``xymtex'' directory which 
+is an input directory for TeX. 
+
+Copying of this file is authorized only if either
+
+ (1) you make absolutely no changes to your copy, including name and 
+     directory name 
+ (2) if you do make changes, 
+     (a) you name it something other than the names included in the 
+         ``xymtex'' directory and 
+     (b) you acknowledge the original name. 
+ This restriction ensures that all standard styles are identical.
+
+=======================================
+
+This file contains several codes modified from latex.tex (LaTeX2.09) 
+and from latex.ltx (a LaTeX2e), the reused parts of which are subject to 
+Copyright 1994 the LaTeX3 project and the individual authors (For further 
+copyright information see the file legal.txt of the LaTeX2e standard 
+distribution, and any other copyright indicated in this file.)
+
+\endpreamble
+
+\keepsilent
+
+\generateFile{fusering.drv}{t}{%
+  \from{fusering.dtx}{driver}}
+
+\generateFile{fusering.sty}{t}{%
+  \from{fusering.dtx}{fusering}}
+
+\endinput
+

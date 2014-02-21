@@ -1,0 +1,1585 @@
+diff -PurB -X x-os2unix.dat tetex-src-3.0/libs/ncurses/include/Makefile.in tetex-src-3.0-os2/libs/ncurses/include/Makefile.in
+--- tetex-src-3.0/libs/ncurses/include/Makefile.in	Wed Feb  1 00:32:40 2006
++++ tetex-src-3.0-os2/libs/ncurses/include/Makefile.in	Sun Mar  6 03:32:56 2005
+@@ -83,7 +83,7 @@
+ install ::	$(AUTO_SRC)
+ 
+ symlink:
+-	@test -d ncurses || ln -s . ncurses
++#	@test -d ncurses || ln -s . ncurses
+ 
+ curses.h : $(TERMINFO_CAPS) \
+ 		curses.head \
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/Makefile.in tetex-src-3.0-os2/Makefile.in
+--- tetex-src-3.0/Makefile.in	Wed Feb  1 00:32:50 2006
++++ tetex-src-3.0-os2/Makefile.in	Sun Mar  6 03:32:56 2005
+@@ -16,6 +16,8 @@
+ 
+ srcdir = @srcdir@
+ VPATH  = $(srcdir)
++XPATH=`cmd.exe /c "echo %PATH%" | sed -e 's@\\\\@/@g'`
++PATH_SEPARATOR=';'
+ 
+ SHELL = sh
+ 
+@@ -51,7 +53,7 @@
+ install: all 
+ 	for dir in $(INSTDIRS); do \
+ 	   echo making $@ in $$dir; \
+-	     (cd $$dir && PATH=$(scriptdir)";"$(bindir)";"$(PATH) \
++	     (cd $$dir && PATH=$(scriptdir)";"$(bindir)";"$(XPATH) \
+                 $(MAKE) $@) || exit 1; \
+ 	done
+ 	if test -d $(texmf) && test -f $(srcdir)/release-tetex-src.txt; then \
+@@ -64,29 +66,29 @@
+ 	  cd texk/web2c/omegafonts; $(MAKE) install-links
+ 	$(srcdir)/selfautofix "$(bindir)" "$(texmf)/web2c"
+ 	- if test -f $(scriptdir)/mktexlsr; then \
+-	  TEXMFMAIN=$(texmf) PATH=$(scriptdir)";"$(bindir)";"$(PATH) \
++	  TEXMFMAIN=$(texmf) PATH=$(scriptdir)";"$(bindir)";"$(XPATH) \
+ 	    $(scriptdir)/mktexlsr; \
+ 	else :; fi
+ 	- if test -f $(scriptdir)/fmtutil-sys; then \
+-	  TEXMFMAIN=$(texmf) PATH=$(scriptdir)";"$(bindir)";"$(PATH) \
++	  TEXMFMAIN=$(texmf) PATH=$(scriptdir)";"$(bindir)";"$(XPATH) \
+ 	    $(scriptdir)/fmtutil-sys --all; \
+ 	else :; fi
+ 	- if test -f $(scriptdir)/texlinks; then \
+-	  TEXMFMAIN=$(texmf) PATH=$(scriptdir)";"$(bindir)";"$(PATH) \
++	  TEXMFMAIN=$(texmf) PATH=$(scriptdir)";"$(bindir)";"$(XPATH) \
+ 	    $(scriptdir)/texlinks; \
+ 	else :; fi
+ 	- if test -f $(scriptdir)/updmap-sys \
+-	  && TEXMFMAIN=$(texmf) PATH=$(scriptdir)";"$(bindir)";"$(PATH) \
++	  && TEXMFMAIN=$(texmf) PATH=$(scriptdir)";"$(bindir)";"$(XPATH) \
+ 	       $(scriptdir)/kpsewhich --format='web2c files' updmap.cfg >/dev/null; \
+ 	then \
+-	  TEXMFMAIN=$(texmf) PATH=$(scriptdir)";"$(bindir)";"$(PATH) \
++	  TEXMFMAIN=$(texmf) PATH=$(scriptdir)";"$(bindir)";"$(XPATH) \
+ 	    $(scriptdir)/updmap-sys; \
+ 	else :; fi
+ 
+ install-exec:
+ 	for dir in $(INSTDIRS); do \
+ 	   echo making $@ in $$dir; \
+-	   (cd $$dir && PATH=$(scriptdir)";"$(bindir)";"$(PATH) \
++	   (cd $$dir && PATH=$(scriptdir)";"$(bindir)";"$(XPATH) \
+               $(MAKE) $@) || exit 1; \
+ 	done
+ @FMU@
+@@ -95,7 +97,7 @@
+ 	test -f texk/web2c/omegafonts/omfonts && \
+ 	  cd texk/web2c/omegafonts; $(MAKE) install-links
+ 	- if test -f $(scriptdir)/texlinks; then \
+-	  TEXMFMAIN=$(texmf) PATH=$(scriptdir)";"$(bindir)";"$(PATH) \
++	  TEXMFMAIN=$(texmf) PATH=$(scriptdir)";"$(bindir)";"$(XPATH) \
+ 	    $(scriptdir)/texlinks; \
+ 	else :; fi
+ 
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/dviljk/Makefile.in tetex-src-3.0-os2/texk/dviljk/Makefile.in
+--- tetex-src-3.0/texk/dviljk/Makefile.in	Wed Feb  1 00:32:50 2006
++++ tetex-src-3.0-os2/texk/dviljk/Makefile.in	Sun Mar  6 03:32:56 2005
+@@ -54,24 +54,24 @@
+ install-exec:
+ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(bindir)
+ 	test ! -f $(program) \
+-	  || $(INSTALL_LIBTOOL_PROG) $(program) $(bindir)
++	  || $(INSTALL_LIBTOOL_PROG) $(program).exe $(bindir)
+ 	test ! -f $(program2p) \
+-	  || $(INSTALL_LIBTOOL_PROG) $(program2p) $(bindir)
++	  || $(INSTALL_LIBTOOL_PROG) $(program2p).exe $(bindir)
+ 	test ! -f $(program4) \
+-	  || $(INSTALL_LIBTOOL_PROG) $(program4) $(bindir)
++	  || $(INSTALL_LIBTOOL_PROG) $(program4).exe $(bindir)
+ 	test ! -f $(program4l) \
+-	  || $(INSTALL_LIBTOOL_PROG) $(program4l) $(bindir)
++	  || $(INSTALL_LIBTOOL_PROG) $(program4l).exe $(bindir)
+ 	$(INSTALL_SCRIPT) $(srcdir)/dvihp $(scriptdir)/dvihp
+-	rm -f $(bindir)/$(program6); $(LN) $(program4) $(bindir)/$(program6)
++	rm -f $(bindir)/$(program6); $(LN) $(program4).exe $(bindir)/$(program6).exe
+ uninstall-exec:
+-	cd $(bindir); rm -f $(programs)
++	cd $(bindir); rm -f $(programs).exe
+ 
+ install-data:
+ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(man1dir)
+ 	$(INSTALL_DATA) $(srcdir)/dvilj.man $(man1dir)/dvilj.$(manext)
+ 	for p in dvilj2p dvilj4 dvilj4l dvilj6; do \
+ 	  rm -f $(man1dir)/$$p.$(manext); \
+-	  ln -s dvilj.$(manext) $(man1dir)/$$p.$(manext); \
++	  cp -v dvilj.man $(man1dir)/$$p.$(manext); \
+ 	done
+ 	$(INSTALL_DATA) $(srcdir)/dvihp.man $(man1dir)/dvihp.$(manext)
+ 
+@@ -92,7 +92,7 @@
+ 
+ pre-dist-$(distname):
+ post-dist-$(distname):
+-	ln -s `pwd`/fonts `pwd`/tex `pwd`/src.fonts $(distdir)
++	cp -v `pwd`/fonts `pwd`/tex `pwd`/src.fonts $(distdir)
+ 
+ ac_include ../make/dist.mk
+ ac_include ../make/config.mk
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/dvipdfm/Makefile.in tetex-src-3.0-os2/texk/dvipdfm/Makefile.in
+--- tetex-src-3.0/texk/dvipdfm/Makefile.in	Wed Feb  1 00:32:50 2006
++++ tetex-src-3.0-os2/texk/dvipdfm/Makefile.in	Sun Mar  6 03:32:56 2005
+@@ -50,12 +50,12 @@
+ 
+ install-exec:
+ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(bindir)
+-	$(INSTALL_LIBTOOL_PROG) $(program) $(bindir)
+-	$(INSTALL_LIBTOOL_PROG) ebb $(bindir)
++	$(INSTALL_LIBTOOL_PROG) $(program).exe $(bindir)
++	$(INSTALL_LIBTOOL_PROG) ebb.exe $(bindir)
+ 	$(INSTALL_SCRIPT) $(srcdir)/dvipdft $(bindir)
+ 
+ uninstall-exec:
+-	cd $(bindir); rm -f $(programs)
++	cd $(bindir); rm -f $(programs).exe
+ 
+ install-data:
+ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(man1dir)
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/dvipng/Makefile.in tetex-src-3.0-os2/texk/dvipng/Makefile.in
+--- tetex-src-3.0/texk/dvipng/Makefile.in	Wed Feb  1 00:32:52 2006
++++ tetex-src-3.0-os2/texk/dvipng/Makefile.in	Sun Mar  6 03:32:56 2005
+@@ -79,11 +79,11 @@
+ 
+ install-exec:
+ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(bindir)
+-	$(INSTALL_LIBTOOL_PROG) $(program) $(bindir)
+-	(cd $(bindir) && rm -f dvigif && ln -s $(program) dvigif)
++	$(INSTALL_LIBTOOL_PROG) $(program).exe $(bindir)
++	(cd $(bindir) && rm -f dvigif && cp -uvp $(program).exe dvigif.exe)
+ 
+ uninstall-exec:
+-	cd $(bindir); rm -f $(programs)
++	cd $(bindir); rm -f $(programs).exe
+ 
+ install-data:
+ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(man1dir)
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/dvipsk/Makefile.in tetex-src-3.0-os2/texk/dvipsk/Makefile.in
+--- tetex-src-3.0/texk/dvipsk/Makefile.in	Wed Feb  1 00:32:52 2006
++++ tetex-src-3.0-os2/texk/dvipsk/Makefile.in	Sun Jun 12 00:48:50 2005
+@@ -18,7 +18,8 @@
+ ac_include ../make/programs.mk
+ ac_include ../make/cross.mk
+ ac_include ../make/texi.mk
+-prog_cflags = -DUNIX -DKPATHSEA -DNeedFunctionPrototypes -DSHIFTLOWCHARS
++prog_cflags = -DUNIX -DKPATHSEA -DNeedFunctionPrototypes -DSHIFTLOWCHARS\
++  -DFONTLIB -DOS2UNIX
+ 
+ # The `t[mp]-' business is so that we don't create an empty .pro file,
+ # if running squeeze fails for some reason.  A dependency on squeeze
+@@ -34,7 +35,7 @@
+ dvips.o tfmload.o download.o prescan.o scanpage.o skippage.o output.o   \
+ scalewidth.o dosection.o dopage.o resident.o search.o unpack.o drawPS.o \
+ header.o repack.o virtualfont.o dpicheck.o finclude.o writet1.o		\
+-pprescan.o papersiz.o color.o bbox.o hps.o t1part.o
++pprescan.o papersiz.o color.o bbox.o hps.o t1part.o flib.o
+ 
+ program = dvips
+ programs = afm2tfm $(program)
+@@ -86,15 +87,18 @@
+ 
+ install-exec: all
+ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(bindir)
+-	for p in $(programs); do $(INSTALL_LIBTOOL_PROG) $$p $(bindir); done
+-	rm -f $(bindir)/o$(program)
+-	ln -s $(program) $(bindir)/o$(program)
++	for p in $(programs); do $(INSTALL_LIBTOOL_PROG) $$p.exe $(bindir); done
++	rm -f $(bindir)/o$(program).exe
++	cp.exe -uvp  $(program).exe $(bindir)/o$(program).exe
++#jsawa	ln -s $(program) $(bindir)/o$(program)
++
+ uninstall-exec:
+-	for p in $(programs); do rm -f $(bindir)/$$p; done
+-	rm -f $(bindir)/o$(program)
++	for p in $(programs); do rm -f $(bindir)/$$p.exe; done
++	rm -f $(bindir)/o$(program).exe
+ 
+ install-data: $(program).info
+-	$(SHELL) $(top_srcdir)/../mkinstalldirs $(man1dir) $(infodir) $(psheaderdir)/base
++	$(SHELL) $(top_srcdir)/../mkinstalldirs $(man1dir) $(infodir) \
++	$(psheaderdir)/base $(psheaderdir)/config
+ # PostScript prologues and encodings.
+ 	for h in $(prologues); do $(INSTALL_DATA) $$h $(psheaderdir)/base/$$h; done
+ #	cd $(srcdir)/reencode && \
+@@ -106,19 +110,25 @@
+ #	      >/dev/null; then	\
+ #          $(INSTALL_DATA) $(srcdir)/config.ps $(psheaderdir)/base/config.ps;	\
+ #        else true; fi
++	if test ! -r $(psheaderdir)/config/config.ps				\
++	   || grep 'original config.ps --' $(psheaderdir)/config/config.ps	\
++	      >/dev/null; then	\
++          $(INSTALL_DATA) $(srcdir)/config.ps $(psheaderdir)/config/config.ps;	\
++        else true; fi
+ # psfonts.map.
+-#	if test ! -r $(psheaderdir)/base/psfonts.map 			\
+-#	   || grep 'original psfonts.map --' $(psheaderdir)/base/psfonts.map \
+-#	      >/dev/null; then	\
+-#	  $(INSTALL_DATA) $(srcdir)/psfonts.map $(psheaderdir)/base/psfonts.map; \
+-#        else true; fi
++	if test ! -r $(psheaderdir)/base/psfonts.map 			\
++	   || grep 'original psfonts.map --' $(psheaderdir)/base/psfonts.map \
++	      >/dev/null; then	\
++	  $(INSTALL_DATA)  $(srcdir)/psfonts.map $(psheaderdir)/base/psfonts.map; \
++        else true; fi
+ # Info files.
+ 	cd $(srcdir) && for i in $(program).i*; do \
+ 	  $(INSTALL_DATA) $$i $(infodir)/$$i; done
+ # Man pages.
+ 	$(INSTALL_DATA) $(srcdir)/$(program).1 $(man1dir)/$(program).$(manext)
+ 	rm -f $(man1dir)/o$(program).$(manext)
+-	ln -s $(program).$(manext) $(man1dir)/o$(program).$(manext)
++#	ln -s $(program).$(manext) $(man1dir)/o$(program).$(manext)
++	cp.exe -uvp $(program).$(manext) $(man1dir)/o$(program).$(manext)
+ 	$(INSTALL_DATA) $(srcdir)/afm2tfm.1 $(man1dir)/afm2tfm.$(manext)
+ # TeX macros.
+ #	cd $(srcdir)/tex && for m in *.tex; do \
+@@ -135,15 +145,15 @@
+ 	else true; fi
+ 	$(NORMAL_UNINSTALL)
+ 	rm -f $(infodir)/dvips.i*
+-#	for h in $(prologues); do rm -f $(psheaderdir)/base/$$h; done
++	for h in $(prologues); do rm -f $(psheaderdir)/base/$$h; done
+ #	cd $(srcdir)/reencode && for e in *.enc; do rm -f $(psheaderdir)/base/$$e; \
+ #	  done
+ #	if grep 'original config.ps --' $(psheaderdir)/base/config.ps	\
+ #             >/dev/null 2>&1; then rm -f $(psheaderdir)/base/config.ps;	\
+ #        else true; fi
+-#	if grep 'original psfonts.map --' $(psheaderdir)/base/psfonts.map	\
+-#              >/dev/null 2>&1; then rm -f $(psheaderdir)/base/psfonts.map;	\
+-#        else true; fi
++	if grep 'original psfonts.map --' $(psheaderdir)/base/psfonts.map	\
++              >/dev/null 2>&1; then rm -f $(psheaderdir)/base/psfonts.map;	\
++        else true; fi
+ 	rm -f $(man1dir)/dvips.$(manext) $(man1dir)/afm2tfm.$(manext)
+ 
+ distname = dvipsk
+@@ -153,9 +163,11 @@
+ 
+ pre-dist-$(distname): INSTALL $(program).info $(program).dvi
+ post-dist-$(distname):
+-	ln -s `pwd`/contrib `pwd`/tex $(distdir)
+-	mkdir $(distdir)/reencode; ln -s $(fontname)/*.enc $(distdir)/reencode
+-	ln -s `pwd`/README.reencode $(distdir)/reencode/README
++	cp.exe -uvp `pwd.exe`/contrib `pwd.exe`/tex $(distdir)
++#jsawa	ln -s `pwd`/contrib `pwd`/tex $(distdir)
++	mkdir $(distdir)/reencode; cp -vp $(fontname)/*.enc $(distdir)/reencode
++	cp.exe -uvp `pwd.exe`/README.reencode $(distdir)/reencode/README
++#jsawa	ln -s `pwd`/README.reencode $(distdir)/reencode/README
+ 	rm -f $(distdir)/texc.lpro
+ 
+ ac_include ../make/dist.mk
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/gsftopk/Makefile.in tetex-src-3.0-os2/texk/gsftopk/Makefile.in
+--- tetex-src-3.0/texk/gsftopk/Makefile.in	Wed Feb  1 00:32:54 2006
++++ tetex-src-3.0-os2/texk/gsftopk/Makefile.in	Sun Mar  6 03:32:56 2005
+@@ -35,7 +35,7 @@
+ 
+ install-exec: $(program)
+ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(bindir)
+-	$(INSTALL_LIBTOOL_PROG) $(program) $(bindir)
++	$(INSTALL_LIBTOOL_PROG) $(program).exe $(bindir)
+ uninstall-exec:
+ 	rm -f $(bindir)/$(program)
+ 
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/Makefile.in tetex-src-3.0-os2/texk/kpathsea/Makefile.in
+--- tetex-src-3.0/texk/kpathsea/Makefile.in	Wed Feb  1 00:32:54 2006
++++ tetex-src-3.0-os2/texk/kpathsea/Makefile.in	Sun Mar  6 03:32:56 2005
+@@ -54,6 +54,7 @@
+ 
+ $(kpathsea): $(objects)
+ 	$(kpathsea_link) -rpath $(libdir) -version-info 4:0:0 $(objects)
++	$(MAKE) -f Makefile.os2
+ 
+ # Make variable substitutions for paths.h.
+ texmf.cnf: texmf.in texmf.sed
+@@ -183,16 +184,16 @@
+ 	$(INSTALL_DATA) $(srcdir)/mktexnam.opt $(web2cdir)/mktexnam.opt
+ 	$(INSTALL_SCRIPT) $(srcdir)/mktexupd $(web2cdir)/mktexupd
+ 	$(INSTALL_LIBTOOL_LIBS) lib$(library).la $(libdir)
+-	$(INSTALL_LIBTOOL_PROG) kpsewhich $(bindir)
+-	$(INSTALL_PROGRAM) kpsestat $(bindir)
+-	$(INSTALL_PROGRAM) kpseaccess $(bindir)
+-	$(INSTALL_PROGRAM) kpsereadlink $(bindir)
++	$(INSTALL_LIBTOOL_PROG) kpsewhich.exe $(bindir)
++	$(INSTALL_PROGRAM) kpsestat.exe $(bindir)
++	$(INSTALL_PROGRAM) kpseaccess.exe $(bindir)
++	$(INSTALL_PROGRAM) kpsereadlink.exe $(bindir)
+ uninstall-exec:
+ 	$(UNINSTALL_LIBTOOL_LIBS) $(libdir)/lib$(library).la
+-	$(UNINSTALL_LIBTOOL_PROG) $(bindir)/kpsewhich
+-	$(UNINSTALL_PROGRAM) $(bindir)/kpsestat
+-	$(UNINSTALL_PROGRAM) $(bindir)/kpseaccess
+-	$(UNINSTALL_PROGRAM) $(bindir)/kpsereadlink
++	$(UNINSTALL_LIBTOOL_PROG) $(bindir)/kpsewhich.exe
++	$(UNINSTALL_PROGRAM) $(bindir)/kpsestat.exe
++	$(UNINSTALL_PROGRAM) $(bindir)/kpseaccess.exe
++	$(UNINSTALL_PROGRAM) $(bindir)/kpsereadlink.exe
+ 
+ install-data: texmf.cnf kpathsea.info install-man
+ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(texmf) $(infodir) $(web2cdir)
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/kpathsea/texmf.in tetex-src-3.0-os2/texk/kpathsea/texmf.in
+--- tetex-src-3.0/texk/kpathsea/texmf.in	Mon Feb  7 04:27:58 2005
++++ tetex-src-3.0-os2/texk/kpathsea/texmf.in	Sun Mar  6 03:32:56 2005
+@@ -0,0 +1,558 @@
++% original texmf.cnf -- runtime path configuration file for kpathsea.
++% (If you change or delete `original' on the previous line, the
++% distribution won't install its version over yours.)
++% Public domain.
++% 
++% What follows is a super-summary of what this .cnf file can
++% contain. Please read the Kpathsea manual for more information.
++% 
++% texmf.cnf is generated from texmf.in, by replacing @var@ with the
++% value of the Make variable `var', via a sed file texmf.sed, generated
++% (once) by kpathsea/Makefile (itself generated from kpathsea/Makefile.in
++% by configure).
++% 
++% Any identifier (sticking to A-Za-z_ for names is safest) can be assigned.
++% The `=' (and surrounding spaces) is optional.
++% No % or @ in texmf.in, for the sake of autogeneration.
++% (However, %'s and @'s can be edited into texmf.cnf or put in envvar values.)
++% $foo (or ${foo}) in a value expands to the envvar or cnf value of foo.
++% 
++% Earlier entries (in the same or another file) override later ones, and
++% an environment variable foo overrides any texmf.cnf definition of foo.
++% 
++% All definitions are read before anything is expanded, so you can use
++% variables before they are defined. 
++% 
++% If a variable assignment is qualified with `.PROGRAM', it is ignored
++% unless the current executable (last filename component of argv[0]) is
++% named PROGRAM.  This foo.PROGRAM construct is not recognized on the
++% right-hand side. For environment variables, use FOO_PROGRAM.
++% 
++% Which file formats use which paths for searches is described in the
++% various programs' and the kpathsea documentation.
++% 
++% // means to search subdirectories (recursively).
++% A leading !! means to look only in the ls-R db, never on the disk.
++% A leading/trailing/doubled ; in the paths will be expanded into the
++%   compile-time default. Probably not what you want.
++% 
++% You can use brace notation, for example: /usr/local/{mytex:othertex}
++% expands to /usr/local/mytex:/usr/local/othertex.  Instead of the path
++% separator you can use a comma: /usr/local/{mytex,othertex} also expands
++% to /usr/local/mytex:/usr/local/othertex.  However, the use of the comma
++% instead of the path separator is deprecated.
++%
++% The text above assumes thet path separator is a colon (:).  Non-UNIX
++% systems use different path separators, like the semicolon (;).
++
++%  Part 1: Search paths and directories.
++
++% You can set an environment variable to override TEXMF if you're testing
++% a new TeX tree, without changing anything else.
++% 
++% You may wish to use one of the $SELFAUTO... variables here so TeX will
++% find where to look dynamically.  See the manual and the definition
++% below of TEXMFCNF.
++
++% The tree containing the runtime files closely related to the specific
++% program version used:
++TEXMFMAIN = @texmf@
++
++% The main distribution tree:
++TEXMFDIST = @texmf@-dist
++
++% A place for local additions to a "standard" texmf tree.
++% This tree is not used for local configuration maintained by
++% texconfig, it uses TEXMFCONFIG below.
++TEXMFLOCAL = @texmf@-local
++
++% TEXMFSYSVAR, where texconfig-sys stores variable runtime data.
++% With teTeX-3.0 or later, this must be set.
++% For sharing this tree with $TEXMFMAIN:
++%   TEXMFSYSVAR = $TEXMFMAIN
++% For using a separate tree:
++%   TEXMFSYSVAR = @texmf@-var
++TEXMFSYSVAR = @texmf@-var
++
++% TEXMFSYSCONFIG, where texconfig-sys stores configuration data.
++% With teTeX-3.0 or later, this must be set.
++% For sharing this tree with $TEXMFMAIN:
++%   TEXMFSYSCONFIG = $TEXMFMAIN
++% For using a separate tree:
++%   TEXMFSYSCONFIG = @texmf@-config
++TEXMFSYSCONFIG = @texmf@-config
++
++% User texmf trees can be catered for like this...
++% This used to be HOMETEXMF.
++TEXMFHOME = $HOME/texmf
++
++% TEXMFVAR, where texconfig stores variable runtime data.
++% With teTeX-3.0 or later, this must be set.
++% For sharing this tree with $TEXMFMAIN:
++%   TEXMFVAR = $TEXMFMAIN
++% For using a separate tree:
++%   TEXMFVAR = $HOME/.texmf-var
++TEXMFVAR = $HOME/.texmf-var
++
++% TEXMFCONFIG, where texconfig stores configuration data.
++% With teTeX-3.0 or later, this must be set.
++% For sharing this tree with $TEXMFMAIN:
++%   TEXMFCONFIG = $TEXMFMAIN
++% For using a separate tree:
++%   TEXMFCONFIG = $HOME/.texmf-config
++% For using a separate tree:
++%   TEXMFCONFIG = @texmf@-config
++TEXMFCONFIG = $HOME/.texmf-config
++
++% Now, list all the texmf trees. If you have multiple trees you can
++% use shell brace notation, like this:
++%   TEXMF = {$TEXMFHOME,!!$TEXMFLOCAL,!!$TEXMFMAIN}
++% The braces are necessary.
++%
++% For texconfig to work properly, TEXMFCONGIG and TEXMFVAR should be named
++% explicitly and before all other trees.
++TEXMF = {!!$TEXMFCONFIG,!!$TEXMFVAR,$TEXMFHOME,!!$TEXMFSYSCONFIG,!!$TEXMFSYSVAR,!!$TEXMFMAIN,!!$TEXMFLOCAL,!!$TEXMFDIST}
++
++% The system trees.  These are the trees that are shared by all the users.
++SYSTEXMF = $TEXMFLOCAL;$TEXMFMAIN;$TEXMFDIST
++
++% Where generated fonts may be written.  This tree is used when the sources
++% were found in a system tree and either that tree wasn't writable, or the
++% varfonts feature was enabled in MT_FEATURES in mktex.cnf.
++VARTEXFONTS = @vartexfonts@
++
++% Where to look for ls-R files.  There need not be an ls-R in the
++% directories in this path, but if there is one, Kpathsea will use it.
++%
++% Remove $VARTEXFONTS from TEXMFDBS if the VARTEXFONTS directory is below
++% one of the TEXMF directories (avoids overlapping ls-R files).
++TEXMFDBS = $TEXMF;$VARTEXFONTS
++
++% It may be convenient to define TEXMF like this:
++%   TEXMF = {$TEXMFHOME,!!$TEXMFLOCAL,!!$TEXMFMAIN,$HOME}
++% which allows users to set up entire texmf trees, and tells TeX to
++% look in places like ~/tex and ~/bibtex.  If you do this, define TEXMFDBS
++% like this:
++%   TEXMFDBS = $TEXMFHOME;$TEXMFLOCAL;$TEXMFMAIN;$VARTEXFONTS
++% or mktexlsr will generate an ls-R file for $HOME when called, which is
++% rarely desirable.  If you do this you'll want to define SYSTEXMF like
++% this:
++%   SYSTEXMF = $TEXMFLOCAL;$TEXMFMAIN;$TEXMFDIST
++% so that fonts from a user's tree won't escape into the global trees.
++%
++% On some systems, there will be a system tree which contains all the font
++% files that may be created as well as the formats.  For example
++%   TEXMFVAR = /var/lib/texmf
++% is used on many Linux systems.  In this case, set VARTEXFONTS like this
++%   VARTEXFONTS = $TEXMFVAR/fonts
++% and do not mention it in TEXMFDBS (but _do_ mention TEXMFVAR).
++
++
++%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++% Usually you will not need to edit any of the other variables in part 1. %
++%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
++
++% WEB2C is for Web2C specific files.  The current directory may not be
++% a good place to look for them.
++WEB2C = $TEXMF/web2c
++
++% TEXINPUTS is for TeX input files -- i.e., anything to be found by \input
++% or \openin, including .sty, .eps, etc. 
++
++% Plain TeX.  Have the command tex check all directories as a last
++% resort, we may have plain-compatible stuff anywhere.
++TEXINPUTS.tex = .;$TEXMF/tex/{plain,generic,}//
++
++% Other plain-based formats.
++TEXINPUTS.amstex = .;$TEXMF/tex/{amstex,plain,generic,}//
++TEXINPUTS.csplain = .;$TEXMF/tex/{csplain,plain,generic,}//
++TEXINPUTS.eplain  = .;$TEXMF/tex/{eplain,plain,generic,}//
++TEXINPUTS.ftex = .;$TEXMF/tex/{formate,plain,generic,}//
++TEXINPUTS.jadetex = .;$TEXMF/tex/{jadetex,plain,generic,}//
++TEXINPUTS.mex = .;$TEXMF/tex/{mex,plain,generic,}//
++TEXINPUTS.texinfo = .;$TEXMF/tex/{texinfo,plain,generic,}//
++
++% LaTeX 2e specific macros are stored in latex/, macros that can only be
++% used with 2.09 in latex209/.  In addition, we look in the directory
++% latex209, useful for macros that were written for 2.09 and do not
++% mention 2e at all, but can be used with 2e.
++TEXINPUTS.cslatex = .;$TEXMF/tex/{cslatex,csplain,latex,generic,}//
++TEXINPUTS.platex  = .;$TEXMF/tex/{platex,latex,generic,}//
++TEXINPUTS.latex = .;$TEXMF/tex/{latex,generic,}//
++TEXINPUTS.olatex = .;$TEXMF/tex/{latex,generic,}//
++TEXINPUTS.latex209 = .;$TEXMF/tex/{latex209,generic,latex,}//
++
++% Fontinst needs to read afm files.
++TEXINPUTS.fontinst = .;$TEXMF/{tex,fonts/afm}//
++
++% MLTeX.
++TEXINPUTS.frlatex = .;$TEXMF/tex/{french,latex,generic,}//
++TEXINPUTS.frtex   = .;$TEXMF/tex/{french,plain,generic,}//
++TEXINPUTS.mllatex = .;$TEXMF/tex/{latex,generic,}//
++TEXINPUTS.mltex = .;$TEXMF/tex/{plain,generic,}//
++
++% e-TeX.  This form of the input paths is borrowed from teTeX.  A certain
++% variant of TDS is assumed here, unaffected by the build variables.
++TEXINPUTS.elatex   = .;$TEXMF/tex/{latex,generic,}//
++TEXINPUTS.etex     = .;$TEXMF/tex/{plain,generic,}//
++
++% pdfTeX.  This form of the input paths is borrowed from teTeX.  A certain
++% variant of TDS is assumed here, unaffected by the build variables.
++TEXINPUTS.pdfcslatex = .;$TEXMF/tex/{cslatex,csplain,latex,generic,}//
++TEXINPUTS.pdfcsplain = .;$TEXMF/tex/{csplain,plain,generic,}//
++TEXINPUTS.pdfjadetex = .;$TEXMF/tex/{jadetex,plain,generic,}//
++TEXINPUTS.pdflatex = .;$TEXMF/tex/{latex,generic,}//
++TEXINPUTS.pdfmex   = .;$TEXMF/tex/{mex,plain,generic,}//
++TEXINPUTS.utf8mex   = .;$TEXMF/tex/{mex,plain,generic,}//
++TEXINPUTS.pdftex   = .;$TEXMF/tex/{plain,generic,}//
++TEXINPUTS.pdftexinfo = .;$TEXMF/tex/{texinfo,plain,generic,}//
++TEXINPUTS.pdfamstex = .;$TEXMF/tex/{amstex,plain,generic,}//
++
++% pdfeTeX.
++TEXINPUTS.pdfelatex = .;$TEXMF/tex/{latex,generic,}//
++TEXINPUTS.pdfetex   = .;$TEXMF/tex/{plain,generic,}//
++
++% pdfxTeX.
++TEXINPUTS.pdfxlatex = .;$TEXMF/tex/{latex,generic,}//
++TEXINPUTS.pdfxtex   = .;$TEXMF/tex/{plain,generic,}//
++
++% XeTeX
++TEXINPUTS.xelatex = .;$TEXMF/tex/{latex,generic,}//
++TEXINPUTS.xetex   = .;$TEXMF/tex/{plain,generic,}//
++
++% Omega / Aleph
++TEXINPUTS.lamed = .;$TEXMF/tex/{lamed,lambda,latex,generic,}//
++TEXINPUTS.lambda = .;$TEXMF/tex/{lambda,latex,generic,}//
++TEXINPUTS.omega = .;$TEXMF/tex/{plain,generic,}//
++TEXINPUTS.aleph = .;$TEXMF/tex/{plain,generic,}//
++
++% Context macros by Hans Hagen:
++TEXINPUTS.context = .;$TEXMF/tex/{context,plain,generic,}//
++
++% odd formats  needing their own paths
++TEXINPUTS.lamstex  = .;$TEXMF/tex/{lamstex,plain,generic,}//
++TEXINPUTS.lollipop = .;$TEXMF/tex/{lollipop,plain,generic,}//
++TEXINPUTS.platex-pl  = .;$TEXMF/tex/{platex,latex,generic,}//
++TEXINPUTS.pdfplatex = .;$TEXMF/tex/{platex,latex,generic,}//
++
++% Earlier entries override later ones, so put this last.
++TEXINPUTS = .;$TEXMF/tex/{$progname,generic,}//
++
++% Metafont, MetaPost inputs.
++MFINPUTS = .;$TEXMF/metafont//;{$TEXMF/fonts,$VARTEXFONTS}/source//
++MPINPUTS = .;$TEXMF/metapost//
++
++% Dump files (fmt/base/mem) for vir{tex,mf,mp} to read (see web2c/INSTALL),
++% and string pools (.pool) for ini{tex,mf,mp}.  It is silly that we have six
++% paths and directories here (they all resolve to a single place by default),
++% but historically ...
++TEXFORMATS = .;$TEXMF/web2c
++MFBASES = .;$TEXMF/web2c
++MPMEMS = .;$TEXMF/web2c
++TEXPOOL = .;$TEXMF/web2c
++MFPOOL = .;$TEXMF/web2c
++MPPOOL = .;$TEXMF/web2c
++
++% Device-independent font metric files.
++VFFONTS = .;$TEXMF/fonts/vf//
++TFMFONTS = .;{$TEXMF/fonts,$VARTEXFONTS}/tfm//
++
++% The $MAKETEX_MODE below means the drivers will not use a cx font when
++% the mode is ricoh.  If no mode is explicitly specified, kpse_prog_init
++% sets MAKETEX_MODE to /, so all subdirectories are searched.  See the manual.
++% The modeless part guarantees that bitmaps for PostScript fonts are found.
++PKFONTS = .;{$TEXMF/fonts,$VARTEXFONTS}/pk/{$MAKETEX_MODE,modeless}//
++
++% Similarly for the GF format, which only remains in existence because
++% Metafont outputs it (and MF isn't going to change).
++GFFONTS = .;$TEXMF/fonts/gf/$MAKETEX_MODE//
++
++% A backup for PKFONTS and GFFONTS. Not used for anything.
++GLYPHFONTS = .;$TEXMF/fonts
++
++% A place to puth everything that doesn't fit the other font categories.
++MISCFONTS = .;$TEXMF/fonts/misc//
++
++% font name map files.
++TEXFONTMAPS = .;$TEXMF/fonts/map//
++
++% support non"k"-xdvi:
++PKFONTS.XDvi    = .:$TEXMF/%s:$VARTEXFONTS/pk/{%m,modeless}//
++VFFONTS.XDvi    = .:$TEXMF/%s 
++PSHEADERS.XDvi  = .:$TEXMF/%q{dvips,fonts/type1}//
++TEXPICTS.XDvi   = .:$TEXMF/%q{dvips,tex}//
++
++% BibTeX bibliographies and style files.
++BIBINPUTS = .;$TEXMF/bibtex/bib//
++BSTINPUTS = .;$TEXMF/bibtex/bst//
++
++% MFT style files.
++MFTINPUTS = .;$TEXMF/mft//
++
++% PostScript headers and prologues (.pro); unfortunately, some programs
++% also use this for acessing font files (enc, type1, truetype)
++TEXPSHEADERS = .;$TEXMF/{dvips,fonts/{enc,type1,type3}}//
++TEXPSHEADERS.gsftopk = .;$TEXMF/{dvips,fonts/{enc,type1,type3,truetype}}//
++
++% PostScript Type 1 outline fonts.
++T1FONTS = .;$TEXMF/fonts/type1//
++
++% PostScript AFM metric files.
++AFMFONTS = .;$TEXMF/fonts/afm//
++
++% TrueType outline fonts.
++TTFONTS = .;$TEXMF/fonts/truetype//
++
++% Type 42 outline fonts.
++T42FONTS = .;$TEXMF/fonts/type42//
++
++% Ligature definition files.
++LIGFONTS =  .;$TEXMF/fonts/lig//
++
++% Dvips' config.* files (this name should not start with `TEX'!).
++TEXCONFIG = $TEXMF/dvips//
++
++% Makeindex style (.ist) files.
++INDEXSTYLE = .;$TEXMF/makeindex//
++
++% Font encoding files (.enc).
++ENCFONTS = .;$TEXMF/fonts/enc//
++
++% CMap files.
++CMAPFONTS = .;$TEXMF/fonts/cmap//
++
++% Subfont definition files.
++SFDFONTS = .;$TEXMF/fonts/sfd//
++
++% Opentype outline fonts.
++OPENTYPEFONTS = .;$TEXMF/fonts/opentype//
++
++% pdftex config files:
++PDFTEXCONFIG = .;$TEXMF/pdftex/{$progname,}//
++
++% Used by DMP (ditroff-to-mpx), called by makempx -troff.
++% The path given is correct for GROFF on Linux installed under /usr.
++% Originally: TRFONTS = /usr/lib/font/devpost
++TRFONTS = /usr/share/groff/current/font/devps
++MPSUPPORT = .;$TEXMF/metapost/support
++
++% For xdvi to find mime.types and .mailcap, if they do not exist in
++% $HOME.  These are single directories, not paths.
++% (But the default mime.types, at least, may well suffice.)
++MIMELIBDIR = @prefix@/etc
++MAILCAPLIBDIR = @prefix@/etc
++
++% TeX documentation and source files, for use with kpsewhich.
++TEXDOCS = .;$TEXMF/doc//
++TEXSOURCES = .;$TEXMF/source//
++
++% Web and CWeb input paths.
++WEBINPUTS = .;$TEXMF/web//
++CWEBINPUTS = .;$TEXMF/cweb//
++
++% Omega-related fonts and other files.  The odd construction for OFMFONTS
++% makes it behave in the face of a definition of TFMFONTS.  Unfortunately
++% no default substitution would take place for TFMFONTS, so an explicit
++% path is retained.
++OFMFONTS = .;{$TEXMF/fonts,$VARTEXFONTS}/{ofm,tfm}//;$TFMFONTS
++OPLFONTS = .;{$TEXMF/fonts,$VARTEXFONTS}/opl//
++OVFFONTS = .;{$TEXMF/fonts,$VARTEXFONTS}/ovf//
++OVPFONTS = .;{$TEXMF/fonts,$VARTEXFONTS}/ovp//
++OTPINPUTS = .;$TEXMF/omega/otp//
++OCPINPUTS = .;$TEXMF/omega/ocp//
++
++% Some additional input variables for several programs.  If you add
++% a program that uses the 'other text files' or 'other binary files'
++% search formats, you'll want to add their variables here as well.
++T4HTINPUTS   = .;$TEXMF/tex4ht//
++
++% Architecture independent executables
++TEXMFSCRIPTS = $TEXMF/scripts//
++
++%% The mktex* scripts rely on KPSE_DOT. Do not set it in the environment.
++% KPSE_DOT = .
++
++% This definition isn't used from this .cnf file itself (that would be
++% paradoxical), but the compile-time default in paths.h is built from it.
++% The SELFAUTO* variables are set automatically from the location of
++% argv[0], in kpse_set_progname.  
++% 
++% The TETEXDIR stuff isn't likely to relevant unless you're using teTeX,
++% but it doesn't hurt.
++%
++% For security reasons, it is better not to have . part of the path.
++% 
++TEXMFCNF = {$SELFAUTOLOC,$SELFAUTODIR,$SELFAUTOPARENT}{,{/share,}/texmf{-local,}/web2c};$TETEXDIR;$TEXMF/web2c;@web2c@
++
++# $progname: kpathsea v. 3.5.3 or later overwrites this at runtime. To
++# avoid empty expansions from binaries linked against an earlier
++# version of the library, we set $progname and $engine to something
++# non-empty:
++progname = unset
++engine = unset
++
++
++%  Part 2: Non-path options.
++
++% Write .log/.dvi/etc. files here, if the current directory is unwritable.
++% TEXMFOUTPUT = /tmp
++
++% If a dynamic file creation fails, log the command to this file, in
++% either the current directory or TEXMFOUTPUT.  Set to the
++% empty string or  0  to avoid logging.
++MISSFONT_LOG = missfont.log
++
++% Set to a colon-separated list of words specifying warnings to suppress.
++% To suppress everything, use TEX_HUSH = all; this is currently equivalent to
++% TEX_HUSH = checksum:lostchar:readable:special
++% To suppress nothing, use TEX_HUSH = none or do not set the variable at all.
++TEX_HUSH = none
++
++% Enable system commands via \write18{...}?
++shell_escape = f
++
++% Allow TeX \openin, \openout, or \input on filenames starting with `.'
++% (e.g., .rhosts) or outside the current tree (e.g., /etc/passwd)?
++% a (any)        : any file can be opened.
++% r (restricted) : disallow opening "dotfiles".
++% p (paranoid)   : as 'r' and disallow going to parent directories, and
++%                  restrict absolute paths to be under $TEXMFOUTPUT.
++openout_any = p
++openin_any = a
++
++% Allow TeX, MF, and MP to parse the first line of an input file for
++% the %&format construct.
++parse_first_line = f
++
++% Enable file:line:error style messages.
++file_line_error_style = f
++
++% Enable the mktex... scripts by default?  These must be set to 0 or 1.
++% Particular programs can and do override these settings, for example
++% dvips's -M option.  Your first chance to specify whether the scripts
++% are invoked by default is at configure time.
++% 
++% These values are ignored if the script names are changed; e.g., if you
++% set DVIPSMAKEPK to `foo', what counts is the value of the environment
++% variable/config value `FOO', not the `MKTEXPK' value.
++% 
++% MKTEXTEX = 0
++% MKTEXPK = 0
++% MKTEXMF = 0
++% MKTEXTFM = 0
++% MKTEXFMT = 0
++% MKOCP = 0
++% MKOFM = 0
++
++% What MetaPost runs to make MPX files.  This is passed an option -troff
++% if MP is in troff mode.  Set to `0' to disable this feature.
++MPXCOMMAND = makempx
++
++
++%  Part 3: Array and other sizes for TeX (and Metafont and MetaPost).
++% 
++% If you want to change some of these sizes only for a certain TeX
++% variant, the usual dot notation works, e.g.,
++% main_memory.hugetex = 20000000
++% 
++% If a change here appears to be ignored, try redumping the format file.
++
++% Memory. Must be less than 8,000,000 total.
++% 
++% main_memory is relevant only to initex, extra_mem_* only to non-ini.
++% Thus, have to redump the .fmt file after changing main_memory; to add
++% to existing fmt files, increase extra_mem_*.  (To get an idea of how
++% much, try \tracingstats=2 in your TeX source file;
++% web2c/tests/memtest.tex might also be interesting.)
++% 
++% To increase space for boxes (as might be needed by, e.g., PiCTeX),
++% increase extra_mem_bot.
++% 
++% For some xy-pic samples, you may need as much as 700000 words of memory.
++% For the vast majority of documents, 60000 or less will do.
++% 
++main_memory = 1000000 % words of inimemory available; also applies to inimf&mp
++extra_mem_top = 0     % extra high memory for chars, tokens, etc.
++extra_mem_bot = 0     % extra low memory for boxes, glue, breakpoints, etc.
++
++% ConTeXt is a memory hog...
++extra_mem_top.context = 2000000
++extra_mem_bot.context = 4000000
++main_memory.context = 1500000
++main_memory.mpost = 1500000
++
++% Words of font info for TeX (total size of all TFM files, approximately). 
++font_mem_size = 500000
++
++% Total number of fonts. Must be >= 50 and <= 2000 (without tex.ch changes).
++font_max = 2000
++
++% Extra space for the hash table of control sequences (which allows 10K
++% names as distributed).
++hash_extra = 50000
++
++% Max number of characters in all strings, including all error messages,
++% help texts, font names, control sequences.  These values apply to TeX and MP.
++pool_size = 1250000
++% Minimum pool space after TeX/MP's own strings; must be at least
++% 25000 less than pool_size, but doesn't need to be nearly that large.
++string_vacancies = 90000
++% Maximum number of strings.
++max_strings = 100000
++% min pool space left after loading .fmt
++pool_free = 47500
++
++% Hyphenation trie. As distributed, the maximum is 65535; this should
++% work unless `unsigned short' is not supported or is smaller than 16
++% bits.  This value should suffice for UK English, US English, French,
++% and German (for example).  To increase, you must change
++% `ssup_trie_opcode' and `ssup_trie_size' in tex.ch (and rebuild TeX);
++% the trie will then consume four bytes per entry, instead of two.
++% 
++% US English, German, and Portuguese: 30000.
++% German: 14000.
++% US English: 10000.
++% 
++trie_size = 262000
++
++% Buffer size.  TeX uses the buffer to contain input lines, but macro
++% expansion works by writing material into the buffer and reparsing the
++% line.  As a consequence, certain constructs require the buffer to be
++% very large.  As distributed, the size is 50000; most documents can be
++% handled within a tenth of this size.
++buf_size = 200000
++
++hyph_size = 1000        % number of hyphenation exceptions, >610 and <32767.
++nest_size = 500		% simultaneous semantic levels (e.g., groups)
++max_in_open = 15	% simultaneous input files and error insertions
++param_size = 5000	% simultaneous macro parameters
++save_size = 5000	% for saving values outside current group
++stack_size = 1500	% simultaneous input sources
++
++% These are Omega-specific.
++ocp_buf_size = 20000	% character buffers for ocp filters.
++ocp_stack_size = 10000	% stacks for ocp computations.
++ocp_list_size = 1000	% control for multiple ocps.
++
++% Parameter specific to MetaPost.
++% Maximum number of knots between breakpoints of a path.
++% Set to 2000 by default.
++% path_size.mpost = 10000
++
++% These are pdftex-specific.
++obj_tab_size = 300000    % PDF objects
++dest_names_size = 300000 % destinations
++
++% These work best if they are the same as the I/O buffer size, but it
++% doesn't matter much.  Must be a multiple of 8.
++dvi_buf_size = 16384 % TeX
++gf_buf_size = 16384  % MF
++
++% It's probably inadvisable to change these. At any rate, we must have:
++% 45 < error_line      < 255;
++% 30 < half_error_line < error_line - 15;
++% 60 <= max_print_line;
++% These apply to Metafont and MetaPost as well.
++error_line = 79
++half_error_line = 50
++max_print_line = 79
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/make/man.mk tetex-src-3.0-os2/texk/make/man.mk
+--- tetex-src-3.0/texk/make/man.mk	Wed Nov 13 05:54:14 2002
++++ tetex-src-3.0-os2/texk/make/man.mk	Sun Mar  6 03:32:56 2005
+@@ -28,7 +28,7 @@
+ # Makefile can change for reasons that do not affect the man pages.
+ # At present, all but VERSION should be unused.
+ sedscript:
+-	cp /dev/null sedscript
++	echo > sedscript
+ 	for f in $(kpathsea_dir)/paths.h; do \
+ 	  sed -n -e '/^#define/s/#define[ 	][ 	]*\([A-Z_a-z][A-Z_a-z]*\)[ 	][ 	]*\(.*\)/s%@\1@%\2%/p' \
+ 		$$f \
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/make/programs.mk tetex-src-3.0-os2/texk/make/programs.mk
+--- tetex-src-3.0/texk/make/programs.mk	Wed Feb  1 00:31:38 2006
++++ tetex-src-3.0-os2/texk/make/programs.mk	Sun Mar  6 03:32:56 2005
+@@ -2,7 +2,7 @@
+ 
+ # Don't include $(CFLAGS), since ld -g under Linux forces
+ # static libraries, e.g., libc.a and libX*.a.
+-LDFLAGS = @LDFLAGS@ $(XLDFLAGS)
++LDFLAGS = -Zexe @LDFLAGS@ $(XLDFLAGS)
+ 
+ # proglib is for web2c; 
+ # XLOADLIBES is for the installer.
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/makeindexk/Makefile.in tetex-src-3.0-os2/texk/makeindexk/Makefile.in
+--- tetex-src-3.0/texk/makeindexk/Makefile.in	Wed Feb  1 00:32:56 2006
++++ tetex-src-3.0-os2/texk/makeindexk/Makefile.in	Sun Mar  6 03:32:56 2005
+@@ -20,10 +20,10 @@
+ 
+ install-exec: $(programs)
+ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(bindir)
+-	$(INSTALL_LIBTOOL_PROG)  $(program) $(bindir)
++	$(INSTALL_LIBTOOL_PROG)  $(program).exe $(bindir)
+ 	$(INSTALL_SCRIPT) $(srcdir)/mkindex $(scriptdir)/mkindex
+ uninstall-exec:
+-	cd $(bindir) && rm -f $(program)
++	cd $(bindir) && rm -f $(program).exe
+ 	cd $(scriptdir) && rm -f mkindex
+ 
+ install-data: makeindex.1
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/ps2pkm/Makefile.in tetex-src-3.0-os2/texk/ps2pkm/Makefile.in
+--- tetex-src-3.0/texk/ps2pkm/Makefile.in	Wed Feb  1 00:32:56 2006
++++ tetex-src-3.0-os2/texk/ps2pkm/Makefile.in	Sun Mar  6 03:32:56 2005
+@@ -36,9 +36,9 @@
+ 
+ install-exec: $(programs)
+ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(bindir)
+-	for p in $(programs); do $(INSTALL_LIBTOOL_PROG) $$p $(bindir); done
++	for p in $(programs); do $(INSTALL_LIBTOOL_PROG) $$p.exe $(bindir); done
+ uninstall-exec:
+-	for p in $(programs); do rm -f $(bindir)/$$p; done
++	for p in $(programs); do rm -f $(bindir)/$$p.exe; done
+ 
+ install-data: mag.1 pfb2pfa.1 pk2bm.1 ps2pk.1
+ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(man1dir)
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/tetex/Makefile.in tetex-src-3.0-os2/texk/tetex/Makefile.in
+--- tetex-src-3.0/texk/tetex/Makefile.in	Wed Feb  1 00:32:58 2006
++++ tetex-src-3.0-os2/texk/tetex/Makefile.in	Sun Mar  6 03:32:56 2005
+@@ -25,6 +25,8 @@
+   texdoctk texexec texfind texfont texshow texutil thumbpdf \
+   ttf2afm updmap
+ 
++manext2=man
++
+ INFOFILES= latex.info
+ POOLFILES = pdfetex-pl.pool
+ all: $(SCRIPTS) $(PDFSCRIPTS)
+@@ -48,21 +50,28 @@
+ 	  cweave.$(manext) odvicopy.$(manext) \
+ 	  odvitype.$(manext) texconfig-sys.$(manext) \
+ 	  updmap-sys.$(manext) mktexfmt.$(manext) fmtutil-sys.$(manext)
+-	ln -s allcm.$(manext) $(man1dir)/allec.$(manext)
+-	ln -s mktexlsr.$(manext) $(man1dir)/texhash.$(manext)
+-	ln -s omega.$(manext) $(man1dir)/lambda.$(manext)
+-	ln -s pdfetex.$(manext) $(man1dir)/pdflatex.$(manext)
+-	ln -s kpsetool.$(manext) $(man1dir)/kpsepath.$(manext)
+-	ln -s kpsetool.$(manext) $(man1dir)/kpsexpand.$(manext)
+-	ln -s mf.$(manext) $(man1dir)/mf-nowin.$(manext)
+-	ln -s cweb.$(manext) $(man1dir)/ctangle.$(manext)
+-	ln -s cweb.$(manext) $(man1dir)/cweave.$(manext)
+-	ln -s dvicopy.$(manext) $(man1dir)/odvicopy.$(manext)
+-	ln -s dvitype.$(manext) $(man1dir)/odvitype.$(manext)
+-	ln -s texconfig.$(manext) $(man1dir)/texconfig-sys.$(manext)
+-	ln -s updmap.$(manext) $(man1dir)/updmap-sys.$(manext)
+-	ln -s fmtutil.$(manext) $(man1dir)/mktexfmt.$(manext)
+-	ln -s fmtutil.$(manext) $(man1dir)/fmtutil-sys.$(manext)
++	cp.exe -vp allcm.$(manext2) $(man1dir)/allec.$(manext)
++#	ln -s allcm.$(manext) $(man1dir)/allec.$(manext)
++#	ln -s mktexlsr.$(manext) $(man1dir)/texhash.$(manext)
++#	ln -s omega.$(manext) $(man1dir)/lambda.$(manext)
++#	ln -s pdfetex.$(manext) $(man1dir)/pdflatex.$(manext)
++	cp.exe -vp kpsetool.$(manext2) $(man1dir)/kpsepath.$(manext)
++	cp.exe -vp kpsetool.$(manext2) $(man1dir)/kpsexpand.$(manext)
++#	ln -s kpsetool.$(manext) $(man1dir)/kpsepath.$(manext)
++#	ln -s kpsetool.$(manext) $(man1dir)/kpsexpand.$(manext)
++#	ln -s mf.$(manext) $(man1dir)/mf-nowin.$(manext)
++#	ln -s cweb.$(manext) $(man1dir)/ctangle.$(manext)
++#	ln -s cweb.$(manext) $(man1dir)/cweave.$(manext)
++#	ln -s dvicopy.$(manext) $(man1dir)/odvicopy.$(manext)
++#	ln -s dvitype.$(manext) $(man1dir)/odvitype.$(manext)
++#	ln -s texconfig.$(manext) $(man1dir)/texconfig-sys.$(manext)
++	cp.exe -vp texconfig.$(manext2) $(man1dir)/texconfig-sys.$(manext)
++#	ln -s updmap.$(manext) $(man1dir)/updmap-sys.$(manext)
++	cp.exe -vp updmap.$(manext2) $(man1dir)/updmap-sys.$(manext)
++#	ln -s fmtutil.$(manext) $(man1dir)/mktexfmt.$(manext)
++#	ln -s fmtutil.$(manext) $(man1dir)/fmtutil-sys.$(manext)
++	cp.exe -vp fmtutil.$(manext2) $(man1dir)/mktexfmt.$(manext)
++	cp.exe -vp fmtutil.$(manext2) $(man1dir)/fmtutil-sys.$(manext)
+ 	test -r ./latex.info || cd $(srcdir) && for i in latex.info*; do \
+ 	  $(INSTALL_DATA) $$i $(infodir)/$$i; done
+ 	if $(SHELL) -c 'install-info --version' >/dev/null 2>&1; then \
+@@ -88,24 +97,24 @@
+ 	for s in $(SCRIPTS); do \
+ 	  $(INSTALL_SCRIPT) $(srcdir)/$$s $(scriptdir)/$$s; \
+ 	done
+-	if test -f $(bindir)/pdfetex; then \
++	if test -f $(bindir)/pdfetex.exe; then \
+ 	  for s in $(PDFSCRIPTS); do \
+ 	    $(INSTALL_SCRIPT) $(srcdir)/$$s $(scriptdir)/$$s; \
+ 	  done; \
+-	  cd $(scriptdir); rm -f mptopdf; ln -s texexec mptopdf; \
++	  cd $(scriptdir); rm -f mptopdf; cp.exe -vp texexec mptopdf; \
+ 	else \
+ 	  true; \
+ 	fi
+ 	cd $(scriptdir); rm -f allec kpsepath kpsexpand texhash; \
+-	  ln -s allcm allec; \
+-	  ln -s kpsetool kpsepath; \
+-	  ln -s kpsetool kpsexpand; \
+-	  ln -s mktexlsr texhash
++	  cp -vp allcm allec; \
++	  cp -vp kpsetool kpsepath; \
++	  cp -vp kpsetool kpsexpand; \
++	  cp -vp mktexlsr texhash
+ 	cd $(scriptdir); rm -f $(PERLWRAPPED); \
+ 	  for f in $(PERLWRAPPED); do \
+-	    ln -s texexec $$f; \
++	    cp -vp  texexec $$f; \
+ 	  done
+-	cd $(scriptdir); rm -f mktexfmt; ln -s fmtutil mktexfmt
++	cd $(scriptdir); rm -f mktexfmt; cp -vp  fmtutil mktexfmt
+ 
+ ac_include ../make/clean.mk
+ 
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/web2c/alephdir/aleph.mk tetex-src-3.0-os2/texk/web2c/alephdir/aleph.mk
+--- tetex-src-3.0/texk/web2c/alephdir/aleph.mk	Tue Dec 21 04:57:52 2004
++++ tetex-src-3.0-os2/texk/web2c/alephdir/aleph.mk	Sun Mar  6 03:32:56 2005
+@@ -161,7 +161,7 @@
+ # The actual binary executables and pool files.
+ install-programs: @ALEPH@ install-aleph-programs
+ install-aleph-programs: aleph $(bindir)
+-	for p in aleph; do $(INSTALL_LIBTOOL_PROG) $$p $(bindir); done
++	for p in aleph; do $(INSTALL_LIBTOOL_PROG) $$p.exe $(bindir); done
+ 
+ install-links: @ALEPH@ install-aleph-links
+ install-aleph-links: install-aleph-programs
+@@ -174,7 +174,7 @@
+ 	  for f in $$afmts; do $(INSTALL_DATA) $$f $(afmtdir)/$$f; done
+ 	afmts="$(afmts)"; \
+ 	  for f in $$afmts; do base=`basename $$f .fmt`; \
+-	    (cd $(bindir) && (rm -f $$base; $(LN) aleph $$base)); done
++	    (cd $(bindir) && (rm -f $$base; $(LN) aleph.exe $$base.exe)); done
+ 
+ # Auxiliary files.
+ install-data:: @ALEPH@ install-aleph-data
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/web2c/etexdir/etex.mk tetex-src-3.0-os2/texk/web2c/etexdir/etex.mk
+--- tetex-src-3.0/texk/web2c/etexdir/etex.mk	Tue Dec 21 04:57:52 2004
++++ tetex-src-3.0-os2/texk/web2c/etexdir/etex.mk	Sun Mar  6 03:32:56 2005
+@@ -32,7 +32,7 @@
+ 
+ # Tangling
+ etex.p etex.pool: tangle etex.web etex.ch
+-	$(TANGLE) etex.web etex.ch
++	$(tangle) etex.web etex.ch
+ 
+ # Generation of the web and ch file.
+ #   Sources for etex.web:
+@@ -191,7 +191,7 @@
+ 
+ install-programs: @ETEX@ install-etex-programs
+ install-etex-programs: etex $(bindir)
+-	for p in etex; do $(INSTALL_LIBTOOL_PROG) $$p $(bindir); done
++	for p in etex; do $(INSTALL_LIBTOOL_PROG) $$p.exe $(bindir); done
+ 
+ install-links: @ETEX@ install-etex-links
+ install-etex-links: install-etex-programs
+@@ -204,7 +204,7 @@
+ 	  for f in $$efmts; do $(INSTALL_DATA) $$f $(efmtdir)/$$f; done
+ 	efmts="$(efmts)"; \
+ 	  for f in $$efmts; do base=`basename $$f .fmt`; \
+-	    (cd $(bindir) && (rm -f $$base; $(LN) etex $$base)); done
++	    (cd $(bindir) && (rm -f $$base; $(LN) etex.exe $$base.exe)); done
+ 
+ install-data:: @ETEX@ install-etex-data
+ install-etex-pool: etex.pool $(texpooldir)
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/web2c/fmtutil.in tetex-src-3.0-os2/texk/web2c/fmtutil.in
+--- tetex-src-3.0/texk/web2c/fmtutil.in	Sun Feb  6 09:27:46 2005
++++ tetex-src-3.0-os2/texk/web2c/fmtutil.in	Sun Mar  6 03:32:56 2005
+@@ -28,6 +28,9 @@
+ 
+ # The last part of "arguments" must be the name of the file to run
+ # initex (or another "ini"-engine) on.
++# for Japanese users ; ASCII ptex
++#ptex      ptex            -  ptex.ini
++#platex    ptex            -  platex.ini
+ 
+ # metafont and metapost:
+ mf		mf		-		-translate-file=cp227.tcx mf.ini
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/web2c/Makefile.in tetex-src-3.0-os2/texk/web2c/Makefile.in
+--- tetex-src-3.0/texk/web2c/Makefile.in	Wed Feb  1 00:32:58 2006
++++ tetex-src-3.0-os2/texk/web2c/Makefile.in	Sun Mar  6 03:32:56 2005
+@@ -707,8 +707,8 @@
+ # Only try to run ./tangle if it actually exists, otherwise
+ # just touch tangleboot.p and build tangle.
+ tangleboot.p: tangle.web tangle.ch
+-	if [ -r $(TANGLE) ] || [ -r $(TANGLE).exe ]; then \
+-	  WEBINPUTS=$(srcdir) $(TANGLE) tangle tangle; \
++	if [ -r $(TANGLE) ] || [ -r $(TANGLE)  ]; then \
++	  WEBINPUTS=$(srcdir) $(TANGLE) tangle  tangle; \
+ 	  mv tangle.p tangleboot.p; \
+ 	elif [ -r tangleboot.p ]; then \
+ 	  touch tangleboot.p; \
+@@ -745,7 +745,7 @@
+ # ctangleboot.c is in the distribution
+ stamp-ctangle: ctangleboot.c cwebboot.c
+ ctangleboot.c: cwebdir/ctangle.w cwebdir/ctang-w2c.ch
+-	if [ -r $(CTANGLE) ] || [ -r $(CTANGLE).exe ]; then \
++	if [ -r $(CTANGLE) ] || [ -r $(CTANGLE)  ]; then \
+ 	  CWEBINPUTS=$(srcdir)/cwebdir $(CTANGLE) ctangle ctang-w2c; \
+ 	  mv ctangle.c ctangleboot.c; \
+ 	elif [ -r ctangleboot.c ]; then \
+@@ -756,7 +756,7 @@
+ 	date >stamp-ctangle
+ 	$(MAKE) $(common_makeargs) ctangle
+ cwebboot.c: cwebdir/common.w cwebdir/comm-w2c.ch
+-	if [ -r $(CTANGLE) ] || [ -r $(CTANGLE).exe ]; then \
++	if [ -r $(CTANGLE) ] || [ -r $(CTANGLE)  ]; then \
+ 	  CWEBINPUTS=$(srcdir)/cwebdir $(CTANGLE) common comm-w2c cweb.c; \
+ 	  mv cweb.c cwebboot.c; \
+ 	elif [ -r cwebboot.c ]; then \
+@@ -895,7 +895,7 @@
+ # Installing the programs.
+ install-programs: $(programs) $(bindir)
+ 	cd mpware && $(MAKE) $(install_makeargs) install-exec
+-	for p in $(programs); do $(INSTALL_LIBTOOL_PROG) $$p $(bindir); done
++	for p in $(programs); do $(INSTALL_LIBTOOL_PROG) $$p.exe $(bindir); done
+ 
+ # Installation of each of the three main engines.
+ install-tex: install-tex-exec install-tex-data
+@@ -918,15 +918,15 @@
+ install-programs: install-tex-programs
+ install-tex-programs: tex $(bindir)
+ 	tex="tex"; \
+-	  for p in $$tex; do $(INSTALL_LIBTOOL_PROG) $$p $(bindir); done
++	  for p in $$tex; do $(INSTALL_LIBTOOL_PROG) $$p.exe $(bindir); done
+ install-programs: install-mf-programs
+ install-mf-programs: mf $(mfn) $(bindir)
+ 	mf="mf $(mfn)"; \
+-	  for p in $$mf; do $(INSTALL_LIBTOOL_PROG) $$p $(bindir); done
++	  for p in $$mf; do $(INSTALL_LIBTOOL_PROG) $$p.exe $(bindir); done
+ install-programs: install-mpost-programs
+ install-mpost-programs: mpost $(bindir)
+ 	mpost="mpost"; \
+-	  for p in $$mpost; do $(INSTALL_LIBTOOL_PROG) $$p $(bindir); done
++	  for p in $$mpost; do $(INSTALL_LIBTOOL_PROG) $$p.exe $(bindir); done
+ 
+ # The links to {mf,mp,tex} for each format and for {ini,vir}{mf,mp,tex},
+ # plus the equivalents for e-TeX, Omega, and pdf[ex]TeX.
+@@ -953,7 +953,7 @@
+ 	cd $(fmtdir) && (rm -f plain.fmt; $(LN) tex.fmt plain.fmt)
+ 	fmts="$(fmts)"; \
+ 	  for f in $$fmts; do base=`basename $$f .fmt`; \
+-	    (cd $(bindir) && (rm -f $$base; $(LN) tex $$base)); done
++	    (cd $(bindir) && (rm -f $$base; $(LN) tex.exe $$base.exe)); done
+ 
+ install-bases: install-mf-bases
+ install-mf-bases: bases $(basedir)
+@@ -962,7 +962,7 @@
+ 	cd $(basedir) && (rm -f plain.base; $(LN) mf.base plain.base)
+ 	bases="$(bases)"; \
+ 	  for f in $$bases; do base=`basename $$f .base`;\
+-	    (cd $(bindir) && (rm -f $$base; $(LN) mf $$base)); done
++	    (cd $(bindir) && (rm -f $$base; $(LN) mf.exe $$base.exe)); done
+ 
+ install-mems: install-mpost-mems
+ install-mpost-mems: mems $(memdir)
+@@ -971,7 +971,7 @@
+ 	cd $(memdir) && (rm -f plain.mem; $(LN) mpost.mem plain.mem)
+ 	mems="$(mems)"; \
+ 	  for f in $$mems; do base=`basename $$f .mem`; \
+-            (cd $(bindir) && (rm -f $$base; $(LN) mpost $$base)); done
++            (cd $(bindir) && (rm -f $$base; $(LN) mpost.exe $$base.exe)); done
+ 
+ install-tex-pool: tex.pool $(texpooldir)
+ 	$(INSTALL_DATA) tex.pool $(texpooldir)/tex.pool
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/web2c/mpware/Makefile.in tetex-src-3.0-os2/texk/web2c/mpware/Makefile.in
+--- tetex-src-3.0/texk/web2c/mpware/Makefile.in	Wed Feb  1 00:33:00 2006
++++ tetex-src-3.0-os2/texk/web2c/mpware/Makefile.in	Sun Mar  6 03:32:56 2005
+@@ -4,6 +4,8 @@
+ ac_include ../make/common.mk
+ ac_include ../make/programs.mk
+ ac_include kpathsea.mk
++#jsawa for OS/2
++LDFLAGS += -Zexe
+ 
+ proglib = ../lib/lib.a
+ programs = dmp mpto newer makempx
+@@ -46,9 +48,9 @@
+ install: install-exec install-data
+ install-exec: $(programs)
+ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(bindir) $(scriptdir)
+-	$(INSTALL_PROGRAM) newer $(bindir)/newer
+-	$(INSTALL_LIBTOOL_PROG) dmp $(bindir)
+-	$(INSTALL_LIBTOOL_PROG) mpto $(bindir)
++	$(INSTALL_PROGRAM) newer.exe $(bindir)/newer.exe
++	$(INSTALL_LIBTOOL_PROG) dmp.exe $(bindir)
++	$(INSTALL_LIBTOOL_PROG) mpto.exe $(bindir)
+ 	$(INSTALL_SCRIPT) makempx $(scriptdir)/makempx
+ install-data:
+ 
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/web2c/mpware/makempx.in tetex-src-3.0-os2/texk/web2c/mpware/makempx.in
+--- tetex-src-3.0/texk/web2c/mpware/makempx.in	Wed Feb  1 00:31:44 2006
++++ tetex-src-3.0-os2/texk/web2c/mpware/makempx.in	Sun Mar  6 03:32:56 2005
+@@ -21,11 +21,11 @@
+ 
+ # convert relative path to absolute in $MAKEMPX_BINDIR:
+ case "$MAKEMPX_BINDIR" in
+-  /*) ;;
++  /*|[A-Za-z]:/*) ;;
+   *)   MAKEMPX_BINDIR=`pwd`/$MAKEMPX_BINDIR;;
+ esac
+ 
+-PATH=$MAKEMPX_BINDIR:/bin:/usr/bin:$PATH
++PATH=$MAKEMPX_BINDIR;/bin;/usr/bin;$PATH
+ 
+ # These names are documented in the MetaPost manual, so it's
+ # unwise to change them.
+@@ -127,7 +127,8 @@
+     fi
+ 
+     test -z "$TEX" && \
+-      TEX=`sed -n '1s/%\&[ 	]*\([^ 	]*\).*$/\1 --parse-first-line/p;q' mpx$$.tex`
++      TEX=`sed -n '1s/%\&[ 	]*\([^ 	
++]*\).*$/\1 --parse-first-line/p;q' mpx$$.tex`
+     test -z "$TEX" && TEX='tex --parse-first-line'
+ 
+     if $TEX --interaction=batchmode mpx$$.tex </dev/null >/dev/null; then
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/web2c/omegadir/omega.mk tetex-src-3.0-os2/texk/web2c/omegadir/omega.mk
+--- tetex-src-3.0/texk/web2c/omegadir/omega.mk	Tue Dec 21 04:57:52 2004
++++ tetex-src-3.0-os2/texk/web2c/omegadir/omega.mk	Sun Mar  6 03:32:56 2005
+@@ -213,7 +213,7 @@
+ # The actual binary executables and pool files.
+ install-programs: @OMEGA@ install-omega-programs
+ install-omega-programs: $(omega_programs) $(bindir)
+-	for p in omega; do $(INSTALL_LIBTOOL_PROG) $$p $(bindir); done
++	for p in omega; do $(INSTALL_LIBTOOL_PROG) $$p.exe $(bindir); done
+ 	cd otps && $(MAKE) $(install_makeargs) install-programs
+ 	cd omegafonts && $(MAKE) $(install_makeargs) install-programs
+ 
+@@ -230,7 +230,7 @@
+ 	  for f in $$ofmts; do $(INSTALL_DATA) $$f $(ofmtdir)/$$f; done
+ 	ofmts="$(ofmts)"; \
+ 	  for f in $$ofmts; do base=`basename $$f .fmt`; \
+-	    (cd $(bindir) && (rm -f $$base; $(LN) omega $$base)); done
++	    (cd $(bindir) && (rm -f $$base; $(LN) omega.exe $$base.exe)); done
+ 
+ # Auxiliary files.
+ install-data:: @OMEGA@ install-omega-data
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/web2c/omegafonts/Makefile.in tetex-src-3.0-os2/texk/web2c/omegafonts/Makefile.in
+--- tetex-src-3.0/texk/web2c/omegafonts/Makefile.in	Wed Feb  1 00:33:00 2006
++++ tetex-src-3.0-os2/texk/web2c/omegafonts/Makefile.in	Sun Mar  6 03:32:56 2005
+@@ -53,11 +53,11 @@
+ 
+ install-programs: $(programs)
+ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(bindir) 
+-	for p in $(programs); do $(INSTALL_LIBTOOL_PROG) $$p $(bindir); done
++	for p in $(programs); do $(INSTALL_LIBTOOL_PROG) $$p.exe $(bindir); done
+ 
+ install-links: install-programs
+ 	for f in ""$(linked_programs); do \
+-	cd $(bindir) && (rm -f $$f; $(LN) omfonts $$f); done
++	cd $(bindir) && (rm -f $$f; $(LN) omfonts.exe $$f.exe); done
+ 
+ Makefile: Makefile.in ../config.status
+ 	cd .. && $(SHELL) config.status
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/web2c/otps/Makefile.in tetex-src-3.0-os2/texk/web2c/otps/Makefile.in
+--- tetex-src-3.0/texk/web2c/otps/Makefile.in	Wed Feb  1 00:33:02 2006
++++ tetex-src-3.0-os2/texk/web2c/otps/Makefile.in	Sun Mar  6 03:32:56 2005
+@@ -36,7 +36,7 @@
+ 
+ install-programs: $(programs)
+ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(bindir) 
+-	for p in $(programs); do $(INSTALL_LIBTOOL_PROG) $$p $(bindir); done
++	for p in $(programs); do $(INSTALL_LIBTOOL_PROG) $$p.exe $(bindir); done
+ 	for p in $(scripts); do $(INSTALL_SCRIPT) $(srcdir)/$$p $(scriptdir); done
+ 
+ Makefile: Makefile.in ../config.status
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/web2c/pdfetexdir/pdfetex.mk tetex-src-3.0-os2/texk/web2c/pdfetexdir/pdfetex.mk
+--- tetex-src-3.0/texk/web2c/pdfetexdir/pdfetex.mk	Tue Dec 21 04:57:52 2004
++++ tetex-src-3.0-os2/texk/web2c/pdfetexdir/pdfetex.mk	Sun Mar  6 03:32:56 2005
+@@ -28,7 +28,7 @@
+ 
+ # Tangling
+ pdfetex.p pdfetex.pool: tangle pdfetex.web pdfetex.ch
+-	$(TANGLE) pdfetex.web pdfetex.ch
++	$(tangle) pdfetex.web pdfetex.ch
+ 
+ # Generation of the web and ch file.
+ #   Sources for pdfetex.web:
+@@ -100,7 +100,7 @@
+ # The actual binary executables and pool files.
+ install-programs: @PETEX@ install-pdfetex-programs
+ install-pdfetex-programs: $(pdfetex) $(bindir)
+-	for p in pdfetex; do $(INSTALL_LIBTOOL_PROG) $$p $(bindir); done
++	for p in pdfetex; do $(INSTALL_LIBTOOL_PROG) $$p.exe $(bindir); done
+ 
+ install-links: @PETEX@ install-pdfetex-links
+ install-pdfetex-links: install-pdfetex-programs
+@@ -113,7 +113,7 @@
+ 	  for f in $$pdfefmts; do $(INSTALL_DATA) $$f $(pdfefmtdir)/$$f; done
+ 	pdfefmts="$(pdfefmts)"; \
+ 	  for f in $$pdfefmts; do base=`basename $$f .fmt`; \
+-	    (cd $(bindir) && (rm -f $$base; $(LN) pdfetex $$base)); done
++	    (cd $(bindir) && (rm -f $$base; $(LN) pdfetex.exe $$base.exe)); done
+ 
+ # Auxiliary files.
+ install-data:: @PETEX@ install-pdfetex-data
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/web2c/pdftexdir/pdftex.mk tetex-src-3.0-os2/texk/web2c/pdftexdir/pdftex.mk
+--- tetex-src-3.0/texk/web2c/pdftexdir/pdftex.mk	Fri Feb  4 01:16:38 2005
++++ tetex-src-3.0-os2/texk/web2c/pdftexdir/pdftex.mk	Sun Mar  6 03:32:56 2005
+@@ -42,7 +42,7 @@
+ 
+ # Tangling.
+ pdftex.p pdftex.pool: tangle pdftex.web pdftex.ch
+-	$(TANGLE) pdftex.web pdftex.ch
++	$(tangle) pdftex.web pdftex.ch
+ 
+ # Generation of the web and ch files.
+ #   Sources for pdftex.web:
+@@ -108,7 +108,7 @@
+ # The actual binary executables and pool files.
+ install-programs: @PTEX@ install-pdftex-programs
+ install-pdftex-programs: pdftex $(bindir)
+-	for p in pdftex; do $(INSTALL_LIBTOOL_PROG) $$p $(bindir); done
++	for p in pdftex; do $(INSTALL_LIBTOOL_PROG) $$p.exe $(bindir); done
+ 
+ install-links: @PTEX@ install-pdftex-links
+ install-pdftex-links: install-pdftex-programs
+@@ -121,7 +121,7 @@
+ 	  for f in $$pdffmts; do $(INSTALL_DATA) $$f $(pdffmtdir)/$$f; done
+ 	pdffmts="$(pdffmts)"; \
+ 	  for f in $$pdffmts; do base=`basename $$f .fmt`; \
+-	    (cd $(bindir) && (rm -f $$base; $(LN) pdftex $$base)); done
++	    (cd $(bindir) && (rm -f $$base; $(LN) pdftex.exe $$base.exe)); done
+ 
+ # Auxiliary files.
+ install-data:: @PTEX@ install-pdftex-data
+@@ -154,7 +154,7 @@
+ 
+ pdftosrc: pdftexdir/pdftosrc.o $(LIBXPDFDEP)
+ 	@CXXHACKLINK@ pdftexdir/pdftosrc.o $(LDLIBXPDF) -lm @CXXLDEXTRA@
+-pdftexdir/pdftosrc.o:$(srcdir)/pdftexdir/pdftosrc.cc
++pdftexdir/pdftosrc.o: $(srcdir)/pdftexdir/pdftosrc.cc
+ 	cd pdftexdir && $(MAKE) pdftosrc.o
+ check: pdftosrc-check
+ pdftosrc-check: pdftosrc
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/web2c/pdfxtexdir/pdfxtex.mk tetex-src-3.0-os2/texk/web2c/pdfxtexdir/pdfxtex.mk
+--- tetex-src-3.0/texk/web2c/pdfxtexdir/pdfxtex.mk	Fri Feb  4 03:42:26 2005
++++ tetex-src-3.0-os2/texk/web2c/pdfxtexdir/pdfxtex.mk	Sun Mar  6 03:32:56 2005
+@@ -28,7 +28,7 @@
+ 
+ # Tangling
+ pdfxtex.p pdfxtex.pool: tangle pdfxtex.web pdfxtex.ch
+-	$(TANGLE) pdfxtex.web pdfxtex.ch
++	$(tangle) pdfxtex.web pdfxtex.ch
+ 
+ # Generation of the web and ch file.
+ #   Sources for pdfxtex.web:
+@@ -112,7 +112,7 @@
+ # The actual binary executables and pool files.
+ install-programs: @PXTEX@ install-pdfxtex-programs
+ install-pdfxtex-programs: $(pdfxtex) $(bindir)
+-	for p in pdfxtex; do $(INSTALL_LIBTOOL_PROG) $$p $(bindir); done
++	for p in pdfxtex; do $(INSTALL_LIBTOOL_PROG) $$p.exe $(bindir); done
+ 
+ install-links: @PXTEX@ install-pdfxtex-links
+ install-pdfxtex-links: install-pdfxtex-programs
+@@ -125,7 +125,7 @@
+ 	  for f in $$pdfxfmts; do $(INSTALL_DATA) $$f $(pdfxfmtdir)/$$f; done
+ 	pdfxfmts="$(pdfxfmts)"; \
+ 	  for f in $$pdfxfmts; do base=`basename $$f .fmt`; \
+-	    (cd $(bindir) && (rm -f $$base; $(LN) pdfxtex $$base)); done
++	    (cd $(bindir) && (rm -f $$base; $(LN) pdfxtex.exe $$base.exe)); done
+ 
+ # Auxiliary files.
+ install-data:: @PXTEX@ install-pdfxtex-data
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/xdvik/Makefile.in tetex-src-3.0-os2/texk/xdvik/Makefile.in
+--- tetex-src-3.0/texk/xdvik/Makefile.in	Wed Feb  1 00:33:06 2006
++++ tetex-src-3.0-os2/texk/xdvik/Makefile.in	Sun Mar  6 03:32:56 2005
+@@ -29,7 +29,8 @@
+ # It seems that on Cygwin, libXaw needs _XpmReadFileToPixmap, so we put
+ # x_xpm_libs last.
+ # Xmu needs to come before Xt and after the toolkit libs.
+-x_link = $(LDLIBT1) $(x_ldflags) $(x_tool_libs) $(x_xmu_lib) -lXt $(x_pre_libs) $(x_ext_lib) -lX11 $(x_extra_libs) $(x_xpm_libs)
++x_link = $(LDLIBT1) $(x_ldflags) $(x_tool_libs) $(x_xmu_lib) -lXt $(x_pre_libs) $(x_ext_lib) -lX11 $(x_extra_libs) $(x_xpm_libs) -lregex  -lintl -lsocket
++#os/2 jsawa x_ext_lib) -lX11 $(x_extra_libs) $(x_xpm_libs)
+ 
+ LDLIBT1=@LDLIBT1@
+ LIBT1CPPFLAGS=@LIBT1CPPFLAGS@
+@@ -92,7 +93,8 @@
+ perlprog = t1mapper
+ manpage = xdvi
+ 
+-default all: libguibuild @final_exec_name@ $(manpage).1
++#default all: libguibuild @final_exec_name@ $(manpage).1
++default all: libguibuild xdvi $(manpage).1
+ 
+ $(LIBGUI):
+ 	cd gui; $(MAKE) $(makeargs) libgui.a
+@@ -101,7 +103,8 @@
+ libguibuild:
+ 	cd gui; $(MAKE) $(makeargs) libgui.a
+ 
+-@final_exec_name@: $(kpathsea) $(objects) $(LIBT1DEP) $(LIBGUIDEP)
++#@final_exec_name@: $(kpathsea) $(objects) $(LIBT1DEP) $(LIBGUIDEP)
++xdvi: $(kpathsea) $(objects) $(LIBT1DEP) $(LIBGUIDEP)
+ 	$(kpathsea_link) $(objects) $(LIBGUI) $(x_link) $(LOADLIBES)
+ 
+ squeeze.o: squeeze.c
+@@ -122,18 +125,22 @@
+ install: install-exec install-data
+ uninstall: uninstall-exec uninstall-data
+ 
+-install-exec: @final_exec_name@
++#install-exec: @final_exec_name@
++install-exec: xdvi
+ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(bindir)
+-	$(INSTALL_LIBTOOL_PROG) @final_exec_name@ $(bindir)
++#	$(INSTALL_LIBTOOL_PROG) @final_exec_name@ $(bindir)
++	cp -uvp  xdvi.exe xdvi-os2.exe
++	$(INSTALL_LIBTOOL_PROG) xdvi-os2.exe $(bindir)
+ 	$(INSTALL_SCRIPT) xdvi-sh $(scriptdir)/@wrapper_script@
+ 	rm -f $(scriptdir)/o@wrapper_script@
+-	ln -s @wrapper_script@ $(scriptdir)/o@wrapper_script@
++	cp.exe -vp @wrapper_script@ $(scriptdir)/o@wrapper_script@
+ ### fix wrong CVS permissions for shell script
+ 	$(INSTALL_SCRIPT) $(srcdir)/xdvizilla $(scriptdir)/xdvizilla
+ 	chmod +x $(scriptdir)/xdvizilla
+ 
+ uninstall-exec:
+-	for p in @final_exec_name@; do rm -f $(bindir)/$$p; done
++	for p in xdvi-os2.exe; do rm -f $(bindir)/$$p; done
++#jsawa	for p in @final_exec_name@; do rm -f $(bindir)/$$p; done
+ 	for p in @wrapper_script@ o@wrapper_script@; do rm -f $(scriptdir)/$$p; done
+ 
+ install-data: $(manpage).1 pixmaps/toolbar.xpm pixmaps/toolbar2.xpm
+@@ -141,7 +148,7 @@
+ 	$(SHELL) $(top_srcdir)/../mkinstalldirs $(texmf)/xdvi/pixmaps
+ 	$(INSTALL_DATA) $(manpage).1 $(man1dir)/$(manpage).$(manext)
+ 	rm -f $(man1dir)/o$(manpage).$(manext)
+-	ln -s $(manpage).$(manext) $(man1dir)/o$(manpage).$(manext)
++	cp.exe -vp $(manpage).$(manext) $(man1dir)/o$(manpage).$(manext)
+ 	$(INSTALL_DATA) $(srcdir)/texmf/XDvi $(texmf)/xdvi/XDvi
+ 	$(INSTALL_DATA) $(srcdir)/pixmaps/toolbar.xpm $(srcdir)/pixmaps/toolbar2.xpm $(texmf)/xdvi/pixmaps
+ 	if \
+@@ -206,10 +213,12 @@
+ 	  || for d in $(all_subdirs); do (cd $$d && $(MAKE) $@); done
+ 
+ clean::
+-	rm -f $(manpage).1 *.flc @final_exec_name@
++	rm -f $(manpage).1 *.flc xdvi.exe
++#	rm -f $(manpage).1 *.flc @final_exec_name@
+ 
+ distclean::
+-	rm -f psheader.c krheader.h sedscript $(manpage).1 *.flc *~ @final_exec_name@ xdvi-sh
++	rm -f psheader.c krheader.h sedscript $(manpage).1 *.flc *~ xdvi.exe xdvi-sh
++#	rm -f psheader.c krheader.h sedscript $(manpage).1 *.flc *~ @final_exec_name@ xdvi-sh
+ 	test -f $(LIBTYPE1DIR)/Makefile && { cd $(LIBTYPE1DIR); $(MAKE) distclean; } || true
+ 	test -f $(LIBT1DIR)/Makefile && { cd $(LIBT1DIR); $(MAKE) distclean; } || true
+ 
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/texk/xdvik/xdvi-sh.in tetex-src-3.0-os2/texk/xdvik/xdvi-sh.in
+--- tetex-src-3.0/texk/xdvik/xdvi-sh.in	Wed Feb  1 00:31:50 2006
++++ tetex-src-3.0-os2/texk/xdvik/xdvi-sh.in	Sun Mar  6 03:32:56 2005
+@@ -31,7 +31,7 @@
+ xdviappfile=`kpsewhich -progname=xdvi --format='other text files' XDvi`
+ if test -n "$xdviappfile"; then
+   xdviappdir=`dirname "$xdviappfile"`
+-  xdviapppath="${xdviappdir}/%l_%t/%N:${xdviappdir}/%N"
++  xdviapppath="${xdviappdir}/%l_%t/%N;${xdviappdir}/%N"
+ 
+   # For R3, we have to set XAPPLRESDIR.
+   ### SU: removed, xdvik won't work with R3 anyway, and XAPPLRESDIR is
+@@ -40,7 +40,8 @@
+ 
+   # For R4 or later, we have to set XFILESEARCHPATH, since XAPPLRESDIR might
+   # be ignored (if XUSERFILESEARCHPATH is set)
+-  XFILESEARCHPATH="$xdviapppath:${XFILESEARCHPATH-%D}"; export XFILESEARCHPATH
++  XFILESEARCHPATH="$xdviapppath;${XFILESEARCHPATH-%D}"; export XFILESEARCHPATH
+ fi
+ 
+-exec @final_exec_name@ $NAMEOPT ${1+"$@"}
++#jsawa exec @final_exec_name@ $NAMEOPT ${1+"$@"}
++exec xdvi-os2 $NAMEOPT ${1+"$@"}
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/dialog/Makefile.in tetex-src-3.0-os2/utils/dialog/Makefile.in
+--- tetex-src-3.0/utils/dialog/Makefile.in	Wed Feb  1 00:33:18 2006
++++ tetex-src-3.0-os2/utils/dialog/Makefile.in	Sun Mar  6 03:32:58 2005
+@@ -125,7 +125,13 @@
+ dialog: $(CURSESDEP) $(objs)
+ 	$(CC) $(LDFLAGS) $(objs) -o dialog $(LDCURSESLIB)
+ 
+-$(NCURSESDIR)/lib/libncurses.$(lib):
++#jsawa
++$(NCURSESDIR)/lib/libncurses.$(lib): $(NCURSESDIR)/lib/ncurses.$(lib)
++	cp -uvp $(NCURSESDIR)/lib/ncurses.$(lib) $(NCURSESDIR)/lib/libncurses.$(lib)
++
++
++#jsawa $(NCURSESDIR)/lib/libncurses.$(lib):
++$(NCURSESDIR)/lib/ncurses.$(lib):
+ 	cd $(NCURSESDIR); $(MAKE)
+ 
+ %.$(obj): %.c
+@@ -145,7 +151,7 @@
+ 	$(SHELL) ${srcdir}/mkinstalldirs $(bindir) $(man1dir)
+ 
+ $(bindir)/tcdialog: dialog
+-	$(INSTALL_PROGRAM) dialog $@
++	$(INSTALL_PROGRAM) dialog.exe $@.exe
+ 
+ $(man1dir)/tcdialog.$(manext): dialog.man
+ 	$(INSTALL_DATA) $(srcdir)/dialog.man $@
+
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/lib/Makefile.in tetex-src-3.0-os2/utils/texinfo/lib/Makefile.in
+--- tetex-src-3.0/utils/texinfo/lib/Makefile.in	Wed Feb  1 00:33:22 2006
++++ tetex-src-3.0-os2/utils/texinfo/lib/Makefile.in	Sun Mar  6 03:32:58 2005
+@@ -102,7 +102,7 @@
+ am__DEPENDENCIES_2 = @ALLOCA@
+ am_libtxi_a_OBJECTS = getopt.$(OBJEXT) getopt1.$(OBJEXT) \
+ 	substring.$(OBJEXT) xexit.$(OBJEXT) xmalloc.$(OBJEXT) \
+-	xstrdup.$(OBJEXT)
++	xstrdup.$(OBJEXT) pc.$(OBJEXT)
+ libtxi_a_OBJECTS = $(am_libtxi_a_OBJECTS)
+ DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
+ depcomp = $(SHELL) $(top_srcdir)/depcomp
+@@ -269,7 +269,7 @@
+ libtxi_a_SOURCES = getopt.c getopt.h getopt1.c getopt_.h getopt_int.h \
+                    gettext.h \
+                    strcase.h strdup.h substring.c system.h \
+-		   xalloc.h xexit.c xmalloc.c xstrdup.c
++		   xalloc.h xexit.c xmalloc.c xstrdup.c pc.c
+ 
+ libtxi_a_LIBADD = $(LIBOBJS) $(ALLOCA)
+ ifeq ($(omf),on)
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/makeinfo/Makefile.in tetex-src-3.0-os2/utils/texinfo/makeinfo/Makefile.in
+--- tetex-src-3.0/utils/texinfo/makeinfo/Makefile.in	Wed Feb  1 00:33:24 2006
++++ tetex-src-3.0-os2/utils/texinfo/makeinfo/Makefile.in	Sun Mar  6 03:32:58 2005
+@@ -96,7 +96,7 @@
+ 	index.$(OBJEXT) insertion.$(OBJEXT) lang.$(OBJEXT) \
+ 	macro.$(OBJEXT) makeinfo.$(OBJEXT) multi.$(OBJEXT) \
+ 	node.$(OBJEXT) sectioning.$(OBJEXT) toc.$(OBJEXT) \
+-	xml.$(OBJEXT) xref.$(OBJEXT)
++	xml.$(OBJEXT) xref.$(OBJEXT) kanji.$(OBJEXT)
+ makeinfo_OBJECTS = $(am_makeinfo_OBJECTS)
+ makeinfo_LDADD = $(LDADD)
+ ifeq ($(omf),on)
+@@ -146,7 +146,7 @@
+ endif
+ 
+ CCDEPMODE = @CCDEPMODE@
+-CFLAGS = @CFLAGS@
++CFLAGS = @CFLAGS@ -DSJIS
+ CPP = @CPP@
+ CPPFLAGS = @CPPFLAGS@
+ CYGPATH_W = @CYGPATH_W@
+@@ -280,7 +280,7 @@
+   files.c files.h float.c float.h footnote.c footnote.h \
+   html.c html.h index.c index.h insertion.c insertion.h lang.c lang.h \
+   macro.c macro.h makeinfo.c makeinfo.h multi.c multi.h node.c node.h \
+-  sectioning.c sectioning.h toc.c toc.h xml.c xml.h xref.c xref.h
++  sectioning.c sectioning.h toc.c toc.h xml.c xml.h xref.c xref.h kanji.c
+ 
+ EXTRA_DIST = README
+ SUBDIRS = tests
+diff -PurB -X x-os2unix.dat tetex-src-3.0/utils/texinfo/util/Makefile.in tetex-src-3.0-os2/utils/texinfo/util/Makefile.in
+--- tetex-src-3.0/utils/texinfo/util/Makefile.in	Wed Feb  1 00:33:24 2006
++++ tetex-src-3.0-os2/utils/texinfo/util/Makefile.in	Sun Mar  6 03:32:58 2005
+@@ -159,7 +159,7 @@
+ endif
+ 
+ CCDEPMODE = @CCDEPMODE@
+-CFLAGS = @CFLAGS@
++CFLAGS = @CFLAGS@ -DSJIS
+ CPP = @CPP@
+ CPPFLAGS = @CPPFLAGS@
+ CYGPATH_W = @CYGPATH_W@
+

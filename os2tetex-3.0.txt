@@ -1,0 +1,31 @@
+                          Upload Information Template for Hobbes.nmsu.edu
+                          ===============================================
+
+        Archive Filename: os2teTeX-3.0.zip
+       Short Description: teTeX binaries and config files for OS/2 (release 4)
+        Long Description: teTeX 3.0 (+Japanese ASCII pTeX) for OS/2:
+                          In release 4, `dvips.exe' rebuilt to handle 
+                          Fli font. LS-R file related problem fixed. 
+                          Include executables are tex, etex, pdftex, 
+                          pdfetex, pdfxtex, lamda,omega, xdvi, dvipdfm, 
+                          dvipdfmx, and so on. 
+      Proposed directory
+           for placement: /pub/os2/apps/wp/tex
+
+               Your name: Jun Sawataishi
+           Email address: jsawa@attglobal.net
+    Program contact name: (same)
+   Program contact email: (same)
+             Program URL: (none) 
+
+      Would you like the
+   contact email address
+    included in listings? yes
+
+Operating System/Version: OS/2 Warp 4.0 or later
+ Additional requirements: emx 0.9d;  tetex-texmf-3.0.tar.gz from CTAN
+
+                Replaces: /pub/os2/apps/wp/tex/os2tetex-3.0.zip
+
+
+
